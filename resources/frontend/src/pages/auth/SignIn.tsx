@@ -1,7 +1,15 @@
 import {SnackbarProvider} from "notistack";
 import {Link} from "react-router-dom";
+import TextInputAuth from "../../components/core/Text-Input-Auth.tsx";
+import LoginProviders from "../../components/Login-Providers.tsx";
+import Footer from "../../components/Footer.tsx";
 
 export default function SignIn() {
+
+    const handleSubmit = () => {
+
+    }
+
     return (
         <div className={`flex flex-col items-center gap-y-10 container`}>
 
@@ -29,21 +37,21 @@ export default function SignIn() {
                             id={`email_id`}
                             name={`email`}
                             type={`email`}
-                            error={errors?.email}
+                            // error={errors?.email}
                         />
                         <TextInputAuth
                             placeholder={`Password`}
                             id={`password_id`}
                             type={`password`}
                             name={`password`}
-                            error={errors?.password}
+                            // error={errors?.password}
                         />
 
                         <button
                             className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
                             type={`submit`}
                         >
-                            {isLoading ? 'Signing in...' : 'Sign in'}
+                            {/*{isLoading ? 'Signing in...' : 'Sign in'}*/}
                         </button>
                     </div>
                 </form>

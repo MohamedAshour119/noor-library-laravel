@@ -1,5 +1,3 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
-
 /** @type {import('tailwindcss').Config} */
 export default {
     content: [
@@ -13,8 +11,14 @@ export default {
     ],
     theme: {
         extend: {
-            fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            colors: {
+                main_color: "#45B09E",
+                main_color_placeholder: "rgba(69,176,158,0.38)",
+                main_color_darker: "#00786D",
+                text_color: "#444444",
+                border_color: "#E8E8E8",
+                main_bg: "#F1F1F1",
+                input_bg: "#FAFAFA",
             },
         },
     },

@@ -4,20 +4,20 @@ import {MdGTranslate} from "react-icons/md";
 import {IoLogInOutline} from "react-icons/io5";
 import {FaBook, FaUser} from "react-icons/fa";
 import {RiMenuLine} from "react-icons/ri";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@/redux/store";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 import {Link} from "react-router-dom";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 import {IoIosArrowDown} from "react-icons/io";
 import {GoBell} from "react-icons/go";
 import {TbLogout2} from "react-icons/tb";
-// @ts-ignore
+import NavbarList from "./home/Navbar-List.tsx";
 
 export default function Header() {
 
     const user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
     const [isActive, setIsActive] = useState({
         home: true,
@@ -35,6 +35,10 @@ export default function Header() {
             authors: false,
             [type]: true
         })
+    }
+
+    const singOut = () => {
+
     }
 
 
@@ -69,6 +73,7 @@ export default function Header() {
                                     src={`/nav-logo.svg`}
                                     alt={`nav-logo`}
                                     className={`py-1`}
+                                    width={45}
                                 />
                             </Link>
                             <ul className={`hidden sm:flex gap-x-7 h-full pt-3`}>

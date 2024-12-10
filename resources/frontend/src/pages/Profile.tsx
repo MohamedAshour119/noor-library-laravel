@@ -1,3 +1,8 @@
+import {FaCamera, FaStar} from "react-icons/fa";
+import Sections from "../components/profile/Sections.tsx";
+import NotFoundContainer from "../components/profile/Not-Found-Container.tsx";
+import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
+import Footer from "../components/Footer.tsx";
 
 export default function Profile() {
     return (

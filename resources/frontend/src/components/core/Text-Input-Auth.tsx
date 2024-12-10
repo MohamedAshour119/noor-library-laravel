@@ -8,7 +8,7 @@ interface Props {
     styles?: string;
     value?: string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-    error: string | undefined
+    error?: string | undefined
 }
 
 export default function TextInputAuth({ placeholder, id, name, value, type = 'text', styles, onChange, error }: Props) {

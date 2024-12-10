@@ -1,7 +1,19 @@
 import {SnackbarProvider} from "notistack";
 import {Link} from "react-router-dom";
+import TextInputAuth from "../../components/core/Text-Input-Auth.tsx";
+import ReCAPTCHA from "react-google-recaptcha";
+import LoginProviders from "../../components/Login-Providers.tsx";
+import Footer from "../../components/Footer.tsx";
 
 export default function SignUp() {
+
+    const handleInputChange = () => {
+
+    }
+    const handleSubmit = () => {
+
+    }
+
     return (
         <div className={`flex flex-col items-center gap-y-10 container`}>
 

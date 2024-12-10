@@ -1,5 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import MainHeaderBtn from "../home/Main-Header-Btn.tsx";
+import {RootState} from "../../../redux/store.ts";
+import {setActive} from "../../../redux/profile-is-active-slice.ts";
 
 interface Props {
     books_count: number

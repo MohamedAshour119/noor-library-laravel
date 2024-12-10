@@ -8,7 +8,7 @@ interface Props {
     is_purchased_books_active?: boolean
 }
 
-export default function NotFoundContainer({src, content, is_book_section_active = true, is_purchased_books_active = false, is_review_section_active}: Props) {
+export default function NotFoundContainer({src, content, is_book_section_active = true, is_purchased_books_active = false}: Props) {
     return (
         <div className={`flex flex-col items-center gap-y-4 bg-white w-full p-10 border border-border_color rounded text-xl`}>
             <img

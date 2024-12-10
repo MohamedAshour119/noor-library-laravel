@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <link rel="canonical" href="{{ url()->current() }}">
     <meta name="csrf_token" content="{{ session()->get('token') !== null? base64_decode(session()->get('token')) : csrf_token() }}"/>
-    <link rel="icon" type="image/svg+xml" href=""/>
+    <link rel="icon" type="image/svg+xml" href="./nav-logo.svg"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{{ config('app.name') }}</title>
 
@@ -18,7 +18,7 @@
     @vite('resources/frontend/src/main.tsx')
 
 </head>
-<body class="bg-black">
-<div id="root" class="flex flex-col justify-between h-screen"></div>
+<body>
+    <div id="root" class="flex flex-col justify-between h-screen"></div>
 </body>
 </html>
