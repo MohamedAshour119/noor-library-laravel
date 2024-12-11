@@ -46,7 +46,7 @@ export default function Header() {
         <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} z-10 border-t-[3px] border-main_color text-text_color flex flex-col items-center gap-y-6`}>
             <div className={`container w-full relative`}>
                 <div>
-                    <button className={`absolute right-2 sm:right-0 top-0 flex items-center gap-x-2 bg-main_color text-white px-3 py-1 rounded-b font-noto_naskh-medium`}>
+                    <button className={`absolute right-2 sm:right-0 top-0 flex items-center gap-x-2 bg-main_color text-white px-3 py-1 rounded-b font-tajawal-semibold`}>
                         العربية<MdGTranslate />
                     </button>
                     <Link
