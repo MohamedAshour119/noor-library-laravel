@@ -12,8 +12,9 @@ export default function BookCard(props: Props) {
     const {rate, cover, title, author } = props
 
     return (
-        <div
-            className="flex flex-col justify-self-center gap-y-2 min-[400px]:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1"
+        <Link
+            to={`#`}
+            className="flex flex-col justify-self-center gap-y-2 min-[400px]:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1 "
         >
             <div className="flex items-center gap-x-2">
                 <div className="flex text-[#E0E0E0]">
@@ -40,6 +41,6 @@ export default function BookCard(props: Props) {
             >
                 {author}
             </Link>
-        </div>
+        </Link>
     );
 }

@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --background: #ffffff;
+    --main_color: theme(colors.main_color);
+
+    --font-roboto: 'Roboto', sans-serif;
+    --font-noto_naskh: "Noto Naskh Arabic", serif;
+}
+
+body {
+    font-family: var(--font-roboto);
+    /*font-size: 10px !important;*/
+}
+
+/* Use Tajawal for specific cases */
+.font-noto_naskh {
+    font-family: var(--font-noto_naskh);
+}
+
+/* Define Roboto weights */
+.font-roboto-extralight {
+    font-family: var(--font-roboto);
+    font-weight: 100;
+}
+.font-roboto-light {
+    font-family: var(--font-roboto);
+    font-weight: 300;
+}
+.font-roboto-medium {
+    font-family: var(--font-roboto);
+    font-weight: 400;
+}
+.font-roboto-semi-bold {
+    font-family: var(--font-roboto);
+    font-weight: 500;
+}
+.font-roboto-bold {
+    font-family: var(--font-roboto);
+    font-weight: 700;
+}
+
+/* Define Tajawal weights */
+
+.font-noto_naskh-medium {
+    font-family: var(--font-noto_naskh);
+    font-weight: 400;
+}
+.font-noto_naskh-semi-bold {
+    font-family: var(--font-noto_naskh);
+    font-weight: 500;
+}
+.font-noto_naskh-bold {
+    font-family: var(--font-noto_naskh);
+    font-weight: 700;
+}
+
+.active{
+    position: absolute;
+    width: 100%;
+    background-color: var(--main_color);
+    height: 2px;
+    bottom: -2px;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar{
+    width: 4px;
+}
+
+::-webkit-scrollbar-track{
+    background-color: white;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: var(--main_color);
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 0;
+}
+
+.search-input-active{
+    overflow: hidden !important;
+}
+
+/* Remove background color of autofill */
+input:-webkit-autofill {
+
+    /*-webkit-text-fill-color: #e5e7eb; !* Text color *!*/
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important; /* Transparent background */
+    transition: background-color 5000s ease-in-out 0s; /* Transition background */
+}
+
+/* Custom Styles For Scrollbar Only In Sign In Page */
+.custom-scrollbar::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: transparent;
+}

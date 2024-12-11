@@ -21,21 +21,21 @@ export default function MainHeader() {
         <header className={`flex bg-white pt-6 border border-border_color w-full max-[525px]:flex-col max-[525px]:gap-y-5 items-center `}>
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('trending_today')}
-                styles={isActive.trending_today ? 'border-main_color text-main_color' : ''}
+                styles={isActive.trending_today ? '!border-main_color text-main_color' : ''}
                 src={isActive.trending_today ? '/home/trending-active.svg' : '/home/trending-not-active.svg'}
                 content={'Trending Today'}
             />
 
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('popular_books')}
-                styles={isActive.popular_books ? 'border-main_color text-main_color' : ''}
+                styles={isActive.popular_books ? '!border-main_color text-main_color' : ''}
                 src={isActive.popular_books ? '/home/popular-active.svg' : '/home/popular-not-active.svg'}
                 content={'Popular Books'}
             />
 
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('latest_books')}
-                styles={isActive.latest_books ? 'border-main_color text-main_color' : ''}
+                styles={isActive.latest_books ? '!border-main_color text-main_color' : ''}
                 src={isActive.latest_books ? '/home/latest-active.svg' : '/home/latest-not-active.svg'}
                 content={'Latest Books'}
             />

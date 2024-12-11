@@ -10,9 +10,9 @@ export default function Home() {
 
     return (
         <>
-            <div className="h-[400px] overflow-y-hidden relative flex flex-col items-center justify-center lg:mt-0">
+            <div className="h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
                 <img
-                    src={`home/hero-section-bg.svg`}
+                    src={`./home/hero-section-bg.svg`}
                     alt={`hero-section-bg`}
                     className="object-cover h-full w-full absolute"
                 />
