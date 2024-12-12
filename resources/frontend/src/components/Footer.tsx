@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 
 interface Props {
-    styles: string
+    styles?: string
 }
 export default function Footer(props: Props) {
     const { styles } = props

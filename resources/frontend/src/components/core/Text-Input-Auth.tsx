@@ -9,9 +9,11 @@ interface Props {
     value?: string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     error?: string | undefined
+    is_sign_in_failed?: boolean
 }
 
-export default function TextInputAuth({ placeholder, id, name, value, type = 'text', styles, onChange, error }: Props) {
+export default function TextInputAuth(props: Props) {
+    const { placeholder, id, name, value, type = 'text', styles, onChange, error, is_sign_in_failed = false } = props
     const [hasContent, setHasContent] = useState(!!value);
     const [isPasswordShow, setIsPasswordShow] = useState(false);
 
@@ -33,7 +35,7 @@ export default function TextInputAuth({ placeholder, id, name, value, type = 'te
                         }
                         setHasContent(!!e.target.value);
                     }}
-                    className={`${styles} bg-input_bg py-2 ${type === 'password' ? 'pe-12' : ''} px-4 w-full text-xl border ${!error ? 'border-border_color' : 'border-red-600'} rounded focus:outline-0 focus:ring-2 ${!error ? 'focus:ring-main_color' : 'focus:ring-red-600'} duration-200 transition-all`}
+                    className={`${styles} bg-input_bg py-2 ${type === 'password' ? 'pe-12' : ''} px-4 w-full text-xl border ${!error && !is_sign_in_failed ? 'border-border_color' : 'border-red-600'} rounded focus:outline-0 focus:ring-2 ${!error && !is_sign_in_failed ? 'focus:ring-main_color' : 'focus:ring-red-600'} duration-200 transition-all`}
                     onFocus={() => setHasContent(true)}
                     onBlur={(e) => setHasContent(!!e.target.value)}
                 />

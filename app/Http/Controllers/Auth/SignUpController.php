@@ -7,8 +7,6 @@ use App\Http\Requests\SignUpRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use function PHPUnit\Framework\throwException;
 
 class SignUpController extends Controller
 {
