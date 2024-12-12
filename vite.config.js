@@ -13,4 +13,7 @@ export default defineConfig({
     resolve: {
         extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
     },
+    optimizeDeps: {
+        include: ['react-select']
+    }
 });

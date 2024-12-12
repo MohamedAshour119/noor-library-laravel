@@ -17,7 +17,7 @@ type OtherBookOptions = {
     type: string
 }
 
-export interface AddBook {
+export interface AddBookInterface {
     book_title: string
     book_description: string
     is_author: IsAuthorOption | null
@@ -26,7 +26,7 @@ export interface AddBook {
     category: OtherBookOptions | null
     cover: string | File | null
     downloadable: boolean
-    book_file: File | null
+    book_file: string | File | null
 }
 
 export const AddBookDefaultValues = {

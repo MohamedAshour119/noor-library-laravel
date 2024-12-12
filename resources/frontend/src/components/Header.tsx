@@ -12,9 +12,9 @@ import {IoIosArrowDown} from "react-icons/io";
 import {GoBell} from "react-icons/go";
 import {TbLogout2} from "react-icons/tb";
 import NavbarList from "./home/Navbar-List.tsx";
-import axios from "axios";
 import {enqueueSnackbar} from "notistack";
 import {clearUser} from "../../redux/user-slice.ts";
+import apiClient from "../../ApiClient.ts";
 
 export default function Header() {
 
@@ -41,7 +41,7 @@ export default function Header() {
     }
 
     const singOut = () => {
-        axios.post('/api/sign-out', {},
+        apiClient().post('/sign-out', {},
             {headers: {'Content-Type': 'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')}})
             .then(() => {
                 localStorage.removeItem('token')
@@ -151,7 +151,7 @@ export default function Header() {
                                             </MenuItem>
                                             <MenuItem >
                                                 <Link
-                                                    to={`/add-book-to-store`}
+                                                    to={`/add-book`}
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-4 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                 >
                                                     <FaBook className={`size-5`}/>

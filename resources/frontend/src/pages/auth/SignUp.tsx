@@ -7,9 +7,9 @@ import {ChangeEvent, FormEvent, useRef, useState} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import {sign_up_validation} from "../../../zod-validation/sign-up.ts";
 import {z} from "zod";
-import axios from "axios";
 import {useDispatch} from "react-redux";
 import {setUser} from "../../../redux/user-slice.ts";
+import apiClient from "../../../ApiClient.ts";
 
 type Errors = {
     username?: string
@@ -86,7 +86,7 @@ export default function SignUp() {
             return
         }
 
-        axios.post(`/api/sign-up`, formData, {headers: {'Content-Type': 'application/json'}})
+        apiClient().post(`/sign-up`, formData, {headers: {'Content-Type': 'application/json'}})
             .then(res => {
                 dispatch(setUser(res.data.data))
                 enqueueSnackbar("Sign up successful! Redirecting...", { variant: "success" });

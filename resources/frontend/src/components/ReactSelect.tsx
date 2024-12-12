@@ -1,6 +1,5 @@
-import React from 'react'
 import Select, {GroupBase, SingleValue, StylesConfig} from "react-select";
-import '../app/globals.css';
+import '../App.css';
 
 interface Props {
     options: IsAuthorOption[] | OtherBookOptions[];

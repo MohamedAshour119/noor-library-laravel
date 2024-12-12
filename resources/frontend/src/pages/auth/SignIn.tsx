@@ -7,8 +7,8 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {useDispatch} from "react-redux";
 import {z} from "zod";
 import {sign_in_validation} from "../../../zod-validation/sign-in.ts";
-import axios from "axios";
 import {setUser} from "../../../redux/user-slice.ts";
+import apiClient from "../../../ApiClient.ts";
 
 type Errors = {
     email?: string
@@ -64,7 +64,7 @@ export default function SignIn() {
             return
         }
 
-        axios.post('/api/sign-in', formData, {headers: {'Content-Type': 'application/json'}})
+        apiClient().post('/sign-in', formData, {headers: {'Content-Type': 'application/json'}})
             .then(res => {
                 console.log(res.data.data.data)
                 setIsLoading(false)

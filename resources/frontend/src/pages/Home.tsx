@@ -28,7 +28,7 @@ export default function Home() {
                             <HeroSectionBtn content={`Popular Books`}/>
                             <HeroSectionBtn content={`Latest Books`}/>
                         </div>
-                        <Link to={`/add-book-to-store`}>
+                        <Link to={`/add-book`}>
                             <HeroSectionBtn
                                 content={`Upload Book`}
                                 styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}

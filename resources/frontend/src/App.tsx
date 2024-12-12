@@ -7,6 +7,7 @@ import SignIn from "./pages/auth/SignIn.tsx";
 import {useEffect, useState} from "react";
 import AuthRoute from "./auth/AuthRoute.tsx";
 import AuthRedirect from "./auth/AuthRedirect.tsx";
+import AddBook from "./pages/AddBook.tsx";
 
 function AuthLayout() {
     return (
@@ -37,6 +38,7 @@ function App() {
 
             <Route element={<AuthRoute />}>
                 <Route path="/*" element={<AuthLayout />} />
+                <Route path="/add-book" element={<AddBook />} />
             </Route>
 
             <Route element={<AuthRedirect />}>
