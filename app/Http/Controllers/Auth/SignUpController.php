@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SignUpRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 class SignUpController extends Controller
 {
     use HttpResponses;
-    public function signUp(SignUpRequest $request)
+    public function signUp(SignUpRequest $request): JsonResponse
     {
         unset($request->google_recaptcha);
         unset($request->password_confirmation);

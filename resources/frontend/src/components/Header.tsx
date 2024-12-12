@@ -4,7 +4,7 @@ import {MdGTranslate} from "react-icons/md";
 import {IoLogInOutline} from "react-icons/io5";
 import {FaBook, FaUser} from "react-icons/fa";
 import {RiMenuLine} from "react-icons/ri";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {Link} from "react-router-dom";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
@@ -12,12 +12,15 @@ import {IoIosArrowDown} from "react-icons/io";
 import {GoBell} from "react-icons/go";
 import {TbLogout2} from "react-icons/tb";
 import NavbarList from "./home/Navbar-List.tsx";
+import axios from "axios";
+import {enqueueSnackbar} from "notistack";
+import {clearUser} from "../../redux/user-slice.ts";
 
 export default function Header() {
 
     const user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
-    // const dispatch = useDispatch()
+    const dispatch = useDispatch()
 
     const [isActive, setIsActive] = useState({
         home: true,
@@ -38,7 +41,15 @@ export default function Header() {
     }
 
     const singOut = () => {
-
+        axios.post('/api/sign-out', {},
+            {headers: {'Content-Type': 'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')}})
+            .then(() => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('expires_at')
+                dispatch(clearUser())
+            }).catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+        })
     }
 
 
@@ -133,6 +144,7 @@ export default function Header() {
                                                     <img
                                                         src={`/profile-default-img.svg`}
                                                         alt={`profile-default-img`}
+                                                        width={30}
                                                     />
                                                     Profile
                                                 </Link>

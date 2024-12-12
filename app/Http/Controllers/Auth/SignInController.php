@@ -6,13 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SignInRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SignInController extends Controller
 {
     use HttpResponses;
-    public function signIn(SignInRequest $request)
+    public function signIn(SignInRequest $request): JsonResponse
     {
         if(Auth::attempt($request->all())){
             $token = Auth::user()->createToken('User Token', ['*'], expiresAt: now()->addHours(24));

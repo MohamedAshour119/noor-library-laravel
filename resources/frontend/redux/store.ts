@@ -9,7 +9,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 const persistConfig = {
     key: 'root',
     version: 1,
-    storage
+    storage,
 }
 
 const reducer = combineReducers({
