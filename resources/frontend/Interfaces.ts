@@ -71,9 +71,8 @@ export interface Book {
     author: string
     language: string
     category: string
-    cover_url: string
-    file_url?: string
-    user_id: number
+    cover: string
+    book_file?: string
     downloadable: boolean
 }
 // export const BookDefaultValues = {

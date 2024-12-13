@@ -1,18 +1,21 @@
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import {Ref} from "react";
 
 interface Props {
     rate?: number;
     cover: string;
     title: string;
     author: string;
+    ref?: Ref<HTMLAnchorElement>
 }
 
 export default function BookCard(props: Props) {
-    const {rate, cover, title, author } = props
+    const {rate, cover, title, author, ref } = props
 
     return (
         <Link
+            ref={ref}
             to={`#`}
             className="flex flex-col justify-self-center gap-y-2 min-[400px]:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1 "
         >

@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import AuthRoute from "./auth/AuthRoute.tsx";
 import AuthRedirect from "./auth/AuthRedirect.tsx";
 import AddBook from "./pages/AddBook.tsx";
+import Profile from "./pages/Profile.tsx";
 
 function AuthLayout() {
     return (
@@ -39,6 +40,7 @@ function App() {
             <Route element={<AuthRoute />}>
                 <Route path="/*" element={<AuthLayout />} />
                 <Route path="/add-book" element={<AddBook />} />
+                <Route path="/users/:user" element={<Profile />} />
             </Route>
 
             <Route element={<AuthRedirect />}>

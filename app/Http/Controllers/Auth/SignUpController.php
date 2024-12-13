@@ -20,7 +20,7 @@ class SignUpController extends Controller
         User::create([
             'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
         ]);
 
         return $this->response_success(['sadsa' => 14], 'Success');

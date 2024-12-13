@@ -138,7 +138,7 @@ export default function Header() {
 
                                             <MenuItem>
                                                 <Link
-                                                    to={`/profile`}
+                                                    to={`/users/${user.username}`}
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                 >
                                                     <img

@@ -3,8 +3,80 @@ import Sections from "../components/profile/Sections.tsx";
 import NotFoundContainer from "../components/profile/Not-Found-Container.tsx";
 import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 import Footer from "../components/Footer.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+import {useEffect, useRef, useState} from "react";
+import {Book} from "../../Interfaces.ts";
+import apiClient from "../../ApiClient.ts";
+import BookCard from "../components/home/Book-Card.tsx";
+import {enqueueSnackbar} from "notistack";
 
 export default function Profile() {
+
+    const isActive = useSelector((state: RootState) => state.profileIsActiveReducer);
+    // const user = useSelector((state: RootState) => state.user)
+
+    const [books, setBooks] = useState<Book[]>([]);
+    const [books_next_page_url, setBooks_next_page_url] = useState('');
+    const [isFetching, setIsFetching] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [books_count, setBooks_count] = useState(0);
+
+    const getBook = (page_url: string) => {
+        setIsFetching(true)
+        apiClient().get(page_url)
+            .then(res => {
+                setBooks(prevState => [...prevState, ...res.data.data.books])
+                setBooks_next_page_url(res.data.data.next_page_url)
+                setIsLoading(false)
+                setIsFetching(false)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+                setIsLoading(false)
+                setIsFetching(false)
+            })
+    }
+
+    useEffect(() => {
+        getBook('get-user-books')
+    }, []);
+
+    const lastBookRef = useRef(null);
+    const show_books = books.map((book, index) => (
+            <BookCard
+                key={index}
+                rate={140}
+                title={book.title}
+                cover={book.cover}
+                author={book.author}
+                ref={lastBookRef}
+            />
+        )
+    )
+
+    useEffect(() => {
+        if (!lastBookRef.current) return;  // Exit if the ref is null
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && !isFetching && books_next_page_url) {
+                getBook(books_next_page_url);
+            }
+        }, {
+            threshold: 0.5 // Trigger when 50% of the last tweet is visible
+        });
+
+        // Watch the last tweet
+        observer.observe(lastBookRef.current);
+
+        // Cleanup
+        return () => {
+            if (lastBookRef.current) {
+                observer.unobserve(lastBookRef.current);
+            }
+        };
+    }, [books_next_page_url, isFetching]);
+
     return (
         <>
             <div className={`flex flex-col items-center bg-main_bg pt-5 gap-y-7`}>
@@ -16,6 +88,7 @@ export default function Profile() {
                                     className={`border-2 rounded-full`}
                                     src={`/profile-default-img.svg`}
                                     alt={`profile-default-img`}
+                                    width={150}
                                 />
                                 <div className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
                                     <FaCamera className={`size-12 text-white`}/>
@@ -51,17 +124,18 @@ export default function Profile() {
                         books_count={books_count}
                     />
                 </div>
-                {!showPlaceholder &&
+                {!isLoading &&
                     <div className={`container w-full`}>
-                        {isActive.books && books_total_page.current === 0 &&
+                        {/*{isActive.books && books_total_page.current === 0 &&*/}
+                        {isActive.books && books_next_page_url === '' &&
                             <NotFoundContainer
                                 src={`/profile/books-not-found.svg`}
                                 content={`There are no books published for "Mohamed Ashour" Till Now,`}
                             />
                         }
-                        {isActive.books && books_total_page.current && books_total_page.current > 0 &&
+                        {isActive.books &&
                             // <div className={`grid grid-cols-6 gap-4`}>
-                            <div className={`pb-4 flex flex-wrap gap-4 max-md:justify-center max-md:items-center`}>
+                            <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                                 {show_books}
                                 {show_books}
                             </div>
@@ -84,7 +158,7 @@ export default function Profile() {
                         }
                     </div>
                 }
-                {showPlaceholder &&
+                {isLoading &&
                     <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                         <BookPlaceholder/>
                         <BookPlaceholder/>

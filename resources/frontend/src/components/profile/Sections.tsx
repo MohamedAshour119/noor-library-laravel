@@ -22,19 +22,19 @@ export default function Sections(props: Props) {
                 <MainHeaderBtn
                     onClick={() => handleActiveChange(`books`)}
                     styles={`${isActive.books ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
-                    src={isActive.books ? './home/trending-active.svg' : './home/trending-not-active.svg'}
+                    src={isActive.books ? '/home/trending-active.svg' : '/home/trending-not-active.svg'}
                     content={`Books (${books_count})`}
                 />
                 <MainHeaderBtn
                     onClick={() => handleActiveChange(`reviews`)}
                     styles={`${isActive.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
-                    src={isActive.reviews ? './profile/review-active.svg' : './profile/review-not-active.svg'}
+                    src={isActive.reviews ? '/profile/review-active.svg' : '/profile/review-not-active.svg'}
                     content={`Reviews (0)`}
                 />
                 <MainHeaderBtn
                     onClick={() => handleActiveChange(`purchased_books`)}
                     styles={`${isActive.purchased_books ? 'text-main_color border-main_color' : ''} max-sm:pt-4 w-full`}
-                    src={isActive.purchased_books ? './profile/purchased-books-active.svg' : './profile/purchased-books-not-active.svg'}
+                    src={isActive.purchased_books ? '/profile/purchased-books-active.svg' : '/profile/purchased-books-not-active.svg'}
                     content={`Purchased Books (0)`}
                 />
             </header>
