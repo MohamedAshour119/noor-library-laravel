@@ -42,7 +42,7 @@ export default function Profile() {
         getBook('get-user-books')
     }, []);
 
-    const lastBookRef = useRef(null);
+    const last_book_ref = useRef(null);
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}
@@ -50,13 +50,13 @@ export default function Profile() {
                 title={book.title}
                 cover={book.cover}
                 author={book.author}
-                ref={lastBookRef}
+                ref={last_book_ref}
             />
         )
     )
 
     useEffect(() => {
-        if (!lastBookRef.current) return;  // Exit if the ref is null
+        if (!last_book_ref.current) return;  // Exit if the ref is null
 
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && !isFetching && books_next_page_url) {
@@ -67,19 +67,19 @@ export default function Profile() {
         });
 
         // Watch the last tweet
-        observer.observe(lastBookRef.current);
+        observer.observe(last_book_ref.current);
 
         // Cleanup
         return () => {
-            if (lastBookRef.current) {
-                observer.unobserve(lastBookRef.current);
+            if (last_book_ref.current) {
+                observer.unobserve(last_book_ref.current);
             }
         };
     }, [books_next_page_url, isFetching]);
 
     return (
         <>
-            <div className={`flex flex-col items-center bg-main_bg pt-5 gap-y-7`}>
+            <div className={`flex flex-col items-center bg-main_bg py-5 gap-y-7`}>
                 <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
                     <div className={`p-5 flex flex-col items-center`}>
                         <div className={`flex flex-col items-center gap-y-3`}>

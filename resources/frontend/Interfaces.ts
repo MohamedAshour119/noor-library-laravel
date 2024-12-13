@@ -88,3 +88,8 @@ export interface Book {
 //     user_id: 0,
 //     downloadable: false
 // }
+
+export interface CategoryInterface {
+    id: number
+    name: string
+}

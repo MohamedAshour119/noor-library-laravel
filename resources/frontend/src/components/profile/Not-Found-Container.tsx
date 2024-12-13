@@ -14,6 +14,7 @@ export default function NotFoundContainer({src, content, is_book_section_active 
             <img
                 src={src}
                 alt={`not-found`}
+                width={100}
             />
             <div className={`flex gap-x-2`}>
                 <span>
