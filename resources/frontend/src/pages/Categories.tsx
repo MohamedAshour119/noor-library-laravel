@@ -113,7 +113,7 @@ export default function Categories() {
     }
 
     return (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full text-text_color">
             {!is_loading &&
                 <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 h-full`}>
                     <div className={`container w-full flex flex-col gap-y-3`}>

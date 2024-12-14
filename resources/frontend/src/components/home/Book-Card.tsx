@@ -17,7 +17,7 @@ export default function BookCard(props: Props) {
         <Link
             ref={ref}
             to={`#`}
-            className="flex flex-col justify-self-center gap-y-2 min-[400px]:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1 "
+            className={`flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
         >
             <div className="flex items-center gap-x-2">
                 <div className="flex text-[#E0E0E0]">

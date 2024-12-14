@@ -30,6 +30,13 @@ class CategoryController extends Controller
     public function getCategoryBooks($category): JsonResponse
     {
         $books = Book::paginate(3);
-        return $this->response_success($books, 'Categories retrieved');
+        $next_page_url = $books->nextPageUrl();
+        $books = BookResource::collection($books);
+        $data = [
+            'books' =>  $books,
+            'next_page_url' => $next_page_url,
+            'books_count' => 20,
+        ];
+        return $this->response_success($data, 'Categories retrieved');
     }
 }

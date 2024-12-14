@@ -10,7 +10,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
+            <div className="max-[527]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
                 <img
                     src={`./home/hero-section-bg.svg`}
                     alt={`hero-section-bg`}
@@ -23,7 +23,7 @@ export default function Home() {
                     </form>
 
                     <div className={`flex flex-col items-center gap-y-8`}>
-                        <div className={`flex flex-col max-[490px]:gap-y-3 min-[490px]:flex-row gap-x-4 min-[513px]:gap-x-7 mt-4`}>
+                        <div className={`flex max-[527px]:flex-col max-[527px]:gap-y-3 min-[528px]:flex-row gap-x-4 min-[513px]:gap-x-7 mt-4`}>
                             <HeroSectionBtn content={`Trending Today`}/>
                             <HeroSectionBtn content={`Popular Books`}/>
                             <HeroSectionBtn content={`Latest Books`}/>
@@ -44,7 +44,7 @@ export default function Home() {
                     <div className={`flex flex-col gap-y-4`}>
                         <MainHeader/>
 
-                        <div className={`grid grid-cols-1 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 xl:grid-cols-4 gap-4 px-2 sm:px-0 justify-center`}>
+                        <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
                             <BookCard
                                 rate={140}
                                 cover={"./download.jpg"}

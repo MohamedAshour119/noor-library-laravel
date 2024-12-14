@@ -19,26 +19,26 @@ export default function Profile() {
 
     const [books, setBooks] = useState<Book[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
-    const [isFetching, setIsFetching] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [is_fetching, setIs_fetching] = useState(false);
+    const [is_loading, setIs_loading] = useState(true);
     const [books_count, setBooks_count] = useState(0);
 
     const navigate = useNavigate()
 
     const getBook = (page_url: string) => {
-        setIsFetching(true)
+        setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
                 setBooks(prevState => [...prevState, ...res.data.data.books])
                 setBooks_next_page_url(res.data.data.next_page_url)
-                setIsLoading(false)
-                setIsFetching(false)
+                setIs_loading(false)
+                setIs_fetching(false)
             })
             .catch(err => {
                 navigate('/')
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
-                setIsLoading(false)
-                setIsFetching(false)
+                setIs_loading(false)
+                setIs_fetching(false)
             })
     }
 
@@ -63,7 +63,7 @@ export default function Profile() {
         if (!last_book_ref.current) return;  // Exit if the ref is null
 
         const observer = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && !isFetching && books_next_page_url) {
+            if (entries[0].isIntersecting && !is_fetching && books_next_page_url) {
                 getBook(books_next_page_url);
             }
         }, {
@@ -79,7 +79,7 @@ export default function Profile() {
                 observer.unobserve(last_book_ref.current);
             }
         };
-    }, [books_next_page_url, isFetching]);
+    }, [books_next_page_url, is_fetching]);
 
     return (
         <>
@@ -128,7 +128,7 @@ export default function Profile() {
                         books_count={books_count}
                     />
                 </div>
-                {!isLoading &&
+                {!is_loading &&
                     <div className={`container w-full`}>
                         {/*{isActive.books && books_total_page.current === 0 &&*/}
                         {isActive.books && books_next_page_url === '' &&
@@ -139,7 +139,7 @@ export default function Profile() {
                         }
                         {isActive.books &&
                             // <div className={`grid grid-cols-6 gap-4`}>
-                            <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
+                            <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                                 {show_books}
                                 {show_books}
                             </div>
@@ -162,7 +162,7 @@ export default function Profile() {
                         }
                     </div>
                 }
-                {isLoading &&
+                {is_loading &&
                     <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                         <BookPlaceholder/>
                         <BookPlaceholder/>

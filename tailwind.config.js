@@ -6,7 +6,7 @@ export default {
         './resources/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
-        './resources/frontend/src/**/*.tsx',
+        './resources/frontend/src/**/*.{js,jsx,ts,tsx}',
         './resources/views/**/*.blade.php',
     ],
     theme: {

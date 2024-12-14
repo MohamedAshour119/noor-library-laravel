@@ -11,16 +11,27 @@ import AddBook from "./pages/AddBook.tsx";
 import Profile from "./pages/Profile.tsx";
 import Categories from "./pages/Categories.tsx";
 import Category from "./pages/Category.tsx";
+import {useDispatch} from "react-redux";
+import {setActive} from "../redux/is-location-is-not-in-navlink-slice.ts";
 
 function App() {
+    const dispatch = useDispatch()
 
     const [showHeader, setShowHeader] = useState(true);
     const location = useLocation();
     useEffect(() => {
+        console.log(location.pathname)
         if (location.pathname === '/sign-up' || location.pathname === '/sign-in')
             setShowHeader(false)
         else
             setShowHeader(true)
+
+        const nav_links = ['/', '/home', '/categories', '/authors'];
+        if (!nav_links.includes(location.pathname)) {
+            dispatch(setActive(true))
+        }else {
+            dispatch(setActive(false))
+        }
     }, [location.pathname]);
 
     return (
