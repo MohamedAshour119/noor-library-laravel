@@ -16,6 +16,14 @@ class CategoryController extends Controller
     public function getCategories(): JsonResponse
     {
         $categories = Category::paginate(10);
-        return $this->response_success($categories, 'Books retrieved');
+        return $this->response_success($categories, 'Categories retrieved');
+    }
+
+    public function searchForCategory($keyword): JsonResponse
+    {
+        $categories = Category::where('name', 'like', "%{$keyword}%")
+            ->orderBy('name', 'asc')
+            ->paginate(10);
+        return $this->response_success($categories, 'Categories search results retrieved');
     }
 }

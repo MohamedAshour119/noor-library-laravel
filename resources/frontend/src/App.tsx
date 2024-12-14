@@ -16,7 +16,6 @@ function App() {
     const [showHeader, setShowHeader] = useState(true);
     const location = useLocation();
     useEffect(() => {
-        console.log('run')
         if (location.pathname === '/sign-up' || location.pathname === '/sign-in')
             setShowHeader(false)
         else

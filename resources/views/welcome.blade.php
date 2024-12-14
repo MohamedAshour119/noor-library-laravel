@@ -18,6 +18,6 @@
 
 </head>
 <body>
-    <div id="root" class="flex flex-col h-screen"></div>
+    <div id="root" class="flex flex-col"></div>
 </body>
 </html>

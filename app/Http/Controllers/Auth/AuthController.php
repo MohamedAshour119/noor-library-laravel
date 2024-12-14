@@ -4,15 +4,29 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SignInRequest;
+use App\Http\Requests\SignUpRequest;
 use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class SignInController extends Controller
+class AuthController extends Controller
 {
     use HttpResponses;
+    public function signUp(SignUpRequest $request): JsonResponse
+    {
+        unset($request->google_recaptcha);
+        unset($request->password_confirmation);
+
+        User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        return $this->response_success(['sadsa' => 14], 'Success');
+    }
     public function signIn(SignInRequest $request): JsonResponse
     {
         if(Auth::attempt($request->all())){
@@ -35,4 +49,10 @@ class SignInController extends Controller
         }
         return $this->response_error('You entered wrong credentials', [], 403,);
     }
+    public function signOut(): JsonResponse
+    {
+        Auth::user()->currentAccessToken()->delete();
+        return $this->response_success([], 'You logged out successfully');
+    }
+
 }
