@@ -13,7 +13,7 @@ export default function Category(props: Props) {
     return (
         <Link
             ref={ref}
-            to={`#`}
+            to={`./${title.toLowerCase()}`}
             className={`flex gap-x-4 bg-white px-4 py-3 items-center text-lg hover:text-main_color_darker`}
         >
             <FaBook/>

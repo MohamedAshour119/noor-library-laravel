@@ -26,4 +26,10 @@ class CategoryController extends Controller
             ->paginate(10);
         return $this->response_success($categories, 'Categories search results retrieved');
     }
+
+    public function getCategoryBooks($category): JsonResponse
+    {
+        $books = Book::paginate(3);
+        return $this->response_success($books, 'Categories retrieved');
+    }
 }

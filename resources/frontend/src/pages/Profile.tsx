@@ -10,6 +10,7 @@ import {Book} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/home/Book-Card.tsx";
 import {enqueueSnackbar} from "notistack";
+import {useNavigate} from "react-router-dom";
 
 export default function Profile() {
 
@@ -22,6 +23,8 @@ export default function Profile() {
     const [isLoading, setIsLoading] = useState(true);
     const [books_count, setBooks_count] = useState(0);
 
+    const navigate = useNavigate()
+
     const getBook = (page_url: string) => {
         setIsFetching(true)
         apiClient().get(page_url)
@@ -32,6 +35,7 @@ export default function Profile() {
                 setIsFetching(false)
             })
             .catch(err => {
+                navigate('/')
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
                 setIsLoading(false)
                 setIsFetching(false)

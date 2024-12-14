@@ -10,6 +10,7 @@ import AuthRedirect from "./auth/AuthRedirect.tsx";
 import AddBook from "./pages/AddBook.tsx";
 import Profile from "./pages/Profile.tsx";
 import Categories from "./pages/Categories.tsx";
+import Category from "./pages/Category.tsx";
 
 function App() {
 
@@ -28,11 +29,12 @@ function App() {
 
         <Routes>
             <Route path={`/`} element={<Home/>}/>
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/users/:user" element={<Profile />} />
+            <Route path="/categories/:category" element={<Category />} />
 
             <Route element={<AuthRoute />}>
                 <Route path="/add-book" element={<AddBook />} />
-                <Route path="/users/:user" element={<Profile />} />
-                <Route path="/categories" element={<Categories />} />
             </Route>
 
             <Route element={<AuthRedirect />}>
