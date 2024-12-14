@@ -5,7 +5,7 @@ import {Book, CategoryInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {useParams} from "react-router-dom";
 import {enqueueSnackbar} from "notistack";
-import BookCard from "../components/home/Book-Card.tsx";
+import BookCard from "../components/Book-Card.tsx";
 
 export default function Category() {
     const { category } = useParams()

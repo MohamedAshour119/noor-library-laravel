@@ -17,7 +17,7 @@ export default function BookCard(props: Props) {
         <Link
             ref={ref}
             to={`#`}
-            className={`flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
+            className={`relative flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
         >
             <div className="flex items-center gap-x-2">
                 <div className="flex text-[#E0E0E0]">
@@ -44,6 +44,11 @@ export default function BookCard(props: Props) {
             >
                 {author}
             </Link>
+            {/* Price */}
+            <div className={`border border-main_color bg-main_color p-1 size-10 flex items-center justify-center text-white rounded-full`}>
+                20$
+            </div>
+            {/* Price */}
         </Link>
     );
 }

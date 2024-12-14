@@ -3,7 +3,7 @@ import ClientSearchInput from "../components/home/Client-Search-Input.tsx";
 import HeroSectionBtn from "../components/home/Hero-Section-Btn.tsx";
 import {Link} from "react-router-dom";
 import MainHeader from "../components/home/Main-Header.tsx";
-import BookCard from "../components/home/Book-Card.tsx";
+import BookCard from "../components/Book-Card.tsx";
 import CategorySample from "../components/home/Category-Sample.tsx";
 import AuthorSample from "../components/home/Author-Sample.tsx";
 export default function Home() {

@@ -8,7 +8,7 @@ import {RootState} from "../../redux/store.ts";
 import {useEffect, useRef, useState} from "react";
 import {Book} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
-import BookCard from "../components/home/Book-Card.tsx";
+import BookCard from "../components/Book-Card.tsx";
 import {enqueueSnackbar} from "notistack";
 import {useNavigate} from "react-router-dom";
 
