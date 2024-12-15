@@ -1,6 +1,6 @@
 import {enqueueSnackbar, SnackbarProvider} from "notistack";
 import {Link, useNavigate} from "react-router-dom";
-import TextInputAuth from "../../components/core/Text-Input-Auth.tsx";
+import TextInputAuth from "../../components/core/TextInputAuth.tsx";
 import LoginProviders from "../../components/LoginProviders.tsx";
 import Footer from "../../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useState} from "react";

@@ -1,17 +1,15 @@
 import {enqueueSnackbar, SnackbarProvider} from "notistack";
-import GlobalTextInput from "../components/core/Global-Text-Input.tsx";
+import GlobalInput from "../components/core/GlobalInput.tsx";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {AddBookInterface, AddBookDefaultValues, AddBookErrors, AddBookErrorsDefaultValues} from "../../Interfaces.ts";
 import ReactSelect from "../components/ReactSelect.tsx";
-import {binary_options, book_categories, languages_options} from "../React-Select-Options.ts";
+import {is_author_options, book_categories, languages_options, is_book_free_options} from "../React-Select-Options.ts";
 import {SingleValue} from "react-select";
 import {MdDone} from "react-icons/md";
-import {add_book_to_store_validation} from "../../zod-validation/add-book-to-store.ts";
-import {z} from "zod";
 import apiClient from "../../ApiClient.ts";
 import {FaUpload} from "react-icons/fa";
 
-type IsAuthorOption = {
+type BinaryOptions = {
     value: boolean
     label: string
     type: string
@@ -27,7 +25,7 @@ export default function AddBook() {
     const [descriptionCount, setDescriptionCount] = useState(0);
     const [errors, setErrors] = useState<AddBookErrors | null>(AddBookErrorsDefaultValues);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [show_price_input, setShow_price_input] = useState(false);
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, type, value } = e.target;
@@ -42,17 +40,16 @@ export default function AddBook() {
         } else {
             setFormData(prevState => ({
                 ...prevState,
-                [name]: value,
+                [name]: type === 'number' ? (value === '' ? null : Number(value)) : value,
             }));
         }
 
         if (name === "book_description") {
             setDescriptionCount(value.length);
         }
+        console.log(typeof formData.price)
+
     };
-
-
-
 
     const [isScrollbarVisible, setIsScrollbarVisible] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
@@ -68,17 +65,24 @@ export default function AddBook() {
         checkScrollbar();
     }, [formData.book_description]);
 
-    const handleIsAuthorSelectChange = (selectedOption: SingleValue<IsAuthorOption | OtherBookOptions>) => {
+    const handleBinaryOptionsSelectChange = (selectedOption: SingleValue<BinaryOptions | OtherBookOptions>) => {
         if (selectedOption && "value" in selectedOption && typeof selectedOption.value === "boolean") {
-            setFormData(prevState => ({
-                ...prevState,
-                is_author: selectedOption, // Update with boolean
-            }));
+            if (selectedOption?.type === 'is_author') {
+                setFormData(prevState => ({
+                    ...prevState,
+                    is_author: selectedOption,
+                }));
+            }else {
+                setFormData(prevState => ({
+                    ...prevState,
+                    is_free: selectedOption,
+                }))
+            }
         }
     };
 
 
-    const handleOtherBookSelectChange = (selectedOption: SingleValue<OtherBookOptions | IsAuthorOption>) => {
+    const handleOtherBookSelectChange = (selectedOption: SingleValue<OtherBookOptions | BinaryOptions>) => {
         if (selectedOption && "value" in selectedOption && typeof selectedOption.value === "string") {
             if (selectedOption?.type === 'book_category') {
                 setFormData(prevState => ({
@@ -121,48 +125,17 @@ export default function AddBook() {
     };
 
 
-    const validateForm = (formData: AddBookInterface) => {
-        try {
-            const data = {
-                book_title: formData.book_title, // Access directly from state
-                book_description: formData.book_description,
-                is_author: formData.is_author?.value, // This is already boolean
-                book_language: formData.book_language?.value,
-                author: formData.author,
-                category: formData.category?.value,
-                cover: formData.cover,
-                downloadable: formData.downloadable,
-                book_file: formData.book_file,
-            };
-
-            add_book_to_store_validation.parse(data);
-            setErrors(null);
-            return true;
-        } catch (error) {
-            if (error instanceof z.ZodError) {
-                const formErrors = error.errors.reduce((acc, err) => {
-                    (acc as Record<string, string>)[err.path[0]] = err.message;
-                    return acc;
-                }, {} as Record<string, string>);
-
-                setErrors(formErrors);
-            }
-            return false;
-        }
-    };
-
     const cover_input = document.getElementById('cover-image') as HTMLInputElement;
     const book_input = document.getElementById('book-file') as HTMLInputElement;
 
     const handleForm = () => {
-        if (!validateForm(formData)) {
-            return
-        }
 
         const data = new FormData();
         data.append('title', formData.book_title);
         data.append('description', formData.book_description);
-        data.append('is_author', String(formData.is_author?.value));
+        data.append('is_author', String(formData.is_author?.value === true || formData.is_author?.value === false ? formData.is_author?.value : null));
+        data.append('is_free', String(formData.is_free?.value === true || formData.is_free?.value === false ? formData.is_free?.value : null));
+        data.append('price', String(formData.price));
         data.append('language', formData.book_language?.value || '');
         data.append('author', formData.author);
         data.append('category', formData.category?.value || '');
@@ -193,6 +166,10 @@ export default function AddBook() {
         handleForm()
     }
 
+    useEffect(() => {
+        setShow_price_input(formData.is_free?.value === false);
+    }, [formData.is_free]);
+
     return (
         <div className={`flex justify-center bg-main_bg py-5`}>
             <SnackbarProvider
@@ -211,7 +188,7 @@ export default function AddBook() {
                         className={`flex flex-col gap-y-6`}
                     >
                         <div>
-                            <GlobalTextInput
+                            <GlobalInput
                                 label={`Book Title`}
                                 id={`bookTitle`}
                                 placeholder={`Enter book title`}
@@ -269,8 +246,8 @@ export default function AddBook() {
                                         }
                                         : null
                                 }
-                                handleSelectChange={handleIsAuthorSelectChange}
-                                options={binary_options}
+                                handleSelectChange={handleBinaryOptionsSelectChange}
+                                options={is_author_options}
                                 error={errors?.is_author}
                             />
                             {errors?.is_author && <span className={`text-red-700`}>{errors?.is_author}</span>}
@@ -298,7 +275,7 @@ export default function AddBook() {
                         </div>
 
                         <div>
-                            <GlobalTextInput
+                            <GlobalInput
                                 label={`Author of the book`}
                                 id={`author`}
                                 placeholder={`Enter author name`}
@@ -331,6 +308,44 @@ export default function AddBook() {
                             />
                             {errors?.category && <span className={`text-red-700`}>{errors?.category}</span>}
                         </div>
+
+                        <div>
+                            <span className={`block text-gray-700 text-lg font-bold mb-2`}>
+                                Is the book free?
+                                <span className={`text-red-700 font-roboto-light`}>*</span>
+                            </span>
+                            <ReactSelect
+                                value={
+                                    formData.is_free
+                                        ? {
+                                            label: formData.is_free.label,
+                                            value: formData.is_free.value,
+                                            type: "is_book_free"
+                                        }
+                                        : null
+                                }
+                                handleSelectChange={handleBinaryOptionsSelectChange}
+                                options={is_book_free_options}
+                                error={errors?.is_free}
+                            />
+                            {errors?.is_free && <span className={`text-red-700`}>{errors?.is_free}</span>}
+                        </div>
+
+                        {show_price_input &&
+                            <div>
+                                <GlobalInput
+                                    label={`Price`}
+                                    id={`price`}
+                                    type={`number`}
+                                    placeholder={`Enter amount`}
+                                    value={formData.price}
+                                    name={`price`}
+                                    onChange={handleFormChange}
+                                    additional_text={`Price in USD`}
+                                    error={errors?.price}
+                                />
+                            </div>
+                        }
 
                         <label
                             className={`${errors?.cover ? 'border-red-600 text-red-600' : 'shadow'} appearance-none leading-tight border bg-white px-2 py-[10px] rounded-md cursor-pointer flex items-center gap-x-2`}

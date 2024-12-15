@@ -23,17 +23,29 @@ class AddBookRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'is_author' => filter_var($this->input('is_author'), FILTER_VALIDATE_BOOLEAN),
-            'downloadable' => filter_var($this->input('downloadable'), FILTER_VALIDATE_BOOLEAN),
+            'is_author' => match ($this->input('is_author')) {
+                'true' => true,
+                'false' => false,
+                'null' => null,
+                default => $this->input('is_author'),
+            },
+            'is_free' => match ($this->input('is_free')) {
+                'true' => true,
+                'false' => false,
+                'null' => null,
+                default => $this->input('is_free'),
+            },
         ]);
     }
+
 
     public function rules(): array
     {
         return [
             'title' => ['required', 'min:3', 'max:64', 'unique:books,title'],
             'description' => ['required', 'min:50', 'max:2000'],
-            'is_author' => ['required', 'boolean'],
+            'is_author' => ['required', 'boolean', 'present'],
+            'is_free' => ['required', 'boolean', 'present'],
             'language' => ['min:2', 'max:2'],
             'author' => ['required', 'max:80'],
             'category' => ['required'],

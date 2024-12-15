@@ -6,7 +6,7 @@ export interface User {
     updatedAt: string | null
 }
 
-type IsAuthorOption = {
+type BinaryOptionsInterface = {
     value: boolean
     label: string
     type: string
@@ -20,7 +20,9 @@ type OtherBookOptions = {
 export interface AddBookInterface {
     book_title: string
     book_description: string
-    is_author: IsAuthorOption | null
+    is_author: BinaryOptionsInterface | null
+    is_free: BinaryOptionsInterface | null
+    price: number | null
     book_language: OtherBookOptions | null
     author: string
     category: OtherBookOptions | null
@@ -33,6 +35,8 @@ export const AddBookDefaultValues = {
     book_title: '',
     book_description: '',
     is_author: null,
+    is_free: null,
+    price: null,
     book_language: null,
     author: '',
     category: null,
@@ -44,7 +48,9 @@ export const AddBookDefaultValues = {
 export interface AddBookErrors {
     book_title?: string | null
     book_description?: string | null
-    is_author?: boolean | null
+    is_author?: string | null
+    is_free?: string | null
+    price?: string | null
     book_language?: string | null
     author?: string | null
     category?: string | null
@@ -56,6 +62,8 @@ export const AddBookErrorsDefaultValues = {
     book_title: null,
     book_description: null,
     is_author: null,
+    is_free: null,
+    price: null,
     book_language: null,
     author: null,
     category: null,
@@ -68,6 +76,8 @@ export interface Book {
     title: string
     description: string
     is_author: boolean
+    is_free: boolean
+    price: number
     author: string
     language: string
     category: string

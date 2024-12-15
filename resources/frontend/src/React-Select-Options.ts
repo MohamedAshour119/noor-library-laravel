@@ -1,6 +1,11 @@
-const binary_options = [
+const is_author_options = [
     { label: "Yes", value: true, type: "is_author" },
     { label: "No", value: false, type: "is_author" }
+];
+
+const is_book_free_options = [
+    { label: "Yes", value: true, type: "is_book_free" },
+    { label: "No", value: false, type: "is_book_free" }
 ];
 
 const languages_options = [
@@ -72,4 +77,4 @@ const book_categories = [
 
 
 
-export {binary_options, languages_options, book_categories}
+export {is_author_options, is_book_free_options, languages_options, book_categories}

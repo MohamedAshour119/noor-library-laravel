@@ -3,30 +3,19 @@ import {ChangeEvent} from 'react'
 interface Props {
     label: string
     id: string
+    type?: string
     label_styles?: string
     input_styles?: string
     placeholder: string
-    value: string
+    value: string | number | null
     name: string
     is_required?: boolean
     additional_text?: string
     onChange: (e: ChangeEvent<HTMLInputElement>) => void
     error?: string | null
 }
-export default function GlobalTextInput(
-    {
-        label,
-        id,
-        label_styles,
-        input_styles,
-        placeholder,
-        value,
-        is_required = true,
-        additional_text,
-        name,
-        onChange,
-        error,
-    }: Props) {
+export default function GlobalInput(props: Props) {
+    const { label, id, type = 'text', label_styles, input_styles, placeholder, value, is_required = true, additional_text, name, onChange, error } = props
     return (
         <>
             <label
@@ -44,9 +33,9 @@ export default function GlobalTextInput(
             <input
                 className={`${input_styles} ${error ? 'border-red-600 placeholder:text-red-600 mb-1' : 'shadow'} appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                 id={id}
-                type={`text`}
+                type={type}
                 placeholder={placeholder}
-                value={value}
+                value={value ?? ''}
                 name={name}
                 onChange={onChange}
             />
