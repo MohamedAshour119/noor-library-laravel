@@ -5,6 +5,7 @@
 :root {
     --background: #ffffff;
     --main_color: theme(colors.main_color);
+    --border_color: theme(colors.border_color);
 
     --font-roboto: 'Roboto', sans-serif;
     --font-tajawal: "Tajawal", sans-serif;
@@ -113,4 +114,17 @@ input:-webkit-autofill {
 
 .sm-screens-scrollbar::-webkit-scrollbar-thumb {
     background-color: var(--main_color);
+}
+button[aria-label="Close"] {
+    padding: 5px;
+}
+button[aria-label="Close"]:hover{
+    background-color: rgba(0, 0, 0, 0.06);
+}
+.modal-header {
+    border-color: var(--border_color) !important;
+}
+
+div[tabindex="-1"] {
+    height: fit-content;
 }

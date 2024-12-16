@@ -23,11 +23,6 @@ class User extends Authenticatable implements HasMedia
      */
     protected $guarded = [];
 
-    public function books(): HasMany
-    {
-        return $this->hasMany(Book::class);
-    }
-
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -4,6 +4,7 @@ export interface User {
     email: string | null
     createdAt: string | null
     updatedAt: string | null
+    is_vendor?: boolean | null
 }
 
 type BinaryOptionsInterface = {

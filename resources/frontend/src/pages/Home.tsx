@@ -6,11 +6,75 @@ import MainHeader from "../components/home/Main-Header.tsx";
 import BookCard from "../components/Book-Card.tsx";
 import CategorySample from "../components/home/Category-Sample.tsx";
 import AuthorSample from "../components/home/Author-Sample.tsx";
+import {useEffect, useRef, useState} from "react";
+import {Modal} from "flowbite-react";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+
 export default function Home() {
+    const user = useSelector((state: RootState) => state.user)
+
+    const [isFocused, setIsFocused] = useState(false);
+    const body_el = document.body;
+    const handleOpen = () => {
+        setIsFocused(true)
+    }
+    const handleClose = () => {
+        setIsFocused(false)
+    }
+
+    useEffect(() => {
+        if (isFocused) {
+            body_el.classList.add('search-input-active');
+        } else {
+            body_el.classList.remove('search-input-active');
+        }
+    }, [isFocused]);
+
+    const modalRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!modalRef.current?.contains(e.target as Node)) {
+                setIsFocused(false)
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, []);
+
 
     return (
         <>
             <div className="max-[527]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
+                {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+                {!user.is_vendor &&
+                    <Modal
+                        show={isFocused}
+                        onClose={handleClose}
+                        className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 `}
+                        ref={modalRef}
+                    >
+                        <Modal.Header className={`!border-b modal-header`}>
+                            <h3 className="text-red-600 text-xl font-medium">Unauthorized!</h3>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="space-y-6">
+                                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                    {user.id ? `You are signed in as a customer,` : ''} You must sign in as a vendor.
+                                </p>
+                            </div>
+                        </Modal.Body>
+                        {/*<Modal.Footer>*/}
+                        {/*    <Button onClick={handleClose}>I accept</Button>*/}
+                        {/*    <Button color="gray" onClick={handleClose}>*/}
+                        {/*        Decline*/}
+                        {/*    </Button>*/}
+                        {/*</Modal.Footer>*/}
+                    </Modal>
+                }
                 <img
                     src={`./home/hero-section-bg.svg`}
                     alt={`hero-section-bg`}
@@ -28,12 +92,24 @@ export default function Home() {
                             <HeroSectionBtn content={`Popular Books`}/>
                             <HeroSectionBtn content={`Latest Books`}/>
                         </div>
-                        <Link to={`/add-book`}>
-                            <HeroSectionBtn
-                                content={`Upload Book`}
-                                styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
-                            />
-                        </Link>
+
+                        {!user.is_vendor &&
+                            <button onClick={handleOpen}>
+                                <HeroSectionBtn
+                                    content={`Upload Book`}
+                                    styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
+                                />
+                            </button>
+                        }
+
+                        {user.is_vendor &&
+                            <Link to={`/add-book`}>
+                                <HeroSectionBtn
+                                    content={`Upload Book`}
+                                    styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
+                                />
+                            </Link>
+                        }
                     </div>
 
                 </div>

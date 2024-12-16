@@ -5,22 +5,15 @@ import LoginProviders from "../../components/LoginProviders.tsx";
 import Footer from "../../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useState} from "react";
 import {useDispatch} from "react-redux";
-import {z} from "zod";
-import {sign_in_validation} from "../../../zod-validation/sign-in.ts";
 import {setUser} from "../../../redux/user-slice.ts";
 import apiClient from "../../../ApiClient.ts";
 
-type Errors = {
-    email?: string
-    password?: string
-}
 export default function SignIn() {
     const is_sign_in_page = location.pathname === '/sign-in';
     const navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch()
-    const [errors, setErrors] = useState<Errors | null>(null)
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -37,32 +30,9 @@ export default function SignIn() {
         }))
     }
 
-    const validateForm = () => {
-        try {
-            sign_in_validation.parse(formData)
-            setErrors({})
-            return true
-        } catch (error) {
-            if (error instanceof z.ZodError) {
-                const errors = error.errors.reduce((acc, err) => {
-                    (acc as Record<string, string>)[err.path[0]] = err.message
-                    return acc
-                }, {} as Record<string, string>)
-
-                setErrors(errors)
-            }
-            return false
-        }
-    }
-
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
-
-        if (!validateForm()) {
-            setIsLoading(false)
-            return
-        }
 
         apiClient().post('/sign-in', formData, {headers: {'Content-Type': 'application/json'}})
             .then(res => {
@@ -76,7 +46,7 @@ export default function SignIn() {
             .catch(err => {
                 setIsLoading(false)
                 setSignInError(err.response.data.message)
-                enqueueSnackbar(err.response.data.message, { variant: "error" });
+                enqueueSnackbar("Wrong credentials.", { variant: "error" });
             })
     }
 
@@ -98,7 +68,7 @@ export default function SignIn() {
                     }}
                 />
 
-                <div className={`bg-white rounded-2xl flex flex-col gap-y-5 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit px-3 py-10 border`}>
+                <div className={`bg-white rounded-2xl flex flex-col gap-y-5 sm:px-32 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
                     <div className={`flex flex-col items-center gap-y-4`}>
                         <Link to={`/`}>
                             <img
@@ -115,7 +85,6 @@ export default function SignIn() {
                                 id={`email_id`}
                                 name={`email`}
                                 type={`email`}
-                                error={errors?.email}
                                 is_sign_in_failed={!!signInError}
                             />
                             <TextInputAuth
@@ -124,10 +93,9 @@ export default function SignIn() {
                                 id={`password_id`}
                                 type={`password`}
                                 name={`password`}
-                                error={errors?.password}
                                 is_sign_in_failed={!!signInError}
                             />
-                            {signInError && <span className={`text-red-600 -mt-4`}>{signInError}</span>}
+                            {signInError && <span className={`text-red-600 -mt-4`}>Wrong credentials!</span>}
 
                             <button
                                 className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}

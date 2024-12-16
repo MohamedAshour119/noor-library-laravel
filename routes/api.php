@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 
 // routes/api.php
-Route::post('/sign-up', [AuthController::class, 'signUp'])->name('signUp');
+Route::post('/sign-up-as-customer', [AuthController::class, 'signUpAsCustomer'])->name('signUpAsCustomer');
+Route::post('/sign-up-as-vendor', [AuthController::class, 'signUpAsVendor'])->name('signUpAsVendor');
 Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
 Route::get('/get-user-books', [UserProfileController::class, 'getUserBooks'])->name('getUserBooks');
 Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBooks'])->name('getCategoryBooks');

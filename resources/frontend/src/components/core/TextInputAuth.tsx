@@ -23,7 +23,7 @@ export default function TextInputAuth(props: Props) {
 
     return (
         <div className={`flex flex-col gap-y-0`}>
-            <div className="relative sm:w-[22rem]">
+            <div className="relative sm:w-full">
                 <input
                     name={name}
                     type={type === 'password' && !isPasswordShow ? 'password' : 'text'}

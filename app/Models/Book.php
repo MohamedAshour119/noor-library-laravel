@@ -12,9 +12,9 @@ class Book extends Model implements HasMedia
     use InteractsWithMedia;
     protected $guarded = [];
 
-    public function user(): BelongsTo
+    public function vendor(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Vendor::class);
     }
     public function category(): BelongsTo
     {
