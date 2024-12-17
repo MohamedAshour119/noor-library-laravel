@@ -154,9 +154,11 @@ export default function AddBook() {
                     cover_input.value = ''
                     book_input.value = ''
                 }
+                setErrors({})
             })
-            .catch(() => {
+            .catch((err) => {
                 setIsLoading(false)
+                setErrors(err.response.data.errors)
                 enqueueSnackbar('Something wrong happened!', { variant: "error" })
             })
     }
@@ -195,7 +197,7 @@ export default function AddBook() {
                                 value={formData.book_title}
                                 name={`book_title`}
                                 onChange={handleFormChange}
-                                error={errors?.book_title}
+                                error={errors?.title}
                             />
                         </div>
 
@@ -211,7 +213,7 @@ export default function AddBook() {
                             </label>
                             <div className={`relative`}>
                                 <textarea
-                                    className={`${errors?.book_description ? 'border-red-600 placeholder:text-red-600' : 'shadow'} appearance-none border rounded w-full min-h-[167px] pb-2 px-3 ${isScrollbarVisible ? 'pt-7' : 'pt-3'} text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                                    className={`${errors?.description ? 'border-red-600 placeholder:text-red-600' : 'shadow'} appearance-none border rounded w-full min-h-[167px] pb-2 px-3 ${isScrollbarVisible ? 'pt-7' : 'pt-3'} text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                                     id="bookDescription"
                                     placeholder="Enter book description"
                                     value={formData.book_description}
@@ -227,7 +229,7 @@ export default function AddBook() {
                                 {isScrollbarVisible &&
                                     <span className={`h-5 bg-white w-[calc(100%-4px)] ml-[2px] absolute top-[1px] left-0`}></span>
                                 }
-                                {errors?.book_description && <span className={`text-red-700`}>{errors?.book_description}</span>}
+                                {errors?.description && <span className={`text-red-700`}>{errors?.description}</span>}
                             </div>
                         </div>
 
@@ -269,9 +271,9 @@ export default function AddBook() {
                                         : null
                                 }                                handleSelectChange={handleOtherBookSelectChange}
                                 options={languages_options}
-                                error={errors?.book_language}
+                                error={errors?.language}
                             />
-                            {errors?.book_language && <span className={`text-red-700`}>{errors?.book_language}</span>}
+                            {errors?.language && <span className={`text-red-700`}>{errors?.language}</span>}
                         </div>
 
                         <div>

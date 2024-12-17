@@ -117,6 +117,7 @@ export default function SignUp() {
                 setTimeout(() => {
                     navigate('/sign-in')
                 }, 2000)
+                setErrors({})
             })
             .catch(err => {
                 setErrors(err.response.data.errors)

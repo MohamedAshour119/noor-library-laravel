@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AddBookController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Profile\UserProfileController;
+use App\Http\Controllers\Vendors\AddBookController;
 use Illuminate\Support\Facades\Route;
 
 

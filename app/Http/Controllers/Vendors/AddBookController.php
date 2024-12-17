@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Vendors;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddBookRequest;
@@ -15,16 +15,20 @@ class AddBookController extends Controller
     use HttpResponses, InteractsWithMedia;
     public function addBook(AddBookRequest $request): JsonResponse
     {
+        $price = $request->filled('price') ? $request->price : null;
         // Create and save the book record
         $book = Book::create([
             'title' => $request->title,
             'description' => $request->description,
             'is_author' => $request->is_author,
-            'language' => $request->language,
             'author_name' => $request->author,
+            'is_free' => $request->is_free,
+            'price' => $price,
+            'language' => $request->language,
             'category' => $request->category,
             'downloadable' => $request->downloadable,
-            'user_id' => Auth::id(),
+            'vendor_id' => Auth::id(),
+            'status' => 'pending',
         ]);
 
         // Add media files if they exist
