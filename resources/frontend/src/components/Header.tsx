@@ -1,5 +1,5 @@
 
-import {useState} from 'react'
+import {useEffect, useRef, useState} from 'react'
 import {MdGTranslate} from "react-icons/md";
 import {IoLogInOutline} from "react-icons/io5";
 import {FaBook, FaUser} from "react-icons/fa";
@@ -15,6 +15,8 @@ import NavbarList from "./home/Navbar-List.tsx";
 import {enqueueSnackbar} from "notistack";
 import {clearUser} from "../../redux/user-slice.ts";
 import apiClient from "../../ApiClient.ts";
+import HeroSectionBtn from "./home/Hero-Section-Btn.tsx";
+import {Modal} from "flowbite-react";
 
 export default function Header() {
 
@@ -28,6 +30,8 @@ export default function Header() {
         authors: false
     });
     const [isOpen, setIsOpen] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
+
     const toggleMenu = () => {
         setIsOpen(!isOpen)
     }
@@ -52,12 +56,61 @@ export default function Header() {
         })
     }
 
+    const body_el = document.body;
+    const handleOpen = () => {
+        setIsFocused(true)
+    }
+    const handleClose = () => {
+        setIsFocused(false)
+    }
+    useEffect(() => {
+        if (isFocused) {
+            body_el.classList.add('search-input-active');
+        } else {
+            body_el.classList.remove('search-input-active');
+        }
+    }, [isFocused]);
+
+    const modalRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!modalRef.current?.contains(e.target as Node)) {
+                setIsFocused(false)
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, []);
 
     return (
-        <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} z-10 border-t-[3px] border-main_color text-text_color flex flex-col items-center gap-y-6`}>
+        <>
+            {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} z-10 border-t-[3px] border-main_color text-text_color flex flex-col items-center gap-y-6`}>
+            {!user.is_vendor &&
+                <Modal
+                    show={isFocused}
+                    onClose={handleClose}
+                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 `}
+                    ref={modalRef}
+                >
+                    <Modal.Header className={`!border-b modal-header`}>
+                        <h3 className="text-red-600 text-xl font-medium">Unauthorized!</h3>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="space-y-6">
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {user.id ? `You are signed in as a customer,` : ''} You must sign in as a vendor.
+                            </p>
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            }
             <div className={`container w-full relative`}>
                 <div>
-                    <button className={`absolute right-2 sm:right-0 top-0 flex items-center gap-x-2 bg-main_color text-white px-3 py-1 rounded-b font-tajawal-semibold`}>
+                    <button className={`absolute right-2 sm:right-0 top-0 flex items-center gap-x-2 bg-main_color text-white px-3 py-1 rounded-b font-noto_naskh-semibold`}>
                         العربية<MdGTranslate />
                     </button>
                     <Link
@@ -149,16 +202,28 @@ export default function Header() {
                                                     Profile
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem >
-                                                <Link
-                                                    to={`/add-book`}
-                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-4 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
-                                                >
-                                                    <FaBook className={`size-5`}/>
-                                                    Upload Book
-                                                </Link>
+                                            <MenuItem as={`div`}>
+                                                {!user.is_vendor &&
+                                                    <button
+                                                        onClick={handleOpen}
+                                                        className={`group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-main_color hover:text-white bg-white text-text_color`}
+                                                    >
+                                                        <FaBook className={`size-5`}/>
+                                                        Upload Book
+                                                    </button>
+                                                }
+
+                                                {user.is_vendor &&
+                                                    <Link
+                                                        to={`/add-book`}
+                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                    >
+                                                        <FaBook className={`size-5`}/>
+                                                        Upload Book
+                                                    </Link>
+                                                }
                                             </MenuItem>
-                                            <MenuItem >
+                                            <MenuItem>
                                                 <button
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                     onClick={singOut}
@@ -263,6 +328,7 @@ export default function Header() {
 
             </div>
         </header>
+        </>
     )
 
 }

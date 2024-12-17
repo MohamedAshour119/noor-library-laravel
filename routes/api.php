@@ -4,10 +4,12 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Profile\UserProfileController;
 use App\Http\Controllers\Vendors\AddBookController;
+use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use Illuminate\Support\Facades\Route;
 
 
 // routes/api.php
+Route::get('/', [AuthController::class, 'ssss'])->name('home');
 Route::post('/sign-up-as-customer', [AuthController::class, 'signUpAsCustomer'])->name('signUpAsCustomer');
 Route::post('/sign-up-as-vendor', [AuthController::class, 'signUpAsVendor'])->name('signUpAsVendor');
 Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
@@ -17,7 +19,7 @@ Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBoo
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');
-    Route::post('/add-book', [AddBookController::class, 'addBook'])->name('addBook');
+    Route::post('/add-book', [AddBookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
     Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
     Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
 });

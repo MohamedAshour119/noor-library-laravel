@@ -8,7 +8,7 @@
     --border_color: theme(colors.border_color);
 
     --font-roboto: 'Roboto', sans-serif;
-    --font-tajawal: "Tajawal", sans-serif;
+    /*--font-tajawal: "Tajawal", sans-serif;*/
     --font-noto_naskh: "Noto Naskh Arabic", serif;
 }
 
@@ -46,16 +46,16 @@ body {
 
 /* Define Tajawal weights */
 
-.font-tajawal-medium {
-    font-family: var(--font-tajawal);
+.font-noto_naskh-medium {
+    font-family: var(--font-noto_naskh);
     font-weight: 400;
 }
-.font-tajawal-semibold {
-    font-family: var(--font-tajawal);
+.font-noto_naskh-semibold {
+    font-family: var(--font-noto_naskh);
     font-weight: 500;
 }
-.font-tajawal-bold {
-    font-family: var(--font-tajawal);
+.font-noto_naskh-bold {
+    font-family: var(--font-noto_naskh);
     font-weight: 700;
 }
 
