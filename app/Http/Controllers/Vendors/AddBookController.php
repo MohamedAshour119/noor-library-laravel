@@ -16,7 +16,7 @@ class AddBookController extends Controller
     public function addBook(AddBookRequest $request): JsonResponse
     {
         $price = $request->filled('price') ? $request->price : null;
-        // Create and save the book record
+
         $book = Book::create([
             'title' => $request->title,
             'description' => $request->description,
@@ -31,7 +31,6 @@ class AddBookController extends Controller
             'status' => 'pending',
         ]);
 
-        // Add media files if they exist
         if ($request->hasFile('cover')) {
             $book->addMediaFromRequest('cover')->toMediaCollection('books_covers');
         }
