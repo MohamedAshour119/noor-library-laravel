@@ -10,12 +10,16 @@ import {Book} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
 import {enqueueSnackbar} from "notistack";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Profile() {
 
-    const isActive = useSelector((state: RootState) => state.profileIsActiveReducer);
+    const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
     // const user = useSelector((state: RootState) => state.user)
+    const location = useLocation();
+    const { user } = useParams()
+    const user_state = useSelector((state: RootState) => state.user)
 
     const [books, setBooks] = useState<Book[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
@@ -43,7 +47,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        getBook('get-user-books')
+        // getBook('get-user-books')
     }, []);
 
     const last_book_ref = useRef(null);
@@ -102,6 +106,19 @@ export default function Profile() {
                         </div>
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
+                            {user_state.is_vendor &&
+                                <Link
+                                    to={`/`}
+                                    className={`bg-main_color text-white flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
+                                >
+                                    Manage Books
+                                    <img
+                                        src="/profile/manage-books.svg"
+                                        alt="manage books"
+                                        width={30}
+                                    />
+                                </Link>
+                            }
                             <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
                                 Rating
                                 <div className={`flex items-center gap-x-2`}>
@@ -118,8 +135,8 @@ export default function Profile() {
                             <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
                                 Last online
                                 <span className={`flex items-center gap-x-2 text-main_color`}>
-                                2 Days ago
-                            </span>
+                                    2 Days ago
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -131,20 +148,10 @@ export default function Profile() {
                 {!is_loading &&
                     <div className={`container w-full`}>
                         {/*{isActive.books && books_total_page.current === 0 &&*/}
-                        {isActive.books && books_next_page_url === '' &&
-                            <NotFoundContainer
-                                src={`/profile/books-not-found.svg`}
-                                content={`There are no books published for "Mohamed Ashour" Till Now,`}
-                            />
+                        {isActive.personal_info &&
+                            <></>
                         }
-                        {isActive.books &&
-                            // <div className={`grid grid-cols-6 gap-4`}>
-                            <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
-                                {show_books}
-                                {show_books}
-                            </div>
-                        }
-                        {isActive.reviews &&
+                        {isActive.wishlist &&
                             <NotFoundContainer
                                 src={`/profile/review-not-found.svg`}
                                 content={`There are no reviews on books for "Mohamed Ashour" Till Now.`}
@@ -152,7 +159,7 @@ export default function Profile() {
                                 is_book_section_active={false}
                             />
                         }
-                        {isActive.purchased_books &&
+                        {isActive.order_history &&
                             <NotFoundContainer
                                 src={`/profile/purchased-books-not-found.svg`}
                                 content={`There are no purchased books for "Mohamed Ashour" Till Now.`}

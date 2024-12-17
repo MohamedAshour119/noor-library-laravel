@@ -3,9 +3,11 @@ interface Props {
     content: string
     styles?: string
     onClick: () => void
+    width?: number
+    img_Style?: string
 }
 export default function MainHeaderBtn(props: Props) {
-    const {src, content, styles, onClick} = props
+    const {src, content, styles, onClick, width = 50, img_Style} = props
 
     return (
         <div
@@ -15,8 +17,10 @@ export default function MainHeaderBtn(props: Props) {
             <img
                 src={src}
                 alt={`main-header-img`}
-                width={50}
+                width={width}
+                className={img_Style}
             />
+
             <span className={`text-lg group-hover:text-main_color transition`}>{content}</span>
         </div>
     )

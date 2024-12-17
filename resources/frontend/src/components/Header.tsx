@@ -15,7 +15,6 @@ import NavbarList from "./home/Navbar-List.tsx";
 import {enqueueSnackbar} from "notistack";
 import {clearUser} from "../../redux/user-slice.ts";
 import apiClient from "../../ApiClient.ts";
-import HeroSectionBtn from "./home/Hero-Section-Btn.tsx";
 import {Modal} from "flowbite-react";
 
 export default function Header() {
