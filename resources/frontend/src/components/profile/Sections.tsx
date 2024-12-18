@@ -3,12 +3,15 @@ import MainHeaderBtn from "../home/Main-Header-Btn.tsx";
 import {RootState} from "../../../redux/store.ts";
 import {setUsersActive} from "../../../redux/users-profile-is-active-slice.ts";
 import {setVendorsActive} from "../../../redux/vendors-profile-is-active-slice.ts";
+import {Dispatch, SetStateAction} from "react";
+import {Errors} from "../../../Interfaces.ts";
 
 interface Props {
     books_count: number
+    setErrors: Dispatch<SetStateAction<Errors | null>>
 }
 export default function Sections(props: Props) {
-    const {books_count} = props
+    const { books_count, setErrors } = props
     const user_state = useSelector((state: RootState) => state.user)
 
     const usersIsActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -16,9 +19,11 @@ export default function Sections(props: Props) {
     const dispatch = useDispatch()
 
     const handleUsersActiveChange = (section: "personal_info" | "wishlist" | "order_history") => {
+        setErrors({})
         dispatch(setUsersActive(section))
     }
     const handleVendorsActiveChange = (section: "personal_info" | "reviews") => {
+        setErrors({})
         dispatch(setVendorsActive(section))
     }
 

@@ -181,6 +181,7 @@ export default function Profile() {
 
         apiClient().post('/verify-password', {confirm_user_password: confirm_user_password})
             .then(res => {
+                setErrors({})
                 setError_password_confirmation(null)
                 setTemp_token(res.data.data.token)
                 enqueueSnackbar(res.data.message, {variant: "success"})
@@ -306,6 +307,7 @@ export default function Profile() {
                     </div>
 
                     <Sections
+                        setErrors={setErrors}
                         books_count={books_count}
                     />
                 </div>
@@ -316,7 +318,7 @@ export default function Profile() {
                             <form className={`bg-white p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
-                                        placeholder={!is_edit_active ? '' : `First Name`}
+                                        placeholder={!is_edit_active && formData.first_name?.length !== 0 ? '' : `First Name`}
                                         id={`first_name_id`}
                                         name={`first_name`}
                                         value={formData.first_name}
@@ -327,7 +329,7 @@ export default function Profile() {
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
-                                        placeholder={!is_edit_active ? '' : `Last Name`}
+                                        placeholder={!is_edit_active && formData.last_name?.length !== 0? '' : `Last Name`}
                                         id={`last_name_id`}
                                         name={`last_name`}
                                         value={formData.last_name}
@@ -339,7 +341,7 @@ export default function Profile() {
                                     />
 
                                     <TextInputAuth
-                                        placeholder={!is_edit_active ? '' : `Email`}
+                                        placeholder={!is_edit_active && formData.email?.length !== 0 ? '' : `Email`}
                                         id={`email_id`}
                                         name={`email`}
                                         type={`email`}

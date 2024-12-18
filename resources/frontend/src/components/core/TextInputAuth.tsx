@@ -45,7 +45,7 @@ export default function TextInputAuth(props: Props) {
 
                 <label
                     htmlFor={id}
-                    className={`absolute left-4 px-1 ${!error ? 'text-black/40' : 'text-red-600'} bg-input_bg border border-transparent rounded-full hover:cursor-text transition-all duration-200 ${hasContent || !disable_label_animation ? '!text-sm -top-3 !text-black' : 'top-2 bg-transparent'}`}
+                    className={`absolute left-4 px-1 ${!error ? 'text-black/40' : 'text-red-600'} bg-input_bg border border-transparent rounded-full hover:cursor-text transition-all duration-200 ${hasContent ? '!text-sm -top-3 !text-black' : 'top-2 bg-transparent'}`}
                 >
                     {placeholder}
                 </label>

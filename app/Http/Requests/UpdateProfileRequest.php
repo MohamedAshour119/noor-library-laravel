@@ -23,12 +23,12 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['min:3', 'max:20'],
-            'last_name' => ['min:3', 'max:20'],
-            'phone_number' => ['phone', 'unique:vendors,phone'],
-            'country_code' => ['numeric', 'digits_between:1,3', 'required_with:phone_number'],
-            'email' => ['email', 'unique:users,email', 'required'],
-            'password' => ['min:8', 'max:64', 'confirmed'],
+            'first_name' => ['required', 'min:3', 'max:20'],
+            'last_name' => ['required', 'min:3', 'max:20'],
+            'phone_number' => ['required', 'phone', 'unique:vendors,phone'],
+            'country_code' => ['required', 'numeric', 'digits_between:1,3', 'required_with:phone_number'],
+            'email' => ['required', 'email', 'unique:users,email', 'required'],
+            'password' => ['required', 'min:8', 'max:64', 'confirmed'],
         ];
     }
     public function messages(): array
