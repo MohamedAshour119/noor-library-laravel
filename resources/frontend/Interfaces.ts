@@ -118,4 +118,5 @@ export interface Errors {
     password?: string
     password_confirmation?: string
     recaptcha?: string
+
 }

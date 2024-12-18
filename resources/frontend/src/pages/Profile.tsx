@@ -9,12 +9,12 @@ import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
-import {enqueueSnackbar} from "notistack";
+import {enqueueSnackbar, SnackbarProvider} from "notistack";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
+import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
-import {Button, Label, Modal, TextInput} from "flowbite-react";
 export default function Profile() {
 
     const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -41,9 +41,11 @@ export default function Profile() {
     })
     const [errors, setErrors] = useState<Errors | null>(null)
     const [is_edit_active, setIs_edit_active] = useState(false);
-    const [is_security_open, setIs_security_open] = useState(false);
     const [confirm_user_password, setConfirm_user_password] = useState('');
+    const [is_confirm_password_open, setIs_confirm_password_open] = useState(false);
     const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
+    const [is_loading_password_confirmation, setIs_loading_password_confirmation] = useState(false);
+    const [error_password_confirmation, setError_password_confirmation] = useState(null);
 
     const onFocus = () => {
         setIs_confirm_user_password_input_focused(true)
@@ -55,11 +57,13 @@ export default function Profile() {
     const navigate = useNavigate()
 
     const handleIsEditActive = () => {
-        setIs_edit_active(true)
+        setIs_confirm_password_open(true)
+
+        // setIs_edit_active(true)
     }
-    const handleIsSecurityOpen = () => {
-        setIs_security_open(true)
-    }
+    // const handleIsSecurityOpen = () => {
+    //     setIs_confirm_password_open(true)
+    // }
 
     const getBook = (page_url: string) => {
         setIs_fetching(true)
@@ -139,7 +143,8 @@ export default function Profile() {
     }
 
     const handleCloseModal = () => {
-        setIs_security_open(false)
+        setError_password_confirmation(null)
+        setIs_confirm_password_open(false)
         setConfirm_user_password('')
     }
 
@@ -148,7 +153,8 @@ export default function Profile() {
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (!modal_ref.current?.contains(e.target as Node)) {
-                setIs_security_open(false)
+                setError_password_confirmation(null)
+                setIs_confirm_password_open(false)
             }
         }
 
@@ -158,11 +164,34 @@ export default function Profile() {
         }
     }, []);
 
+    const submitConfirmPassword = () => {
+        setIs_loading_password_confirmation(true)
+
+        apiClient().post('/verify-password', {confirm_user_password: confirm_user_password})
+            .then(res => {
+                setError_password_confirmation(null)
+                enqueueSnackbar(res.data.message, {variant: "success"})
+                setIs_confirm_password_open(false)
+                setIs_edit_active(true)
+            })
+            .catch(err => {
+                setError_password_confirmation(err.response.data.message)
+            })
+            .finally(() => setIs_loading_password_confirmation(false))
+    }
+
     return (
         <>
-            {is_security_open && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            {is_confirm_password_open && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            <SnackbarProvider
+                autoHideDuration={3000}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            />
             <Modal
-                show={is_security_open}
+                show={is_confirm_password_open}
                 size="sm"
                 onClose={handleCloseModal}
                 popup
@@ -186,16 +215,23 @@ export default function Profile() {
                                 onFocus={onFocus}
                                 onBlur={onBlur}
                                 style={{
-                                    borderColor: "var(--border_color)",
+                                    borderColor: !error_password_confirmation ? "var(--border_color)" : "red",
                                     padding: "10px 15px",
-                                    outlineColor: is_confirm_user_password_input_focused ? "var(--main_color)" : "",
+                                    outlineColor: is_confirm_user_password_input_focused && !error_password_confirmation ? "var(--main_color)" : "red",
                                     color: "var(--text_color)",
                                 }}
                                 type={'password'}
                             />
                         </div>
+                            {error_password_confirmation && <span className={`text-red-600`}>{error_password_confirmation}</span>}
                         <div className="w-full">
-                            <Button className={`bg-main_color px-2 text-white rounded font-roboto-semi-bold text-lg`}>Confirm</Button>
+                            <Button
+                                className={`bg-main_color px-2 h-[42px] text-white rounded font-roboto-semi-bold text-lg`}
+                                onClick={submitConfirmPassword}
+                            >
+                                {is_loading_password_confirmation && <Spinner className="!text-white fill-zinc-400" />}
+                                {!is_loading_password_confirmation && "Confirm"}
+                            </Button>
                         </div>
                     </div>
                 </Modal.Body>
@@ -276,7 +312,7 @@ export default function Profile() {
                                         error={errors?.first_name}
                                         readonly={!is_edit_active}
                                         disable_label_animation
-                                        styles={`!text-[16px]`}
+                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
                                         placeholder={!is_edit_active ? '' : `Last Name`}
@@ -287,76 +323,67 @@ export default function Profile() {
                                         error={errors?.last_name}
                                         readonly={!is_edit_active}
                                         disable_label_animation
-                                        styles={`!text-[16px]`}
+                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
 
-                                    <button
-                                        className={`font-roboto-bold text-main_color w-28 py-1 border border-main_color rounded`}
-                                        onClick={handleIsSecurityOpen}
-                                    >
-                                        Security
-                                    </button>
-
-                                    {is_security_open &&
-                                        <>
-                                            {/*<TextInputAuth*/}
-                                            {/*    placeholder={!is_security_open ? '' : `Email`}*/}
-                                            {/*    id={`email_id`}*/}
-                                            {/*    name={`email`}*/}
-                                            {/*    type={`email`}*/}
-                                            {/*    value={formData.email}*/}
-                                            {/*    onChange={handleInputChange}*/}
-                                            {/*    error={errors?.email}*/}
-                                            {/*    readonly={!is_security_open}*/}
-                                            {/*    disable_label_animation*/}
-                                            {/*    styles={`text-[16px]`}*/}
-                                            {/*/>*/}
-                                            {/*<TextInputAuth*/}
-                                            {/*    placeholder={`New Password`}*/}
-                                            {/*    id={`password_id`}*/}
-                                            {/*    type={`password`}*/}
-                                            {/*    name={`password`}*/}
-                                            {/*    value={formData.password}*/}
-                                            {/*    onChange={handleInputChange}*/}
-                                            {/*    error={errors?.password}*/}
-                                            {/*/>*/}
-                                            {/*<TextInputAuth*/}
-                                            {/*    placeholder={`Password Confirmation`}*/}
-                                            {/*    id={`password_confirmation_id`}*/}
-                                            {/*    type={`password`}*/}
-                                            {/*    name={`password_confirmation`}*/}
-                                            {/*    value={formData.password_confirmation}*/}
-                                            {/*    onChange={handleInputChange}*/}
-                                            {/*    error={errors?.password_confirmation}*/}
-                                            {/*/>*/}
-                                            {/*<PhoneInput*/}
-                                            {/*    country={'eg'}*/}
-                                            {/*    value={formData.phone_number}*/}
-                                            {/*    onChange={handlePhoneChange}*/}
-                                            {/*    enableSearch={true}*/}
-                                            {/*    disabled={!is_security_open}*/}
-                                            {/*    placeholder={!is_security_open ? user_state.phone : 'Enter Phone Number'}*/}
-                                            {/*    inputStyle={{*/}
-                                            {/*        width: '100%',*/}
-                                            {/*        height: '40px',*/}
-                                            {/*        borderRadius: '8px',*/}
-                                            {/*        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,*/}
-                                            {/*        padding: '10px 10px 10px 45px',*/}
-                                            {/*    }}*/}
-                                            {/*    containerStyle={{*/}
-                                            {/*        width: '100%',*/}
-                                            {/*        display: 'flex',*/}
-                                            {/*        alignItems: 'center',*/}
-                                            {/*    }}*/}
-                                            {/*    buttonStyle={{*/}
-                                            {/*        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,*/}
-                                            {/*    }}*/}
-                                            {/*/>*/}
-                                            {/*{errors?.phone_number && <span*/}
-                                            {/*    className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}*/}
-                                        </>
-                                    }
-
+                                    <TextInputAuth
+                                        placeholder={!is_edit_active ? '' : `Email`}
+                                        id={`email_id`}
+                                        name={`email`}
+                                        type={`email`}
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        error={errors?.email}
+                                        readonly={!is_edit_active}
+                                        disable_label_animation
+                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                    />
+                                    <TextInputAuth
+                                        placeholder={`New Password`}
+                                        id={`password_id`}
+                                        type={`password`}
+                                        name={`password`}
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        error={errors?.password}
+                                        readonly={!is_edit_active}
+                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                    />
+                                    <TextInputAuth
+                                        placeholder={`Password Confirmation`}
+                                        id={`password_confirmation_id`}
+                                        type={`password`}
+                                        name={`password_confirmation`}
+                                        value={formData.password_confirmation}
+                                        onChange={handleInputChange}
+                                        error={errors?.password_confirmation}
+                                        readonly={!is_edit_active}
+                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                    />
+                                    <PhoneInput
+                                        country={'eg'}
+                                        value={formData.phone_number}
+                                        onChange={handlePhoneChange}
+                                        enableSearch={true}
+                                        disabled={!is_edit_active}
+                                        placeholder={!is_edit_active ? user_state.phone : 'Enter Phone Number'}
+                                        inputStyle={{
+                                            width: '100%',
+                                            height: '40px',
+                                            borderRadius: '8px',
+                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            padding: '10px 10px 10px 45px',
+                                        }}
+                                        containerStyle={{
+                                            width: '100%',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                        }}
+                                        buttonStyle={{
+                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                        }}
+                                    />
+                                    {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
 
                                     <button
                                         onClick={handleIsEditActive}

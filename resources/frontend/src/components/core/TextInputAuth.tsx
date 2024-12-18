@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from 'react';
 
 interface Props {
-    placeholder: string;
+    placeholder?: string;
     id: string;
     name: string;
     type?: string;

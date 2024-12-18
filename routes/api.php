@@ -22,5 +22,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/add-book', [AddBookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
     Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
     Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
+    Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
 });
-
