@@ -5,7 +5,7 @@ import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 import Footer from "../components/Footer.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
 import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
+import axios from "axios";
 export default function Profile() {
 
     const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -29,7 +30,6 @@ export default function Profile() {
     const [is_loading, setIs_loading] = useState(false);
     const [books_count, setBooks_count] = useState(0);
     const [formData, setFormData] = useState<SignUpForm>({
-        username: '',
         first_name: user_state.first_name,
         last_name: user_state.last_name,
         phone_number: user_state.phone,
@@ -37,7 +37,6 @@ export default function Profile() {
         email: user_state.email,
         password: '',
         password_confirmation: '',
-        is_vendor: false,
     })
     const [errors, setErrors] = useState<Errors | null>(null)
     const [is_edit_active, setIs_edit_active] = useState(false);
@@ -57,14 +56,11 @@ export default function Profile() {
 
     const navigate = useNavigate()
 
-    const handleIsEditActive = () => {
-        setIs_confirm_password_open(true)
+    const handleIsEditActive = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setIs_confirm_password_open(true);
+    };
 
-        // setIs_edit_active(true)
-    }
-    // const handleIsSecurityOpen = () => {
-    //     setIs_confirm_password_open(true)
-    // }
 
     const getBook = (page_url: string) => {
         setIs_fetching(true)
@@ -122,9 +118,23 @@ export default function Profile() {
         };
     }, [books_next_page_url, is_fetching]);
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
+        axios.put('/api/users/update-profile', formData, {
+            headers: {
+                "Authorization": `Bearer ${temp_token}`, // Include the token as a Bearer token
+                "Content-Type": "application/json"
+            }})
+            .then(res => {
+                setErrors({})
+                enqueueSnackbar(res.data.message, {variant: "success"})
+            })
+            .catch(err => {
+                setErrors(err.response.data.errors)
+                setTemp_token('')
+                setIs_edit_active(false)
+            })
     }
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -303,10 +313,7 @@ export default function Profile() {
                     <div className={`container w-full`}>
                         {/*{isActive.books && books_total_page.current === 0 &&*/}
                         {isActive.personal_info &&
-                            <form
-                                onSubmit={handleSubmit}
-                                className={`bg-white p-5 rounded-lg`}
-                            >
+                            <form className={`bg-white p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
                                         placeholder={!is_edit_active ? '' : `First Name`}
@@ -391,9 +398,8 @@ export default function Profile() {
                                     {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
 
                                     <button
-                                        onClick={handleIsEditActive}
+                                        onClick={is_edit_active ? handleSubmit : handleIsEditActive}
                                         className={`bg-main_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
-                                        type={`submit`}
                                     >
                                         {!is_edit_active ? 'Edit' : 'Save'}
                                     </button>

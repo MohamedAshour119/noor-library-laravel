@@ -5,6 +5,7 @@ use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Profile\UserProfileController;
 use App\Http\Controllers\Vendors\AddBookController;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
+use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,4 +24,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
     Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
+    Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
 });

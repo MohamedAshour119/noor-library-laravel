@@ -76,7 +76,7 @@ export default function SignUp() {
         }))
     }
 
-    const handleSubmit = async (e: FormEvent) => {
+    const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
         if (!formData.google_recaptcha) {
