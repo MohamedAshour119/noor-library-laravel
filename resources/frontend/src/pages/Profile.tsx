@@ -5,14 +5,16 @@ import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 import Footer from "../components/Footer.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import {useEffect, useRef, useState} from "react";
-import {Book} from "../../Interfaces.ts";
+import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
 import {enqueueSnackbar} from "notistack";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import TextInputAuth from "../components/core/TextInputAuth.tsx";
+import PhoneInput from "react-phone-input-2";
+import {Button, Label, Modal, TextInput} from "flowbite-react";
 export default function Profile() {
 
     const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -24,10 +26,40 @@ export default function Profile() {
     const [books, setBooks] = useState<Book[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
-    const [is_loading, setIs_loading] = useState(true);
+    const [is_loading, setIs_loading] = useState(false);
     const [books_count, setBooks_count] = useState(0);
+    const [formData, setFormData] = useState<SignUpForm>({
+        username: '',
+        first_name: user_state.first_name,
+        last_name: user_state.last_name,
+        phone_number: user_state.phone,
+        country_code: '',
+        email: user_state.email,
+        password: '',
+        password_confirmation: '',
+        is_vendor: false,
+    })
+    const [errors, setErrors] = useState<Errors | null>(null)
+    const [is_edit_active, setIs_edit_active] = useState(false);
+    const [is_security_open, setIs_security_open] = useState(false);
+    const [confirm_user_password, setConfirm_user_password] = useState('');
+    const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
+
+    const onFocus = () => {
+        setIs_confirm_user_password_input_focused(true)
+    }
+    const onBlur = () => {
+        setIs_confirm_user_password_input_focused(false)
+    }
 
     const navigate = useNavigate()
+
+    const handleIsEditActive = () => {
+        setIs_edit_active(true)
+    }
+    const handleIsSecurityOpen = () => {
+        setIs_security_open(true)
+    }
 
     const getBook = (page_url: string) => {
         setIs_fetching(true)
@@ -85,8 +117,89 @@ export default function Profile() {
         };
     }, [books_next_page_url, is_fetching]);
 
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault()
+
+    }
+
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        console.log(e.target)
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    }
+    const handlePhoneChange = (phone: string, country: any) => {
+        setFormData({
+            ...formData,
+            phone_number: phone, // The full phone number with country code
+            country_code: country.dialCode, // The country code only
+        });
+    };
+    const handleConfirmUserPassword = (e: ChangeEvent<HTMLInputElement>) => {
+        setConfirm_user_password(e.target.value)
+    }
+
+    const handleCloseModal = () => {
+        setIs_security_open(false)
+        setConfirm_user_password('')
+    }
+
+
+    const modal_ref = useRef<HTMLDivElement | null>(null)
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!modal_ref.current?.contains(e.target as Node)) {
+                setIs_security_open(false)
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, []);
+
     return (
         <>
+            {is_security_open && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            <Modal
+                show={is_security_open}
+                size="sm"
+                onClose={handleCloseModal}
+                popup
+                ref={modal_ref}
+            >
+                <Modal.Header />
+                <Modal.Body className={`pt-0`}>
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-roboto-semi-bold text-gray-900">Confirm who you are.</h3>
+                        <div className={`relative`}>
+                            <Label
+                                htmlFor="confirm_user_password"
+                                value="Current Password"
+                                className={`absolute !text-black/40 text-md cursor-text left-4 top-1/2 -translate-y-1/2 px-1 z-10 transition-all duration-200 ${confirm_user_password.length > 0 || is_confirm_user_password_input_focused ? '!text-sm !top-0 !text-text_color bg-white' : 'bg-transparent'}`}
+                            />
+                            <TextInput
+                                id="confirm_user_password"
+                                value={confirm_user_password}
+                                onChange={handleConfirmUserPassword}
+                                required
+                                onFocus={onFocus}
+                                onBlur={onBlur}
+                                style={{
+                                    borderColor: "var(--border_color)",
+                                    padding: "10px 15px",
+                                    outlineColor: is_confirm_user_password_input_focused ? "var(--main_color)" : "",
+                                    color: "var(--text_color)",
+                                }}
+                                type={'password'}
+                            />
+                        </div>
+                        <div className="w-full">
+                            <Button className={`bg-main_color px-2 text-white rounded font-roboto-semi-bold text-lg`}>Confirm</Button>
+                        </div>
+                    </div>
+                </Modal.Body>
+            </Modal>
             <div className={`flex flex-col items-center bg-main_bg py-5 gap-y-7`}>
                 <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
                     <div className={`p-5 flex flex-col items-center`}>
@@ -109,7 +222,7 @@ export default function Profile() {
                             {user_state.is_vendor &&
                                 <Link
                                     to={`/`}
-                                    className={`bg-main_color text-white flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
+                                    className={`bg-main_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
                                 >
                                     Manage Books
                                     <img
@@ -149,7 +262,111 @@ export default function Profile() {
                     <div className={`container w-full`}>
                         {/*{isActive.books && books_total_page.current === 0 &&*/}
                         {isActive.personal_info &&
-                            <></>
+                            <form
+                                onSubmit={handleSubmit}
+                                className={`bg-white p-5 rounded-lg`}
+                            >
+                                <div className={`flex flex-col gap-y-5`}>
+                                    <TextInputAuth
+                                        placeholder={!is_edit_active ? '' : `First Name`}
+                                        id={`first_name_id`}
+                                        name={`first_name`}
+                                        value={formData.first_name}
+                                        onChange={handleInputChange}
+                                        error={errors?.first_name}
+                                        readonly={!is_edit_active}
+                                        disable_label_animation
+                                        styles={`!text-[16px]`}
+                                    />
+                                    <TextInputAuth
+                                        placeholder={!is_edit_active ? '' : `Last Name`}
+                                        id={`last_name_id`}
+                                        name={`last_name`}
+                                        value={formData.last_name}
+                                        onChange={handleInputChange}
+                                        error={errors?.last_name}
+                                        readonly={!is_edit_active}
+                                        disable_label_animation
+                                        styles={`!text-[16px]`}
+                                    />
+
+                                    <button
+                                        className={`font-roboto-bold text-main_color w-28 py-1 border border-main_color rounded`}
+                                        onClick={handleIsSecurityOpen}
+                                    >
+                                        Security
+                                    </button>
+
+                                    {is_security_open &&
+                                        <>
+                                            {/*<TextInputAuth*/}
+                                            {/*    placeholder={!is_security_open ? '' : `Email`}*/}
+                                            {/*    id={`email_id`}*/}
+                                            {/*    name={`email`}*/}
+                                            {/*    type={`email`}*/}
+                                            {/*    value={formData.email}*/}
+                                            {/*    onChange={handleInputChange}*/}
+                                            {/*    error={errors?.email}*/}
+                                            {/*    readonly={!is_security_open}*/}
+                                            {/*    disable_label_animation*/}
+                                            {/*    styles={`text-[16px]`}*/}
+                                            {/*/>*/}
+                                            {/*<TextInputAuth*/}
+                                            {/*    placeholder={`New Password`}*/}
+                                            {/*    id={`password_id`}*/}
+                                            {/*    type={`password`}*/}
+                                            {/*    name={`password`}*/}
+                                            {/*    value={formData.password}*/}
+                                            {/*    onChange={handleInputChange}*/}
+                                            {/*    error={errors?.password}*/}
+                                            {/*/>*/}
+                                            {/*<TextInputAuth*/}
+                                            {/*    placeholder={`Password Confirmation`}*/}
+                                            {/*    id={`password_confirmation_id`}*/}
+                                            {/*    type={`password`}*/}
+                                            {/*    name={`password_confirmation`}*/}
+                                            {/*    value={formData.password_confirmation}*/}
+                                            {/*    onChange={handleInputChange}*/}
+                                            {/*    error={errors?.password_confirmation}*/}
+                                            {/*/>*/}
+                                            {/*<PhoneInput*/}
+                                            {/*    country={'eg'}*/}
+                                            {/*    value={formData.phone_number}*/}
+                                            {/*    onChange={handlePhoneChange}*/}
+                                            {/*    enableSearch={true}*/}
+                                            {/*    disabled={!is_security_open}*/}
+                                            {/*    placeholder={!is_security_open ? user_state.phone : 'Enter Phone Number'}*/}
+                                            {/*    inputStyle={{*/}
+                                            {/*        width: '100%',*/}
+                                            {/*        height: '40px',*/}
+                                            {/*        borderRadius: '8px',*/}
+                                            {/*        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,*/}
+                                            {/*        padding: '10px 10px 10px 45px',*/}
+                                            {/*    }}*/}
+                                            {/*    containerStyle={{*/}
+                                            {/*        width: '100%',*/}
+                                            {/*        display: 'flex',*/}
+                                            {/*        alignItems: 'center',*/}
+                                            {/*    }}*/}
+                                            {/*    buttonStyle={{*/}
+                                            {/*        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,*/}
+                                            {/*    }}*/}
+                                            {/*/>*/}
+                                            {/*{errors?.phone_number && <span*/}
+                                            {/*    className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}*/}
+                                        </>
+                                    }
+
+
+                                    <button
+                                        onClick={handleIsEditActive}
+                                        className={`bg-main_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
+                                        type={`submit`}
+                                    >
+                                        {!is_edit_active ? 'Edit' : 'Save'}
+                                    </button>
+                                </div>
+                            </form>
                         }
                         {isActive.wishlist &&
                             <NotFoundContainer

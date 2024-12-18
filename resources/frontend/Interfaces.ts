@@ -1,10 +1,13 @@
 export interface User {
     id: number | null
     username: string | null
-    email: string | null
+    first_name: string
+    last_name: string
+    email: string
     createdAt: string | null
     updatedAt: string | null
     is_vendor?: boolean | null
+    phone?: string | null
 }
 
 type BinaryOptionsInterface = {
@@ -90,4 +93,29 @@ export interface Book {
 export interface CategoryInterface {
     id: number
     name: string
+}
+
+export interface SignUpForm {
+    username?: string
+    first_name?: string
+    last_name?: string
+    phone_number?: string | null
+    country_code?: string
+    email?: string
+    password?: string
+    password_confirmation?: string
+    google_recaptcha?: string | null
+    is_vendor?: boolean
+}
+
+export interface Errors {
+    username?: string
+    first_name?: string
+    last_name?: string
+    phone_number?: string
+    country_code?: string
+    email?: string
+    password?: string
+    password_confirmation?: string
+    recaptcha?: string
 }

@@ -11,31 +11,7 @@ import apiClient from "../../../ApiClient.ts";
 import 'react-phone-input-2/lib/style.css';
 import PhoneInput from 'react-phone-input-2';
 import '../../index.css'
-
-type Errors = {
-    username?: string
-    first_name?: string
-    last_name?: string
-    phone_number?: string
-    country_code?: string
-    email?: string
-    password?: string
-    password_confirmation?: string
-    recaptcha?: string
-}
-
-type FormData = {
-    username?: string
-    first_name?: string
-    last_name?: string
-    phone_number?: string
-    country_code?: string
-    email?: string
-    password?: string
-    password_confirmation?: string
-    google_recaptcha?: string | null
-    is_vendor?: boolean
-}
+import {Errors, SignUpForm} from "../../../Interfaces.ts";
 
 export default function SignUp() {
 
@@ -45,7 +21,7 @@ export default function SignUp() {
     const navigate = useNavigate()
 
     const recaptchaRef = useRef<ReCAPTCHA>(null);
-    const [formData, setFormData] = useState<FormData>({
+    const [formData, setFormData] = useState<SignUpForm>({
         username: '',
         first_name: '',
         last_name: '',

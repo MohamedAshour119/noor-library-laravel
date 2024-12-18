@@ -4,10 +4,13 @@ import {User} from "../Interfaces";
 const initialState: User = {
     id: null,
     username: null,
-    email: null,
+    first_name: '',
+    last_name: '',
+    email: '',
     createdAt: null,
     updatedAt: null,
     is_vendor: null,
+    phone: null,
 }
 
 export const userSlice = createSlice({
@@ -17,18 +20,24 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<User>) => {
             state.id = action.payload.id
             state.username = action.payload.username
+            state.first_name = action.payload.first_name
+            state.last_name = action.payload.last_name
             state.email = action.payload.email
             state.createdAt = action.payload.createdAt
             state.updatedAt = action.payload.updatedAt
             state.is_vendor = action.payload.is_vendor
+            state.phone = action.payload.phone
         },
         clearUser: (state) => {
             state.id = null
             state.username = null
-            state.email = null
+            state.first_name = ''
+            state.last_name = ''
+            state.email = ''
             state.createdAt = null
             state.updatedAt = null
             state.is_vendor = null
+            state.phone = null
         },
     },
 })

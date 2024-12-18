@@ -66,7 +66,6 @@ class AuthController extends Controller
             return $this->createSuccessResponse($vendor, $token, 'You are logged in as a vendor successfully.', true);
         }
 
-        // If neither login succeeds
         return $this->response_error('You entered wrong credentials', [], 403);
     }
 

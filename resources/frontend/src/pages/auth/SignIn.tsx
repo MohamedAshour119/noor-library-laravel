@@ -34,7 +34,7 @@ export default function SignIn() {
         e.preventDefault()
         setIsLoading(true)
 
-        apiClient().post('/sign-in', formData, {headers: {'Content-Type': 'application/json'}})
+        apiClient().post('/sign-in', formData)
             .then(res => {
                 console.log(res.data.data.data)
                 setIsLoading(false)
@@ -53,7 +53,7 @@ export default function SignIn() {
     return (
         <>
             <img
-                src="./home/hero-section-bg.svg"
+                src="/home/hero-section-bg.svg"
                 alt="Auth background"
                 className={`w-screen h-svh min-h-svh absolute !z-10`}
             />
