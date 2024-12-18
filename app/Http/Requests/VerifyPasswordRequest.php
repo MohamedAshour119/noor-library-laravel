@@ -25,4 +25,14 @@ class VerifyPasswordRequest extends FormRequest
             'confirm_user_password' => ['required', 'string', 'min:8', 'max:64']
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'confirm_user_password.required' => 'Password confirmation is required.',
+            'confirm_user_password.string' => 'Password confirmation must type of string.',
+            'confirm_user_password.min' => 'Password confirmation must be at least 8 characters.',
+            'confirm_user_password.max' => 'Password confirmation must not exceed 64 characters.',
+        ];
+    }
 }

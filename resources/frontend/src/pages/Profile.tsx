@@ -46,6 +46,7 @@ export default function Profile() {
     const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
     const [is_loading_password_confirmation, setIs_loading_password_confirmation] = useState(false);
     const [error_password_confirmation, setError_password_confirmation] = useState(null);
+    const [temp_token, setTemp_token] = useState('');
 
     const onFocus = () => {
         setIs_confirm_user_password_input_focused(true)
@@ -155,6 +156,7 @@ export default function Profile() {
             if (!modal_ref.current?.contains(e.target as Node)) {
                 setError_password_confirmation(null)
                 setIs_confirm_password_open(false)
+                setConfirm_user_password('')
             }
         }
 
@@ -170,6 +172,7 @@ export default function Profile() {
         apiClient().post('/verify-password', {confirm_user_password: confirm_user_password})
             .then(res => {
                 setError_password_confirmation(null)
+                setTemp_token(res.data.data.token)
                 enqueueSnackbar(res.data.message, {variant: "success"})
                 setIs_confirm_password_open(false)
                 setIs_edit_active(true)
@@ -199,7 +202,7 @@ export default function Profile() {
             >
                 <Modal.Header />
                 <Modal.Body className={`pt-0`}>
-                    <div className="space-y-4">
+                    <div className="space-y-4 pb-4">
                         <h3 className="text-xl font-roboto-semi-bold text-gray-900">Confirm who you are.</h3>
                         <div className={`relative`}>
                             <Label
@@ -234,6 +237,8 @@ export default function Profile() {
                             </Button>
                         </div>
                     </div>
+                    <span className={`text-main_color_darker font-roboto-semi-bold`}>For your security, you’ll need to confirm your password again if you refresh the page.</span>
+
                 </Modal.Body>
             </Modal>
             <div className={`flex flex-col items-center bg-main_bg py-5 gap-y-7`}>

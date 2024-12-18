@@ -40,6 +40,7 @@ class UserProfileController extends Controller
             return $this->response_error([], 'Invalid password.', 403);
         }
 
-        return $this->response_success([], 'Confirmation success');
+        $token = $user->createToken('ProfileChangeToken', ['profile-update'], expiresAt: now()->addMinutes(15))->plainTextToken;
+        return $this->response_success(['token' => $token], 'Confirmation success');
     }
 }
