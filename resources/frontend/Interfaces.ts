@@ -8,6 +8,7 @@ export interface User {
     updatedAt: string | null
     is_vendor?: boolean | null
     phone?: string | null
+    avatar?: string
 }
 
 type BinaryOptionsInterface = {

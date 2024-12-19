@@ -3,9 +3,9 @@ import Sections from "../components/profile/Sections.tsx";
 import NotFoundContainer from "../components/profile/Not-Found-Container.tsx";
 import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 import Footer from "../components/Footer.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import React, {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
@@ -16,13 +16,14 @@ import TextInputAuth from "../components/core/TextInputAuth.tsx";
 import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
 import axios from "axios";
+import {setUser} from "../../redux/user-slice.ts";
 export default function Profile() {
 
     const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
-    // const user = useSelector((state: RootState) => state.user)
     const location = useLocation();
     const { user } = useParams()
     const user_state = useSelector((state: RootState) => state.user)
+    const dispatch = useDispatch();
 
     const [books, setBooks] = useState<Book[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
@@ -46,6 +47,9 @@ export default function Profile() {
     const [is_loading_password_confirmation, setIs_loading_password_confirmation] = useState(false);
     const [error_password_confirmation, setError_password_confirmation] = useState(null);
     const [temp_token, setTemp_token] = useState('');
+    const [avatar, setAvatar] = useState<string | File | null>(null);
+    const [show_save_avatar_btn, setShow_save_avatar_btn] = useState(false);
+
 
     const onFocus = () => {
         setIs_confirm_user_password_input_focused(true)
@@ -193,6 +197,35 @@ export default function Profile() {
             })
             .finally(() => setIs_loading_password_confirmation(false))
     }
+    const handleAvatarUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        const { files } = e.target;
+        if (files && files[0].type.startsWith('image') && files.length > 0) {
+            setAvatar(files[0])
+            setShow_save_avatar_btn(true)
+        }
+    };
+
+    const handleSaveAvatar = () => {
+        console.log('Avatar file:', avatar);
+        const formData = new FormData();
+        formData.append('avatar', avatar as Blob);
+
+        axios.post('/api/users/update-profile-avatar', formData, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Accept': 'multipart/form-data',
+            }
+        })
+            .then(res => {
+                dispatch(setUser({
+                    ...user_state,
+                    avatar: res.data.data.avatar
+                }));
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response?.data?.errors || 'Something went wrong', { variant: "error" });
+            });
+    }
 
     return (
         <>
@@ -256,18 +289,42 @@ export default function Profile() {
                 <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
                     <div className={`p-5 flex flex-col items-center`}>
                         <div className={`flex flex-col items-center gap-y-3`}>
-                            <div className={`relative group cursor-pointer`}>
-                                <img
-                                    className={`border-2 rounded-full`}
-                                    src={`/profile-default-img.svg`}
-                                    alt={`profile-default-img`}
-                                    width={150}
-                                />
-                                <div className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
-                                    <FaCamera className={`size-12 text-white`}/>
+                            <div className={`relative cursor-pointer`}>
+                                <div className={`group`}>
+                                    <label
+                                        htmlFor="avatar"
+                                        className={`cursor-pointer`}
+                                    >
+                                        <img
+                                            className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white cursor-pointer flex items-center gap-x-2`}
+                                            src={user_state.avatar && !avatar ? user_state.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
+                                            alt={`avatar`}
+                                        />
+                                        <div className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
+                                            <FaCamera className={`size-12 text-white`}/>
+                                        </div>
+                                    </label>
+
+                                    <input
+                                        type="file"
+                                        id={`avatar`}
+                                        name={'avatar'}
+                                        className="hidden"
+                                        onChange={handleAvatarUpload}
+                                    />
                                 </div>
+                                {show_save_avatar_btn &&
+                                    <button
+                                        className={`bg-main_color mt-2 py-1 text-white rounded font-roboto-semi-bold w-full text-lg`}
+                                        onClick={handleSaveAvatar}
+                                    >
+                                        Save
+                                    </button>
+                                }
                             </div>
-                            <span className={`text-2xl font-roboto-semi-bold tracking-wide`}>Mohamed Ashour</span>
+                            <span className={`text-2xl font-roboto-semi-bold tracking-wide`}>
+                                {user_state ? (user_state?.first_name[0]?.toUpperCase() + user_state.first_name.slice(1)) + ' ' + (user_state?.last_name[0]?.toUpperCase() + user_state.last_name.slice(1)) : ''}
+                            </span>
                         </div>
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
