@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SignInRequest;
 use App\Http\Requests\SignUpAsCustomerRequest;
 use App\Http\Requests\SignUpAsVendorRequest;
+use App\Http\Resources\UserResource;
+use App\Http\Resources\VendorResource;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Traits\HttpResponses;
@@ -55,6 +57,7 @@ class AuthController extends Controller
         // First, attempt login as a normal user
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $user = new UserResource($user);
             $token = $user->createToken('User Token', expiresAt: now()->addHours(24));
             return $this->createSuccessResponse($user, $token, 'You are logged in as a user successfully.');
         }
@@ -62,6 +65,7 @@ class AuthController extends Controller
         // Next, attempt login as a vendor
         if (Auth::guard('vendor')->attempt($credentials)) {
             $vendor = Auth::guard('vendor')->user();
+            $vendor = new VendorResource($vendor);
             $token = $vendor->createToken('Vendor Token', expiresAt: now()->addHours(24));
             return $this->createSuccessResponse($vendor, $token, 'You are logged in as a vendor successfully.', true);
         }
