@@ -14,8 +14,11 @@ class VendorResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $avatar = '';
 
-        $avatar = $this->getFirstMedia('users_avatars')?->getUrl() ?? '';
+        if ($this->resource && method_exists($this->resource, 'getFirstMedia')) {
+            $avatar = $this->resource->getFirstMedia('users_avatars')?->getUrl() ?? '';
+        }
 
         return [
             'id' => $this->id,
@@ -28,6 +31,7 @@ class VendorResource extends JsonResource
             'avatar' => $avatar,
             "created_at" => $this->created_at?->format('M d'),
             "updated_at" => $this->updated_at?->format('M d'),
+            'is_vendor' => true,
         ];
     }
 }

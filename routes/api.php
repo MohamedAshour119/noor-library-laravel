@@ -26,4 +26,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
     Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');
+    Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
 });

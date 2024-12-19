@@ -3,8 +3,9 @@ import MainHeaderBtn from "../home/Main-Header-Btn.tsx";
 import {RootState} from "../../../redux/store.ts";
 import {setUsersActive} from "../../../redux/users-profile-is-active-slice.ts";
 import {setVendorsActive} from "../../../redux/vendors-profile-is-active-slice.ts";
-import {Dispatch, SetStateAction} from "react";
-import {Errors} from "../../../Interfaces.ts";
+import {Dispatch, SetStateAction, useState} from "react";
+import {Errors, User} from "../../../Interfaces.ts";
+import {useParams} from "react-router-dom";
 
 interface Props {
     books_count: number
@@ -12,11 +13,36 @@ interface Props {
 }
 export default function Sections(props: Props) {
     const { books_count, setErrors } = props
+    const { user } = useParams()
     const user_state = useSelector((state: RootState) => state.user)
-
+    const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const usersIsActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
     const vendorsIsActive = useSelector((state: RootState) => state.vendorsProfileIsActiveReducer);
     const dispatch = useDispatch()
+
+    const [is_visited_user_sections_active, setIs_visited_user_sections_active] = useState({
+        wishlist: true,
+        reviews: false,
+    });
+    const [is_visited_vendor_sections_active, setIs_visited_vendor_sections_active] = useState({
+        books: true,
+        reviews: false,
+    });
+
+    const handleIsVisitedUserSectionsActive = (section: string) => {
+        setIs_visited_user_sections_active({
+            wishlist: false,
+            reviews: false,
+            [section]: true,
+        })
+    }
+    const handleIsVisitedVendorSectionsActive = (section: string) => {
+        setIs_visited_vendor_sections_active({
+            books: false,
+            reviews: false,
+            [section]: true,
+        })
+    }
 
     const handleUsersActiveChange = (section: "personal_info" | "wishlist" | "order_history") => {
         setErrors({})
@@ -30,7 +56,7 @@ export default function Sections(props: Props) {
     return (
         <>
             <header className={`flex bg-white sm:pt-6 border border-border_color w-full max-[525px]:flex-col`}>
-                {!user_state.is_vendor &&
+                {!user_state.is_vendor && user === user_state.username &&
                     <>
                         <MainHeaderBtn
                             onClick={() => handleUsersActiveChange(`personal_info`)}
@@ -52,7 +78,7 @@ export default function Sections(props: Props) {
                         />
                     </>
                 }
-                {user_state.is_vendor &&
+                {user_state.is_vendor && user === user_state.username &&
                     <>
                         <MainHeaderBtn
                             onClick={() => handleVendorsActiveChange(`personal_info`)}
@@ -64,6 +90,40 @@ export default function Sections(props: Props) {
                             onClick={() => handleVendorsActiveChange(`reviews`)}
                             styles={`${vendorsIsActive.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={vendorsIsActive.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
+                            content={`Reviews`}
+                        />
+                    </>
+                }
+                {/* User visit User profile */}
+                {!user_info?.is_vendor && user !== user_state.username &&
+                    <>
+                        <MainHeaderBtn
+                            onClick={() => handleIsVisitedUserSectionsActive(`wishlist`)}
+                            styles={`${is_visited_user_sections_active.wishlist ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
+                            src={is_visited_user_sections_active.wishlist ? '/profile/wishlist-active.svg' : '/profile/wishlist-not-active.svg'}
+                            content={`Wishlist`}
+                        />
+                        <MainHeaderBtn
+                            onClick={() => handleIsVisitedUserSectionsActive(`reviews`)}
+                            styles={`${is_visited_user_sections_active.reviews ? 'text-main_color !border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
+                            src={is_visited_user_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
+                            content={`Reviews`}
+                        />
+                    </>
+                }
+                {/* User visit Vendor profile */}
+                {user_info?.is_vendor && user !== user_state.username &&
+                    <>
+                        <MainHeaderBtn
+                            onClick={() => handleIsVisitedVendorSectionsActive(`books`)}
+                            styles={`${is_visited_vendor_sections_active.books ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
+                            src={is_visited_vendor_sections_active.books ? '/profile/books-active.svg' : '/profile/books-not-active.svg'}
+                            content={`Books`}
+                        />
+                        <MainHeaderBtn
+                            onClick={() => handleIsVisitedVendorSectionsActive(`reviews`)}
+                            styles={`${is_visited_vendor_sections_active.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
+                            src={is_visited_vendor_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
                             content={`Reviews`}
                         />
                     </>

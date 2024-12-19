@@ -15,7 +15,11 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $avatar = $this->getFirstMedia('users_avatars')?->getUrl() ?? '';
+        $avatar = '';
+
+        if ($this->resource && method_exists($this->resource, 'getFirstMedia')) {
+            $avatar = $this->resource->getFirstMedia('users_avatars')?->getUrl() ?? '';
+        }
 
         return [
             'id' => $this->id,
@@ -28,6 +32,7 @@ class UserResource extends JsonResource
             'avatar' => $avatar,
             "created_at" => $this->created_at?->format('M d'),
             "updated_at" => $this->updated_at?->format('M d'),
+            'is_vendor' => false,
         ];
     }
 }

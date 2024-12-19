@@ -6,7 +6,7 @@ import Footer from "../components/Footer.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
-import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
+import {Book, Errors, SignUpForm, User} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
 import {enqueueSnackbar, SnackbarProvider} from "notistack";
@@ -17,12 +17,14 @@ import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
 import axios from "axios";
 import {setUser} from "../../redux/user-slice.ts";
+import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 export default function Profile() {
 
     const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
+    const user_state = useSelector((state: RootState) => state.user)
+    const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const location = useLocation();
     const { user } = useParams()
-    const user_state = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch();
 
     const [books, setBooks] = useState<Book[]>([]);
@@ -49,7 +51,6 @@ export default function Profile() {
     const [temp_token, setTemp_token] = useState('');
     const [avatar, setAvatar] = useState<string | File | null>(null);
     const [show_save_avatar_btn, setShow_save_avatar_btn] = useState(false);
-
 
     const onFocus = () => {
         setIs_confirm_user_password_input_focused(true)
@@ -226,6 +227,24 @@ export default function Profile() {
                 enqueueSnackbar(err.response?.data?.errors || 'Something went wrong', { variant: "error" });
             });
     }
+    const getUserInfo = () => {
+        apiClient().get(`/users/${user}`)
+            .then(res  => {
+                if (res.data.data.user) {
+                    dispatch(setUserProfileInfo(res.data.data.user))
+                }else {
+                    dispatch(setUserProfileInfo(res.data.data.vendor))
+                }
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors)
+            })
+    }
+
+    useEffect(() => {
+        getUserInfo()
+    }, []);
+
 
     return (
         <>
@@ -273,7 +292,7 @@ export default function Profile() {
                             {error_password_confirmation && <span className={`text-red-600`}>{error_password_confirmation}</span>}
                         <div className="w-full">
                             <Button
-                                className={`bg-main_color px-2 h-[42px] text-white rounded font-roboto-semi-bold text-lg`}
+                                className={`bg-main_color px-2 text-white rounded font-roboto-semi-bold text-lg`}
                                 onClick={submitConfirmPassword}
                             >
                                 {is_loading_password_confirmation && <Spinner className="!text-white fill-zinc-400" />}
@@ -297,7 +316,7 @@ export default function Profile() {
                                     >
                                         <img
                                             className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white cursor-pointer flex items-center gap-x-2`}
-                                            src={user_state.avatar && !avatar ? user_state.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
+                                            src={user_info?.avatar && !avatar ? user_info?.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
                                             alt={`avatar`}
                                         />
                                         <div className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
@@ -323,12 +342,12 @@ export default function Profile() {
                                 }
                             </div>
                             <span className={`text-2xl font-roboto-semi-bold tracking-wide`}>
-                                {user_state ? (user_state?.first_name[0]?.toUpperCase() + user_state.first_name.slice(1)) + ' ' + (user_state?.last_name[0]?.toUpperCase() + user_state.last_name.slice(1)) : ''}
+                                {user_info ? (user_info?.first_name[0]?.toUpperCase() + user_info.first_name.slice(1)) + ' ' + (user_info?.last_name[0]?.toUpperCase() + user_info.last_name.slice(1)) : ''}
                             </span>
                         </div>
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
-                            {user_state.is_vendor &&
+                            {user_info?.is_vendor && user_state.username === user &&
                                 <Link
                                     to={`/`}
                                     className={`bg-main_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}

@@ -7,7 +7,10 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\VerifyPasswordRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\VendorResource;
 use App\Models\Book;
+use App\Models\User;
+use App\Models\Vendor;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
@@ -98,5 +101,29 @@ class UserProfileController extends Controller implements HasMedia
         }
 
         return $this->response_error(['avatar' => 'No avatar file was uploaded.'], 'Avatar update failed.', 400);
+    }
+
+    public function getUserInfo($username): JsonResponse
+    {
+        $user = User::where('username', $username)->first();
+        if ($user) {
+            $user = new UserResource($user);
+            $data = [
+                'user' => $user
+            ];
+            return $this->response_success($data, 'User found!');
+        }
+
+        $vendor = Vendor::where('username', $username)->first();
+        Log::info('vendor', [$vendor]);
+        if ($vendor) {
+            $vendor = new VendorResource($vendor);
+            $data = [
+                'vendor' => $vendor
+            ];
+            return $this->response_success($data, 'Vendor found!');
+        }
+
+        return $this->response_error('User not found!', [], 404);
     }
 }
