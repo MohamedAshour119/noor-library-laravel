@@ -205,26 +205,14 @@ export default function Header() {
                                                     Profile
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem as={`div`}>
-                                                {!user.is_vendor &&
-                                                    <button
-                                                        onClick={handleOpen}
-                                                        className={`group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-main_color hover:text-white bg-white text-text_color`}
-                                                    >
-                                                        <FaBook className={`size-5`}/>
-                                                        Upload Book
-                                                    </button>
-                                                }
-
-                                                {user.is_vendor &&
-                                                    <Link
-                                                        to={`/add-book`}
-                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
-                                                    >
-                                                        <FaBook className={`size-5`}/>
-                                                        Upload Book
-                                                    </Link>
-                                                }
+                                            <MenuItem>
+                                                <Link
+                                                    to={`/add-book`}
+                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                >
+                                                    <FaBook className={`size-5`}/>
+                                                    Upload Book
+                                                </Link>
                                             </MenuItem>
                                             <MenuItem>
                                                 <button

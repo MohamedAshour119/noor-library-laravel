@@ -22,6 +22,11 @@ export default {
             },
         },
         screens: {
+            'max-502': { max: '502px' },
+            'min-503': { min: '503px' },
+            'min-513': { min: '513px' },
+            'max-527': { max: '527px' },
+
             'xxs': '445px',
             'xs': '500px',
             'sm': '640px',

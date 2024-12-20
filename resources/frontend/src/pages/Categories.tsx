@@ -16,7 +16,8 @@ export default function Categories() {
     const [is_loading, setIs_loading] = useState(true);
     const [search_value, setSearch_value] = useState('');
     const [search_loading, setSearch_loading] = useState(false);
-
+    const search_input_ref = useRef<HTMLInputElement | null>(null)
+    const [is_focused, setIs_focused] = useState(false);
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch_value(e.target.value)
@@ -106,7 +107,9 @@ export default function Categories() {
     const clearSearchInput = () => {
         setSearch_value('')
         getCategories('/get-categories')
+        setIs_focused(false)
     }
+
 
     return (
         <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
@@ -117,14 +120,18 @@ export default function Categories() {
 
                         <div className="relative">
                             <input
+                                ref={search_input_ref}
                                 type="text"
                                 className="w-full px-4 pe-14 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-main_color"
                                 placeholder="Search for category"
                                 value={search_value}
                                 onChange={handleSearchChange}
+                                onFocus={() => setIs_focused(true)}
+                                onBlur={() => setIs_focused(false)}
                             />
-                            {search_value.length > 0 &&
+                            {(search_value.length > 0 || is_focused) &&
                                 <button
+                                    onMouseDown={(e) => e.preventDefault()}
                                     onClick={clearSearchInput}
                                     className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
                                     <IoMdClose size={24} className="text-gray-500"/>

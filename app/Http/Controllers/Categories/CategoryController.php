@@ -22,6 +22,7 @@ class CategoryController extends Controller
     public function searchForCategory($keyword): JsonResponse
     {
         $categories = Category::where('name', 'like', "%{$keyword}%")
+            ->withCount('books')
             ->orderBy('name', 'asc')
             ->paginate(10);
         return $this->response_success($categories, 'Categories search results retrieved');
@@ -29,7 +30,7 @@ class CategoryController extends Controller
 
     public function getCategoryBooks($category): JsonResponse
     {
-        $books = Book::paginate(12);
+        $books = Book::paginate(3);
         $next_page_url = $books->nextPageUrl();
         $books = BookResource::collection($books);
         $data = [

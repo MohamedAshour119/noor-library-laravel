@@ -87,7 +87,7 @@ export default function Home() {
                     </form>
 
                     <div className={`flex flex-col items-center gap-y-8`}>
-                        <div className={`flex max-[527px]:flex-col max-[527px]:gap-y-3 min-[528px]:flex-row gap-x-4 min-[513px]:gap-x-7 mt-4`}>
+                        <div className={`flex flex-col min-503:flex-row gap-x-4 min-503:gap-x-4 gap-y-3 mt-4`}>
                             <HeroSectionBtn content={`Trending Today`}/>
                             <HeroSectionBtn content={`Popular Books`}/>
                             <HeroSectionBtn content={`Latest Books`}/>
