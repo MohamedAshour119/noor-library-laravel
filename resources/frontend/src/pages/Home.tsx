@@ -48,7 +48,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="max-[527]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
+            <div className="max-[527px]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
                 {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
                 {!user.is_vendor &&
                     <Modal

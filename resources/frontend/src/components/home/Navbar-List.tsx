@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {Dispatch, SetStateAction, useState} from 'react'
 import {IoHome} from "react-icons/io5";
 import {BiCategoryAlt} from "react-icons/bi";
 import {FaUsers} from "react-icons/fa";
@@ -16,13 +16,9 @@ interface Props {
     styles?: string
     is_small_screens_menu?: boolean
     checkIsLocationIsNotInNavlinkSlice: boolean
+    setIsOpen?: Dispatch<SetStateAction<boolean>>
 }
 export default function NavbarList({isActive, handleActiveLink, styles, is_small_screens_menu = false, checkIsLocationIsNotInNavlinkSlice}: Props) {
-
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleMenu = () => {
-        setIsOpen(!isOpen)
-    }
 
     return (
         <>

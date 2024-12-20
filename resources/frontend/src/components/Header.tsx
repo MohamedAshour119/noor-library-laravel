@@ -60,9 +60,6 @@ export default function Header() {
     }
 
     const body_el = document.body;
-    const handleOpen = () => {
-        setIsFocused(true)
-    }
     const handleClose = () => {
         setIsFocused(false)
     }
@@ -91,7 +88,7 @@ export default function Header() {
     return (
         <>
             {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
-            <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto h-[29.4vh] z-10 border-t-[3px] border-main_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
+            <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto z-10 border-t-[3px] border-main_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
             {!user.is_vendor &&
                 <Modal
                     show={isFocused}
@@ -145,6 +142,7 @@ export default function Header() {
                             </Link>
                             <ul className={`hidden sm:flex gap-x-7 h-full pt-3`}>
                                 <NavbarList
+                                    setIsOpen={setIsOpen}
                                     isActive={isActive}
                                     handleActiveLink={handleActiveLink}
                                     checkIsLocationIsNotInNavlinkSlice={checkIsLocationIsNotInNavlinkSlice}
