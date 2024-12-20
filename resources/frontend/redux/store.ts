@@ -3,6 +3,8 @@ import userReducer from './user-slice'
 import checkNavLinkActiveReducer from './is-location-is-not-in-navlink-slice'
 import usersProfileIsActiveReducer from './users-profile-is-active-slice.ts'
 import vendorsProfileIsActiveReducer from './vendors-profile-is-active-slice.ts'
+import isVisitedUserSectionsActive from './is_visited_user_sections_active.ts'
+import isVisitedVendorSectionsActive from './is_visited_vendor_sections_active.ts'
 import userProfileInfoReducer from './user-profile-info-slice.ts'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from "redux-persist"
@@ -12,6 +14,10 @@ const persistConfig = {
     key: 'root',
     version: 1,
     storage,
+    blacklist: [
+        'usersProfileIsActiveReducer',
+        'vendorsProfileIsActiveReducer',
+    ],
 }
 
 const reducer = combineReducers({
@@ -20,6 +26,8 @@ const reducer = combineReducers({
     usersProfileIsActiveReducer: usersProfileIsActiveReducer,
     vendorsProfileIsActiveReducer: vendorsProfileIsActiveReducer,
     userProfileInfoReducer: userProfileInfoReducer,
+    isVisitedUserSectionsActive: isVisitedUserSectionsActive,
+    isVisitedVendorSectionsActive: isVisitedVendorSectionsActive,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

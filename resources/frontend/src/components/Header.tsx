@@ -16,6 +16,8 @@ import {enqueueSnackbar} from "notistack";
 import {clearUser} from "../../redux/user-slice.ts";
 import apiClient from "../../ApiClient.ts";
 import {Modal} from "flowbite-react";
+import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts";
+import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 
 export default function Header() {
 
@@ -50,6 +52,8 @@ export default function Header() {
                 localStorage.removeItem('token')
                 localStorage.removeItem('expires_at')
                 dispatch(clearUser())
+                dispatch(setResetUsersActive())
+                dispatch(setResetVendorsActive())
             }).catch(err => {
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
         })

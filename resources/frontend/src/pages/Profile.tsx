@@ -20,14 +20,19 @@ import {setUser} from "../../redux/user-slice.ts";
 import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 export default function Profile() {
 
-    const isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
+    const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
+    const vendor_isActive = useSelector((state: RootState) => state.vendorsProfileIsActiveReducer);
     const user_state = useSelector((state: RootState) => state.user)
     const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
-    const location = useLocation();
+    const is_visited_user_sections_active = useSelector((state: RootState) => state.isVisitedUserSectionsActive);
+    const is_visited_vendor_sections_active = useSelector((state: RootState) => state.isVisitedVendorSectionsActive);
     const { user } = useParams()
     const dispatch = useDispatch();
 
     const [books, setBooks] = useState<Book[]>([]);
+    const [reviews, setReviews] = useState([]);
+    const [wishlist, setWishlist] = useState([]);
+    const [orders_history, setOrders_history] = useState([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
     const [is_loading, setIs_loading] = useState(false);
@@ -83,10 +88,6 @@ export default function Profile() {
                 setIs_fetching(false)
             })
     }
-
-    useEffect(() => {
-        // getBook('get-user-books')
-    }, []);
 
     const last_book_ref = useRef(null);
     const show_books = books.map((book, index) => (
@@ -243,7 +244,9 @@ export default function Profile() {
 
     useEffect(() => {
         getUserInfo()
-    }, []);
+    }, [user]);
+
+    const display_name = user_info ? (user_info?.first_name[0]?.toUpperCase() + user_info.first_name.slice(1)) + ' ' + (user_info?.last_name[0]?.toUpperCase() + user_info.last_name.slice(1)) : ''
 
 
     return (
@@ -308,30 +311,40 @@ export default function Profile() {
                 <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
                     <div className={`p-5 flex flex-col items-center`}>
                         <div className={`flex flex-col items-center gap-y-3`}>
-                            <div className={`relative cursor-pointer`}>
-                                <div className={`group`}>
-                                    <label
-                                        htmlFor="avatar"
-                                        className={`cursor-pointer`}
-                                    >
-                                        <img
-                                            className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white cursor-pointer flex items-center gap-x-2`}
-                                            src={user_info?.avatar && !avatar ? user_info?.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
-                                            alt={`avatar`}
-                                        />
-                                        <div className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
-                                            <FaCamera className={`size-12 text-white`}/>
-                                        </div>
-                                    </label>
+                            <div className={`relative`}>
+                                {user_state.username === user &&
+                                    <div className={`group cursor-pointer`}>
+                                        <label
+                                            htmlFor="avatar"
+                                            className={`cursor-pointer`}
+                                        >
+                                            <img
+                                                className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white cursor-pointer flex items-center gap-x-2`}
+                                                src={user_info?.avatar && !avatar ? user_info?.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
+                                                alt={`avatar`}
+                                            />
+                                            <div
+                                                className={`bg-black/40 size-[150px] rounded-full flex justify-center items-center absolute top-0 invisible group-hover:visible`}>
+                                                <FaCamera className={`size-12 text-white`}/>
+                                            </div>
+                                        </label>
 
-                                    <input
-                                        type="file"
-                                        id={`avatar`}
-                                        name={'avatar'}
-                                        className="hidden"
-                                        onChange={handleAvatarUpload}
+                                        <input
+                                            type="file"
+                                            id={`avatar`}
+                                            name={'avatar'}
+                                            className="hidden"
+                                            onChange={handleAvatarUpload}
+                                        />
+                                    </div>
+                                }
+                                {user_state.username !== user &&
+                                    <img
+                                        className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white flex items-center gap-x-2`}
+                                        src={user_info?.avatar && !avatar ? user_info?.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
+                                        alt={`avatar`}
                                     />
-                                </div>
+                                }
                                 {show_save_avatar_btn &&
                                     <button
                                         className={`bg-main_color mt-2 py-1 text-white rounded font-roboto-semi-bold w-full text-lg`}
@@ -342,12 +355,12 @@ export default function Profile() {
                                 }
                             </div>
                             <span className={`text-2xl font-roboto-semi-bold tracking-wide`}>
-                                {user_info ? (user_info?.first_name[0]?.toUpperCase() + user_info.first_name.slice(1)) + ' ' + (user_info?.last_name[0]?.toUpperCase() + user_info.last_name.slice(1)) : ''}
+                                {display_name}
                             </span>
                         </div>
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
-                            {user_info?.is_vendor && user_state.username === user &&
+                            {user_info?.is_vendor && user_state.is_vendor && user_state.username === user &&
                                 <Link
                                     to={`/`}
                                     className={`bg-main_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
@@ -389,8 +402,8 @@ export default function Profile() {
                 </div>
                 {!is_loading &&
                     <div className={`container w-full`}>
-                        {/*{isActive.books && books_total_page.current === 0 &&*/}
-                        {isActive.personal_info &&
+                        {/*{user_isActive.books && books_total_page.current === 0 &&*/}
+                        {((user_isActive.personal_info && vendor_isActive.personal_info) && user_state.username === user) &&
                             <form className={`bg-white p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
@@ -484,20 +497,57 @@ export default function Profile() {
                                 </div>
                             </form>
                         }
-                        {isActive.wishlist &&
+                        {user_info?.is_vendor && user !== user_state.username && books.length === 0 && is_visited_vendor_sections_active.books &&
                             <NotFoundContainer
-                                src={`/profile/review-not-found.svg`}
-                                content={`There are no reviews on books for "Mohamed Ashour" Till Now.`}
-                                is_review_section_active={true}
-                                is_book_section_active={false}
+                                src={`/profile/books-not-found.svg`}
+                                visited_user={display_name}
+                                content={`has no books yet.`}
+                                content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {isActive.order_history &&
+                        {user_info?.is_vendor && user !== user_state.username && reviews.length === 0 && is_visited_vendor_sections_active.reviews &&
                             <NotFoundContainer
-                                src={`/profile/purchased-books-not-found.svg`}
-                                content={`There are no purchased books for "Mohamed Ashour" Till Now.`}
-                                is_purchased_books_active={true}
-                                is_book_section_active={false}
+                                src={`/profile/reviews-not-found.svg`}
+                                visited_user={display_name}
+                                content={`has no reviews.`}
+                                content_style={`font-roboto-semi-bold`}
+                            />
+                        }
+                        {!user_info?.is_vendor && user !== user_state.username && wishlist.length === 0 && is_visited_user_sections_active.wishlist &&
+                            <NotFoundContainer
+                                src={`/profile/wishlist-not-active.svg`}
+                                visited_user={display_name}
+                                content={`has nothing in wishlist.`}
+                                content_style={`font-roboto-semi-bold`}
+                            />
+                        }
+                        {!user_info?.is_vendor && user !== user_state.username && reviews.length === 0 && is_visited_user_sections_active.reviews &&
+                            <NotFoundContainer
+                                src={`/profile/reviews-not-found.svg`}
+                                visited_user={display_name}
+                                content={`didn't review any book.`}
+                                content_style={`font-roboto-semi-bold`}
+                            />
+                        }
+                        {!user_info?.is_vendor && user === user_state.username && wishlist.length === 0 && user_isActive.wishlist &&
+                            <NotFoundContainer
+                                src={`/profile/wishlist-not-active.svg`}
+                                content={`You have nothing in wishlist.`}
+                                content_style={`font-roboto-semi-bold`}
+                            />
+                        }
+                        {!user_info?.is_vendor && user === user_state.username && orders_history.length === 0 && user_isActive.order_history &&
+                            <NotFoundContainer
+                                src={`/profile/order-history-not-active.svg`}
+                                content={`You have nothing in wishlist.`}
+                                content_style={`font-roboto-semi-bold`}
+                            />
+                        }
+                        {user_info?.is_vendor && user === user_state.username && reviews.length === 0 && vendor_isActive.reviews &&
+                            <NotFoundContainer
+                                src={`/profile/reviews-not-found.svg`}
+                                content={`Your books have no reviews.`}
+                                content_style={`font-roboto-semi-bold`}
                             />
                         }
                     </div>

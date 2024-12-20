@@ -4,12 +4,14 @@ type ProfileState = {
     personal_info: boolean
     reviews: boolean
 };
+
+const initialState = {
+    personal_info: true,
+    reviews: false,
+}
 export const usersProfileIsActiveSlice = createSlice({
     name: 'vendorsProfileIsActiveSlice',
-    initialState: {
-        personal_info: true,
-        reviews: false,
-    },
+    initialState: initialState,
     reducers: {
         setVendorsActive: (state, action: PayloadAction<keyof ProfileState>) => {
             Object.keys(state).forEach((key) => {
@@ -18,8 +20,11 @@ export const usersProfileIsActiveSlice = createSlice({
 
             state[action.payload] = true;
         },
+        setResetVendorsActive: () => {
+            return initialState
+        }
     },
 })
 
-export const {setVendorsActive} = usersProfileIsActiveSlice.actions
+export const {setVendorsActive, setResetVendorsActive} = usersProfileIsActiveSlice.actions
 export default usersProfileIsActiveSlice.reducer

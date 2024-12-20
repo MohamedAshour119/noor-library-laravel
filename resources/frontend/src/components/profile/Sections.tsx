@@ -6,6 +6,8 @@ import {setVendorsActive} from "../../../redux/vendors-profile-is-active-slice.t
 import {Dispatch, SetStateAction, useState} from "react";
 import {Errors, User} from "../../../Interfaces.ts";
 import {useParams} from "react-router-dom";
+import {setIsVisitedUserSectionsActive} from "../../../redux/is_visited_user_sections_active.ts";
+import {setIsVisitedVendorSectionsActive} from "../../../redux/is_visited_vendor_sections_active.ts";
 
 interface Props {
     books_count: number
@@ -18,31 +20,9 @@ export default function Sections(props: Props) {
     const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const usersIsActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
     const vendorsIsActive = useSelector((state: RootState) => state.vendorsProfileIsActiveReducer);
+    const is_visited_user_sections_active = useSelector((state: RootState) => state.isVisitedUserSectionsActive);
+    const is_visited_vendor_sections_active = useSelector((state: RootState) => state.isVisitedVendorSectionsActive);
     const dispatch = useDispatch()
-
-    const [is_visited_user_sections_active, setIs_visited_user_sections_active] = useState({
-        wishlist: true,
-        reviews: false,
-    });
-    const [is_visited_vendor_sections_active, setIs_visited_vendor_sections_active] = useState({
-        books: true,
-        reviews: false,
-    });
-
-    const handleIsVisitedUserSectionsActive = (section: string) => {
-        setIs_visited_user_sections_active({
-            wishlist: false,
-            reviews: false,
-            [section]: true,
-        })
-    }
-    const handleIsVisitedVendorSectionsActive = (section: string) => {
-        setIs_visited_vendor_sections_active({
-            books: false,
-            reviews: false,
-            [section]: true,
-        })
-    }
 
     const handleUsersActiveChange = (section: "personal_info" | "wishlist" | "order_history") => {
         setErrors({})
@@ -73,7 +53,7 @@ export default function Sections(props: Props) {
                         <MainHeaderBtn
                             onClick={() => handleUsersActiveChange(`order_history`)}
                             styles={`${usersIsActive.order_history ? 'text-main_color !border-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
-                            src={usersIsActive.order_history ? '/profile/purchased-books-active.svg' : '/profile/purchased-books-not-active.svg'}
+                            src={usersIsActive.order_history ? '/profile/order-history-active.svg' : '/profile/order-history-not-active.svg'}
                             content={`Orders History`}
                         />
                     </>
@@ -98,13 +78,13 @@ export default function Sections(props: Props) {
                 {!user_info?.is_vendor && user !== user_state.username &&
                     <>
                         <MainHeaderBtn
-                            onClick={() => handleIsVisitedUserSectionsActive(`wishlist`)}
+                            onClick={() => dispatch(setIsVisitedUserSectionsActive(`wishlist`))}
                             styles={`${is_visited_user_sections_active.wishlist ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_user_sections_active.wishlist ? '/profile/wishlist-active.svg' : '/profile/wishlist-not-active.svg'}
                             content={`Wishlist`}
                         />
                         <MainHeaderBtn
-                            onClick={() => handleIsVisitedUserSectionsActive(`reviews`)}
+                            onClick={() => dispatch(setIsVisitedUserSectionsActive(`reviews`))}
                             styles={`${is_visited_user_sections_active.reviews ? 'text-main_color !border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_user_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
                             content={`Reviews`}
@@ -115,13 +95,13 @@ export default function Sections(props: Props) {
                 {user_info?.is_vendor && user !== user_state.username &&
                     <>
                         <MainHeaderBtn
-                            onClick={() => handleIsVisitedVendorSectionsActive(`books`)}
+                            onClick={() => dispatch(setIsVisitedVendorSectionsActive(`books`))}
                             styles={`${is_visited_vendor_sections_active.books ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.books ? '/profile/books-active.svg' : '/profile/books-not-active.svg'}
                             content={`Books`}
                         />
                         <MainHeaderBtn
-                            onClick={() => handleIsVisitedVendorSectionsActive(`reviews`)}
+                            onClick={() => dispatch(setIsVisitedVendorSectionsActive(`reviews`))}
                             styles={`${is_visited_vendor_sections_active.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
                             content={`Reviews`}
