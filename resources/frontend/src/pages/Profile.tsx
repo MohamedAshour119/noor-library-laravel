@@ -35,7 +35,7 @@ export default function Profile() {
     const [orders_history, setOrders_history] = useState([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
-    const [is_loading, setIs_loading] = useState(false);
+    const [is_loading, setIs_loading] = useState(true);
     const [books_count, setBooks_count] = useState(0);
     const [formData, setFormData] = useState<SignUpForm>({
         first_name: user_state.first_name,
@@ -78,12 +78,33 @@ export default function Profile() {
             .then(res => {
                 setBooks(prevState => [...prevState, ...res.data.data.books])
                 setBooks_next_page_url(res.data.data.next_page_url)
-                setIs_loading(false)
-                setIs_fetching(false)
             })
             .catch(err => {
                 navigate('/')
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_loading(false)
+                setIs_fetching(false)
+            })
+    }
+    const getUserInfo = () => {
+        setIs_fetching(true)
+        apiClient().get(`/users/${user}`)
+            .then(res  => {
+                if (res.data.data.user) {
+                    dispatch(setUserProfileInfo(res.data.data.user))
+                }else {
+                    dispatch(setUserProfileInfo(res.data.data.vendor))
+                    setBooks(res.data.data.books)
+                    setBooks_next_page_url(res.data.data.next_page_url)
+                    setBooks_count(res.data.data.books_count)
+                }
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors)
+            })
+            .finally(() => {
                 setIs_loading(false)
                 setIs_fetching(false)
             })
@@ -98,6 +119,7 @@ export default function Profile() {
                 cover={book.cover}
                 author={book.author}
                 ref={last_book_ref}
+                styles={`w-full`}
             />
         )
     )
@@ -228,19 +250,6 @@ export default function Profile() {
                 enqueueSnackbar(err.response?.data?.errors || 'Something went wrong', { variant: "error" });
             });
     }
-    const getUserInfo = () => {
-        apiClient().get(`/users/${user}`)
-            .then(res  => {
-                if (res.data.data.user) {
-                    dispatch(setUserProfileInfo(res.data.data.user))
-                }else {
-                    dispatch(setUserProfileInfo(res.data.data.vendor))
-                }
-            })
-            .catch(err => {
-                enqueueSnackbar(err.response.data.errors)
-            })
-    }
 
     useEffect(() => {
         getUserInfo()
@@ -354,7 +363,7 @@ export default function Profile() {
                                     </button>
                                 }
                             </div>
-                            <span className={`text-2xl font-roboto-semi-bold tracking-wide`}>
+                            <span className={`text-2xl font-roboto-semi-bold tracking-wide text-center`}>
                                 {display_name}
                             </span>
                         </div>
@@ -497,13 +506,21 @@ export default function Profile() {
                                 </div>
                             </form>
                         }
-                        {user_info?.is_vendor && user !== user_state.username && books.length === 0 && is_visited_vendor_sections_active.books &&
-                            <NotFoundContainer
-                                src={`/profile/books-not-found.svg`}
-                                visited_user={display_name}
-                                content={`has no books yet.`}
-                                content_style={`font-roboto-semi-bold`}
-                            />
+                        {user_info?.is_vendor && user !== user_state.username && books.length === 0 && is_visited_vendor_sections_active.books ?
+                            (
+                                <NotFoundContainer
+                                    src={`/profile/books-not-found.svg`}
+                                    visited_user={display_name}
+                                    content={`has no books yet.`}
+                                    content_style={`font-roboto-semi-bold`}
+                                />
+                            ) : (
+                                <div className={`max-xxs:px-10 grid xxs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 !w-full`}>
+                                    {show_books}
+                                    {show_books}
+                                    {show_books}
+                                </div>
+                            )
                         }
                         {user_info?.is_vendor && user !== user_state.username && reviews.length === 0 && is_visited_vendor_sections_active.reviews &&
                             <NotFoundContainer
@@ -539,7 +556,7 @@ export default function Profile() {
                         {!user_info?.is_vendor && user === user_state.username && orders_history.length === 0 && user_isActive.order_history &&
                             <NotFoundContainer
                                 src={`/profile/order-history-not-active.svg`}
-                                content={`You have nothing in wishlist.`}
+                                content={`You have no orders yet.`}
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }

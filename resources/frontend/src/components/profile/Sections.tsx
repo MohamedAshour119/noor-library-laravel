@@ -98,7 +98,7 @@ export default function Sections(props: Props) {
                             onClick={() => dispatch(setIsVisitedVendorSectionsActive(`books`))}
                             styles={`${is_visited_vendor_sections_active.books ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.books ? '/profile/books-active.svg' : '/profile/books-not-active.svg'}
-                            content={`Books`}
+                            content={`Books (${books_count})`}
                         />
                         <MainHeaderBtn
                             onClick={() => dispatch(setIsVisitedVendorSectionsActive(`reviews`))}

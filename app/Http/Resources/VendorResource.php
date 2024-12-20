@@ -32,7 +32,7 @@ class VendorResource extends JsonResource
             "created_at" => $this->created_at?->format('M d'),
             "updated_at" => $this->updated_at?->format('M d'),
             'is_vendor' => true,
-            'books' => $this->books,
+//            'books' => $this->books,
         ];
     }
 }

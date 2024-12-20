@@ -8,16 +8,17 @@ interface Props {
     title: string;
     author: string;
     ref?: Ref<HTMLAnchorElement>
+    styles?: string
 }
 
 export default function BookCard(props: Props) {
-    const {rate, cover, title, author, ref } = props
+    const {rate, cover, title, author, ref, styles } = props
 
     return (
         <Link
             ref={ref}
             to={`#`}
-            className={`relative flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
+            className={`${styles ? styles : ''} relative flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
         >
             <div className="flex items-center gap-x-2">
                 <div className="flex text-[#E0E0E0]">

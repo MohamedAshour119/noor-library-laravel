@@ -23,9 +23,9 @@ class BookResource extends JsonResource
             'author' => $this->author_name,
             'category' => $this->category,
             'downloadable' => $this->downloadable === 1,
-            'cover' => $this->getFirstMedia('books_covers')?->getUrl() ?? '',
-            'book_file' => $this->getFirstMedia('books_files')?->getUrl() ?? '',
-//            'user' => $this->user,
+            'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
+            'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
+            'vendor' => new VendorResource($this->vendor),
         ];
     }
 }

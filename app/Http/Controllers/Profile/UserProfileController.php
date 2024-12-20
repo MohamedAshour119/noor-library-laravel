@@ -114,12 +114,22 @@ class UserProfileController extends Controller implements HasMedia
             return $this->response_success($data, 'User found!');
         }
 
-        $vendor = Vendor::where('username', $username)->first();
-        Log::info('vendor', [$vendor]);
+        $vendor = Vendor::where('username', $username)
+            ->withCount('books')
+            ->first();
         if ($vendor) {
             $vendor = new VendorResource($vendor);
+            $books = Book::where('vendor_id', $vendor->id)
+                ->with(['vendor', 'media'])
+                ->paginate(3);
+            $next_page_url = $books->nextPageUrl();
+            $books = BookResource::collection($books);
+
             $data = [
-                'vendor' => $vendor
+                'vendor' => $vendor,
+                'books' => $books,
+                'next_page_url' => $next_page_url,
+                'books_count' => $vendor->books_count,
             ];
             return $this->response_success($data, 'Vendor found!');
         }

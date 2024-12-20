@@ -11,7 +11,6 @@ class Book extends Model implements HasMedia
 {
     use InteractsWithMedia;
     protected $guarded = [];
-
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
