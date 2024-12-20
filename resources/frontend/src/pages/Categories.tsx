@@ -21,7 +21,6 @@ export default function Categories() {
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         setSearch_value(e.target.value)
     }
-    const root_el = document.getElementById(`root`);
 
     const getCategories = (page_url: string, fetch_at_start = true) => {
         if (fetch_at_start) {
@@ -34,8 +33,6 @@ export default function Categories() {
                 setIs_fetching(false)
                 setCategories(prevState => ([...prevState, ...res.data.data.data]))
                 setCategories_next_page_url(res.data.data.next_page_url)
-                root_el?.classList.remove('h-svh')
-
             })
             .catch(err => {
                 setIs_loading(false)
@@ -55,6 +52,7 @@ export default function Categories() {
             id={category.id}
             title={category.name}
             ref={last_category_ref}
+            books_count={category.books_count}
         />
     ))
 
@@ -83,7 +81,6 @@ export default function Categories() {
     const getSearchingResults = (keyword: string) => {
         setIs_fetching(true)
         setSearch_loading(true)
-        root_el?.classList.add('h-svh')
 
         apiClient().get(`/search-category/${keyword}`)
             .then(res => {
@@ -109,13 +106,12 @@ export default function Categories() {
     const clearSearchInput = () => {
         setSearch_value('')
         getCategories('/get-categories')
-        root_el?.classList.add('h-svh')
     }
 
     return (
-        <div className="flex flex-col h-full text-text_color">
+        <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
             {!is_loading &&
-                <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 h-full`}>
+                <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3`}>
                         <h1 className={`text-2xl font-roboto-semi-bold`}>book categories</h1>
 

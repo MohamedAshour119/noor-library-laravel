@@ -18,6 +18,6 @@
 </head>
 <body>
 {{--    <div id="root" class="flex flex-col h-full min-h-svh"></div>--}}
-    <div id="root" class="h-full grid"></div>
+    <div id="root" class="h-full"></div>
 </body>
 </html>
