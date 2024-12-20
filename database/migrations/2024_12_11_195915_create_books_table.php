@@ -18,7 +18,6 @@ return new class extends Migration
             $table->boolean('is_author')->default(false);
             $table->string('author_name');
             $table->string('language');
-            $table->string('category');
             $table->boolean('downloadable')->default(false);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();

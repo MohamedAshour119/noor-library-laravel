@@ -94,6 +94,7 @@ export interface Book {
 export interface CategoryInterface {
     id: number
     name: string
+    books_count: number
 }
 
 export interface SignUpForm {

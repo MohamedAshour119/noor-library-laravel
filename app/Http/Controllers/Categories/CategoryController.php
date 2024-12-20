@@ -15,7 +15,7 @@ class CategoryController extends Controller
     use HttpResponses;
     public function getCategories(): JsonResponse
     {
-        $categories = Category::paginate(10);
+        $categories = Category::withCount('books')->paginate(10);
         return $this->response_success($categories, 'Categories retrieved');
     }
 

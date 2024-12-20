@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Vendors;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AddBookRequest;
 use App\Models\Book;
+use App\Models\Category;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class AddBookController extends Controller
@@ -16,6 +18,7 @@ class AddBookController extends Controller
     public function addBook(AddBookRequest $request): JsonResponse
     {
         $price = $request->filled('price') ? $request->price : null;
+        $category = Category::where('name', $request->category)->first('id');
 
         $book = Book::create([
             'title' => $request->title,
@@ -25,9 +28,9 @@ class AddBookController extends Controller
             'is_free' => $request->is_free,
             'price' => $price,
             'language' => $request->language,
-            'category' => $request->category,
             'downloadable' => $request->downloadable,
             'vendor_id' => Auth::id(),
+            'category_id' => $category->id,
             'status' => 'pending',
         ]);
 

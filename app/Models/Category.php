@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Category extends Model
 {
     protected $guarded = [];
+//    protected $withCount = ['books'];
 
     public function books(): HasMany
     {

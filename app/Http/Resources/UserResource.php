@@ -30,8 +30,8 @@ class UserResource extends JsonResource
             'country_code' => $this->country_code,
             'email' => $this->email,
             'avatar' => $avatar,
-            "created_at" => $this->created_at?->format('M d'),
-            "updated_at" => $this->updated_at?->format('M d'),
+            'created_at' => $this->created_at?->format('M d'),
+            'updated_at' => $this->updated_at?->format('M d'),
             'is_vendor' => false,
         ];
     }

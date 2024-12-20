@@ -61,7 +61,6 @@ class AddBookRequest extends FormRequest
             'price' => [new ValidateBookPrice($this->input('is_free'))],
             'language' => ['min:2', 'max:2'],
             'author' => ['required', 'max:80'],
-            'category' => ['required'],
             'downloadable' => ['boolean'],
             'cover' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
             'book_file' => ['file', 'mimes:pdf', 'max:81920'],
@@ -77,5 +76,12 @@ class AddBookRequest extends FormRequest
             'message' => 'Validation failed.',
             'errors' => $errors,
         ], 422));
+    }
+    protected function passedValidation(): void
+    {
+        // Capitalize the first letter of the category
+        $this->merge([
+            'category' => ucfirst($this->input('category')),
+        ]);
     }
 }

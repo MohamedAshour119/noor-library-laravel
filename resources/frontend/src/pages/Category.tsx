@@ -1,7 +1,7 @@
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
 import {useEffect, useRef, useState} from "react";
-import {Book, CategoryInterface} from "../../Interfaces.ts";
+import {Book} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {useParams} from "react-router-dom";
 import {enqueueSnackbar} from "notistack";

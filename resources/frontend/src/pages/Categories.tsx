@@ -231,8 +231,9 @@ export default function Categories() {
                     <CoolLoading/>
                 </div>
             }
+
             {!is_loading &&
-                <Footer styles={`h-[100px] min-[512px]:h-[57px] `}/>
+                <Footer/>
             }
         </div>
     );
