@@ -91,6 +91,7 @@ export default function Category() {
                         <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Category</h1>
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                             {show_books}
+                            {show_books}
                         </div>
                         <div className={`flex flex-col gap-y-4 pb-4`}>
                             {books.length === 0 &&
