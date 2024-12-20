@@ -29,7 +29,7 @@ class CategoryController extends Controller
 
     public function getCategoryBooks($category): JsonResponse
     {
-        $books = Book::paginate(3);
+        $books = Book::paginate(12);
         $next_page_url = $books->nextPageUrl();
         $books = BookResource::collection($books);
         $data = [

@@ -15,6 +15,10 @@
 body {
     font-family: var(--font-roboto);
     /*font-size: 10px !important;*/
+    display: grid;
+
+    min-height: 100vh;
+    /*height: 100%;*/
 }
 
 /* Use Tajawal for specific cases */

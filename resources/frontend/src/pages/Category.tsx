@@ -17,11 +17,12 @@ export default function Category() {
     const [is_loading, setIs_loading] = useState(true);
     const [books_count, setBooks_count] = useState(0);
 
-    const root_el = document.getElementById(`root`);
+    // const root_el = document.getElementById(`root`);
     const getCategoryBooks = (page_url: string, fetch_at_start = true) => {
+        // root_el?.classList.remove('h-svh')
         if (fetch_at_start) {
             setIs_loading(true)
-            root_el?.classList.add('h-svh')
+            // root_el?.classList.add('h-svh')
         }
         setIs_fetching(true)
         apiClient().get(page_url)
@@ -31,7 +32,9 @@ export default function Category() {
                 setBooks_count(res.data.data.books_count)
                 setIs_loading(false)
                 setIs_fetching(false)
-                root_el?.classList.remove('h-svh')
+                if (!fetch_at_start) {
+                    // root_el?.classList.remove('h-svh')
+                }
             })
             .catch(err => {
                 setIs_loading(false)
@@ -83,8 +86,8 @@ export default function Category() {
     return (
         <div className="flex flex-col h-full text-text_color">
             {!is_loading &&
-                <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 h-full`}>
-                    <div className={`container w-full flex flex-col gap-y-3`}>
+                <div className={`flex flex-col items-center bg-main_bg max-sm:px-2 h-full`}>
+                    <div className={`container w-full flex flex-col gap-y-3 pt-5`}>
                         <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Category</h1>
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                             {show_books}
@@ -178,7 +181,8 @@ export default function Category() {
                 </div>
             }
             {!is_loading &&
-                <Footer styles={`h-[100px] min-[512px]:h-[57px] `}/>
+                // <Footer styles={`min-[512px]:h-[57px] max-[512px]:h-[100px]`}/>
+                <Footer/>
             }
         </div>
     )
