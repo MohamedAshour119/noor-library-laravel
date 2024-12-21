@@ -18,6 +18,6 @@
 </head>
 <body>
 {{--    <div id="root" class="flex flex-col h-full min-h-svh"></div>--}}
-    <div id="root" class="h-full"></div>
+    <div id="root" class="h-full text-text_color"></div>
 </body>
 </html>

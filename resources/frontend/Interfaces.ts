@@ -79,22 +79,26 @@ export const AddBookErrorsDefaultValues = {
 export interface Book {
     id: number,
     title: string
+    slug: string
     description: string
     is_author: boolean
     is_free: boolean
     price: number
     author: string
     language: string
-    category: string
+    size: string
     cover: string
     book_file?: string
     downloadable: boolean
+    created_at: string
 }
 
 export interface CategoryInterface {
     id: number
     name: string
     books_count: number
+    created_at?: string
+    updated_at?: string
 }
 
 export interface SignUpForm {
@@ -120,5 +124,9 @@ export interface Errors {
     password?: string
     password_confirmation?: string
     recaptcha?: string
+}
 
+export interface ShowBookInterface extends Book {
+    vendor: User
+    category: CategoryInterface
 }

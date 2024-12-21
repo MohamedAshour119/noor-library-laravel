@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Categories\CategoryController;
-use App\Http\Controllers\Profile\UserProfileController;
-use App\Http\Controllers\Vendors\AddBookController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +16,12 @@ Route::post('/sign-up-as-vendor', [AuthController::class, 'signUpAsVendor'])->na
 Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
 Route::get('/get-user-books', [UserProfileController::class, 'getUserBooks'])->name('getUserBooks');
 Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBooks'])->name('getCategoryBooks');
+Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');
-    Route::post('/add-book', [AddBookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
+    Route::post('/add-book', [BookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
     Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
     Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');

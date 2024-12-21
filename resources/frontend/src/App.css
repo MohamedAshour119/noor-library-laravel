@@ -130,3 +130,7 @@ button[aria-label="Close"]:hover{
 div[tabindex="-1"] {
     height: fit-content;
 }
+
+.icon-popup-clip-path {
+    clip-path: polygon(0 8%, 45% 8%, 50% 0, 55% 8%, 100% 8%, 100% 100%, 0 100%);
+}

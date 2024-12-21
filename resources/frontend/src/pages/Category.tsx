@@ -46,10 +46,18 @@ export default function Category() {
             <BookCard
                 key={index}
                 rate={140}
-                title={book.title}
-                cover={book.cover}
-                author={book.author}
                 ref={last_book_ref}
+                author={book.slug}
+                cover={book.cover}
+                description={book.description}
+                downloadable={book.downloadable}
+                id={book.id}
+                is_author={book.is_author}
+                is_free={book.is_free}
+                language={book.language}
+                price={book.price}
+                slug={book.slug}
+                title={book.title}
             />
         )
     )

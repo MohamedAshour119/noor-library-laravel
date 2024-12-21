@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Profile;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\VerifyPasswordRequest;
 use App\Http\Resources\BookResource;
@@ -12,12 +11,10 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Traits\HttpResponses;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -119,9 +116,7 @@ class UserProfileController extends Controller implements HasMedia
             ->first();
         if ($vendor) {
             $vendor = new VendorResource($vendor);
-            $books = Book::where('vendor_id', $vendor->id)
-                ->with(['vendor', 'media'])
-                ->paginate(3);
+            $books = Book::where('vendor_id', $vendor->id)->paginate(3);
             $next_page_url = $books->nextPageUrl();
             $books = BookResource::collection($books);
 

@@ -13,6 +13,7 @@ import Categories from "./pages/Categories.tsx";
 import Category from "./pages/Category.tsx";
 import {useDispatch} from "react-redux";
 import {setActive} from "../redux/is-location-is-not-in-navlink-slice.ts";
+import ShowBook from "./pages/ShowBook.tsx";
 
 function App() {
     const dispatch = useDispatch()
@@ -41,6 +42,7 @@ function App() {
             <Route path="/categories" element={<Categories />} />
             <Route path="/users/:user" element={<Profile />} />
             <Route path="/categories/:category" element={<Category />} />
+            <Route path="/books/:slug" element={<ShowBook/>}/>
 
             <Route element={<AuthRoute />}>
                 <Route path="/add-book" element={<AddBook />} />

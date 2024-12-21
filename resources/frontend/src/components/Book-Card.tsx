@@ -4,20 +4,29 @@ import {Ref} from "react";
 
 interface Props {
     rate?: number;
-    cover: string;
-    title: string;
-    author: string;
+    id?: number,
+    title?: string
+    slug?: string
+    description?: string
+    is_author?: boolean
+    is_free?: boolean
+    price?: number
+    author?: string
+    language?: string
+    cover?: string
+    book_file?: string
+    downloadable?: boolean
     ref?: Ref<HTMLAnchorElement>
     styles?: string
 }
 
 export default function BookCard(props: Props) {
-    const {rate, cover, title, author, ref, styles } = props
+    const {rate, id, title, slug, description, is_author, is_free, price, author, language, cover, book_file, downloadable, ref, styles } = props
 
     return (
         <Link
             ref={ref}
-            to={`#`}
+            to={`/books/${slug}`}
             className={`${styles ? styles : ''} relative flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
         >
             <div className="flex items-center gap-x-2">
@@ -31,7 +40,7 @@ export default function BookCard(props: Props) {
                 <span>({rate || 0})</span>
             </div>
             <Link to="#">
-                <img src={cover} alt="Book-img" className="rounded border p-1" />
+                <img src={cover} alt="ShowBook-img" className="rounded border p-1" />
             </Link>
             <Link
                 to="#"

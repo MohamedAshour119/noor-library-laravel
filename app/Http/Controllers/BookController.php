@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Vendors;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\AddBookRequest;
+use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Models\Category;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class AddBookController extends Controller
+class BookController extends Controller
 {
     use HttpResponses, InteractsWithMedia;
     public function addBook(AddBookRequest $request): JsonResponse
@@ -43,5 +42,19 @@ class AddBookController extends Controller
         }
 
         return $this->response_success([], 'We are reviewing the book within 3 days');
+    }
+
+    public function getBookData($slug): JsonResponse
+    {
+        $book = Book::where('slug', $slug)->first();
+        if ($book) {
+            $book = new BookResource($book);
+
+            $data = [
+                'book' => $book
+            ];
+            return $this->response_success($data, 'Book Retrieved Successfully.');
+        }
+        return $this->response_error('Book Not Found.', [], 404);
     }
 }

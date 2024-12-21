@@ -10,6 +10,8 @@ import {useEffect, useRef, useState} from "react";
 import {Modal} from "flowbite-react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
+import CategorySidebar from "../components/CategorySidebar.tsx";
+import AuthorsSidebar from "../components/AuthorsSidebar.tsx";
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
@@ -116,7 +118,7 @@ export default function Home() {
             </div>
 
             <main className={`flex justify-center bg-main_bg py-8`}>
-                <div className={`container  grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8`}>
+                <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8`}>
                     <div className={`flex flex-col gap-y-4`}>
                         <MainHeader/>
 
@@ -196,61 +198,8 @@ export default function Home() {
                         </div>
                     </div>
                     <aside className={`hidden font-roboto-semi-bold text-2xl text-text_color md:flex flex-col gap-y-8`}>
-                        <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4`}>
-                            <div className={`flex items-center justify-between border-b pb-2 border-main_color`}>
-                                <Link
-                                    to={`#`}
-                                    className={`hover:underline underline-offset-4`}
-                                >
-                                    Categories
-                                </Link>
-                                <FaSearch className={`size-5 cursor-pointer`}/>
-                            </div>
-
-                            <div className={`flex flex-col gap-y-4`}>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                                <CategorySample/>
-                            </div>
-                        </div>
-
-                        <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4`}>
-                            <div className={`flex items-center justify-between border-b pb-2 border-main_color`}>
-                                <Link
-                                    to={`#`}
-                                    className={`hover:underline underline-offset-4`}
-                                >
-                                    Authors
-                                </Link>
-                                <FaSearch className={`size-5 cursor-pointer`}/>
-                            </div>
-
-                            <div className={`flex flex-col gap-y-4`}>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                                <AuthorSample/>
-                            </div>
-                        </div>
+                        <CategorySidebar/>
+                        <AuthorsSidebar/>
                     </aside>
                 </div>
             </main>

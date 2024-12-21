@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useState} from 'react'
+import {Dispatch, SetStateAction} from 'react'
 import {IoHome} from "react-icons/io5";
 import {BiCategoryAlt} from "react-icons/bi";
 import {FaUsers} from "react-icons/fa";
@@ -29,7 +29,6 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     to={`/`}
                     onClick={() => {
                         if (is_small_screens_menu) {
-                            toggleMenu()
                             handleActiveLink(`home`)
                         } else {
                             handleActiveLink(`home`)
@@ -47,7 +46,6 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     to={`/categories`}
                     onClick={() => {
                         if (is_small_screens_menu) {
-                            toggleMenu()
                             handleActiveLink(`categories`)
                         } else {
                             handleActiveLink(`categories`)
@@ -65,7 +63,6 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     to={`/authors`}
                     onClick={() => {
                         if (is_small_screens_menu) {
-                            toggleMenu()
                             handleActiveLink(`authors`)
                         } else {
                             handleActiveLink(`authors`)
@@ -76,22 +73,10 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     <FaUsers />Authors
                 </Link>
             </li>
-            <li
-                className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
-                onClick={() => {
-                    if (is_small_screens_menu)
-                        toggleMenu()
-                }}
-            >
+            <li className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}>
                 <LuMenu />Menu
             </li>
-            <li
-                className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
-                onClick={() => {
-                    if (is_small_screens_menu)
-                        toggleMenu()
-                }}
-            >
+            <li className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}>
                 <BsSearch />Search
             </li>
         </>
