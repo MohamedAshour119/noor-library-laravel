@@ -17,13 +17,12 @@ Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
 Route::get('/get-user-books', [UserProfileController::class, 'getUserBooks'])->name('getUserBooks');
 Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBooks'])->name('getCategoryBooks');
 Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
-
+Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
+Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');
     Route::post('/add-book', [BookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
-    Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
-    Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
     Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');

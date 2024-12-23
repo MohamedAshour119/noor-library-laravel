@@ -9,6 +9,7 @@ import {IoIosHeartEmpty} from "react-icons/io";
 import {TfiShoppingCart} from "react-icons/tfi";
 import {FaStar} from "react-icons/fa";
 import {ShowBookInterface} from "../../Interfaces.ts";
+import {languages_options} from "../React-Select-Options.ts";
 
 export default function ShowBook() {
     const { slug } = useParams()
@@ -28,11 +29,19 @@ export default function ShowBook() {
     const handleAddToCartWishlistMouseLeave = () => {
         setIs_add_to_wishlist_icon_hovered(false);
     };
-    const getBookData = (end_point: string) => {
+
+    const get_book_language_label = (language_value: string) => {
+        const language = languages_options.find(language => language.value === language_value);
+        return language ? language.label : undefined;
+    };
+    const getBookData = () => {
         setIs_loading(true)
-        apiClient().get(end_point)
+        apiClient().get(`/books/${slug}`)
             .then(res => {
-                setBook_data(res.data.data.book)
+                const book_language_label = get_book_language_label(res.data.data.book.language)
+                const book = res.data.data.book
+                book.language = book_language_label
+                setBook_data(book)
             })
             .catch(err => {
                 enqueueSnackbar(err.response.data.errors)
@@ -41,7 +50,7 @@ export default function ShowBook() {
     }
 
     useEffect(() => {
-        getBookData(`/books/${slug}`)
+        getBookData()
     }, []);
 
     const display_vendor_name = book_data?.vendor ? (book_data.vendor.first_name[0]?.toUpperCase() + book_data.vendor.first_name.slice(1)) + ' ' + (book_data.vendor?.last_name[0]?.toUpperCase() + book_data.vendor.last_name.slice(1)) : ''

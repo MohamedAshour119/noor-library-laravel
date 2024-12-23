@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function BookCard(props: Props) {
-    const {rate, id, title, slug, description, is_author, is_free, price, author, language, cover, book_file, downloadable, ref, styles } = props
+    const {rate, title, slug, author, cover, ref, styles } = props
 
     return (
         <Link
@@ -39,9 +39,7 @@ export default function BookCard(props: Props) {
                 </div>
                 <span>({rate || 0})</span>
             </div>
-            <Link to="#">
-                <img src={cover} alt="ShowBook-img" className="rounded border p-1" />
-            </Link>
+            <img src={cover} alt="ShowBook-img" className="rounded border p-1" />
             <Link
                 to="#"
                 className="font-roboto-semi-bold text-lg hover:underline underline-offset-2"

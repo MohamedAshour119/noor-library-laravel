@@ -47,8 +47,6 @@ export default function AddBook() {
         if (name === "book_description") {
             setDescriptionCount(value.length);
         }
-        console.log(typeof formData.price)
-
     };
 
     const [isScrollbarVisible, setIsScrollbarVisible] = useState(false);
