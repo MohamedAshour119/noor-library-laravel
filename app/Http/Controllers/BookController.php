@@ -9,7 +9,9 @@ use App\Models\Category;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class BookController extends Controller
 {
@@ -43,7 +45,6 @@ class BookController extends Controller
 
         return $this->response_success([], 'We are reviewing the book within 3 days');
     }
-
     public function getBookData($slug): JsonResponse
     {
         $book = Book::where('slug', $slug)->first();

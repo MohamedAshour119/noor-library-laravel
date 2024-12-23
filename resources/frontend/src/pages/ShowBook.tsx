@@ -126,7 +126,7 @@ export default function ShowBook() {
                                             <div><strong>Category:</strong> {book_data?.category.name}</div>
                                             <div><strong>Language:</strong> {book_data?.language}</div>
                                             <div><strong>Publisher:</strong> {display_vendor_name}</div>
-                                            <div><strong>Pages:</strong> 751</div>
+                                            <div><strong>Pages:</strong> {book_data.pages_count}</div>
                                             <div><strong>File Size:</strong> {book_data?.size} MB</div>
                                             <div><strong>Extension:</strong> PDF</div>
                                             <div><strong>Add Date:</strong> {book_data?.created_at}</div>

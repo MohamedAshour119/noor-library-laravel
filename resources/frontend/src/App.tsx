@@ -35,25 +35,25 @@ function App() {
     }, [location.pathname]);
 
     return (
-    <>
-        {showHeader && <Header />}
-        <Routes>
-            <Route path={`/`} element={<Home/>}/>
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/users/:user" element={<Profile />} />
-            <Route path="/categories/:category" element={<Category />} />
-            <Route path="/books/:slug" element={<ShowBook/>}/>
+        <>
+            {showHeader && <Header />}
+            <Routes>
+                <Route path={`/`} element={<Home/>}/>
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/users/:user" element={<Profile />} />
+                <Route path="/categories/:category" element={<Category />} />
+                <Route path="/books/:slug" element={<ShowBook/>}/>
 
-            <Route element={<AuthRoute />}>
-                <Route path="/add-book" element={<AddBook />} />
-            </Route>
+                <Route element={<AuthRoute />}>
+                    <Route path="/add-book" element={<AddBook />} />
+                </Route>
 
-            <Route element={<AuthRedirect />}>
-                <Route path={`/sign-up`} element={<SignUp/>}/>
-                <Route path={`/sign-in`} element={<SignIn/>}/>
-            </Route>
-        </Routes>
-    </>
+                <Route element={<AuthRedirect />}>
+                    <Route path={`/sign-up`} element={<SignUp/>}/>
+                    <Route path={`/sign-in`} element={<SignIn/>}/>
+                </Route>
+            </Routes>
+        </>
   )
 }
 

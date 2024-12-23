@@ -87,6 +87,7 @@ export interface Book {
     author: string
     language: string
     size: string
+    pages_count: number
     cover: string
     book_file?: string
     downloadable: boolean

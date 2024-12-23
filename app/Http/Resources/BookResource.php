@@ -4,6 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Log;
+use setasign\Fpdi\Fpdi;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class BookResource extends JsonResource
 {
@@ -12,9 +15,18 @@ class BookResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    private function getPdfPageCount(Media $media)
+    {
+        $pdf_path = $media->getPath();
+        $pdf = new Fpdi();
+        $pdf_count = $pdf->setSourceFile($pdf_path);
+
+        return $pdf_count;
+    }
     public function toArray(Request $request): array
     {
-        $bookFile = $this->getMedia('books_files')->first();
+        $book_file = $this->getMedia('books_files')->first();
+        $pages_count = $book_file ? $this->getPdfPageCount($book_file) : null;
 
         return [
             'id' => $this->id,
@@ -26,7 +38,8 @@ class BookResource extends JsonResource
             'author' => $this->author_name,
             'downloadable' => $this->downloadable === 1,
             'created_at' => $this->created_at?->format('d-m-Y'),
-            'size' => $bookFile ? round($bookFile->size / 1024 / 1024, 2) : null, // Book size in MB
+            'size' => $book_file ? round($book_file->size / 1024 / 1024, 2) : null, // Book size in MB
+            'pages_count' => $pages_count,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
             'vendor' => new VendorResource($this->vendor),
