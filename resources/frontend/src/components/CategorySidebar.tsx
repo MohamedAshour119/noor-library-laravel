@@ -1,8 +1,76 @@
 import {Link} from "react-router-dom";
 import {FaSearch} from "react-icons/fa";
 import CategorySample from "./home/Category-Sample.tsx";
+import apiClient from "../../ApiClient.ts";
+import {enqueueSnackbar} from "notistack";
+import {useEffect, useRef, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
+import {setCategories} from "../../redux/categories-slice.ts";
+import SidebarCategoryPlaceholder from "./SidebarCategoryPlaceholder.tsx";
 
 export default function CategorySidebar() {
+
+    const categories = useSelector((state: RootState) => state.categoriesReducer)
+    const dispatch = useDispatch()
+
+    const [is_fetching, setIs_fetching] = useState(false);
+    const [is_loading, setIs_loading] = useState(true);
+    const [categories_next_page_url, setCategories_next_page_url] = useState('');
+    const getCategories = (page_url: string, fetch_at_start = true) => {
+        if (fetch_at_start) {
+            setIs_loading(true)
+        }
+        setIs_fetching(true)
+        apiClient().get(page_url)
+            .then(res => {
+                setIs_loading(false)
+                setIs_fetching(false)
+                dispatch(setCategories(res.data.data.data));
+                setCategories_next_page_url(res.data.data.next_page_url)
+            })
+            .catch(err => {
+                setIs_loading(false)
+                setIs_fetching(false)
+                enqueueSnackbar(err.response?.data?.errors, {variant: "error"})
+            })
+    }
+
+    useEffect(() => {
+        getCategories('/get-categories/sidebar')
+    }, []);
+
+    const last_category_ref = useRef(null)
+    useEffect(() => {
+        if (!last_category_ref.current) return;  // Exit if the ref is null
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && !is_fetching && categories_next_page_url) {
+                getCategories(categories_next_page_url, false);
+            }
+        }, {
+            threshold: 0.5 // Trigger when 50% of the last tweet is visible
+        });
+
+        // Watch the last tweet
+        observer.observe(last_category_ref.current);
+
+        // Cleanup
+        return () => {
+            if (last_category_ref.current) {
+                observer.unobserve(last_category_ref.current);
+            }
+        };
+    }, [categories_next_page_url, is_fetching]);
+
+    const show_categories = Array.isArray(categories) && categories.map((category, index) => (
+        <CategorySample
+            key={index}
+            name={category.name}
+            ref={index === categories.length - 1 ? last_category_ref : null}
+        />
+    ))
+
     return (
         <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4 border`}>
             <div className={`flex items-center justify-between border-b pb-2 border-main_color`}>
@@ -16,19 +84,12 @@ export default function CategorySidebar() {
             </div>
 
             <div className={`flex flex-col gap-y-4`}>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
-                <CategorySample/>
+                {!is_loading && show_categories}
+                <div className={`flex flex-col gap-y-2`}>
+                    {is_loading && Array.from({ length: 20 }).map((_, index) => (
+                        <SidebarCategoryPlaceholder key={index} />
+                    ))}
+                </div>
             </div>
         </div>
     )

@@ -7,13 +7,16 @@ use App\Models\Book;
 use App\Models\Category;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class CategoryController extends Controller
 {
     use HttpResponses;
-    public function getCategories(): JsonResponse
+    public function getCategories($sidebar = null): JsonResponse
     {
-        $categories = Category::withCount('books')->paginate(10);
+        $pagination_count = $sidebar ? 20 : 10;
+
+        $categories = Category::withCount('books')->paginate($pagination_count);
         return $this->response_success($categories, 'Categories retrieved');
     }
 

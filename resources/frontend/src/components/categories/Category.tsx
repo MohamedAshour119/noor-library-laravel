@@ -9,7 +9,7 @@ interface Props {
     books_count: number
 }
 export default function Category(props: Props) {
-    const { id, title, ref, books_count } = props
+    const { title, ref, books_count } = props
 
     return (
         <Link

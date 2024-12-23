@@ -75,7 +75,6 @@ export default function ShowBook() {
                                         {is_add_to_cart_icon_hovered &&
                                             <div className="icon-popup-clip-path absolute top-12 left-1/2 -translate-x-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
                                                 <div className="bg-black px-4 pb-1 pt-2 rounded shadow-md text-white text-sm">
-                                                    {/* Your popup content here */}
                                                     <p>Add to cart</p>
                                                 </div>
                                             </div>
@@ -90,7 +89,6 @@ export default function ShowBook() {
                                         {is_add_to_wishlist_icon_hovered &&
                                             <div className="icon-popup-clip-path absolute top-12 left-1/2 -translate-x-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
                                                 <div className="bg-black px-4 pb-1 pt-2 rounded shadow-md text-white text-sm">
-                                                    {/* Your popup content here */}
                                                     <p>Add to wishlist</p>
                                                 </div>
                                             </div>
@@ -126,12 +124,20 @@ export default function ShowBook() {
                                             <div><strong>Category:</strong> {book_data?.category.name}</div>
                                             <div><strong>Language:</strong> {book_data?.language}</div>
                                             <div><strong>Publisher:</strong> {display_vendor_name}</div>
-                                            <div><strong>Pages:</strong> {book_data.pages_count}</div>
+                                            <div><strong>Pages:</strong> {book_data?.pages_count}</div>
                                             <div><strong>File Size:</strong> {book_data?.size} MB</div>
                                             <div><strong>Extension:</strong> PDF</div>
                                             <div><strong>Add Date:</strong> {book_data?.created_at}</div>
                                         </div>
 
+                                        {/* Purchase Button */}
+                                        <div className="mt-6">
+                                            <button
+                                                className="w-full md:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition duration-300"
+                                            >
+                                                Purchase Now
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -151,4 +157,5 @@ export default function ShowBook() {
             }
         </div>
     )
+
 }

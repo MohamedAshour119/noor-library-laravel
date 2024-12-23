@@ -52,7 +52,7 @@ export default function Categories() {
             key={index}
             id={category.id}
             title={category.name}
-            ref={last_category_ref}
+            ref={index === categories.length - 1 ? last_category_ref : null}
             books_count={category.books_count}
         />
     ))

@@ -17,7 +17,7 @@ Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
 Route::get('/get-user-books', [UserProfileController::class, 'getUserBooks'])->name('getUserBooks');
 Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBooks'])->name('getCategoryBooks');
 Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
-Route::get('/get-categories', [CategoryController::class, 'getCategories'])->name('getCategories');
+Route::get('/get-categories/{sidebar?}', [CategoryController::class, 'getCategories'])->name('getCategories');
 Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
