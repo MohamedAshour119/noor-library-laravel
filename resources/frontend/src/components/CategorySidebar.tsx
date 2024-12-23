@@ -6,7 +6,7 @@ import {enqueueSnackbar} from "notistack";
 import {useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import {setCategories} from "../../redux/categories-slice.ts";
+import {clearCategories, setCategories} from "../../redux/categories-slice.ts";
 import SidebarCategoryPlaceholder from "./SidebarCategoryPlaceholder.tsx";
 
 export default function CategorySidebar() {
@@ -37,6 +37,7 @@ export default function CategorySidebar() {
     }
 
     useEffect(() => {
+        dispatch(clearCategories())
         getCategories('/get-categories/sidebar')
     }, []);
 
