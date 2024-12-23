@@ -37,6 +37,7 @@ class BookResource extends JsonResource
             'language' => $this->language,
             'author' => $this->author_name,
             'downloadable' => $this->downloadable === 1,
+            'price' => (int) $this->price,
             'created_at' => $this->created_at?->format('d-m-Y'),
             'size' => $book_file ? round($book_file->size / 1024 / 1024, 2) : null, // Book size in MB
             'pages_count' => $pages_count,

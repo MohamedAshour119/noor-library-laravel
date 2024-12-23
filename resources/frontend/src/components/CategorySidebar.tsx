@@ -9,7 +9,10 @@ import {RootState} from "../../redux/store.ts";
 import {clearCategories, setCategories} from "../../redux/categories-slice.ts";
 import SidebarCategoryPlaceholder from "./SidebarCategoryPlaceholder.tsx";
 
-export default function CategorySidebar() {
+interface Props {
+    styles?: string
+}
+export default function CategorySidebar({styles}: Props) {
 
     const categories = useSelector((state: RootState) => state.categoriesReducer)
     const dispatch = useDispatch()
@@ -18,10 +21,15 @@ export default function CategorySidebar() {
     const [is_loading, setIs_loading] = useState(true);
     const [categories_next_page_url, setCategories_next_page_url] = useState('');
     const getCategories = (page_url: string, fetch_at_start = true) => {
+        console.log(`getCategories called with ${page_url}`);
+        if (is_fetching) {
+            console.log("Fetch already in progress, skipping...");
+            return;
+        }
+        setIs_fetching(true)
         if (fetch_at_start) {
             setIs_loading(true)
         }
-        setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
                 setIs_loading(false)
@@ -37,9 +45,19 @@ export default function CategorySidebar() {
     }
 
     useEffect(() => {
-        dispatch(clearCategories())
-        getCategories('/get-categories/sidebar')
+        let hasFetched = false; // Prevent fetching twice
+
+        if (!hasFetched) {
+            dispatch(clearCategories());
+            getCategories('/get-categories/sidebar');
+            hasFetched = true;
+        }
+
+        return () => {
+            hasFetched = true; // Cleanup to avoid issues in development
+        };
     }, []);
+
 
     const last_category_ref = useRef(null)
     useEffect(() => {
@@ -73,7 +91,7 @@ export default function CategorySidebar() {
     ))
 
     return (
-        <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4 border`}>
+        <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4 border ${styles ? styles : ''}`}>
             <div className={`flex items-center justify-between border-b pb-2 border-main_color`}>
                 <Link
                     to={`#`}
