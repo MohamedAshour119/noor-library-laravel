@@ -13,6 +13,7 @@ import { TfiShoppingCart } from "react-icons/tfi";
 import { FaStar } from "react-icons/fa";
 import { ShowBookInterface } from "../../Interfaces.ts";
 import { languages_options } from "../React-Select-Options.ts";
+import PdfPreview from "../components/PdfPreview.tsx";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -76,7 +77,7 @@ export default function ShowBook() {
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
                 <div className="container w-full flex flex-col gap-y-3">
                     <div className="container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
-                        <div className={`h-fit bg-white border rounded-lg p-10 w-full md:w-auto relative ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                        <div className={`flex justify-between h-fit bg-white border rounded-lg p-10 w-full md:w-auto relative ${is_loading ? 'min-h-[40rem]' : ''}`}>
                             {/* Loading spinner */}
                             {is_loading && (
                                 <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -167,6 +168,16 @@ export default function ShowBook() {
                                             }
                                         </div>
                                     </div>
+
+                                    {/* Book PReview */}
+                                    {book_data?.price === 0 &&
+                                        <div className={`mt-10 flex flex-col gap-y-4`}>
+                                            <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
+                                            <div className={`border`}>
+                                                {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
+                                            </div>
+                                        </div>
+                                    }
                                 </>
                             )}
                         </div>
