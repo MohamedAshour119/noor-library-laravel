@@ -5,7 +5,7 @@ import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
 import { useEffect, useState } from "react";
 import apiClient from "../../ApiClient.ts";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -170,10 +170,13 @@ export default function ShowBook() {
                                             }
                                             {is_book_free &&
                                                 <div className={`mt-2`}>
-                                                    <button
-                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
+                                                    <a
+                                                        href={book_data?.book_file}
+                                                        download
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition"
+                                                    >
                                                         Download
-                                                    </button>
+                                                    </a>
                                                 </div>
                                             }
                                         </div>
