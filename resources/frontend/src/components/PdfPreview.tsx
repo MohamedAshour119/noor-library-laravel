@@ -21,7 +21,7 @@ const PdfPreview: React.FC<Props> = ({ pdf_file }: Props) => {
     };
 
     return (
-        <div className="relative min-h-[500px] min-w-[600px]">
+        <div className="relative min-h-[500px] xl:min-w-full lg:min-w-[600px] max-w-[280px] lg:max-w-full sm:max-w-[34.7rem] md:max-w-[25.5rem] xxs:max-w-[22.2rem]">
             <Document
                 file={pdf_file}
                 onLoadSuccess={onDocumentLoadSuccess}
@@ -30,7 +30,6 @@ const PdfPreview: React.FC<Props> = ({ pdf_file }: Props) => {
                 <div className="overflow-auto max-h-[500px]">
                     <Page
                         pageNumber={currentPage}
-                        width={600} // Adjust width as needed
                         className="page"
                     />
                 </div>

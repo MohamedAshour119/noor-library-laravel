@@ -71,13 +71,15 @@ export default function ShowBook() {
         ? `${book_data.vendor.first_name[0]?.toUpperCase()}${book_data.vendor.first_name.slice(1)} ${book_data.vendor.last_name[0]?.toUpperCase()}${book_data.vendor.last_name.slice(1)}`
         : "";
 
+    const is_book_free = book_data?.price === 0
+
     return (
         <div className="flex flex-col min-h-[669px] text-text_color">
             {/* Main container */}
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
                 <div className="container w-full flex flex-col gap-y-3">
-                    <div className="container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
-                        <div className={`flex justify-between h-fit bg-white border rounded-lg p-10 w-full md:w-auto relative ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                    <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
+                        <div className={`relative flex justify-between h-fit ${is_book_free ? '2xl:flex-row flex-col' : ''} bg-white border rounded-lg p-10 w-full md:w-auto ${is_loading ? 'min-h-[40rem]' : ''}`}>
                             {/* Loading spinner */}
                             {is_loading && (
                                 <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -123,7 +125,7 @@ export default function ShowBook() {
                                         </button>
                                     </div>
                                     {/* Book image and text details */}
-                                    <div className="flex flex-col md:flex-row">
+                                    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 mt-6 xl:mt-0">
                                         <div className="mb-4 md:mb-0 md:mr-6">
                                             <img
                                                 src={book_data?.cover}
@@ -134,7 +136,7 @@ export default function ShowBook() {
                                         <div className="flex flex-col gap-y-3">
                                             {/* Book title and ratings */}
                                             <div>
-                                                <h2 className="text-xl font-semibold">{book_data?.title}</h2>
+                                                <h2 className="text-xl font-semibold">{book_data?.title}{book_data?.title}{book_data?.title}ssss</h2>
                                                 <div className="flex items-center text-yellow-500 mb-1">
                                                     <div className="flex text-[#E0E0E0]">
                                                         <FaStar />
@@ -151,7 +153,7 @@ export default function ShowBook() {
                                                 <div><strong>Author:</strong> {book_data?.author}</div>
                                                 <div><strong>Category:</strong> {book_data?.category.name}</div>
                                                 <div><strong>Language:</strong> {book_data?.language}</div>
-                                                <div><strong>Publisher:</strong> {display_vendor_name}</div>
+                                                <div><strong>Publisher:</strong> {display_vendor_name}{display_vendor_name}</div>
                                                 <div><strong>Pages:</strong> {book_data?.pages_count}</div>
                                                 <div><strong>File Size:</strong> {book_data?.size} MB</div>
                                                 <div><strong>Extension:</strong> PDF</div>
@@ -161,7 +163,7 @@ export default function ShowBook() {
                                             {(book_data?.price ?? 0) > 0 &&
                                                 <div className={`mt-2`}>
                                                     <button
-                                                        className="w-full md:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition duration-300">
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         Purchase <strong>{book_data?.price + '$'}</strong>
                                                     </button>
                                                 </div>
@@ -171,10 +173,18 @@ export default function ShowBook() {
 
                                     {/* Book PReview */}
                                     {book_data?.price === 0 &&
-                                        <div className={`mt-10 flex flex-col gap-y-4`}>
+                                        <div className={`mt-10 flex flex-col gap-y-4 lg:w-full sm:w-fit w-full`}>
                                             <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
-                                            <div className={`border`}>
+                                            <div className={`border flex justify-center`}>
                                                 {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
+                                            </div>
+                                        </div>
+                                    }
+                                    {book_data?.price !== 0 &&
+                                        <div className={`hidden xl:flex items-center xl:w-[60%]`}>
+                                            <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
+                                                <h1 className={`font-semibold text-lg text-main_color`}>Preview</h1>
+                                                <h1>Preview is not allowed because the book is not free.</h1>
                                             </div>
                                         </div>
                                     }
@@ -182,7 +192,9 @@ export default function ShowBook() {
                             )}
                         </div>
                         {/* Sidebar for categories */}
-                        <CategorySidebar />
+                        <div className={`hidden md:block`}>
+                            <CategorySidebar />
+                        </div>
                     </div>
                 </div>
             </div>
