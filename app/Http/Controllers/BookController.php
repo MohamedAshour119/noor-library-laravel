@@ -6,8 +6,10 @@ use App\Http\Requests\AddBookRequest;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Rating;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -57,5 +59,24 @@ class BookController extends Controller
             return $this->response_success($data, 'Book Retrieved Successfully.');
         }
         return $this->response_error('Book Not Found.', [], 404);
+    }
+
+    public function ratingBook(Request $request ,$id)
+    {
+        $validate_data = $request->validate([
+            'rating' => ['required', 'numeric', 'regex:/^[0-5](\.0|\.5)?$/',]
+        ]);
+
+        $rate = $validate_data['rating'];
+        $is_auth_vendor = Auth::guard('vendor_api')->check();
+
+        Rating::updateOrCreate(
+            [
+                'book_id' => $id,
+                'user_id' => $is_auth_vendor ? null : Auth::id(),
+                'vendor_id' => $is_auth_vendor ? Auth::id() : null,
+            ],
+            ['rate' => $rate]
+        );
     }
 }

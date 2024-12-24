@@ -21,6 +21,11 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
     protected static function booted(): void
     {
         parent::booted();

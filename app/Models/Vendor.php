@@ -15,7 +15,10 @@ class Vendor extends Authenticatable
     {
         return $this->hasMany(Book::class);
     }
-
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
     protected function casts(): array
     {
         return [

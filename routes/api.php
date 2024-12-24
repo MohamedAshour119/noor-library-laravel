@@ -27,4 +27,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');
     Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
+    Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
 });

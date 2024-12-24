@@ -8,10 +8,10 @@ interface Props {
 export default function Rating({book_id}: Props) {
     const [rating, setRating] = useState(0);
 
-    const handleRatingChange = (newRating: number) => {
-        setRating(newRating);
-        apiClient().post('/ratings', { book_id: book_id, rating: newRating })
-            .then(response => console.log(response.data.message))
+    const handleRatingChange = (new_rating: number) => {
+        setRating(new_rating);
+        apiClient().post(`/books/rating/${book_id}`, { rating: new_rating })
+            .then(res => console.log(res.data.message))
             .catch(err => console.error(err));
     };
 
