@@ -160,11 +160,19 @@ export default function ShowBook() {
                                                 <div><strong>Add Date:</strong> {book_data?.created_at}</div>
                                             </div>
                                             {/* Purchase button */}
-                                            {(book_data?.price ?? 0) > 0 &&
+                                            {!is_book_free &&
                                                 <div className={`mt-2`}>
                                                     <button
                                                         className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         Purchase <strong>{book_data?.price + '$'}</strong>
+                                                    </button>
+                                                </div>
+                                            }
+                                            {is_book_free &&
+                                                <div className={`mt-2`}>
+                                                    <button
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
+                                                        Download
                                                     </button>
                                                 </div>
                                             }
