@@ -506,7 +506,7 @@ export default function Profile() {
                                 </div>
                             </form>
                         }
-                        {user_info?.is_vendor && user !== user_state.username && books.length === 0 && is_visited_vendor_sections_active.books ?
+                        {user_info?.is_vendor && user !== user_state.username && books.length === 0 && is_visited_vendor_sections_active.books &&
                             (
                                 <NotFoundContainer
                                     src={`/profile/books-not-found.svg`}
@@ -514,10 +514,11 @@ export default function Profile() {
                                     content={`has no books yet.`}
                                     content_style={`font-roboto-semi-bold`}
                                 />
-                            ) : (
+                            )
+                        }
+                        {user_info?.is_vendor && user !== user_state.username && books.length > 0 && is_visited_vendor_sections_active.books &&
+                            (
                                 <div className={`max-xxs:px-10 grid xxs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 !w-full`}>
-                                    {show_books}
-                                    {show_books}
                                     {show_books}
                                 </div>
                             )
