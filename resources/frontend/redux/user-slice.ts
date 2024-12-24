@@ -6,11 +6,11 @@ const initialState: User = {
     username: null,
     first_name: '',
     last_name: '',
+    phone: null,
     email: '',
     createdAt: null,
     updatedAt: null,
     is_vendor: null,
-    phone: null,
     avatar: '',
 }
 
@@ -18,7 +18,7 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        setCategories: (state, action: PayloadAction<User>) => {
+        setUser: (state, action: PayloadAction<User>) => {
             state.id = action.payload.id
             state.username = action.payload.username
             state.first_name = action.payload.first_name
@@ -30,7 +30,7 @@ export const userSlice = createSlice({
             state.phone = action.payload.phone
             state.avatar = action.payload.avatar
         },
-        clearCategories: (state) => {
+        clearUser: (state) => {
             state.id = null
             state.username = null
             state.first_name = ''

@@ -38,12 +38,13 @@ export default function SignIn() {
             .then(res => {
                 console.log(res.data.data.data)
                 setIsLoading(false)
-                dispatch(setUser(res.data.data.data))
                 localStorage.setItem('token', res.data.data.token)
                 localStorage.setItem('expires_at', res.data.data.expires_at)
+                dispatch(setUser(res.data.data.data))
                 navigate('/')
             })
             .catch(err => {
+                console.log(err.response)
                 setIsLoading(false)
                 setSignInError(err.response.data.message)
                 enqueueSnackbar("Wrong credentials.", { variant: "error" });
