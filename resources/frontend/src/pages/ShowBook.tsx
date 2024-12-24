@@ -79,7 +79,7 @@ export default function ShowBook() {
             {/* Main container */}
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
                     <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
-                        <div className={`relative overflow-x-hidden`}>
+                        <div className={`relative overflow-x-hidden flex flex-col gap-y-5`}>
                             <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
                                     {/* Loading spinner */}
                                     {is_loading && (
@@ -205,7 +205,7 @@ export default function ShowBook() {
                             </div>
 
                             {/* Book Reviews */}
-                            <BookReviews/>
+                            <BookReviews book_id={book_data?.id}/>
 
                         </div>
                         {/* Sidebar for categories */}
