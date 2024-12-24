@@ -21,22 +21,23 @@ const PdfPreview: React.FC<Props> = ({ pdf_file }: Props) => {
     };
 
     return (
-        <div className="relative min-h-[500px] xl:min-w-full max-w-[280px] lg:max-w-full sm:max-w-[34.7rem] md:max-w-[25.5rem] xxs:max-w-[22.2rem]">
+        <div className="min-h-[500px] w-full overflow-x-scroll">
             <Document
                 file={pdf_file}
                 onLoadSuccess={onDocumentLoadSuccess}
+                className={`w-full`}
             >
                 {/* Render the current page */}
                 <div className="overflow-auto max-h-[500px]">
                     <Page
                         pageNumber={currentPage}
-                        className="page"
+                        className="max-w-fit"
                     />
                 </div>
             </Document>
 
             {/* Page navigation buttons */}
-            <div className="flex justify-between mt-4 px-4 pb-4">
+            <div className="flex justify-between mt-4 px-4 pb-4 overflow-x-scroll">
                 <button
                     onClick={() => currentPage > 1 && goToPage(currentPage - 1)} // Prevent going below 1
                     disabled={currentPage <= 1}

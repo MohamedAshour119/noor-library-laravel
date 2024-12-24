@@ -78,9 +78,8 @@ export default function ShowBook() {
         <div className="flex flex-col min-h-[669px] text-text_color">
             {/* Main container */}
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
-                <div className="container w-full flex flex-col gap-y-3">
-                    <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
-                        <div className={`relative flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full md:w-auto ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                    <div className="container grid md:grid-cols-[4fr_3fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
+                        <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
                             {/* Loading spinner */}
                             {is_loading && (
                                 <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -90,7 +89,7 @@ export default function ShowBook() {
                             {/* Book details */}
                             {!is_loading && (
                                 <>
-                                    <div className={`relative flex justify-between h-fit ${is_book_free ? '2xl:flex-row flex-col' : ''} rounded-lg w-full md:w-auto ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                                    <div className={`relative overflow-x-hidden gap-x-10 flex justify-between h-fit ${is_book_free ? '2xl:flex-row flex-col' : ''} rounded-lg w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
                                         {/* Action icons */}
                                         <div className="absolute right-4 top-2 flex gap-x-2">
                                             {(book_data?.price ?? 0) > 0 &&
@@ -186,9 +185,9 @@ export default function ShowBook() {
 
                                         {/* Book PReview */}
                                         {is_book_free &&
-                                            <div className={`mt-10 flex flex-col gap-y-4 lg:w-[600px] sm:w-fit w-full`}>
+                                            <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[500px] lg:w-full`}>
                                                 <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
-                                                <div className={`border flex justify-center w-full`}>
+                                                <div className={`border flex justify-center max-w-full overflow-x-scroll`}>
                                                     {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
                                                 </div>
                                             </div>
@@ -212,7 +211,6 @@ export default function ShowBook() {
                         <div className={`hidden md:block`}>
                             <CategorySidebar />
                         </div>
-                    </div>
                 </div>
             </div>
             {/* Footer */}
