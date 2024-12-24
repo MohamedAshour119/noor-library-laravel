@@ -172,15 +172,15 @@ export default function ShowBook() {
                                     </div>
 
                                     {/* Book PReview */}
-                                    {book_data?.price === 0 &&
-                                        <div className={`mt-10 flex flex-col gap-y-4 lg:w-full sm:w-fit w-full`}>
+                                    {is_book_free &&
+                                        <div className={`mt-10 flex flex-col gap-y-4 lg:w-[600px] sm:w-fit w-full`}>
                                             <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
                                             <div className={`border flex justify-center`}>
                                                 {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
                                             </div>
                                         </div>
                                     }
-                                    {book_data?.price !== 0 &&
+                                    {!is_book_free &&
                                         <div className={`hidden xl:flex items-center xl:w-[60%]`}>
                                             <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
                                                 <h1 className={`font-semibold text-lg text-main_color`}>Preview</h1>
