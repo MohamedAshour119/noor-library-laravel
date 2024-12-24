@@ -132,7 +132,7 @@ div[tabindex="-1"] {
 }
 
 .icon-popup-clip-path {
-    clip-path: polygon(0 8%, 45% 8%, 50% 0, 55% 8%, 100% 8%, 100% 100%, 0 100%);
+    clip-path: polygon(0% 0%, 95% 0, 95% 40%, 100% 50%, 95% 60%, 95% 100%, 0 100%);
 }
 
 
