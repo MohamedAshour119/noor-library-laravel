@@ -186,7 +186,7 @@ export default function ShowBook() {
 
                                             {/* Book PReview */}
                                             {is_book_free &&
-                                                <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[500px] lg:w-full`}>
+                                                <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[700px] lg:w-full`}>
                                                     <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
                                                     <div className={`border flex justify-center max-w-full overflow-x-scroll`}>
                                                         {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}

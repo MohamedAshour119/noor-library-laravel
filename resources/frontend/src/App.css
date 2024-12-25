@@ -135,4 +135,54 @@ div[tabindex="-1"] {
     clip-path: polygon(0% 0%, 95% 0, 95% 40%, 100% 50%, 95% 60%, 95% 100%, 0 100%);
 }
 
+div[aria-describedby="rpv-core__tooltip-body-open"],
+div[aria-describedby="rpv-core__tooltip-body-get-file"],
+div[aria-describedby="rpv-core__tooltip-body-theme-switch"]
+{
+    display: none !important;
+}
 
+.rpv-toolbar{
+    background-color: var(--main_color);
+    padding: 10px 0 10px 0;
+}
+
+button[aria-label="Search"],
+button[aria-label="Previous page"],
+button[aria-label="Next page"],
+button[aria-label="Zoom out"],
+button[aria-label="Zoom in"],
+button[aria-label="Zoom document"],
+button[aria-label="Switch to the dark theme"],
+button[aria-label="Full screen"],
+button[aria-label="Print"],
+button[aria-label="More actions"],
+.rpv-toolbar__label
+{
+    color: white !important;
+}
+
+.rpv-zoom__popover-target-arrow{
+    border-color: rgb(255 255 255) rgb(0 0 0 / 0%) rgba(0, 0, 0, 0) !important;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px){
+    button[aria-label="Zoom document"]{
+        display: none;
+    }
+
+}
+
+div[aria-describedby="rpv-core__tooltip-body-search-popover"],
+div[aria-describedby="rpv-core__tooltip-body-page-navigation-previous"],
+div[aria-describedby="rpv-core__tooltip-body-page-navigation-next"],
+div[aria-describedby="rpv-core__tooltip-body-zoom-out"],
+div[aria-describedby="rpv-core__tooltip-body-zoom-in"],
+div[aria-describedby="rpv-core__tooltip-body-full-screen-enter"],
+div[aria-describedby="rpv-core__tooltip-body-print"],
+div[aria-describedby="rpv-core__tooltip-body-toolbar-more-actions"]
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
