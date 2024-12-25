@@ -28,10 +28,11 @@ const PdfPreview: React.FC<Props> = ({ pdf_file }: Props) => {
                 className={`w-full`}
             >
                 {/* Render the current page */}
-                <div className="overflow-auto max-h-[500px]">
+                <div className="overflow-scroll max-h-[500px]">
                     <Page
                         pageNumber={currentPage}
                         className="max-w-fit"
+                        width={500}
                     />
                 </div>
             </Document>

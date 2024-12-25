@@ -16,10 +16,14 @@ import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
 import Comment from "../components/show-book/Comment.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
     const { slug } = useParams();
+
+    const auth_user = useSelector((state: RootState) => state.user)
 
     // State to track loading status
     const [is_loading, setIs_loading] = useState(false);
@@ -66,6 +70,8 @@ export default function ShowBook() {
     const display_vendor_name = book_data?.vendor
         ? `${book_data.vendor.first_name[0]?.toUpperCase()}${book_data.vendor.first_name.slice(1)} ${book_data.vendor.last_name[0]?.toUpperCase()}${book_data.vendor.last_name.slice(1)}`
         : "";
+
+    const display_auth_user_name = `${auth_user.first_name[0]?.toUpperCase()}${auth_user.first_name.slice(1)} ${auth_user.last_name[0]?.toUpperCase()}${auth_user.last_name.slice(1)}`;
 
     const is_book_free = book_data?.price === 0
 
@@ -214,10 +220,11 @@ export default function ShowBook() {
                                         alt="trending-active"
                                         className={`size-12 rounded-full`}
                                     />
-                                    <div className={`bg-main_bg px-5 py-2 flex flex-col gap-y-2 rounded-lg`}>
-                                        <h1>Customer Name</h1>
+                                    <div className={`bg-main_bg px-5 pt-2 pb-5 flex flex-col gap-y-2 rounded-lg`}>
+                                        <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
                                         <textarea
                                             placeholder={`Comment Description Here`}
+                                            className={`p-3 rounded min-h-28 focus:outline-0`}
                                         />
                                     </div>
                                 </div>
