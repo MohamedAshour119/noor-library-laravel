@@ -15,6 +15,7 @@ import { ShowBookInterface } from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
+import Comment from "../components/show-book/Comment.tsx";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -198,12 +199,36 @@ export default function ShowBook() {
                                     )}
                             </div>
 
-                            {/* Book Reviews */}
+                            {/* Book Ratings */}
                             <BookRatings
                                 book_id={book_data?.id}
                                 setBook_data={setBook_data}
                                 book_data={book_data}
                             />
+
+                            {/* Book Reviews */}
+                            <div className={`flex flex-col gap-y-10 px-10 py-5 border rounded-lg bg-white`}>
+                                <div className={`bg-white grid grid-cols-[5%_95%]`}>
+                                    <img
+                                        src="/home/trending-active.svg"
+                                        alt="trending-active"
+                                        className={`size-12 rounded-full`}
+                                    />
+                                    <div className={`bg-main_bg px-5 py-2 flex flex-col gap-y-2 rounded-lg`}>
+                                        <h1>Customer Name</h1>
+                                        <textarea
+                                            placeholder={`Comment Description Here`}
+                                        />
+                                    </div>
+                                </div>
+                                <div className={`flex flex-col gap-y-10`}>
+                                    <Comment/>
+                                    <Comment/>
+                                    <Comment/>
+                                    <Comment/>
+                                    <Comment/>
+                                </div>
+                            </div>
 
                         </div>
                         {/* Sidebar for categories */}
