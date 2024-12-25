@@ -16,15 +16,15 @@ export default function BookRatings(props: Props) {
         <div className={`flex flex-col gap-y-6 bg-white px-10 py-5 border rounded-lg`}>
             <h1 className={`font-roboto-semi-bold text-xl`}>Book Reviews</h1>
 
-            <div className={`flex xs:flex-row flex-col gap-x-10 gap-y-10`}>
-                <div className={`xl:w-1/4 xs:w-1/2 w-full flex flex-col xs:pe-4 pb-4 xs:pb-0 xs:border-e-2 border-b-2 xs:border-b-0 border-text_color/20`}>
+            <div className={`flex xs:flex-row flex-col justify-center gap-x-10 gap-y-10`}>
+                <div className={`xs:w-1/2 w-full md:w-[60%] lg:w-1/2 flex flex-col items-center md:pe-5 lg:pe-0 pb-4 xs:pb-0 xs:border-e-2 border-b-2 xs:border-b-0 border-text_color/20`}>
                     <Rating
                         book_id={book_id}
                         setBook_data={setBook_data}
                         book_data={book_data}
                     />
                 </div>
-                <div className={`xl:w-1/4 sm:w-1/3 xs:w-[45%] w-full flex flex-col gap-y-3`}>
+                <div className={`sm:w-1/2 xs:w-[45%] w-full flex flex-col items-center gap-y-3`}>
                     <div>
                         <span className={`font-roboto-semi-bold text-lg`}>Average Rating: </span>
                         {book_data?.average}
