@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use App\Http\Middleware\ValidateTempToken;
@@ -28,4 +29,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');
     Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
     Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
+    Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
 });

@@ -6,12 +6,11 @@ import Footer from "../components/Footer.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
-import {Book, Errors, SignUpForm, User} from "../../Interfaces.ts";
+import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
 import {enqueueSnackbar, SnackbarProvider} from "notistack";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
 import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
@@ -245,6 +244,7 @@ export default function Profile() {
                     ...user_state,
                     avatar: res.data.data.avatar
                 }));
+                setShow_save_avatar_btn(false)
             })
             .catch(err => {
                 enqueueSnackbar(err.response?.data?.errors || 'Something went wrong', { variant: "error" });

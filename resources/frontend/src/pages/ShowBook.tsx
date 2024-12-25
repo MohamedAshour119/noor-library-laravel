@@ -3,7 +3,7 @@
 
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
-import { useEffect, useState } from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import apiClient from "../../ApiClient.ts";
 import {useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
@@ -34,6 +34,35 @@ export default function ShowBook() {
     // States for hover effects on icons
     const [is_add_to_cart_icon_hovered, setIs_add_to_cart_icon_hovered] = useState(false);
     const [is_add_to_wishlist_icon_hovered, setIs_add_to_wishlist_icon_hovered] = useState(false);
+    const [comment, setComment] = useState('');
+    const [counter, setCounter] = useState(0);
+    const [is_comment_loading, setIs_comment_loading] = useState(false);
+    const [error, setError] = useState('');
+    const [comments, setComments] = useState([]);
+
+    const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const { value } = e.target
+        setComment(value)
+        setCounter(value.length)
+    }
+
+    const handleSubmitComment = (e: FormEvent) => {
+        e.preventDefault()
+        setIs_comment_loading(true)
+
+        apiClient().post(`/book/comments/${book_data?.id}`, {body: comment})
+            .then(res => {
+                setComments(prevState => ([
+                    res.data.data.comment,
+                    ...prevState,
+                ]))
+                setComment('')
+            })
+            .catch(err => {
+                setError(err.response.data.errors.body[0])
+            })
+            .finally(() => setIs_comment_loading(false))
+    }
 
     // Handlers for hover effects on the "Add to Cart" icon
     const handleAddToCartIconMouseEnter = () => setIs_add_to_cart_icon_hovered(true);
@@ -216,17 +245,37 @@ export default function ShowBook() {
                             <div className={`flex flex-col gap-y-10 px-10 py-5 border rounded-lg bg-white`}>
                                 <div className={`bg-white grid grid-cols-[5%_95%]`}>
                                     <img
-                                        src="/home/trending-active.svg"
+                                        src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
                                         alt="trending-active"
                                         className={`size-12 rounded-full`}
                                     />
-                                    <div className={`bg-main_bg px-5 pt-2 pb-5 flex flex-col gap-y-2 rounded-lg`}>
+                                    <form
+                                        onSubmit={handleSubmitComment}
+                                        className={`bg-main_bg px-5 py-2 grid gap-y-2 rounded-lg`}
+                                    >
                                         <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
-                                        <textarea
-                                            placeholder={`Comment Description Here`}
-                                            className={`p-3 rounded min-h-28 focus:outline-0`}
-                                        />
-                                    </div>
+                                        <div className={`relative`}>
+                                            <textarea
+                                                placeholder={`Comment Description Here`}
+                                                className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
+                                                maxLength={1000}
+                                                value={comment}
+                                                onChange={handleCommentChange}
+                                            />
+                                            {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
+                                            <span className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[99%] bg-white text-end`}>
+                                                {counter}/1000
+                                            </span>
+                                        </div>
+
+                                        <button
+                                            type={"submit"}
+                                            disabled={is_comment_loading}
+                                            className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
+                                        >
+                                            Comment
+                                        </button>
+                                    </form>
                                 </div>
                                 <div className={`flex flex-col gap-y-10`}>
                                     <Comment/>

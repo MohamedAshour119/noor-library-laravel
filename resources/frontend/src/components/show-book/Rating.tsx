@@ -3,7 +3,6 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import apiClient from "../../../ApiClient.ts";
 import {ShowBookInterface} from "../../../Interfaces.ts";
 import {get_book_language_label} from "../../Utilities/getBookLanguageLabel.ts";
-import {CiStar} from "react-icons/ci";
 
 interface Props {
     book_id: number | undefined

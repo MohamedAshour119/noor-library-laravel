@@ -13,8 +13,8 @@ class Book extends Model implements HasMedia
 {
     use InteractsWithMedia;
     protected $guarded = [];
-    protected $with = ['media', 'vendor', 'category', 'ratings'];
-    protected $withCount = ['ratings'];
+    protected $with = ['media', 'vendor', 'category', 'ratings', 'comments'];
+    protected $withCount = ['ratings', 'comments'];
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
@@ -41,6 +41,10 @@ class Book extends Model implements HasMedia
     {
         $user_rate = $this->ratings()->where('user_id', Auth::id())->orWhere('vendor_id', Auth::id())->first();
         return $user_rate->rate;
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 
     protected static function booted(): void
