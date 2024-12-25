@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -12,7 +13,8 @@ class Book extends Model implements HasMedia
 {
     use InteractsWithMedia;
     protected $guarded = [];
-    protected $with = ['media', 'vendor', 'category'];
+    protected $with = ['media', 'vendor', 'category', 'ratings'];
+    protected $withCount = ['ratings'];
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);
@@ -26,6 +28,21 @@ class Book extends Model implements HasMedia
     {
         return $this->hasMany(Rating::class);
     }
+    public function sum_ratings_values()
+    {
+        return $this->ratings()->sum('rate');
+    }
+    public function average_rating()
+    {
+        $average = $this->ratings()->avg('rate');
+        return round($average, 2);
+    }
+    public function user_rate()
+    {
+        $user_rate = $this->ratings()->where('user_id', Auth::id())->orWhere('vendor_id', Auth::id())->first();
+        return $user_rate->rate;
+    }
+
     protected static function booted(): void
     {
         parent::booted();

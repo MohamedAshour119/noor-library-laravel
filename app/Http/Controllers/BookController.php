@@ -78,5 +78,9 @@ class BookController extends Controller
             ],
             ['rate' => $rate]
         );
+        $book = Book::find($id);
+        $book = new BookResource($book);
+
+        return $this->response_success(['book' => $book], 'Rated Successfully.');
     }
 }

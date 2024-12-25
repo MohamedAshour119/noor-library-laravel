@@ -12,9 +12,9 @@ import { IoIosHeartEmpty } from "react-icons/io";
 import { TfiShoppingCart } from "react-icons/tfi";
 import { FaStar } from "react-icons/fa";
 import { ShowBookInterface } from "../../Interfaces.ts";
-import { languages_options } from "../React-Select-Options.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
-import BookReviews from "../components/show-book/BookReviews.tsx";
+import BookRatings from "../components/show-book/BookRatings.tsx";
+import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -37,12 +37,6 @@ export default function ShowBook() {
     // Handlers for hover effects on the "Add to Wishlist" icon
     const handleAddToCartWishlistMouseEnter = () => setIs_add_to_wishlist_icon_hovered(true);
     const handleAddToCartWishlistMouseLeave = () => setIs_add_to_wishlist_icon_hovered(false);
-
-    // Fetch the label for the book's language based on its value
-    const get_book_language_label = (language_value: string) => {
-        const language = languages_options.find(lang => lang.value === language_value);
-        return language ? language.label : undefined;
-    };
 
     // Fetch book data from the API
     const getBookData = () => {
@@ -205,7 +199,11 @@ export default function ShowBook() {
                             </div>
 
                             {/* Book Reviews */}
-                            <BookReviews book_id={book_data?.id}/>
+                            <BookRatings
+                                book_id={book_data?.id}
+                                setBook_data={setBook_data}
+                                book_data={book_data}
+                            />
 
                         </div>
                         {/* Sidebar for categories */}

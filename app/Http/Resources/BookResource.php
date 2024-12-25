@@ -13,7 +13,7 @@ class BookResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @return int
      */
     private function getPdfPageCount(Media $media)
     {
@@ -40,6 +40,10 @@ class BookResource extends JsonResource
             'price' => (int) $this->price,
             'created_at' => $this->created_at?->format('d-m-Y'),
             'size' => $book_file ? round($book_file->size / 1024 / 1024, 2) : null, // Book size in MB
+            'ratings' => $this->sum_ratings_values(),
+            'ratings_count' => $this->ratings_count,
+            'average' => $this->average_rating(),
+            'your_rate' => $this->user_rate(),
             'pages_count' => $pages_count,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',

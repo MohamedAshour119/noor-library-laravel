@@ -77,7 +77,7 @@ export const AddBookErrorsDefaultValues = {
 }
 
 export interface Book {
-    id: number,
+    id: number
     title: string
     slug: string
     description: string
@@ -87,6 +87,10 @@ export interface Book {
     author: string
     language: string
     size: string
+    ratings: number
+    ratings_count: number
+    average: number
+    your_rate: number
     pages_count: number
     cover: string
     book_file?: string
