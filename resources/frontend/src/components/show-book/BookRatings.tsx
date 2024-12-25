@@ -31,17 +31,29 @@ export default function BookRatings(props: Props) {
                     </div>
 
                     {/* Circular Progress Bar */}
-                    <div style={{ width: 100, height: 100 }} className="mb-4">
+                    <div style={{ width: 100, height: 100, position: "relative" }}>
                         <CircularProgressbar
                             value={percentage}
                             text={`${Math.round(percentage)}%`}
                             styles={{
-                                path: { stroke: "#ffd700", strokeWidth: 6 },
-                                text: { fill: "#ffd700", fontSize: 18 },
-                                trail: { stroke: "#e6e6e6" },
+                                path: {
+                                    stroke: "#ffd700",
+                                    strokeWidth: 6,
+                                },
+                                text: {
+                                    fill: "#ffd700",
+                                    fontSize: "18px",
+                                    dominantBaseline: "central",
+                                    textAnchor: "middle",
+                                    transformOrigin: "50% 50%",
+                                },
+                                trail: {
+                                    stroke: "#e6e6e6",
+                                },
                             }}
                         />
                     </div>
+
                 </div>
             </div>
         </div>
