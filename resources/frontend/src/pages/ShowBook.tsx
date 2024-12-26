@@ -41,14 +41,13 @@ export default function ShowBook() {
     const [comments, setComments] = useState<CommentInterface[]>([]);
     const [comments_next_page_url, setComments_next_page_url] = useState('');
 
-    const load_comments_ref = useRef(null)
     const getComments = (page_url: string) => {
         setIs_fetching(true)
         setIs_loading(true)
 
         apiClient().get(page_url)
             .then(res => {
-                setComments(prevState => [...prevState, res.data.data.comments])
+                setComments(res.data.data.comments)
                 setComments_next_page_url(res.data.data.next_page_url)
             })
             .catch(err => {
@@ -60,33 +59,58 @@ export default function ShowBook() {
             })
     }
 
+    // For getting comments at the beginning
     useEffect(() => {
-        if (!load_comments_ref.current) return;  // Exit if the ref is null
+        if (book_data?.id !== undefined && comments.length === 0) {
+            getComments(`/book/${book_data?.id}/comments`);
+        }
+    }, [book_data?.id]);
+
+    const getNextComments = (page_url: string) => {
+        setIs_fetching(true)
+        apiClient().get(page_url)
+            .then(res => {
+                setComments(prevState => [...prevState, ...res.data.data.comments])
+                setComments_next_page_url(res.data.data.next_page_url)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_fetching(false)
+            })
+    }
+
+    const last_comment_ref = useRef(null);
+
+    useEffect(() => {
+        if (!last_comment_ref.current) return;  // Exit if the ref is null
 
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && !is_fetching && comments_next_page_url) {
-                getComments('/book/comments');
+                getNextComments(comments_next_page_url);
             }
         }, {
             threshold: 0.5 // Trigger when 50% of the last tweet is visible
         });
 
         // Watch the last tweet
-        observer.observe(load_comments_ref.current);
+        observer.observe(last_comment_ref.current);
 
         // Cleanup
         return () => {
-            if (load_comments_ref.current) {
-                observer.unobserve(load_comments_ref.current);
+            if (last_comment_ref.current) {
+                observer.unobserve(last_comment_ref.current);
             }
         };
-    }, [load_comments_ref.current]);
+    }, [comments_next_page_url, is_fetching]);
 
     const show_comments = comments.map((comment, index) => (
             <Comment
                 key={index}
                 book_data={book_data}
                 setBook_data={setBook_data}
+                ref={index === comments.length - 1 ? last_comment_ref : null}
                 {...comment}
             />
         )
@@ -233,7 +257,7 @@ export default function ShowBook() {
                                                     {/* Book details */}
                                                     <div className="flex flex-col gap-y-2">
                                                         <div><strong>Author:</strong> {book_data?.author}</div>
-                                                        <div><strong>Category:</strong> {book_data?.category.name}</div>
+                                                        <div><strong>Category:</strong> {book_data?.category}</div>
                                                         <div><strong>Language:</strong> {book_data?.language}</div>
                                                         <div><strong>Publisher:</strong> {display_vendor_name}{display_vendor_name}</div>
                                                         <div><strong>Pages:</strong> {book_data?.pages_count}</div>
@@ -293,45 +317,45 @@ export default function ShowBook() {
                             />
 
                             {/* Book Reviews */}
-                            <div
-                                ref={load_comments_ref}
-                                className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}
-                            >
+                            <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
                                 <h1 className={`font-roboto-semi-bold text-xl`}>Comments ({book_data?.comments_count})</h1>
-                                <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
-                                    <img
-                                        src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
-                                        alt="trending-active"
-                                        className={`size-12 rounded-full`}
-                                    />
-                                    <form
-                                        onSubmit={handleSubmitComment}
-                                        className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
-                                    >
-                                        <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
-                                        <div className={`relative`}>
-                                            <textarea
-                                                placeholder={`Comment Description Here`}
-                                                className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
-                                                maxLength={1000}
-                                                value={comment}
-                                                onChange={handleCommentChange}
-                                            />
-                                            {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
-                                            <span className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[97%] bg-white text-end`}>
-                                                {counter}/1000
-                                            </span>
-                                        </div>
-
-                                        <button
-                                            type={"submit"}
-                                            disabled={is_comment_loading}
-                                            className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
+                                {auth_user.id &&
+                                    <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
+                                        <img
+                                            src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
+                                            alt="trending-active"
+                                            className={`size-12 rounded-full`}
+                                        />
+                                        <form
+                                            onSubmit={handleSubmitComment}
+                                            className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
                                         >
-                                            Comment
-                                        </button>
-                                    </form>
-                                </div>
+                                            <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
+                                            <div className={`relative`}>
+                                                <textarea
+                                                    placeholder={`Comment Description Here`}
+                                                    className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
+                                                    maxLength={1000}
+                                                    value={comment}
+                                                    onChange={handleCommentChange}
+                                                />
+                                                {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
+                                                <span
+                                                    className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[97%] bg-white text-end`}>
+                                                    {counter}/1000
+                                                </span>
+                                            </div>
+
+                                            <button
+                                                type={"submit"}
+                                                disabled={is_comment_loading}
+                                                className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
+                                            >
+                                                Comment
+                                            </button>
+                                        </form>
+                                    </div>
+                                }
                                 <div className={`flex flex-col gap-y-10`}>
                                     {show_comments}
                                 </div>

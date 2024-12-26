@@ -18,6 +18,7 @@ import apiClient from "../../ApiClient.ts";
 import {Modal} from "flowbite-react";
 import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
+import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 
 export default function Header() {
 
@@ -52,6 +53,7 @@ export default function Header() {
                 localStorage.removeItem('token')
                 localStorage.removeItem('expires_at')
                 dispatch(clearUser())
+                dispatch(clearUserProfileInfo())
                 dispatch(setResetUsersActive())
                 dispatch(setResetVendorsActive())
             }).catch(err => {

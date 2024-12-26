@@ -9,6 +9,7 @@ use App\Models\Comment;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CommentController extends Controller
 {
@@ -16,14 +17,17 @@ class CommentController extends Controller
 
     public function addComment(Request $request ,$book_id)
     {
-        $is_auth_user = Auth::guard('user_api')->check();
+        $is_auth_user = Auth::guard('user')->check();
         if (!$is_auth_user) {
             return $this->response_error('You must be customer to comment.', [], 403);
         }
-
+        $custom_messages = [
+            'body.required' => 'The comment body cannot be empty.',
+            'body.max' => 'The comment cannot exceed 1000 characters.',
+        ];
         $validated_data = $request->validate([
            'body' => ['required', 'max:1000']
-        ]);
+        ], $custom_messages);
 
         $comment = Comment::create([
             'user_id' =>  Auth::id(),
@@ -46,8 +50,16 @@ class CommentController extends Controller
         return $this->response_success([], 'You comment deleted successfully.');
     }
 
-    public function getComments()
+    public function getComments($id)
     {
+        $comments = Comment::where('book_id', $id)->paginate(2);
+        $next_page_url = $comments->nextPageUrl();
+        $comments = CommentResource::collection($comments);
 
+        $data = [
+            'comments' => $comments,
+            'next_page_url' => $next_page_url,
+        ];
+        return $this->response_success($data, 'Comments fetched successfully.');
     }
 }

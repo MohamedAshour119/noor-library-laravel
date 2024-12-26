@@ -134,7 +134,7 @@ export interface Errors {
 
 export interface ShowBookInterface extends Book {
     vendor: User
-    category: CategoryInterface
+    category: string
     comments: CommentInterface[]
 }
 

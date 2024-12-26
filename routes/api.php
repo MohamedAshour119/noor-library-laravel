@@ -17,9 +17,11 @@ Route::post('/sign-up-as-vendor', [AuthController::class, 'signUpAsVendor'])->na
 Route::post('/sign-in', [AuthController::class, 'signIn'])->name('signIn');
 Route::get('/get-user-books', [UserProfileController::class, 'getUserBooks'])->name('getUserBooks');
 Route::get('/categories/{category}', [CategoryController::class, 'getCategoryBooks'])->name('getCategoryBooks');
-Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
 Route::get('/get-categories/{sidebar?}', [CategoryController::class, 'getCategories'])->name('getCategories');
 Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory'])->name('searchForCategory');
+Route::get('/book/{id}/comments', [CommentController::class, 'getComments'])->name('getComments');
+Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
+Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');
@@ -27,9 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
     Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');
-    Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
     Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
     Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
     Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment'])->name('deleteComment');
-    Route::get('/book/comments', [CommentController::class, 'getComments'])->name('getComments');
 });

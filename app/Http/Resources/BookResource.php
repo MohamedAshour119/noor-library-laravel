@@ -4,7 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Laravel\Sanctum\PersonalAccessToken;
 use setasign\Fpdi\Fpdi;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -27,6 +29,8 @@ class BookResource extends JsonResource
     {
         $book_file = $this->getMedia('books_files')->first();
         $pages_count = $book_file ? $this->getPdfPageCount($book_file) : null;
+        $category = $this->category;
+        $vendor = $this->vendor;
 
         return [
             'id' => $this->id,
@@ -44,12 +48,16 @@ class BookResource extends JsonResource
             'ratings' => $this->sum_ratings_values(),
             'ratings_count' => $this->ratings_count,
             'average' => $this->average_rating(),
-            'your_rate' => $this->user_rate(),
+            'your_rate' =>  $this->user_rate($request),
             'pages_count' => $pages_count,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
-            'vendor' => new VendorResource($this->vendor),
-            'category' => new CategoryResource($this->category),
+            'vendor' => [
+                'first_name' => $vendor->first_name,
+                'last_name' => $vendor->last_name,
+            ],
+            'category' => $category->name,
         ];
+
     }
 }

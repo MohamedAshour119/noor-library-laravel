@@ -16,7 +16,7 @@ class EnsureOnlyVendorsUploadBooks
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('vendor_api')->check()) {
+        if (!Auth::guard('vendor')->check()) {
             return redirect('/')->withErrors(['error' => 'Access denied. Only vendors can upload books.']);
         }
 

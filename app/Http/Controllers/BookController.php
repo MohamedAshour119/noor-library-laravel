@@ -50,14 +50,12 @@ class BookController extends Controller
     public function getBookData($slug): JsonResponse
     {
         $book = Book::where('slug', $slug)->first();
+
         if ($book) {
             $book = new BookResource($book);
-
-            $data = [
-                'book' => $book
-            ];
-            return $this->response_success($data, 'Book Retrieved Successfully.');
+            return $this->response_success(['book' => $book], 'Book Retrieved Successfully.');
         }
+
         return $this->response_error('Book Not Found.', [], 404);
     }
 
@@ -68,16 +66,18 @@ class BookController extends Controller
         ]);
 
         $rate = $validate_data['rating'];
-        $is_auth_vendor = Auth::guard('vendor_api')->check();
+        $is_auth_vendor = Auth::guard('vendor')->check();
 
-        Rating::updateOrCreate(
-            [
-                'book_id' => $id,
-                'user_id' => $is_auth_vendor ? null : Auth::id(),
-                'vendor_id' => $is_auth_vendor ? Auth::id() : null,
-            ],
-            ['rate' => $rate]
-        );
+        if (!$is_auth_vendor) {
+            Rating::updateOrCreate(
+                [
+                    'book_id' => $id,
+                    'user_id' => Auth::id(),
+                ],
+                ['rate' => $rate]
+            );
+        }
+
         $book = Book::find($id);
         $book = new BookResource($book);
 
