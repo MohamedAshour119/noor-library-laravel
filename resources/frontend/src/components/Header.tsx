@@ -62,6 +62,9 @@ export default function Header() {
     }
 
     const body_el = document.body;
+    const handleOpen = () => {
+        setIsFocused(true)
+    }
     const handleClose = () => {
         setIsFocused(false)
     }
@@ -205,15 +208,28 @@ export default function Header() {
                                                     Profile
                                                 </Link>
                                             </MenuItem>
-                                            <MenuItem>
-                                                <Link
-                                                    to={`/add-book`}
-                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
-                                                >
-                                                    <FaBook className={`size-5`}/>
-                                                    Upload Book
-                                                </Link>
-                                            </MenuItem>
+                                            {user?.is_vendor &&
+                                                <MenuItem>
+                                                    <Link
+                                                        to={`/add-book`}
+                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                    >
+                                                        <FaBook className={`size-5`}/>
+                                                        Upload Book
+                                                    </Link>
+                                                </MenuItem>
+                                            }
+                                            {!user?.is_vendor &&
+                                                <MenuItem>
+                                                    <button
+                                                        onClick={handleOpen}
+                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                    >
+                                                        <FaBook className={`size-5`}/>
+                                                        Upload Book
+                                                    </button>
+                                                </MenuItem>
+                                            }
                                             <MenuItem>
                                                 <button
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"

@@ -10,7 +10,6 @@ import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TfiShoppingCart } from "react-icons/tfi";
-import { FaStar } from "react-icons/fa";
 import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
