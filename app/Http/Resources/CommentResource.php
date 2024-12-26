@@ -20,7 +20,7 @@ class CommentResource extends JsonResource
             $user_avatar = $user->getFirstMedia('users_avatars')?->getUrl() ?? '';
         }
 
-        $user_rating = $this->book->user_rate($request);
+        $user_rating = $this->book->user_rate();
 
         return [
             'id' => $this->id,

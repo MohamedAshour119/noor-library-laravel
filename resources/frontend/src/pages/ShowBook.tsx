@@ -5,7 +5,7 @@ import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import apiClient from "../../ApiClient.ts";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -18,6 +18,7 @@ import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
 import Comment from "../components/show-book/Comment.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
+import ReactStars from "react-stars";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -244,14 +245,18 @@ export default function ShowBook() {
                                                     <div>
                                                         <h2 className="text-xl font-semibold">{book_data?.title}{book_data?.title}{book_data?.title}</h2>
                                                         <div className="flex items-center text-yellow-500 mb-1">
-                                                            <div className="flex text-[#E0E0E0]">
-                                                                <FaStar />
-                                                                <FaStar className="-ml-[2px]" />
-                                                                <FaStar className="-ml-[2px]" />
-                                                                <FaStar className="-ml-[2px]" />
-                                                                <FaStar className="-ml-[2px]" />
-                                                            </div>
-                                                            <span className="text-gray-600 ml-1">(1,083 ratings)</span>
+                                                            <span className={`font-roboto-medium`}>
+                                                                <ReactStars
+                                                                    count={5}
+                                                                    value={book_data?.average}
+                                                                    size={20}
+                                                                    color1={`#d9d9d9`}
+                                                                    color2={`#ffe34b`}
+                                                                    className={`-ml-1`}
+                                                                    edit={false}
+                                                                />
+                                                            </span>
+                                                            <span className="text-gray-600 ml-1">({book_data?.ratings_count} ratings)</span>
                                                         </div>
                                                     </div>
                                                     {/* Book details */}
@@ -259,7 +264,15 @@ export default function ShowBook() {
                                                         <div><strong>Author:</strong> {book_data?.author}</div>
                                                         <div><strong>Category:</strong> {book_data?.category}</div>
                                                         <div><strong>Language:</strong> {book_data?.language}</div>
-                                                        <div><strong>Publisher:</strong> {display_vendor_name}{display_vendor_name}</div>
+                                                        <div>
+                                                            <strong className={`text-text_color`}>Publisher: </strong>
+                                                            <Link
+                                                                to={`/users/${book_data?.vendor.username}`}
+                                                                className={`text-main_color_darker`}
+                                                            >
+                                                                {display_vendor_name}
+                                                            </Link>
+                                                        </div>
                                                         <div><strong>Pages:</strong> {book_data?.pages_count}</div>
                                                         <div><strong>File Size:</strong> {book_data?.size} MB</div>
                                                         <div><strong>Extension:</strong> PDF</div>

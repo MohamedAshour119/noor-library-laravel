@@ -12,6 +12,7 @@ use App\Models\Vendor;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -53,19 +54,19 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         // First, attempt login as a normal user
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $user = new UserResource($user);
+        $user = User::where('email', $credentials['email'])->first();
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            $userResource = new UserResource($user);
             $token = $user->createToken('User Token', expiresAt: now()->addHours(24));
-            return $this->createSuccessResponse($user, $token, 'You are logged in as a user successfully.');
+            return $this->createSuccessResponse($userResource, $token, 'You are logged in as a user successfully.');
         }
 
         // Next, attempt login as a vendor
-        if (Auth::guard('vendor')->attempt($credentials)) {
-            $vendor = Auth::guard('vendor')->user();
-            $vendor = new VendorResource($vendor);
+        $vendor = Vendor::where('email', $credentials['email'])->first();
+        if ($vendor && Hash::check($credentials['password'], $vendor->password)) {
+            $vendorResource = new VendorResource($vendor);
             $token = $vendor->createToken('Vendor Token', expiresAt: now()->addHours(24));
-            return $this->createSuccessResponse($vendor, $token, 'You are logged in as a vendor successfully.', true);
+            return $this->createSuccessResponse($vendorResource, $token, 'You are logged in as a vendor successfully.', true);
         }
 
         return $this->response_error('You entered wrong credentials', [], 403);

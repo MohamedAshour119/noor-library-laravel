@@ -48,13 +48,14 @@ class BookResource extends JsonResource
             'ratings' => $this->sum_ratings_values(),
             'ratings_count' => $this->ratings_count,
             'average' => $this->average_rating(),
-            'your_rate' =>  $this->user_rate($request),
+            'your_rate' =>  $this->user_rate(),
             'pages_count' => $pages_count,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
             'vendor' => [
                 'first_name' => $vendor->first_name,
                 'last_name' => $vendor->last_name,
+                'username' => $vendor->username,
             ],
             'category' => $category->name,
         ];
