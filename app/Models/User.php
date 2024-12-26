@@ -32,7 +32,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
-    public function user()
+    public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
     }

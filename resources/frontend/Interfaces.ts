@@ -97,6 +97,7 @@ export interface Book {
     book_file?: string
     downloadable: boolean
     created_at: string
+    is_added_to_wishlist: boolean
 }
 
 export interface CategoryInterface {

@@ -43,6 +43,12 @@ export default function ShowBook() {
     const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
     const [is_add_to_wishlist_loading, setIs_add_to_wishlist_loading] = useState(false);
 
+    useEffect(() => {
+        if (book_data?.is_added_to_wishlist) {
+            setIs_add_to_wishlist(book_data?.is_added_to_wishlist)
+        }
+    }, [book_data?.is_added_to_wishlist]);
+
 
     const handleAddToWishlist = () => {
         setIs_add_to_wishlist_loading(true)
@@ -211,204 +217,205 @@ export default function ShowBook() {
         <div className="flex flex-col min-h-[669px] text-text_color">
             {/* Main container */}
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
-                    <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
-                        <div className={`relative overflow-x-hidden flex flex-col gap-y-5`}>
-                            <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
-                                    {/* Loading spinner */}
-                                    {is_loading && (
-                                        <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-                                            <CoolLoading />
-                                        </div>
-                                    )}
-                                    {/* Book details */}
-                                    {!is_loading && (
-                                        <div className={` overflow-x-hidden gap-x-10 flex justify-between h-fit ${is_book_free ? '2xl:flex-row flex-col' : ''} rounded-lg w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
-                                            {/* Action icons */}
-                                            <div className="absolute right-4 top-2 flex gap-x-2">
-                                                {(book_data?.price ?? 0) > 0 &&
-                                                    <button
-                                                        className="relative flex justify-center items-center bg-main_bg w-fit p-2 rounded-full !size-[44px]"
-                                                        onMouseEnter={handleAddToCartIconMouseEnter}
-                                                        onMouseLeave={handleAddToCartIconMouseLeave}
-                                                    >
-                                                        <TfiShoppingCart className="size-6 text-main_color_darker"/>
-                                                        {is_add_to_cart_icon_hovered && (
-                                                            <div
-                                                                className="icon-popup-clip-path absolute top-1/2 right-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
-                                                                <div
-                                                                    className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
-                                                                    <p>Add to cart</p>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </button>
-                                                }
-                                                <button
-                                                    className="relative bg-main_bg w-fit p-2 rounded-full"
-                                                    onMouseEnter={handleAddToCartWishlistMouseEnter}
-                                                    onMouseLeave={handleAddToCartWishlistMouseLeave}
-                                                    onClick={is_add_to_wishlist ? handleDeleteFromWishlist : handleAddToWishlist}
-                                                >
-                                                    {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600"/>}
-                                                    {is_add_to_wishlist && <IoIosHeart  className="size-7 text-red-400"/>}
-                                                    {is_add_to_wishlist_icon_hovered && (
-                                                        <div className="icon-popup-clip-path absolute top-1/2 right-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
-                                                            <div className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
-                                                                <p>{is_add_to_wishlist ? 'Remove from wishlist' : 'Add to wishlist'}</p>
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </button>
-                                            </div>
-                                            {/* Book image and text details */}
-                                            <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 mt-6 xl:mt-0">
-                                                <div className="mb-4 md:mb-0 md:mr-6">
-                                                    <img
-                                                        src={book_data?.cover}
-                                                        alt="Book Cover"
-                                                        className="rounded p-1 border"
-                                                    />
-                                                </div>
-                                                <div className="flex flex-col gap-y-3">
-                                                    {/* Book title and ratings */}
-                                                    <div>
-                                                        <h2 className="text-xl font-semibold">{book_data?.title}{book_data?.title}{book_data?.title}</h2>
-                                                        <div className="flex items-center text-yellow-500 mb-1">
-                                                            <span className={`font-roboto-medium`}>
-                                                                <ReactStars
-                                                                    count={5}
-                                                                    value={book_data?.average}
-                                                                    size={20}
-                                                                    color1={`#d9d9d9`}
-                                                                    color2={`#ffe34b`}
-                                                                    className={`-ml-1`}
-                                                                    edit={false}
-                                                                />
-                                                            </span>
-                                                            <span className="text-gray-600 ml-1">({book_data?.ratings_count} ratings)</span>
-                                                        </div>
-                                                    </div>
-                                                    {/* Book details */}
-                                                    <div className="flex flex-col gap-y-2">
-                                                        <div><strong>Author:</strong> {book_data?.author}</div>
-                                                        <div><strong>Category:</strong> {book_data?.category}</div>
-                                                        <div><strong>Language:</strong> {book_data?.language}</div>
-                                                        <div>
-                                                            <strong className={`text-text_color`}>Publisher: </strong>
-                                                            <Link
-                                                                to={`/users/${book_data?.vendor.username}`}
-                                                                className={`text-main_color_darker`}
-                                                            >
-                                                                {display_vendor_name}
-                                                            </Link>
-                                                        </div>
-                                                        <div><strong>Pages:</strong> {book_data?.pages_count}</div>
-                                                        <div><strong>File Size:</strong> {book_data?.size} MB</div>
-                                                        <div><strong>Extension:</strong> PDF</div>
-                                                        <div><strong>Add Date:</strong> {book_data?.created_at}</div>
-                                                    </div>
-                                                    {/* Purchase button */}
-                                                    {!is_book_free &&
-                                                        <div className={`mt-2`}>
-                                                            <button
-                                                                className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
-                                                                Purchase <strong>{book_data?.price + '$'}</strong>
-                                                            </button>
-                                                        </div>
-                                                    }
-                                                    {is_book_free &&
-                                                        <div className={`mt-2`}>
-                                                            <a
-                                                                href={book_data?.book_file}
-                                                                download
-                                                                className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition"
-                                                            >
-                                                                Download
-                                                            </a>
-                                                        </div>
-                                                    }
-                                                </div>
-                                            </div>
-
-                                            {/* Book PReview */}
-                                            {is_book_free &&
-                                                <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[700px] lg:w-full`}>
-                                                    <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
-                                                    <div className={`border flex justify-center max-w-full overflow-x-scroll`}>
-                                                        {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
-                                                    </div>
-                                                </div>
-                                            }
-                                            {!is_book_free &&
-                                                <div className={`hidden xl:flex items-center xl:w-[60%]`}>
-                                                    <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
-                                                        <h1 className={`font-semibold text-lg text-main_color`}>Preview</h1>
-                                                        <h1>Preview is not allowed because the book is not free.</h1>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div>
-                                    )}
-                            </div>
-
-                            {/* Book Ratings */}
-                            <BookRatings
-                                book_id={book_data?.id}
-                                setBook_data={setBook_data}
-                                book_data={book_data}
-                            />
-
-                            {/* Book Reviews */}
-                            <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
-                                <h1 className={`font-roboto-semi-bold text-xl`}>Comments ({book_data?.comments_count})</h1>
-                                {auth_user.id &&
-                                    <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
-                                        <img
-                                            src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
-                                            alt="trending-active"
-                                            className={`size-12 rounded-full`}
-                                        />
-                                        <form
-                                            onSubmit={handleSubmitComment}
-                                            className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
-                                        >
-                                            <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
-                                            <div className={`relative`}>
-                                                <textarea
-                                                    placeholder={`Comment Description Here`}
-                                                    className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
-                                                    maxLength={1000}
-                                                    value={comment}
-                                                    onChange={handleCommentChange}
-                                                />
-                                                {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
-                                                <span
-                                                    className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[97%] bg-white text-end`}>
-                                                    {counter}/1000
-                                                </span>
-                                            </div>
-
-                                            <button
-                                                type={"submit"}
-                                                disabled={is_comment_loading}
-                                                className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
-                                            >
-                                                Comment
-                                            </button>
-                                        </form>
-                                    </div>
-                                }
-                                <div className={`flex flex-col gap-y-10`}>
-                                    {show_comments}
+                <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
+                    <div className={`relative overflow-x-hidden flex flex-col gap-y-5`}>
+                        <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                            {/* Loading spinner */}
+                            {is_loading && (
+                                <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+                                    <CoolLoading />
                                 </div>
-                            </div>
+                            )}
+                            {/* Book details */}
+                            {!is_loading && (
+                                <div className={` overflow-x-hidden gap-x-10 flex justify-between h-fit ${is_book_free ? '2xl:flex-row flex-col' : ''} rounded-lg w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                                    {/* Action icons */}
+                                    <div className="absolute right-4 top-2 flex gap-x-2">
+                                        {(book_data?.price ?? 0) > 0 &&
+                                            <button
+                                                className="relative flex justify-center items-center bg-main_bg w-fit p-2 rounded-full !size-[44px]"
+                                                onMouseEnter={handleAddToCartIconMouseEnter}
+                                                onMouseLeave={handleAddToCartIconMouseLeave}
+                                            >
+                                                <TfiShoppingCart className="size-6 text-main_color_darker"/>
+                                                {is_add_to_cart_icon_hovered && (
+                                                    <div
+                                                        className="icon-popup-clip-path absolute top-1/2 right-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
+                                                        <div
+                                                            className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
+                                                            <p>Add to cart</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </button>
+                                        }
+                                        <button
+                                            className="relative bg-main_bg w-fit p-2 rounded-full"
+                                            onMouseEnter={handleAddToCartWishlistMouseEnter}
+                                            onMouseLeave={handleAddToCartWishlistMouseLeave}
+                                            onClick={is_add_to_wishlist ? handleDeleteFromWishlist : handleAddToWishlist}
+                                            disabled={is_add_to_wishlist_loading}
+                                        >
+                                            {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600"/>}
+                                            {is_add_to_wishlist && <IoIosHeart  className="size-7 text-red-400"/>}
+                                            {is_add_to_wishlist_icon_hovered && (
+                                                <div className="icon-popup-clip-path absolute top-1/2 right-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
+                                                    <div className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
+                                                        <p>{is_add_to_wishlist ? 'Remove from wishlist' : 'Add to wishlist'}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </button>
+                                    </div>
+                                    {/* Book image and text details */}
+                                    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 mt-6 xl:mt-0">
+                                        <div className="mb-4 md:mb-0 md:mr-6">
+                                            <img
+                                                src={book_data?.cover}
+                                                alt="Book Cover"
+                                                className="rounded p-1 border"
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-y-3">
+                                            {/* Book title and ratings */}
+                                            <div>
+                                                <h2 className="text-xl font-semibold">{book_data?.title}{book_data?.title}{book_data?.title}</h2>
+                                                <div className="flex items-center text-yellow-500 mb-1">
+                                                    <span className={`font-roboto-medium`}>
+                                                        <ReactStars
+                                                            count={5}
+                                                            value={book_data?.average}
+                                                            size={20}
+                                                            color1={`#d9d9d9`}
+                                                            color2={`#ffe34b`}
+                                                            className={`-ml-1`}
+                                                            edit={false}
+                                                        />
+                                                    </span>
+                                                    <span className="text-gray-600 ml-1">({book_data?.ratings_count} ratings)</span>
+                                                </div>
+                                            </div>
+                                            {/* Book details */}
+                                            <div className="flex flex-col gap-y-2">
+                                                <div><strong>Author:</strong> {book_data?.author}</div>
+                                                <div><strong>Category:</strong> {book_data?.category}</div>
+                                                <div><strong>Language:</strong> {book_data?.language}</div>
+                                                <div>
+                                                    <strong className={`text-text_color`}>Publisher: </strong>
+                                                    <Link
+                                                        to={`/users/${book_data?.vendor.username}`}
+                                                        className={`text-main_color_darker`}
+                                                    >
+                                                        {display_vendor_name}
+                                                    </Link>
+                                                </div>
+                                                <div><strong>Pages:</strong> {book_data?.pages_count}</div>
+                                                <div><strong>File Size:</strong> {book_data?.size} MB</div>
+                                                <div><strong>Extension:</strong> PDF</div>
+                                                <div><strong>Add Date:</strong> {book_data?.created_at}</div>
+                                            </div>
+                                            {/* Purchase button */}
+                                            {!is_book_free &&
+                                                <div className={`mt-2`}>
+                                                    <button
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
+                                                        Purchase <strong>{book_data?.price + '$'}</strong>
+                                                    </button>
+                                                </div>
+                                            }
+                                            {is_book_free &&
+                                                <div className={`mt-2`}>
+                                                    <a
+                                                        href={book_data?.book_file}
+                                                        download
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition"
+                                                    >
+                                                        Download
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
 
+                                    {/* Book PReview */}
+                                    {is_book_free &&
+                                        <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[700px] lg:w-full`}>
+                                            <h1 className={`font-semibold text-lg text-main_color text-center`}>Preview</h1>
+                                            <div className={`border flex justify-center max-w-full overflow-x-scroll`}>
+                                                {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
+                                            </div>
+                                        </div>
+                                    }
+                                    {!is_book_free &&
+                                        <div className={`hidden xl:flex items-center xl:w-[60%]`}>
+                                            <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
+                                                <h1 className={`font-semibold text-lg text-main_color`}>Preview</h1>
+                                                <h1>Preview is not allowed because the book is not free.</h1>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            )}
                         </div>
-                        {/* Sidebar for categories */}
-                        <div className={`hidden md:block`}>
-                            <CategorySidebar />
+
+                        {/* Book Ratings */}
+                        <BookRatings
+                            book_id={book_data?.id}
+                            setBook_data={setBook_data}
+                            book_data={book_data}
+                        />
+
+                        {/* Book Reviews */}
+                        <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
+                            <h1 className={`font-roboto-semi-bold text-xl`}>Comments ({book_data?.comments_count})</h1>
+                            {auth_user.id &&
+                                <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
+                                    <img
+                                        src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
+                                        alt="trending-active"
+                                        className={`size-12 rounded-full`}
+                                    />
+                                    <form
+                                        onSubmit={handleSubmitComment}
+                                        className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
+                                    >
+                                        <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
+                                        <div className={`relative`}>
+                                            <textarea
+                                                placeholder={`Comment Description Here`}
+                                                className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
+                                                maxLength={1000}
+                                                value={comment}
+                                                onChange={handleCommentChange}
+                                            />
+                                            {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
+                                            <span
+                                                className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[97%] bg-white text-end`}>
+                                                {counter}/1000
+                                            </span>
+                                        </div>
+
+                                        <button
+                                            type={"submit"}
+                                            disabled={is_comment_loading}
+                                            className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
+                                        >
+                                            Comment
+                                        </button>
+                                    </form>
+                                </div>
+                            }
+                            <div className={`flex flex-col gap-y-10`}>
+                                {show_comments}
+                            </div>
                         </div>
-                </div>
+
+                    </div>
+                    {/* Sidebar for categories */}
+                    <div className={`hidden md:block`}>
+                        <CategorySidebar />
+                    </div>
+            </div>
             </div>
             {/* Footer */}
             {!is_loading && <Footer />}

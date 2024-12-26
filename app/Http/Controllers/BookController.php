@@ -87,6 +87,10 @@ class BookController extends Controller
 
     public function addBookToWishlist($book_id)
     {
+        $wishlist = Wishlist::where('user_id', Auth::id())->where('book_id', $book_id)->first();
+        if ($wishlist) {
+            return $this->response_error("It's already added.", [], 401);
+        }
         Wishlist::create([
             'user_id' => Auth::id(),
             'book_id' => $book_id,
@@ -95,7 +99,11 @@ class BookController extends Controller
     }
     public function deleteBookToWishlist($book_id)
     {
-        Wishlist::where('book_id', $book_id)->delete();
+        $wishlist =  Wishlist::where('user_id', Auth::id())->where('book_id', $book_id)->first();
+        if (!$wishlist) {
+            return $this->response_error("It's not exist.", [], 404);
+        }
+        $wishlist->delete();
         return $this->response_success([], 'Book deleted from wishlist successfully.');
     }
 }
