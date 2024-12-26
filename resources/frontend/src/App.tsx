@@ -14,6 +14,7 @@ import Category from "./pages/Category.tsx";
 import {useDispatch} from "react-redux";
 import {setActive} from "../redux/is-location-is-not-in-navlink-slice.ts";
 import ShowBook from "./pages/ShowBook.tsx";
+import {SnackbarProvider} from "notistack";
 
 function App() {
     const dispatch = useDispatch()
@@ -36,6 +37,13 @@ function App() {
 
     return (
         <>
+            <SnackbarProvider
+                autoHideDuration={3000}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+            />
             {showHeader && <Header />}
             <Routes>
                 <Route path={`/`} element={<Home/>}/>

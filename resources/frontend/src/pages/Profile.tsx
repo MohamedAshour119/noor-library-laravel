@@ -9,7 +9,7 @@ import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/Book-Card.tsx";
-import {enqueueSnackbar, SnackbarProvider} from "notistack";
+import {enqueueSnackbar} from "notistack";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
 import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
@@ -261,13 +261,6 @@ export default function Profile() {
     return (
         <>
             {is_confirm_password_open && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
-            <SnackbarProvider
-                autoHideDuration={3000}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-            />
             <Modal
                 show={is_confirm_password_open}
                 size="sm"

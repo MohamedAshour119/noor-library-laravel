@@ -49,6 +49,8 @@ export default function ShowBook() {
     const show_comments = comments.map((comment, index) => (
             <Comment
                 key={index}
+                book_data={book_data}
+                setBook_data={setBook_data}
                 {...comment}
             />
         )
@@ -69,6 +71,7 @@ export default function ShowBook() {
                     ...prevState,
                 ]))
                 setComment('')
+                setCounter(0)
             })
             .catch(err => {
                 setError(err.response.data.errors.body[0])

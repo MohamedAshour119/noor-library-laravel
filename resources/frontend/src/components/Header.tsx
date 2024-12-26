@@ -187,7 +187,7 @@ export default function Header() {
                                         <MenuItems
                                             transition
                                             anchor={`bottom`}
-                                            className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                                            className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                                         >
 
                                             <MenuItem>
@@ -225,8 +225,6 @@ export default function Header() {
 
                                         </MenuItems>
                                     </Menu>
-
-
                                 </div>
                             }
 

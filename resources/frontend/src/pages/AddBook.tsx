@@ -1,4 +1,4 @@
-import {enqueueSnackbar, SnackbarProvider} from "notistack";
+import {enqueueSnackbar} from "notistack";
 import GlobalInput from "../components/core/GlobalInput.tsx";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import {AddBookInterface, AddBookDefaultValues, AddBookErrors, AddBookErrorsDefaultValues} from "../../Interfaces.ts";
@@ -172,13 +172,6 @@ export default function AddBook() {
 
     return (
         <div className={`flex justify-center bg-main_bg py-5`}>
-            <SnackbarProvider
-                autoHideDuration={3000}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-            />
             <div className={`container w-full flex justify-center`}>
                 <div className={`2xl:w-1/2 flex flex-col gap-y-10 bg-white p-8 rounded-lg border`}>
                     <h1 className={`font-roboto-bold text-2xl border-b-2 border-main_color w-fit pb-2`}>Upload Book</h1>

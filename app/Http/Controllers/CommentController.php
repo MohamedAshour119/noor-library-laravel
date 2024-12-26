@@ -34,4 +34,15 @@ class CommentController extends Controller
 
         return $this->response_success(['comment' => $comment], 'success');
     }
+
+    public function deleteComment($comment_id)
+    {
+        $comment = Comment::find($comment_id);
+        if ($comment->user_id !== Auth::id()) {
+            return $this->response_error('You cannot delete other comments');
+        }
+
+        $comment->delete();
+        return $this->response_success([], 'You comment deleted successfully.');
+    }
 }

@@ -1,4 +1,4 @@
-import {enqueueSnackbar, SnackbarProvider} from "notistack";
+import {enqueueSnackbar} from "notistack";
 import {Link, useNavigate} from "react-router-dom";
 import TextInputAuth from "../../components/core/TextInputAuth.tsx";
 import LoginProviders from "../../components/LoginProviders.tsx";
@@ -209,15 +209,6 @@ export default function SignUp() {
             <div className={`min-h-svh h-svh z-20 relative flex justify-center pt-20 ${is_sign_in_page ? 'custom-scrollbar' : ''} overflow-y-scroll`}>
 
                 <div className={`flex flex-col px-2 items-center`}>
-
-                    <SnackbarProvider
-                        autoHideDuration={2000}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                    />
-
                     <div className={`bg-white rounded-2xl flex flex-col gap-y-5 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
                         <div className={`flex flex-col items-center gap-y-4`}>
                             <Link to={`/`}>

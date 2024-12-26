@@ -27,6 +27,7 @@ class CommentResource extends JsonResource
             'user' => [
                 'first_name' => $user->first_name,
                 'last_name' => $user->last_name,
+                'username' => $user->username,
                 'avatar' => $user_avatar,
             ],
             'rating' => $user_rating,
