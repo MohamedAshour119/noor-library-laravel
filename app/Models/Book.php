@@ -37,11 +37,12 @@ class Book extends Model implements HasMedia
         $average = $this->ratings()->avg('rate');
         return round($average, 2);
     }
-    public function user_rate()
+    public function user_rate($id = null)
     {
+        $id = $id ?: Auth::id();
         $is_user = Auth::guard('user')->check();
         if ($is_user) {
-            $user_rate = $this->ratings()->where('user_id', Auth::id())->first();
+            $user_rate = $this->ratings()->where('user_id', $id)->first();
             return $user_rate ? $user_rate->rate : 0;
         }
     }
