@@ -102,7 +102,7 @@ class UserProfileController extends Controller implements HasMedia
 
     public function getUserInfo($username): JsonResponse
     {
-        $user = User::where('username', $username)->first();
+        $user = User::where('username', $username)->withCount('wishlists')->first();
         if ($user) {
             $user = new UserResource($user);
             $data = [

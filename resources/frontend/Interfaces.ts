@@ -9,6 +9,7 @@ export interface User {
     is_vendor?: boolean | null
     phone?: string | null
     avatar?: string
+    wishlists_count?: number | null
 }
 
 type BinaryOptionsInterface = {

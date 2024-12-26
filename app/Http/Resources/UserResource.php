@@ -33,6 +33,7 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at?->format('M d'),
             'updated_at' => $this->updated_at?->format('M d'),
             'is_vendor' => false,
+            'wishlists_count' => $this->wishlists_count,
         ];
     }
 }

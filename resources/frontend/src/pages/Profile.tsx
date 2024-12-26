@@ -30,7 +30,9 @@ export default function Profile() {
 
     const [books, setBooks] = useState<Book[]>([]);
     const [reviews, setReviews] = useState([]);
-    const [wishlist, setWishlist] = useState([]);
+    const [wishlist_books, setWishlist_books] = useState<Book[]>([]);
+    const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState<Book[]>([]);
+    const [wishlist_books_count, setWishlist_books_count] = useState(0);
     const [orders_history, setOrders_history] = useState([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
@@ -55,6 +57,13 @@ export default function Profile() {
     const [temp_token, setTemp_token] = useState('');
     const [avatar, setAvatar] = useState<string | File | null>(null);
     const [show_save_avatar_btn, setShow_save_avatar_btn] = useState(false);
+
+    useEffect(() => {
+        if (user_info.wishlists_count) {
+            setWishlist_books_count(user_info.wishlists_count)
+        }
+    }, [user_info]);
+
 
     const onFocus = () => {
         setIs_confirm_user_password_input_focused(true)
@@ -88,6 +97,7 @@ export default function Profile() {
             })
     }
     const getUserInfo = () => {
+        setIs_loading(true)
         setIs_fetching(true)
         apiClient().get(`/users/${user}`)
             .then(res  => {
@@ -109,6 +119,30 @@ export default function Profile() {
             })
     }
 
+    const getWishlistBooks = (page_url: string) => {
+        setIs_loading(true)
+        setIs_fetching(true)
+        apiClient().get(page_url)
+            .then(res => {
+                setWishlist_books(prevState => ([...prevState, ...res.data.data.wishlist_books]))
+                setWishlist_books_next_page_url(res.data.data.wishlist_books_next_page_url)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_loading(false)
+                setIs_fetching(false)
+            })
+    }
+
+    useEffect(() => {
+        if (user_isActive.wishlist) {
+            getWishlistBooks(`/wishlist/${user_info.id}`)
+        }
+    }, [user_isActive]);
+
+
     const last_book_ref = useRef(null);
     const show_books = books.map((book, index) => (
             <BookCard
@@ -116,6 +150,20 @@ export default function Profile() {
                 rate={140}
                 title={book.title}
                 cover={book.cover}
+                slug={book.slug}
+                author={book.author}
+                ref={index === books.length - 1 ? last_book_ref : null}
+                styles={`w-full`}
+            />
+        )
+    )
+    const show_wishlist_books = wishlist_books.map((book, index) => (
+            <BookCard
+                key={index}
+                rate={140}
+                title={book.title}
+                cover={book.cover}
+                slug={book.slug}
                 author={book.author}
                 ref={index === books.length - 1 ? last_book_ref : null}
                 styles={`w-full`}
@@ -524,7 +572,7 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {!user_info?.is_vendor && user !== user_state.username && wishlist.length === 0 && is_visited_user_sections_active.wishlist &&
+                        {!user_info?.is_vendor && user !== user_state.username && wishlist_books.length === 0 && is_visited_user_sections_active.wishlist &&
                             <NotFoundContainer
                                 src={`/profile/wishlist-not-active.svg`}
                                 visited_user={display_name}
@@ -540,12 +588,19 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {!user_info?.is_vendor && user === user_state.username && wishlist.length === 0 && user_isActive.wishlist &&
+                        {!user_info?.is_vendor && user === user_state.username && wishlist_books.length === 0 && user_isActive.wishlist &&
                             <NotFoundContainer
                                 src={`/profile/wishlist-not-active.svg`}
                                 content={`You have nothing in wishlist.`}
                                 content_style={`font-roboto-semi-bold`}
                             />
+                        }
+                        {!user_info?.is_vendor && user === user_state.username && user_info.wishlists_count && user_info.wishlists_count > 0 && user_isActive.wishlist &&
+                            (
+                                <div className={`max-xxs:px-10 grid xxs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 !w-full`}>
+                                    {show_wishlist_books}
+                                </div>
+                            )
                         }
                         {!user_info?.is_vendor && user === user_state.username && orders_history.length === 0 && user_isActive.order_history &&
                             <NotFoundContainer

@@ -23,6 +23,8 @@ class User extends Authenticatable implements HasMedia
      * @var list<string>
      */
     protected $guarded = [];
+    protected $with = ['wishlistedBooks'];
+    protected $withCount = ['wishlists'];
     public function ratings()
     {
         return $this->hasMany(Rating::class);
@@ -35,6 +37,10 @@ class User extends Authenticatable implements HasMedia
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
+    }
+    public function wishlistedBooks()
+    {
+        return $this->belongsToMany(Book::class, 'wishlists')->withTimestamps();
     }
     /**
      * The attributes that should be hidden for serialization.

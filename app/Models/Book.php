@@ -50,7 +50,14 @@ class Book extends Model implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
-
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+    public function wishlistedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'wishlists')->withTimestamps();
+    }
     protected static function booted(): void
     {
         parent::booted();

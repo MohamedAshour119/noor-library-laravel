@@ -12,6 +12,7 @@ const initialState: User = {
     updatedAt: null,
     is_vendor: null,
     avatar: '',
+    wishlists_count: null,
 }
 
 export const userSlice = createSlice({
@@ -29,6 +30,7 @@ export const userSlice = createSlice({
             state.is_vendor = action.payload.is_vendor
             state.phone = action.payload.phone
             state.avatar = action.payload.avatar
+            state.wishlists_count = action.payload.wishlists_count
         },
         clearUser: (state) => {
             state.id = null
@@ -41,6 +43,7 @@ export const userSlice = createSlice({
             state.is_vendor = null
             state.phone = null
             state.avatar = ''
+            state.wishlists_count = null
         },
     },
 })

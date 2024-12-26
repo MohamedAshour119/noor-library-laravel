@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserProfileController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Support\Facades\Route;
 
@@ -33,8 +34,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
         Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
         Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment'])->name('deleteComment');
-        Route::post('/wishlist/add/{book_id}', [BookController::class, 'addBookToWishlist'])->name('addBookToWishlist');
-        Route::delete('/wishlist/delete/{book_id}', [BookController::class, 'deleteBookToWishlist'])->name('deleteBookToWishlist');
+        Route::post('/wishlist/add/{book_id}', [WishlistController::class, 'addBookToWishlist'])->name('addBookToWishlist');
+        Route::delete('/wishlist/delete/{book_id}', [WishlistController::class, 'deleteBookToWishlist'])->name('deleteBookToWishlist');
+        Route::get('/wishlist/{user_id}', [WishlistController::class, 'getWishlistBooks'])->name('getWishlistBooks');
     });
 
 });
