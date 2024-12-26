@@ -50,7 +50,6 @@ class BookResource extends JsonResource
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
             'vendor' => new VendorResource($this->vendor),
             'category' => new CategoryResource($this->category),
-            'comments' => CommentResource::collection($this->comments),
         ];
     }
 }

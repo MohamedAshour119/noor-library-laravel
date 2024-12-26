@@ -16,8 +16,14 @@ class CategoryController extends Controller
     {
         $pagination_count = $sidebar ? 20 : 10;
 
-        $categories = Category::withCount('books')->paginate($pagination_count);
-        return $this->response_success($categories, 'Categories retrieved');
+        if ($pagination_count !== 20) {
+            $categories = Category::withCount('books')->paginate($pagination_count);
+            return $this->response_success($categories, 'Categories retrieved');
+        }else {
+            $categories = Category::withCount('books')->get();
+            return $this->response_success($categories, 'Categories retrieved');
+        }
+
     }
 
     public function searchForCategory($keyword): JsonResponse

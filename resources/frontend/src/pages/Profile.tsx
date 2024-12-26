@@ -117,7 +117,7 @@ export default function Profile() {
                 title={book.title}
                 cover={book.cover}
                 author={book.author}
-                ref={last_book_ref}
+                ref={index === books.length - 1 ? last_book_ref : null}
                 styles={`w-full`}
             />
         )

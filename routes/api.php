@@ -31,4 +31,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
     Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
     Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment'])->name('deleteComment');
+    Route::get('/book/comments', [CommentController::class, 'getComments'])->name('getComments');
 });

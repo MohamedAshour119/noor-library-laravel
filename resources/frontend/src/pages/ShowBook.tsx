@@ -3,7 +3,7 @@
 
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import apiClient from "../../ApiClient.ts";
 import {useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
@@ -27,7 +27,7 @@ export default function ShowBook() {
 
     // State to track loading status
     const [is_loading, setIs_loading] = useState(false);
-
+    const [is_fetching, setIs_fetching] = useState(false);
     // State to store the fetched book data
     const [book_data, setBook_data] = useState<ShowBookInterface>();
 
@@ -39,12 +39,48 @@ export default function ShowBook() {
     const [is_comment_loading, setIs_comment_loading] = useState(false);
     const [error, setError] = useState('');
     const [comments, setComments] = useState<CommentInterface[]>([]);
+    const [comments_next_page_url, setComments_next_page_url] = useState('');
+
+    const load_comments_ref = useRef(null)
+    const getComments = (page_url: string) => {
+        setIs_fetching(true)
+        setIs_loading(true)
+
+        apiClient().get(page_url)
+            .then(res => {
+                setComments(prevState => [...prevState, res.data.data.comments])
+                setComments_next_page_url(res.data.data.next_page_url)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_loading(false)
+                setIs_fetching(false)
+            })
+    }
+
     useEffect(() => {
-        if (book_data?.comments) {
-            // @ts-ignore
-            setComments(book_data.comments)
-        }
-    }, [book_data?.comments]);
+        if (!load_comments_ref.current) return;  // Exit if the ref is null
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && !is_fetching && comments_next_page_url) {
+                getComments('/book/comments');
+            }
+        }, {
+            threshold: 0.5 // Trigger when 50% of the last tweet is visible
+        });
+
+        // Watch the last tweet
+        observer.observe(load_comments_ref.current);
+
+        // Cleanup
+        return () => {
+            if (load_comments_ref.current) {
+                observer.unobserve(load_comments_ref.current);
+            }
+        };
+    }, [load_comments_ref.current]);
 
     const show_comments = comments.map((comment, index) => (
             <Comment
@@ -257,9 +293,12 @@ export default function ShowBook() {
                             />
 
                             {/* Book Reviews */}
-                            <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
+                            <div
+                                ref={load_comments_ref}
+                                className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}
+                            >
                                 <h1 className={`font-roboto-semi-bold text-xl`}>Comments ({book_data?.comments_count})</h1>
-                                <div className={`bg-white grid grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
+                                <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                                     <img
                                         src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
                                         alt="trending-active"
