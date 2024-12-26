@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\BookResource;
+use App\Http\Resources\CommentResource;
 use App\Models\Book;
 use App\Models\Comment;
 use App\Traits\HttpResponses;
@@ -29,6 +30,7 @@ class CommentController extends Controller
             'book_id' => $book_id,
             'body' => $validated_data['body'],
         ]);
+        $comment = new CommentResource($comment);
 
         return $this->response_success(['comment' => $comment], 'success');
     }

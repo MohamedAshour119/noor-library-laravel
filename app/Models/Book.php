@@ -39,7 +39,7 @@ class Book extends Model implements HasMedia
     }
     public function user_rate()
     {
-        $user_rate = $this->ratings()->where('user_id', Auth::id())->orWhere('vendor_id', Auth::id())->first();
+        $user_rate = $this->ratings()->where('user_id', Auth::id())->first();
         return $user_rate->rate;
     }
     public function comments()

@@ -87,6 +87,7 @@ export interface Book {
     author: string
     language: string
     size: string
+    comments_count: number
     ratings: number
     ratings_count: number
     average: number
@@ -134,4 +135,17 @@ export interface Errors {
 export interface ShowBookInterface extends Book {
     vendor: User
     category: CategoryInterface
+    comments: CommentInterface[]
+}
+
+export interface CommentInterface {
+    id: number
+    user: {
+        first_name: string
+        last_name: string
+        avatar: string
+    }
+    rating: number
+    body: string
+    created_at: string
 }

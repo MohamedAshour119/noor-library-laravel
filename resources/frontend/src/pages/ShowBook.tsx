@@ -11,7 +11,7 @@ import CategorySidebar from "../components/CategorySidebar.tsx";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TfiShoppingCart } from "react-icons/tfi";
 import { FaStar } from "react-icons/fa";
-import { ShowBookInterface } from "../../Interfaces.ts";
+import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
@@ -38,14 +38,26 @@ export default function ShowBook() {
     const [counter, setCounter] = useState(0);
     const [is_comment_loading, setIs_comment_loading] = useState(false);
     const [error, setError] = useState('');
-    const [comments, setComments] = useState([]);
+    const [comments, setComments] = useState<CommentInterface[]>([]);
+    useEffect(() => {
+        if (book_data?.comments) {
+            // @ts-ignore
+            setComments(book_data.comments)
+        }
+    }, [book_data?.comments]);
 
+    const show_comments = comments.map((comment, index) => (
+            <Comment
+                key={index}
+                {...comment}
+            />
+        )
+    )
     const handleCommentChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         const { value } = e.target
         setComment(value)
         setCounter(value.length)
     }
-
     const handleSubmitComment = (e: FormEvent) => {
         e.preventDefault()
         setIs_comment_loading(true)
@@ -242,8 +254,9 @@ export default function ShowBook() {
                             />
 
                             {/* Book Reviews */}
-                            <div className={`flex flex-col gap-y-10 px-10 py-5 border rounded-lg bg-white`}>
-                                <div className={`bg-white grid grid-cols-[5%_95%]`}>
+                            <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
+                                <h1 className={`font-roboto-semi-bold text-xl`}>Comments ({book_data?.comments_count})</h1>
+                                <div className={`bg-white grid grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                                     <img
                                         src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
                                         alt="trending-active"
@@ -251,7 +264,7 @@ export default function ShowBook() {
                                     />
                                     <form
                                         onSubmit={handleSubmitComment}
-                                        className={`bg-main_bg px-5 py-2 grid gap-y-2 rounded-lg`}
+                                        className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
                                     >
                                         <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
                                         <div className={`relative`}>
@@ -263,7 +276,7 @@ export default function ShowBook() {
                                                 onChange={handleCommentChange}
                                             />
                                             {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
-                                            <span className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[99%] bg-white text-end`}>
+                                            <span className={`absolute text-main_color_darker z-10 right-2 top-0 text-xs w-[97%] bg-white text-end`}>
                                                 {counter}/1000
                                             </span>
                                         </div>
@@ -278,11 +291,7 @@ export default function ShowBook() {
                                     </form>
                                 </div>
                                 <div className={`flex flex-col gap-y-10`}>
-                                    <Comment/>
-                                    <Comment/>
-                                    <Comment/>
-                                    <Comment/>
-                                    <Comment/>
+                                    {show_comments}
                                 </div>
                             </div>
 

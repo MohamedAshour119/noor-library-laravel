@@ -40,6 +40,7 @@ class BookResource extends JsonResource
             'price' => (int) $this->price,
             'created_at' => $this->created_at?->format('d-m-Y'),
             'size' => $book_file ? round($book_file->size / 1024 / 1024, 2) : null, // Book size in MB
+            'comments_count' => $this->comments_count,
             'ratings' => $this->sum_ratings_values(),
             'ratings_count' => $this->ratings_count,
             'average' => $this->average_rating(),
@@ -49,6 +50,7 @@ class BookResource extends JsonResource
             'book_file' => $this->getMedia('books_files')->first()?->getUrl() ?? '',
             'vendor' => new VendorResource($this->vendor),
             'category' => new CategoryResource($this->category),
+            'comments' => CommentResource::collection($this->comments),
         ];
     }
 }
