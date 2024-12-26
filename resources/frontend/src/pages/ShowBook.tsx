@@ -8,7 +8,7 @@ import apiClient from "../../ApiClient.ts";
 import {Link, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
-import { IoIosHeartEmpty } from "react-icons/io";
+import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
 import { TfiShoppingCart } from "react-icons/tfi";
 import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
@@ -40,6 +40,34 @@ export default function ShowBook() {
     const [error, setError] = useState('');
     const [comments, setComments] = useState<CommentInterface[]>([]);
     const [comments_next_page_url, setComments_next_page_url] = useState('');
+    const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
+    const [is_add_to_wishlist_loading, setIs_add_to_wishlist_loading] = useState(false);
+
+
+    const handleAddToWishlist = () => {
+        setIs_add_to_wishlist_loading(true)
+
+        apiClient().post(`/wishlist/add/${book_data?.id}`)
+            .then(() => {
+                setIs_add_to_wishlist(true)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors)
+            })
+            .finally(() => setIs_add_to_wishlist_loading(false))
+    }
+    const handleDeleteFromWishlist = () => {
+        setIs_add_to_wishlist_loading(true)
+
+        apiClient().delete(`/wishlist/delete/${book_data?.id}`)
+            .then(() => {
+                setIs_add_to_wishlist(false)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors)
+            })
+            .finally(() => setIs_add_to_wishlist_loading(false))
+    }
 
     const getComments = (page_url: string) => {
         setIs_fetching(true)
@@ -219,12 +247,14 @@ export default function ShowBook() {
                                                     className="relative bg-main_bg w-fit p-2 rounded-full"
                                                     onMouseEnter={handleAddToCartWishlistMouseEnter}
                                                     onMouseLeave={handleAddToCartWishlistMouseLeave}
+                                                    onClick={is_add_to_wishlist ? handleDeleteFromWishlist : handleAddToWishlist}
                                                 >
-                                                    <IoIosHeartEmpty className="size-7 text-red-600" />
+                                                    {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600"/>}
+                                                    {is_add_to_wishlist && <IoIosHeart  className="size-7 text-red-400"/>}
                                                     {is_add_to_wishlist_icon_hovered && (
                                                         <div className="icon-popup-clip-path absolute top-1/2 right-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
                                                             <div className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
-                                                                <p>Add to wishlist</p>
+                                                                <p>{is_add_to_wishlist ? 'Remove from wishlist' : 'Add to wishlist'}</p>
                                                             </div>
                                                         </div>
                                                     )}

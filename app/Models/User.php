@@ -32,7 +32,10 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(Comment::class);
     }
-
+    public function user()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

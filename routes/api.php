@@ -5,7 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UserProfileController;
-use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Support\Facades\Route;
 
@@ -25,11 +24,17 @@ Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBo
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');
-    Route::post('/add-book', [BookController::class, 'addBook'])->name('addBook')->middleware(EnsureOnlyVendorsUploadBooks::class);
+    Route::post('/add-book', [BookController::class, 'addBook'])->name('addBook')->middleware('vendor.upload');
     Route::post('/verify-password', [UserProfileController::class, 'verifyPassword'])->name('verifyPassword');
-    Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware(ValidateTempToken::class);
+    Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->name('updateProfile')->middleware('validate.temp.token');
     Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar'])->name('updateProfileAvatar');
-    Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
-    Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
-    Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment'])->name('deleteComment');
+
+    Route::middleware('user.access')->group(function (){
+        Route::post('/books/rating/{id}', [BookController::class, 'ratingBook'])->name('ratingBook');
+        Route::post('/book/comments/{book_id}', [CommentController::class, 'addComment'])->name('addComment');
+        Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment'])->name('deleteComment');
+        Route::post('/wishlist/add/{book_id}', [BookController::class, 'addBookToWishlist'])->name('addBookToWishlist');
+        Route::delete('/wishlist/delete/{book_id}', [BookController::class, 'deleteBookToWishlist'])->name('deleteBookToWishlist');
+    });
+
 });

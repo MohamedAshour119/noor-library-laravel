@@ -7,6 +7,7 @@ use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Rating;
+use App\Models\Wishlist;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -82,5 +83,19 @@ class BookController extends Controller
         $book = new BookResource($book);
 
         return $this->response_success(['book' => $book], 'Rated Successfully.');
+    }
+
+    public function addBookToWishlist($book_id)
+    {
+        Wishlist::create([
+            'user_id' => Auth::id(),
+            'book_id' => $book_id,
+        ]);
+        return $this->response_success([], 'Book added to wishlist successfully.');
+    }
+    public function deleteBookToWishlist($book_id)
+    {
+        Wishlist::where('book_id', $book_id)->delete();
+        return $this->response_success([], 'Book deleted from wishlist successfully.');
     }
 }

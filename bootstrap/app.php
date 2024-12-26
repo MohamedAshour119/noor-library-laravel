@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureOnlyUsers;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Foundation\Application;
@@ -17,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'vendor.upload' => EnsureOnlyVendorsUploadBooks::class,
             'validate.temp.token' => ValidateTempToken::class,
+            'user.access' => EnsureOnlyUsers::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
