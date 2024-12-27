@@ -9,14 +9,14 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import AuthorsSidebar from "../components/AuthorsSidebar.tsx";
-import {Book} from "../../Interfaces.ts";
+import {BookCardInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
-    const [books, setBooks] = useState<Book[]>([]);
+    const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_loading, setIs_loading] = useState(true);
     const [is_fetching, setIs_fetching] = useState(false);
@@ -76,11 +76,13 @@ export default function Home() {
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}
-                rate={140}
+                average_ratings={book.average_ratings}
+                ratings_count={book.ratings_count}
                 title={book.title}
                 cover={book.cover}
                 slug={book.slug}
                 author={book.author}
+                price={book.price}
                 ref={index === books.length - 1 ? last_book_ref : null}
             />
         )

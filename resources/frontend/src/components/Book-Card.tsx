@@ -1,16 +1,18 @@
 import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {Ref} from "react";
+import ReactStars from "react-stars";
+import {enqueueSnackbar} from "notistack";
 
 interface Props {
-    rate?: number;
+    average_ratings?: number;
     id?: number,
     title?: string
     slug?: string
     description?: string
     is_author?: boolean
     is_free?: boolean
-    price?: number
+    price: number
     author?: string
     language?: string
     cover?: string
@@ -18,10 +20,11 @@ interface Props {
     downloadable?: boolean
     ref?: Ref<HTMLAnchorElement>
     styles?: string
+    ratings_count: number
 }
 
 export default function BookCard(props: Props) {
-    const {rate, title, slug, author, cover, ref, styles } = props
+    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count } = props
 
     return (
         <Link
@@ -29,15 +32,19 @@ export default function BookCard(props: Props) {
             to={`/books/${slug}`}
             className={`${styles ? styles : ''} relative flex flex-col justify-self-center gap-y-2 md:w-full w-fit items-center border bg-white p-5 rounded-lg hover:border-main_color transition hover:-translate-y-1`}
         >
-            <div className="flex items-center gap-x-2">
-                <div className="flex text-[#E0E0E0]">
-                    <FaStar />
-                    <FaStar className="-ml-[2px]" />
-                    <FaStar className="-ml-[2px]" />
-                    <FaStar className="-ml-[2px]" />
-                    <FaStar className="-ml-[2px]" />
+            <div className={`flex items-center gap-x-3`}>
+                <div className={`flex items-center relative`}>
+                    <ReactStars
+                        count={5}
+                        value={average_ratings}
+                        size={25}
+                        color1={`#d9d9d9`}
+                        color2={`#ffe34b`}
+                        className={`-ml-1 custom-stars`}
+                        edit={false}
+                    />
                 </div>
-                <span>({rate || 0})</span>
+                <span className={`text-lg`}>({ratings_count})</span>
             </div>
             <img src={cover} alt="ShowBook-img" className="rounded border p-1" />
             <Link
@@ -52,11 +59,9 @@ export default function BookCard(props: Props) {
             >
                 {author}
             </Link>
-            {/* Price */}
-            <div className={`border border-main_color bg-main_color p-1 size-10 flex items-center justify-center text-white rounded-full`}>
-                20$
+            <div className={`border border-main_color bg-main_color p-1 px-10 ${price === 0 ? '!bg-main_bg !border-border_color !text-text_color' : ''} size-10 flex items-center justify-center text-white rounded-full`}>
+                {price > 0 ? price + '$' : 'Free'}
             </div>
-            {/* Price */}
         </Link>
     );
 }

@@ -186,3 +186,11 @@ div[aria-describedby="rpv-core__tooltip-body-toolbar-more-actions"]
     justify-content: center;
     align-items: center;
 }
+
+span[data-index="1"],
+span[data-index="2"],
+span[data-index="3"],
+span[data-index="4"]
+{
+    margin-left: -3px;
+}

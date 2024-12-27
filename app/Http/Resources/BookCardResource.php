@@ -22,6 +22,8 @@ class BookCardResource extends JsonResource
             'author' => $this->author_name,
             'price' => (int) $this->price,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
+            'average_ratings' => $this->average_rating(),
+            'ratings_count' => $this->ratings_count,
             'vendor' => [
                 'first_name' => $vendor->first_name,
                 'last_name' => $vendor->last_name,

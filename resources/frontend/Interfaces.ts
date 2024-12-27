@@ -101,6 +101,22 @@ export interface Book {
     is_added_to_wishlist: boolean
 }
 
+export interface BookCardInterface {
+    id: number
+    title: string
+    slug: string
+    author: string
+    price: number
+    cover: string
+    average_ratings: number
+    ratings_count: number
+    vendor: {
+        first_name: string
+        last_name: string
+        username: string
+    }
+}
+
 export interface CategoryInterface {
     id: number
     name: string
