@@ -9,10 +9,17 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import AuthorsSidebar from "../components/AuthorsSidebar.tsx";
+import {Book} from "../../Interfaces.ts";
+import apiClient from "../../ApiClient.ts";
+import {enqueueSnackbar} from "notistack";
+import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
-
+    const [books, setBooks] = useState<Book[]>([]);
+    const [books_next_page_url, setBooks_next_page_url] = useState('');
+    const [is_loading, setIs_loading] = useState(true);
+    const [is_fetching, setIs_fetching] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const body_el = document.body;
     const handleOpen = () => {
@@ -44,6 +51,62 @@ export default function Home() {
         }
     }, []);
 
+    const getBook = (page_url: string, is_fetch_at_start = false) => {
+        if (is_fetch_at_start) setIs_loading(false)
+        setIs_fetching(true)
+        apiClient().get(page_url)
+            .then(res => {
+                setBooks(prevState => [...prevState, ...res.data.data.books])
+                setBooks_next_page_url(res.data.data.next_page_url)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_fetching(false)
+            })
+    }
+
+    useEffect(() => {
+        getBook('/home/get-books', true)
+    }, []);
+
+
+    const last_book_ref = useRef(null);
+    const show_books = books.map((book, index) => (
+            <BookCard
+                key={index}
+                rate={140}
+                title={book.title}
+                cover={book.cover}
+                slug={book.slug}
+                author={book.author}
+                ref={index === books.length - 1 ? last_book_ref : null}
+            />
+        )
+    )
+
+    useEffect(() => {
+        if (!last_book_ref.current) return;  // Exit if the ref is null
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && !is_fetching && books_next_page_url) {
+                getBook(books_next_page_url);
+            }
+        }, {
+            threshold: 0.5 // Trigger when 50% of the last tweet is visible
+        });
+
+        // Watch the last tweet
+        observer.observe(last_book_ref.current);
+
+        // Cleanup
+        return () => {
+            if (last_book_ref.current) {
+                observer.unobserve(last_book_ref.current);
+            }
+        };
+    }, [books_next_page_url, is_fetching]);
 
     return (
         <>
@@ -120,79 +183,15 @@ export default function Home() {
                         <MainHeader/>
 
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
-                            <BookCard
-                                rate={140}
-                                cover={"./download.jpg"}
-                                title={"title"}
-                                author={"author"}
-                            />
+                            {!is_loading && show_books}
                         </div>
+                        {is_loading &&
+                            <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
+                                {Array.from({length: 10}).map((_, index) => (
+                                    <BookPlaceholder key={index}/>
+                                ))}
+                            </div>
+                        }
                     </div>
                     <aside className={`hidden font-roboto-semi-bold text-2xl text-text_color md:flex flex-col gap-y-8`}>
                         <CategorySidebar/>

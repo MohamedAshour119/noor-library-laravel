@@ -82,7 +82,6 @@ export default function Profile() {
 
 
     const getBook = (page_url: string) => {
-        setIs_loading(true)
         setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
@@ -94,7 +93,6 @@ export default function Profile() {
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
             })
             .finally(() => {
-                setIs_loading(false)
                 setIs_fetching(false)
             })
     }
