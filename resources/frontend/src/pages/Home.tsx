@@ -2,7 +2,7 @@ import ClientSearchInput from "../components/home/Client-Search-Input.tsx";
 import HeroSectionBtn from "../components/home/Hero-Section-Btn.tsx";
 import {Link} from "react-router-dom";
 import MainHeader from "../components/home/Main-Header.tsx";
-import BookCard from "../components/Book-Card.tsx";
+import BookCard from "../components/BookCard.tsx";
 import {useEffect, useRef, useState} from "react";
 import {Modal} from "flowbite-react";
 import {useSelector} from "react-redux";
@@ -12,7 +12,7 @@ import AuthorsSidebar from "../components/AuthorsSidebar.tsx";
 import {BookCardInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
-import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
+import BookPlaceholder from "../components/BookPlaceholder.tsx";
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)

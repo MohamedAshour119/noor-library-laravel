@@ -1,6 +1,5 @@
 import {FaBook} from "react-icons/fa";
 import {Link} from "react-router-dom";
-import {Ref} from "react";
 interface Props {
     name: string
 }

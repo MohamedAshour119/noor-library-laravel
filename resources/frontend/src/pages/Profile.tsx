@@ -1,14 +1,14 @@
-import {FaCamera, FaStar} from "react-icons/fa";
+import {FaCamera} from "react-icons/fa";
 import Sections from "../components/profile/Sections.tsx";
 import NotFoundContainer from "../components/profile/Not-Found-Container.tsx";
-import BookPlaceholder from "../components/profile/Book-Placeholder.tsx";
+import BookPlaceholder from "../components/BookPlaceholder.tsx";
 import Footer from "../components/Footer.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
-import {Book, Errors, SignUpForm} from "../../Interfaces.ts";
+import {Book, BookCardInterface, Errors, SignUpForm} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
-import BookCard from "../components/Book-Card.tsx";
+import BookCard from "../components/BookCard.tsx";
 import {enqueueSnackbar} from "notistack";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
@@ -28,9 +28,9 @@ export default function Profile() {
     const { user } = useParams()
     const dispatch = useDispatch();
 
-    const [books, setBooks] = useState<Book[]>([]);
+    const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [reviews, setReviews] = useState([]);
-    const [wishlist_books, setWishlist_books] = useState<Book[]>([]);
+    const [wishlist_books, setWishlist_books] = useState<BookCardInterface[]>([]);
     const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState('');
     const [wishlist_books_count, setWishlist_books_count] = useState(0);
     const [orders_history, setOrders_history] = useState([]);
@@ -146,12 +146,14 @@ export default function Profile() {
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}
-                rate={140}
                 title={book.title}
                 cover={book.cover}
                 slug={book.slug}
                 author={book.author}
                 ref={index === books.length - 1 ? last_book_ref : null}
+                price={book.price}
+                average_ratings={book.average_ratings}
+                ratings_count={book.ratings_count}
             />
         )
     )
@@ -159,12 +161,14 @@ export default function Profile() {
     const show_wishlist_books = wishlist_books.map((book, index) => (
             <BookCard
                 key={index}
-                rate={140}
                 title={book.title}
                 cover={book.cover}
                 slug={book.slug}
                 author={book.author}
                 ref={index === wishlist_books.length - 1 ? last_wishlist_book_ref : null}
+                price={book.price}
+                average_ratings={book.average_ratings}
+                ratings_count={book.ratings_count}
             />
         )
     )

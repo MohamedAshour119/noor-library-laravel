@@ -168,4 +168,9 @@ export interface CommentInterface {
     rating: number
     body: string
     created_at: string
+    book?: {
+        id: number
+        slug: string
+        title: string
+    }
 }

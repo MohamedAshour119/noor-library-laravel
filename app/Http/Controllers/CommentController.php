@@ -71,4 +71,33 @@ class CommentController extends Controller
         ];
         return $this->response_success($data, 'Comments fetched successfully.');
     }
+
+    public function getReviews()
+    {
+        $reviews = Comment::with(['book' => function($query) {
+            $query->select('id', 'slug', 'title');
+            $query->without(['media', 'vendor', 'category', 'ratings', 'comments']);
+        }, 'user' => function($query) {
+            $query->without(['wishlistedBooks', 'wishlists']);
+        }])->orderBy('created_at', 'desc')->paginate(3);
+
+        if (!$reviews) {
+            return $this->response_error('Failed to fetch the reviews.', [], 404);
+        }
+
+        $next_page_url = $reviews->nextPageUrl();
+
+        // Add the `is_review` flag for all comments
+        $reviews = $reviews->map(function ($review) {
+            return new CommentResource($review, true);  // Pass 'true' to include the book data
+        });
+
+        $data = [
+            'reviews' => $reviews,
+            'next_page_url' => $next_page_url,
+        ];
+
+        return $this->response_success($data, 'Reviews fetched successfully.');
+    }
+
 }

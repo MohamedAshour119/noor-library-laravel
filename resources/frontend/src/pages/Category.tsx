@@ -1,17 +1,17 @@
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
 import {useEffect, useRef, useState} from "react";
-import {Book} from "../../Interfaces.ts";
+import {BookCardInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {useParams} from "react-router-dom";
 import {enqueueSnackbar} from "notistack";
-import BookCard from "../components/Book-Card.tsx";
+import BookCard from "../components/BookCard.tsx";
 
 export default function Category() {
     const { category } = useParams()
     const categoryName = category ?? "Unknown Category";
 
-    const [books, setBooks] = useState<Book[]>([]);
+    const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
     const [is_loading, setIs_loading] = useState(true);
@@ -54,7 +54,7 @@ export default function Category() {
                 slug={book.slug}
                 title={book.title}
                 ratings_count={book.ratings_count}
-                average_ratings={book.average}
+                average_ratings={book.average_ratings}
             />
         )
     )

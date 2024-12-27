@@ -24,6 +24,7 @@ Route::get('/book/{id}/comments', [CommentController::class, 'getComments'])->na
 Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->name('getUserInfo');
 Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
 Route::get('/home/get-books', [HomeController::class, 'getBooks'])->name('getBooks');
+Route::get('/get-reviews', [CommentController::class, 'getReviews'])->name('getReviews');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');

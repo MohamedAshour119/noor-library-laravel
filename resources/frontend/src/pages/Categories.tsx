@@ -223,7 +223,6 @@ export default function Categories() {
                                     </div>
                                     <h2 className="text-center text-text_color/70 text-xl font-semibold leading-relaxed pb-1">Category not found!</h2>
                                 </>
-
                             }
                         </div>
                     </div>

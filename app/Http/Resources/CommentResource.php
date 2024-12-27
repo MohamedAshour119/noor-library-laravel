@@ -7,6 +7,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class CommentResource extends JsonResource
 {
+    public function __construct($resource, $is_review = false)
+    {
+        parent::__construct($resource);
+        $this->is_review = $is_review;
+    }
+
     /**
      * Transform the resource into an array.
      *
@@ -22,17 +28,35 @@ class CommentResource extends JsonResource
 
         $user_rating = $this->book->user_rate($user->id);
 
-        return [
-            'id' => $this->id,
-            'user' => [
-                'first_name' => $user->first_name,
-                'last_name' => $user->last_name,
-                'username' => $user->username,
-                'avatar' => $user_avatar,
-            ],
-            'rating' => $user_rating,
-            'body' => $this->body,
-            'created_at' => $this->created_at->diffForHumans(),
-        ];
+        if (!$this->is_review) {
+            return [
+                'id' => $this->id,
+                'user' => [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'username' => $user->username,
+                    'avatar' => $user_avatar,
+                ],
+                'rating' => $user_rating,
+                'body' => $this->body,
+                'created_at' => $this->created_at->diffForHumans(),
+            ];
+        } else {
+            return [
+                'id' => $this->id,
+                'user' => [
+                    'first_name' => $user->first_name,
+                    'last_name' => $user->last_name,
+                    'username' => $user->username,
+                    'avatar' => $user_avatar,
+                ],
+                'rating' => $user_rating,
+                'body' => $this->body,
+                'created_at' => $this->created_at->diffForHumans(),
+                'book' => $this->book,
+            ];
+        }
+
+
     }
 }
