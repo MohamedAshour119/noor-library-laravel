@@ -41,7 +41,7 @@ class WishlistController extends Controller
             return $this->response_error('User not found', [], 404);
         }
         $wishlist_books_query = $user->wishlistedBooks(); // Returns a query builder
-        $wishlist_books = $wishlist_books_query->paginate(2); // Specify the number of items per page
+        $wishlist_books = $wishlist_books_query->paginate(18);
 
         // Transform the paginated result using the resource
         $wishlist_books_transformed = BookCardResource::collection($wishlist_books->items());

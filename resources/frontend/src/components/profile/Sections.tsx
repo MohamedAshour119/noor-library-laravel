@@ -35,7 +35,7 @@ export default function Sections(props: Props) {
 
     return (
         <>
-            <header className={`flex bg-white sm:pt-6 border border-border_color w-full max-[525px]:flex-col`}>
+            <header className={`flex bg-white sm:pt-6 border border-border_color w-full flex-col sm:flex-row py-8 sm:py-0 gap-y-8 sm:gap-y-0`}>
                 {!user_state.is_vendor && user === user_state.username &&
                     <>
                         <MainHeaderBtn

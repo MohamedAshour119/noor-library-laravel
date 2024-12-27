@@ -31,11 +31,12 @@ export default function Profile() {
     const [books, setBooks] = useState<Book[]>([]);
     const [reviews, setReviews] = useState([]);
     const [wishlist_books, setWishlist_books] = useState<Book[]>([]);
-    const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState<Book[]>([]);
+    const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState('');
     const [wishlist_books_count, setWishlist_books_count] = useState(0);
     const [orders_history, setOrders_history] = useState([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
+    // const [wishlist_books_is_fetching, setWishlist_books_is_fetching] = useState(false);
     const [is_loading, setIs_loading] = useState(true);
     const [books_count, setBooks_count] = useState(0);
     const [formData, setFormData] = useState<SignUpForm>({
@@ -81,6 +82,7 @@ export default function Profile() {
 
 
     const getBook = (page_url: string) => {
+        setIs_loading(true)
         setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
@@ -120,11 +122,10 @@ export default function Profile() {
     }
 
     const getWishlistBooks = (page_url: string) => {
-        setIs_loading(true)
         setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
-                setWishlist_books(prevState => ([...prevState, ...res.data.data.wishlist_books]))
+                setWishlist_books(prevState => [...prevState, ...res.data.data.wishlist_books])
                 setWishlist_books_next_page_url(res.data.data.wishlist_books_next_page_url)
             })
             .catch(err => {
@@ -137,7 +138,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        if (user_isActive.wishlist) {
+        if (user_isActive.wishlist && wishlist_books.length === 0) {
             getWishlistBooks(`/wishlist/${user_info.id}`)
         }
     }, [user_isActive]);
@@ -153,10 +154,10 @@ export default function Profile() {
                 slug={book.slug}
                 author={book.author}
                 ref={index === books.length - 1 ? last_book_ref : null}
-                styles={`w-full`}
             />
         )
     )
+    const last_wishlist_book_ref = useRef(null);
     const show_wishlist_books = wishlist_books.map((book, index) => (
             <BookCard
                 key={index}
@@ -165,8 +166,7 @@ export default function Profile() {
                 cover={book.cover}
                 slug={book.slug}
                 author={book.author}
-                ref={index === books.length - 1 ? last_book_ref : null}
-                styles={`w-full`}
+                ref={index === wishlist_books.length - 1 ? last_wishlist_book_ref : null}
             />
         )
     )
@@ -192,6 +192,28 @@ export default function Profile() {
             }
         };
     }, [books_next_page_url, is_fetching]);
+
+    useEffect(() => {
+        if (!last_wishlist_book_ref.current) return;  // Exit if the ref is null
+
+        const observer = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && !is_fetching && wishlist_books_next_page_url) {
+                getWishlistBooks(wishlist_books_next_page_url);
+            }
+        }, {
+            threshold: 0.5 // Trigger when 50% of the last tweet is visible
+        });
+
+        // Watch the last tweet
+        observer.observe(last_wishlist_book_ref.current);
+
+        // Cleanup
+        return () => {
+            if (last_wishlist_book_ref.current) {
+                observer.unobserve(last_wishlist_book_ref.current);
+            }
+        };
+    }, [wishlist_books_next_page_url, is_fetching]);
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
@@ -423,19 +445,6 @@ export default function Profile() {
                                     />
                                 </Link>
                             }
-                            <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
-                                Rating
-                                <div className={`flex items-center gap-x-2`}>
-                                    <div className={`flex text-[#E0E0E0]`}>
-                                        <FaStar className={`-ml-[2px]`} />
-                                        <FaStar className={`-ml-[2px]`} />
-                                        <FaStar className={`-ml-[2px]`} />
-                                        <FaStar className={`-ml-[2px]`} />
-                                        <FaStar className={`-ml-[2px]`} />
-                                    </div>
-                                    <span>(0)</span>
-                                </div>
-                            </div>
                             <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
                                 Last online
                                 <span className={`flex items-center gap-x-2 text-main_color`}>
