@@ -1,8 +1,6 @@
-import { FaStar } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import {Ref} from "react";
 import ReactStars from "react-stars";
-import {enqueueSnackbar} from "notistack";
 
 interface Props {
     average_ratings?: number;

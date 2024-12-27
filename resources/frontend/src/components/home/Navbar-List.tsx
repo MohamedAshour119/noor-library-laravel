@@ -1,7 +1,7 @@
 import {Dispatch, SetStateAction} from 'react'
 import {IoHome} from "react-icons/io5";
 import {BiCategoryAlt} from "react-icons/bi";
-import {FaUsers} from "react-icons/fa";
+import {FaStar} from "react-icons/fa";
 import {LuMenu} from "react-icons/lu";
 import {BsSearch} from "react-icons/bs";
 import {Link} from "react-router-dom";
@@ -10,7 +10,7 @@ interface Props {
     isActive: {
         home: boolean
         categories: boolean
-        authors: boolean
+        reviews: boolean
     }
     handleActiveLink: (home: string) => void
     styles?: string
@@ -57,24 +57,21 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                 </Link>
             </li>
             <li className={`relative ${styles}`}>
-                <div className={`${isActive.authors && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
+                <div className={`${isActive.reviews && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
-                    to={`/authors`}
+                    to={`/reviews`}
                     onClick={() => {
                         if (is_small_screens_menu) {
-                            handleActiveLink(`authors`)
+                            handleActiveLink(`reviews`)
                         } else {
-                            handleActiveLink(`authors`)
+                            handleActiveLink(`reviews`)
                         }
 
                     }}
                 >
-                    <FaUsers />Authors
+                    <FaStar />Reviews
                 </Link>
-            </li>
-            <li className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}>
-                <LuMenu />Menu
             </li>
             <li className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}>
                 <BsSearch />Search

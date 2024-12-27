@@ -29,7 +29,7 @@ export default function Header() {
     const [isActive, setIsActive] = useState({
         home: true,
         categories: false,
-        authors: false
+        reviews: false
     });
     const [isOpen, setIsOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
@@ -41,7 +41,7 @@ export default function Header() {
         setIsActive({
             home: false,
             categories: false,
-            authors: false,
+            reviews: false,
             [type]: true
         })
     }
