@@ -39,7 +39,7 @@ export default function BookCard(props: Props) {
                         value={average_ratings}
                         size={25}
                         color1={`#d9d9d9`}
-                        color2={`#ffe34b`}
+                        color2={`#ffc64b`}
                         className={`-ml-1 custom-stars`}
                         edit={false}
                     />

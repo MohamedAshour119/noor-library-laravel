@@ -166,6 +166,11 @@ export default function ShowBook() {
                 ]))
                 setComment('')
                 setCounter(0)
+                // @ts-ignore
+                setBook_data(prevState => ({
+                    ...prevState,
+                    comments_count: res.data.data.comments_count
+                }))
             })
             .catch(err => {
                 setError(err.response.data.errors.body[0])
@@ -287,7 +292,7 @@ export default function ShowBook() {
                                                             value={book_data?.average}
                                                             size={20}
                                                             color1={`#d9d9d9`}
-                                                            color2={`#ffe34b`}
+                                                            color2={`#FFC64BFF`}
                                                             className={`-ml-1`}
                                                             edit={false}
                                                         />

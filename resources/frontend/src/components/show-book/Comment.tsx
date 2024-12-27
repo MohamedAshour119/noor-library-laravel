@@ -28,6 +28,7 @@ export default function Comment(props: Props) {
                 setBook_data(prevState => ({
                     ...prevState,
                     comments: filtered_data,
+                    comments_count: res.data.data.comments_count
                 }))
                 enqueueSnackbar(res.data.message, {variant: "success"})
             })
@@ -64,7 +65,7 @@ export default function Comment(props: Props) {
                                     value={rating}
                                     size={20}
                                     color1={`#d9d9d9`}
-                                    color2={`#ffe34b`}
+                                    color2={`#FFC64BFF`}
                                     className={`-ml-1`}
                                     edit={false}
                                 />

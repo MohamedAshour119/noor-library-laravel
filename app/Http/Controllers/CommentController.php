@@ -35,8 +35,14 @@ class CommentController extends Controller
             'body' => $validated_data['body'],
         ]);
         $comment = new CommentResource($comment);
+        $book = Book::find($book_id);
+        $comments_count = $book->comments_count;
+        $data = [
+            'comment' => $comment,
+            'comments_count' => $comments_count,
+        ];
 
-        return $this->response_success(['comment' => $comment], 'success');
+        return $this->response_success($data, 'success');
     }
 
     public function deleteComment($comment_id)
@@ -47,12 +53,15 @@ class CommentController extends Controller
         }
 
         $comment->delete();
-        return $this->response_success([], 'You comment deleted successfully.');
+        $book = Book::find($comment->book_id);
+        $comments_count = $book->comments_count;
+
+        return $this->response_success(['comments_count' => $comments_count], 'You comment deleted successfully.');
     }
 
     public function getComments($id)
     {
-        $comments = Comment::where('book_id', $id)->paginate(2);
+        $comments = Comment::where('book_id', $id)->orderBy('created_at', 'desc')->paginate(2);
         $next_page_url = $comments->nextPageUrl();
         $comments = CommentResource::collection($comments);
 

@@ -47,7 +47,7 @@ export default function Rating(props: Props) {
                         onChange={handleRatingChange}
                         size={35}
                         color1={`#d9d9d9`}
-                        color2={`#ffe34b`}
+                        color2={`#FFC64BFF`}
                         className={`-ml-1`}
                         edit={!!auth_user.id}
                     />
