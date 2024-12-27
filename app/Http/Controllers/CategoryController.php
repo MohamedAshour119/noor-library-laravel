@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\BookCardResource;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use App\Models\Category;
@@ -39,7 +40,7 @@ class CategoryController extends Controller
     {
         $books = Book::paginate(3);
         $next_page_url = $books->nextPageUrl();
-        $books = BookResource::collection($books);
+        $books = BookCardResource::collection($books);
         $data = [
             'books' =>  $books,
             'next_page_url' => $next_page_url,

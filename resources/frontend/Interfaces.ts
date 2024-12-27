@@ -107,6 +107,7 @@ export interface BookCardInterface {
     slug: string
     author: string
     price: number
+    is_free: boolean
     cover: string
     average_ratings: number
     ratings_count: number

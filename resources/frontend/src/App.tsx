@@ -15,6 +15,7 @@ import {useDispatch} from "react-redux";
 import {setActive} from "../redux/is-location-is-not-in-navlink-slice.ts";
 import ShowBook from "./pages/ShowBook.tsx";
 import {SnackbarProvider} from "notistack";
+import Reviews from "./pages/Reviews.tsx";
 
 function App() {
     const dispatch = useDispatch()
@@ -50,6 +51,7 @@ function App() {
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/users/:user" element={<Profile />} />
                 <Route path="/categories/:category" element={<Category />} />
+                <Route path="/reviews" element={<Reviews />} />
                 <Route path="/books/:slug" element={<ShowBook/>}/>
 
                 <Route element={<AuthRoute />}>

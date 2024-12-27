@@ -80,6 +80,7 @@ export default function Home() {
                 ratings_count={book.ratings_count}
                 title={book.title}
                 cover={book.cover}
+                is_free={book.is_free}
                 slug={book.slug}
                 author={book.author}
                 price={book.price}

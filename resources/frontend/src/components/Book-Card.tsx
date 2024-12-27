@@ -22,7 +22,7 @@ interface Props {
 }
 
 export default function BookCard(props: Props) {
-    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count } = props
+    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free } = props
 
     return (
         <Link
@@ -57,8 +57,8 @@ export default function BookCard(props: Props) {
             >
                 {author}
             </Link>
-            <div className={`border border-main_color bg-main_color p-1 px-10 ${price === 0 ? '!bg-main_bg !border-border_color !text-text_color' : ''} size-10 flex items-center justify-center text-white rounded-full`}>
-                {price > 0 ? price + '$' : 'Free'}
+            <div className={`border border-main_color bg-main_color p-1 px-10 ${is_free ? '!bg-main_bg !border-border_color !text-text_color' : ''} size-10 flex items-center justify-center text-white rounded-full`}>
+                {!is_free ? price + '$' : 'Free'}
             </div>
         </Link>
     );

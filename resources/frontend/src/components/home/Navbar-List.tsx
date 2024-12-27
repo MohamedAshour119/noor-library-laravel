@@ -2,7 +2,6 @@ import {Dispatch, SetStateAction} from 'react'
 import {IoHome} from "react-icons/io5";
 import {BiCategoryAlt} from "react-icons/bi";
 import {FaStar} from "react-icons/fa";
-import {LuMenu} from "react-icons/lu";
 import {BsSearch} from "react-icons/bs";
 import {Link} from "react-router-dom";
 

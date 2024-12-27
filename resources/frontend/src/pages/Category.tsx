@@ -45,19 +45,16 @@ export default function Category() {
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}
-                rate={140}
                 ref={last_book_ref}
                 author={book.slug}
                 cover={book.cover}
-                description={book.description}
-                downloadable={book.downloadable}
                 id={book.id}
-                is_author={book.is_author}
                 is_free={book.is_free}
-                language={book.language}
                 price={book.price}
                 slug={book.slug}
                 title={book.title}
+                ratings_count={book.ratings_count}
+                average_ratings={book.average}
             />
         )
     )

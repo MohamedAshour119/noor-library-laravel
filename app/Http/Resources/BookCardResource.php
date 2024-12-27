@@ -21,6 +21,7 @@ class BookCardResource extends JsonResource
             'slug' => $this->slug,
             'author' => $this->author_name,
             'price' => (int) $this->price,
+            'is_free' => $this->is_free === 1,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'average_ratings' => $this->average_rating(),
             'ratings_count' => $this->ratings_count,
