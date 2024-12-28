@@ -39,11 +39,14 @@ export default function Comment(props: Props) {
 
     const comment_content =
         <>
-            <img
-                src={user?.avatar ? user?.avatar : '/profile-default-img.svg'}
-                alt="trending-active"
-                className={`min-w-12 min-h-12 size-12 rounded-full`}
-            />
+            <Link to={`/users/${user.username}`}>
+                <img
+                    src={user?.avatar ? user?.avatar : '/profile-default-img.svg'}
+                    alt="trending-active"
+                    className={`min-w-12 min-h-12 size-12 rounded-full`}
+                />
+            </Link>
+
             <div className={`bg-main_bg relative px-5 py-2 !grid flex-col gap-y-2 rounded-lg`}>
                 <header className={`flex justify-between`}>
                     <Link
@@ -114,10 +117,13 @@ export default function Comment(props: Props) {
                 <div className={`flex flex-col gap-y-3`}>
                     <div className={`grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                         <span></span>
-                        <div className={`flex items-center gap-x-3 text-lg`}>
+                        <Link
+                            to={`/books/${book?.slug}`}
+                            className={`flex items-center gap-x-3 text-lg`}
+                        >
                             <FaBook className={`text-main_color`}/>
-                            <Link to={`/books/${book?.slug}`} className={`text-main_color_darker`}>{book?.title}</Link>
-                        </div>
+                            <span className={`text-main_color_darker`}>{book?.title}</span>
+                        </Link>
                     </div>
                     <div className={`grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                         {comment_content}

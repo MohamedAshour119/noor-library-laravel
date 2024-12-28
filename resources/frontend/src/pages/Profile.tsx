@@ -119,7 +119,10 @@ export default function Profile() {
             })
     }
 
-    const getWishlistBooks = (page_url: string) => {
+    const getWishlistBooks = (page_url: string, is_first_fetch = false) => {
+        if (is_first_fetch) {
+            setIs_loading(true)
+        }
         setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
@@ -137,7 +140,7 @@ export default function Profile() {
 
     useEffect(() => {
         if (user_isActive.wishlist && wishlist_books.length === 0) {
-            getWishlistBooks(`/wishlist/${user_info.id}`)
+            getWishlistBooks(`/wishlist/${user_info.id}`, true)
         }
     }, [user_isActive]);
 
