@@ -343,8 +343,8 @@ export default function Profile() {
                 popup
                 ref={modal_ref}
             >
-                <Modal.Header />
-                <Modal.Body className={`pt-0`}>
+                <Modal.Header className={`!bg-white rounded-t`}/>
+                <Modal.Body className={`pt-0 !bg-white rounded-b`}>
                     <div className="space-y-4 pb-4">
                         <h3 className="text-xl font-roboto-semi-bold text-gray-900">Confirm who you are.</h3>
                         <div className={`relative`}>
@@ -365,6 +365,7 @@ export default function Profile() {
                                     padding: "10px 15px",
                                     outlineColor: is_confirm_user_password_input_focused && !error_password_confirmation ? "var(--main_color)" : "red",
                                     color: "var(--text_color)",
+                                    backgroundColor: "white"
                                 }}
                                 type={'password'}
                             />
@@ -478,7 +479,7 @@ export default function Profile() {
                                         onChange={handleInputChange}
                                         error={errors?.first_name}
                                         readonly={!is_edit_active}
-                                        disable_label_animation
+                                        disable_label_animation={!is_edit_active}
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
@@ -489,7 +490,7 @@ export default function Profile() {
                                         onChange={handleInputChange}
                                         error={errors?.last_name}
                                         readonly={!is_edit_active}
-                                        disable_label_animation
+                                        disable_label_animation={!is_edit_active}
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
 
@@ -502,7 +503,7 @@ export default function Profile() {
                                         onChange={handleInputChange}
                                         error={errors?.email}
                                         readonly={!is_edit_active}
-                                        disable_label_animation
+                                        disable_label_animation={!is_edit_active}
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
@@ -514,6 +515,7 @@ export default function Profile() {
                                         onChange={handleInputChange}
                                         error={errors?.password}
                                         readonly={!is_edit_active}
+                                        disable_label_animation={!is_edit_active}
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
@@ -525,6 +527,7 @@ export default function Profile() {
                                         onChange={handleInputChange}
                                         error={errors?.password_confirmation}
                                         readonly={!is_edit_active}
+                                        disable_label_animation={!is_edit_active}
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <PhoneInput
