@@ -27,6 +27,7 @@ Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBo
 Route::get('/home/get-books', [HomeController::class, 'getBooks'])->name('getBooks');
 Route::get('/get-reviews', [CommentController::class, 'getReviews'])->name('getReviews');
 Route::get('/books/search/{keyword}', [SearchController::class, 'searchBooks'])->name('searchBooks');
+Route::get('/books/search-keyword/{keyword}', [SearchController::class, 'searchBooksByKeyword'])->name('searchBooksByKeyword');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');

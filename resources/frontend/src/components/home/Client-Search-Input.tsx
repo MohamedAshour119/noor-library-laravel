@@ -6,11 +6,16 @@ import apiClient from "../../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import useDebounce from "../../hooks/UseDebounce.tsx";
 import Result from "../Result.tsx";
+import {useNavigate} from "react-router-dom";
+import {setIsSearchModalOpenSlice} from "../../../redux/is_search_modal_open.ts";
+// @ts-ignore
+import {FormEventHandler} from "react/v18";
+import {useDispatch} from "react-redux";
 
 export default function ClientSearchInput() {
+    const dispatch = useDispatch()
     const [isFocused, setIsFocused] = useState(false);
     const [is_results_open, setIs_results_open] = useState(false);
-
     const [search_value, setSearch_value] = useState('');
     const [results, setResults] = useState<SearchBooks[]>([]);
     const [is_loading, setIs_loading] = useState(false);
@@ -78,6 +83,37 @@ export default function ClientSearchInput() {
         }
     }, []);
 
+    const navigate = useNavigate()
+    const getKeywordSearchingResults = (e: FormEventHandler<HTMLFormElement>) => {
+        e.preventDefault()
+        const stored_results = localStorage.getItem('books_results')
+        const stored_results_next_page_url = localStorage.getItem('books_results_next_page_url')
+
+        if (stored_results || stored_results_next_page_url) {
+            localStorage.removeItem('books_results')
+            localStorage.removeItem('books_results_next_page_url')
+            localStorage.removeItem('keyword')
+        }
+        localStorage.setItem('keyword', search_value)
+
+        apiClient().get(`/books/search-keyword/${search_value}`)
+            .then(res => {
+                const results = res.data.data.results
+                const results_next_page_url = res.data.data.next_page_url
+                if (results.length > 0) {
+                    localStorage.setItem('books_results', JSON.stringify(results))
+                    localStorage.setItem('books_results_next_page_url', results_next_page_url)
+                }
+
+                navigate('/search-books-results')
+                dispatch(setIsSearchModalOpenSlice(false))
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.errors)
+            })
+            .finally()
+    }
+
     return (
         <>
             {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
@@ -99,6 +135,12 @@ export default function ClientSearchInput() {
                 {/* Results */}
                 {search_value.length > 0 && is_results_open &&
                     <div className={`flex flex-col pb-3 pt-2 rounded-lg border-t bg-white z-30 absolute w-full text-text_color`}>
+                        <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>Results</h1>
+                        <button
+                            onClick={getKeywordSearchingResults}
+                            className={`border-y px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'text-left'}`}
+                        >Search for: <span className={`text-main_color_darker`}> "{search_value}"</span>
+                        </button>
                         <div className={`flex flex-col gap-y-3`}>
                             {!is_loading && show_Results}
                             {is_loading &&

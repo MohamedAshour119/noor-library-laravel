@@ -72,7 +72,7 @@ export default function Home() {
     }, []);
 
 
-    const last_book_ref = useRef(null);
+    const last_book_ref = useRef<HTMLAnchorElement>(null);
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}

@@ -18,6 +18,7 @@ import {SnackbarProvider} from "notistack";
 import Reviews from "./pages/Reviews.tsx";
 import {RootState} from "../redux/store.ts";
 import SearchModal from "./components/SearchModal.tsx";
+import SearchBookResults from "./pages/SearchBookResults.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
@@ -59,6 +60,7 @@ function App() {
                 <Route path="/categories/:category" element={<Category />} />
                 <Route path="/reviews" element={<Reviews />} />
                 <Route path="/books/:slug" element={<ShowBook/>}/>
+                <Route path="/search-books-results" element={<SearchBookResults/>}/>
 
                 <Route element={<AuthRoute />}>
                     <Route path="/add-book" element={<AddBook />} />
