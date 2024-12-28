@@ -76,7 +76,7 @@ export default function Comment(props: Props) {
                     </h1>
                 </div>
                 <p className={`me-4`}>{body}</p>
-                {auth_user.id && auth_user.username === user.username &&
+                {auth_user.id && auth_user.username === user.username && location.pathname !== '/reviews' &&
                     <div className={`justify-self-end -mt-7 w-fit`}>
                         <Menu>
                             <MenuButton
@@ -119,7 +119,7 @@ export default function Comment(props: Props) {
                         <span></span>
                         <Link
                             to={`/books/${book?.slug}`}
-                            className={`flex items-center gap-x-3 text-lg`}
+                            className={`flex items-center gap-x-3 text-lg w-fit`}
                         >
                             <FaBook className={`text-main_color`}/>
                             <span className={`text-main_color_darker`}>{book?.title}</span>
