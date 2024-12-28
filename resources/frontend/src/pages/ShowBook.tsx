@@ -207,7 +207,7 @@ export default function ShowBook() {
     // Fetch book data when the component mounts
     useEffect(() => {
         getBookData();
-    }, []);
+    }, [slug]);
 
     // Capitalize and format the vendor's name
     const display_vendor_name = book_data?.vendor

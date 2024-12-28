@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\ValidateTempToken;
@@ -25,6 +26,7 @@ Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo'])->
 Route::get('/books/{slug}', [BookController::class, 'getBookData'])->name('getBookData');
 Route::get('/home/get-books', [HomeController::class, 'getBooks'])->name('getBooks');
 Route::get('/get-reviews', [CommentController::class, 'getReviews'])->name('getReviews');
+Route::get('/books/search/{keyword}', [SearchController::class, 'searchBooks'])->name('searchBooks');
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/sign-out', [AuthController::class, 'signOut'])->name('signOut');

@@ -104,7 +104,7 @@ export default function Header() {
                         <h3 className="text-red-600 text-xl font-medium">Unauthorized!</h3>
                     </Modal.Header>
                     <Modal.Body>
-                        <div className="space-y-6">
+                        <div className="space-y-6 p-5">
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                                 {user.id ? `You are signed in as a customer,` : ''} You must sign in as a vendor.
                             </p>

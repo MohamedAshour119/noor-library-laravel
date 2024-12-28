@@ -174,3 +174,8 @@ export interface CommentInterface {
         title: string
     }
 }
+
+export interface SearchBooks {
+    slug: string
+    title: string
+}
