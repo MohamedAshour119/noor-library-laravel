@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {clearCategories, setCategories} from "../../redux/categories-slice.ts";
 import SidebarCategoryPlaceholder from "./SidebarCategoryPlaceholder.tsx";
+import {setIsSearchModalOpenSlice} from "../../redux/is_search_modal_open.ts";
 
 interface Props {
     styles?: string
@@ -15,8 +16,12 @@ interface Props {
 export default function CategorySidebar({styles}: Props) {
 
     const categories = useSelector((state: RootState) => state.categoriesReducer)
+    const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
     const dispatch = useDispatch()
     const [is_loading, setIs_loading] = useState(true);
+    const handleSearchOpen = () => {
+        dispatch(setIsSearchModalOpenSlice(!isSearchModalOpenSlice))
+    }
     const getCategories = (page_url: string, fetch_at_start = true) => {
         if (fetch_at_start) {
             setIs_loading(true)
@@ -54,7 +59,9 @@ export default function CategorySidebar({styles}: Props) {
                 >
                     <span className={`font-roboto-semi-bold text-xl`}>Categories</span>
                 </Link>
-                <FaSearch className={`size-5 cursor-pointer`}/>
+                <button onClick={handleSearchOpen}>
+                    <FaSearch className={`size-5 cursor-pointer`}/>
+                </button>
             </div>
 
             <div className={`flex flex-col gap-y-4`}>

@@ -4,6 +4,9 @@ import {BiCategoryAlt} from "react-icons/bi";
 import {FaStar} from "react-icons/fa";
 import {BsSearch} from "react-icons/bs";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../../redux/store.ts";
+import {setIsSearchModalOpenSlice} from "../../../redux/is_search_modal_open.ts";
 
 interface Props {
     isActive: {
@@ -18,6 +21,12 @@ interface Props {
     setIsOpen?: Dispatch<SetStateAction<boolean>>
 }
 export default function NavbarList({isActive, handleActiveLink, styles, is_small_screens_menu = false, checkIsLocationIsNotInNavlinkSlice}: Props) {
+    const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
+    const dispatch = useDispatch()
+
+    const handleSearchOpen = () => {
+        dispatch(setIsSearchModalOpenSlice(!isSearchModalOpenSlice))
+    }
 
     return (
         <>
@@ -72,7 +81,10 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     <FaStar />Reviews
                 </Link>
             </li>
-            <li className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}>
+            <li
+                className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
+                onClick={handleSearchOpen}
+            >
                 <BsSearch />Search
             </li>
         </>

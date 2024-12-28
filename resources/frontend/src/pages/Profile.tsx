@@ -342,6 +342,7 @@ export default function Profile() {
                 onClose={handleCloseModal}
                 popup
                 ref={modal_ref}
+                className={`animate-fade-in`}
             >
                 <Modal.Header className={`!bg-white rounded-t`}/>
                 <Modal.Body className={`pt-0 !bg-white rounded-b`}>

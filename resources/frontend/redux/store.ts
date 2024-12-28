@@ -6,6 +6,7 @@ import vendorsProfileIsActiveReducer from './vendors-profile-is-active-slice.ts'
 import isVisitedUserSectionsActive from './is_visited_user_sections_active.ts'
 import isVisitedVendorSectionsActive from './is_visited_vendor_sections_active.ts'
 import userProfileInfoReducer from './user-profile-info-slice.ts'
+import isSearchModalOpenReducer from './is_search_modal_open.ts'
 import categoriesReducer from './categories-slice.ts'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from "redux-persist"
@@ -19,6 +20,7 @@ const persistConfig = {
         'usersProfileIsActiveReducer',
         'vendorsProfileIsActiveReducer',
         'categoriesReducer',
+        'isSearchModalOpenReducer'
     ],
 }
 
@@ -31,6 +33,7 @@ const reducer = combineReducers({
     isVisitedUserSectionsActive: isVisitedUserSectionsActive,
     isVisitedVendorSectionsActive: isVisitedVendorSectionsActive,
     categoriesReducer: categoriesReducer,
+    isSearchModalOpenReducer: isSearchModalOpenReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

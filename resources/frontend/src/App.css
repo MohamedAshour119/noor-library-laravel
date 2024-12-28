@@ -194,3 +194,28 @@ span[data-index="4"]
 {
     margin-left: -3px;
 }
+
+/* Animations */
+
+/* Slide Down */
+.animate-slide-down {
+    transform: translateY(-40rem); /* Initial position */
+    opacity: 0; /* Initial opacity */
+    animation: slideDown 0.5s forwards ease; /* Animation definition */
+}
+
+@keyframes slideDown {
+    to {
+        opacity: 1; /* Target opacity */
+        transform: translateY(0); /* Target position */
+    }
+}
+
+/* Fade in */
+.animate-fade-in{
+    animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}

@@ -45,7 +45,6 @@ export default function Header() {
             [type]: true
         })
     }
-
     const singOut = () => {
         apiClient().post('/sign-out', {},
             {headers: {'Content-Type': 'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')}})
@@ -98,7 +97,7 @@ export default function Header() {
                 <Modal
                     show={isFocused}
                     onClose={handleClose}
-                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 `}
+                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
                     ref={modalRef}
                 >
                     <Modal.Header className={`!border-b modal-header`}>
