@@ -9,7 +9,7 @@ trait HttpResponses {
             'status' => 'Success response',
             'message' => $message,
             'data' => $data,
-        ], $status_code);
+        ], $status_code, [], JSON_UNESCAPED_UNICODE);
     }
 
     protected function response_error($message = '', $errors = [], $status_code)

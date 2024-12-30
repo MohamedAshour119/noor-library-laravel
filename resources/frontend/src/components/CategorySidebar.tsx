@@ -13,6 +13,7 @@ interface Props {
 export default function CategorySidebar({styles}: Props) {
 
     const categories = useSelector((state: RootState) => state.categoriesReducer)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
     const [is_loading, setIs_loading] = useState(true);
     const getCategories = (page_url: string, fetch_at_start = true) => {
@@ -47,7 +48,7 @@ export default function CategorySidebar({styles}: Props) {
         <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4 border ${styles ? styles : ''}`}>
 
             <div className={`border-b pb-2 border-main_color`}>
-                <span className={`font-roboto-semi-bold text-xl`}>Categories</span>
+                <span className={`font-roboto-semi-bold text-xl`}>{translation.categories}</span>
             </div>
             <div className={`flex flex-col gap-y-4`}>
                 {!is_loading && show_categories}

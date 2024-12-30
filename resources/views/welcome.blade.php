@@ -1,5 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="{{ config('app.locale') }}"
+      dir="{{ config('app.locale') === 'ar' ? 'rtl' : 'ltr' }}">
+
 <head>
     <meta charset="UTF-8"/>
     <link rel="canonical" href="{{ url()->current() }}">

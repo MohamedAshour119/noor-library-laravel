@@ -10,9 +10,11 @@ import {useNavigate} from "react-router-dom";
 import {setIsSearchModalOpenSlice} from "../../../redux/is_search_modal_open.ts";
 // @ts-ignore
 import {FormEventHandler} from "react/v18";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../../redux/store.ts";
 
 export default function ClientSearchInput() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
     const [isFocused, setIsFocused] = useState(false);
     const [is_results_open, setIs_results_open] = useState(false);
@@ -123,14 +125,14 @@ export default function ClientSearchInput() {
                     <FaSearch className={`size-6 text-main_color absolute -translate-y-1/2 top-1/2 left-4 z-40`}/>
                     <input
                         type="text"
-                        placeholder={`Search for Book`}
+                        placeholder={translation.search_placeholder}
                         className={`sm:w-[40rem] w-full max-[468px]:placeholder:text-sm py-4 ps-12 pe-32 rounded-full focus:outline-0 text-text_color text-lg font-roboto-medium relative z-30`}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         value={search_value}
                         onChange={handleSearchValue}
                     />
-                    <button className={`bg-main_color absolute right-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}>Search</button>
+                    <button className={`bg-main_color absolute right-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}>{translation.search}</button>
                 </div>
                 {/* Results */}
                 {search_value.length > 0 && is_results_open &&

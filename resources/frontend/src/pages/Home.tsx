@@ -8,7 +8,6 @@ import {Modal} from "flowbite-react";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import CategorySidebar from "../components/CategorySidebar.tsx";
-import AuthorsSidebar from "../components/AuthorsSidebar.tsx";
 import {BookCardInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
@@ -16,6 +15,7 @@ import BookPlaceholder from "../components/BookPlaceholder.tsx";
 
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_loading, setIs_loading] = useState(true);
@@ -140,22 +140,22 @@ export default function Home() {
                     className="object-cover h-full w-full absolute"
                 />
                 <div className={`z-10 flex flex-col items-center gap-y-4 text-white px-2 sm:px-0`}>
-                    <h1 className="text-4xl font-roboto-bold">Noor Library</h1>
+                    <h1 className="text-4xl font-roboto-bold">{translation.title}</h1>
                     <form className={`relative w-full`}>
                         <ClientSearchInput/>
                     </form>
 
                     <div className={`flex flex-col items-center gap-y-8`}>
                         <div className={`flex flex-col min-503:flex-row gap-x-4 min-503:gap-x-4 gap-y-3 mt-4`}>
-                            <HeroSectionBtn content={`Trending Today`}/>
-                            <HeroSectionBtn content={`Popular Books`}/>
-                            <HeroSectionBtn content={`Latest Books`}/>
+                            <HeroSectionBtn content={translation.highest_rated}/>
+                            <HeroSectionBtn content={translation.popular_books}/>
+                            <HeroSectionBtn content={translation.latest_books}/>
                         </div>
 
                         {!user.is_vendor &&
                             <button onClick={handleOpen}>
                                 <HeroSectionBtn
-                                    content={`Upload Book`}
+                                    content={translation.upload_book}
                                     styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
                                 />
                             </button>
@@ -164,7 +164,7 @@ export default function Home() {
                         {user.is_vendor &&
                             <Link to={`/add-book`}>
                                 <HeroSectionBtn
-                                    content={`Upload Book`}
+                                    content={translation.upload_book}
                                     styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
                                 />
                             </Link>
@@ -192,7 +192,6 @@ export default function Home() {
                     </div>
                     <aside className={`hidden font-roboto-semi-bold text-2xl text-text_color md:flex flex-col gap-y-8`}>
                         <CategorySidebar/>
-                        <AuthorsSidebar/>
                     </aside>
                 </div>
             </main>

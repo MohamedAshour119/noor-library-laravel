@@ -20,10 +20,15 @@ import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts"
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 
-export default function Header() {
+interface Props {
+    handleSelectLanguage: (language: 'ar' | 'en' | 'fr') => void
+}
+
+export default function Header({handleSelectLanguage}: Props) {
 
     const user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
 
     const [isActive, setIsActive] = useState({
@@ -114,9 +119,46 @@ export default function Header() {
             }
             <div className={`container w-full relative`}>
                 <div>
-                    <button className={`absolute right-2 sm:right-0 top-0 flex items-center gap-x-2 bg-main_color text-white px-3 py-1 rounded-b font-noto_naskh-semibold`}>
-                        العربية<MdGTranslate />
-                    </button>
+                    <Menu>
+                        <MenuButton className={`flex justify-self-end gap-x-2 items-center rounded-b border border-main_color text-white px-3 py-[5px] bg-main_color hover:opacity-95 transition`}>
+                            {translation.languages}<MdGTranslate />
+                        </MenuButton>
+
+                        <MenuItems
+                            transition
+                            anchor={`bottom`}
+                            className="flex flex-col gap-y-1 mt-1 z-50 w-52 !bg-main_color shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                        >
+
+                            <MenuItem>
+                                <button
+                                    onClick={() => handleSelectLanguage('ar')}
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                >
+                                    {translation.languages_list?.arabic}
+                                </button>
+                            </MenuItem>
+                            <MenuItem>
+                                <button
+                                    onClick={() => handleSelectLanguage('en')}
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                >
+                                    {translation.languages_list?.english}
+                                </button>
+                            </MenuItem>
+                            <MenuItem>
+                                <button
+                                    onClick={() => handleSelectLanguage('fr')}
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                >
+                                    {translation.languages_list?.french}
+                                </button>
+                            </MenuItem>
+
+
+                        </MenuItems>
+                    </Menu>
+
                     <Link
                         to={`/`}
                         className={`block w-fit`}
@@ -184,7 +226,7 @@ export default function Header() {
                                     </span>
                                     <Menu>
                                         <MenuButton className={`flex gap-x-2 items-center rounded border border-main_color text-white px-3 py-[5px] bg-main_color hover:opacity-95 transition`}>
-                                            My Account
+                                            {translation.my_account}
                                             <IoIosArrowDown />
                                         </MenuButton>
 
@@ -204,7 +246,7 @@ export default function Header() {
                                                         alt={`profile-default-img`}
                                                         width={30}
                                                     />
-                                                    Profile
+                                                    {translation.profile}
                                                 </Link>
                                             </MenuItem>
                                             {user?.is_vendor &&
@@ -214,7 +256,7 @@ export default function Header() {
                                                         className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                     >
                                                         <FaBook className={`size-5`}/>
-                                                        Upload Book
+                                                        {translation.upload_book}
                                                     </Link>
                                                 </MenuItem>
                                             }
@@ -225,7 +267,7 @@ export default function Header() {
                                                         className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                     >
                                                         <FaBook className={`size-5`}/>
-                                                        Upload Book
+                                                        {translation.upload_book}
                                                     </button>
                                                 </MenuItem>
                                             }
@@ -235,7 +277,7 @@ export default function Header() {
                                                     onClick={singOut}
                                                 >
                                                     <TbLogout2 className={`size-6`}/>
-                                                    Logout
+                                                    {translation.logout}
                                                 </button>
                                             </MenuItem>
 

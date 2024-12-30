@@ -22,6 +22,7 @@ interface Props {
 }
 export default function NavbarList({isActive, handleActiveLink, styles, is_small_screens_menu = false, checkIsLocationIsNotInNavlinkSlice}: Props) {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
 
     const handleSearchOpen = () => {
@@ -44,7 +45,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
 
                     }}
                 >
-                    <IoHome />Home
+                    <IoHome />{translation.home}
                 </Link>
             </li>
             <li className={`relative ${styles}`}>
@@ -61,7 +62,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
 
                     }}
                 >
-                    <BiCategoryAlt />Categories
+                    <BiCategoryAlt />{translation.categories}
                 </Link>
             </li>
             <li className={`relative ${styles}`}>
@@ -78,14 +79,14 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
 
                     }}
                 >
-                    <FaStar />Reviews
+                    <FaStar />{translation.reviews}
                 </Link>
             </li>
             <li
                 className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
                 onClick={handleSearchOpen}
             >
-                <BsSearch />Search
+                <BsSearch />{translation.search}
             </li>
         </>
 

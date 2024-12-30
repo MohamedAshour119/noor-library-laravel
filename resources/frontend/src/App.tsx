@@ -14,14 +14,18 @@ import Category from "./pages/Category.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setActive} from "../redux/is-location-is-not-in-navlink-slice.ts";
 import ShowBook from "./pages/ShowBook.tsx";
-import {SnackbarProvider} from "notistack";
+import {enqueueSnackbar, SnackbarProvider} from "notistack";
 import Reviews from "./pages/Reviews.tsx";
 import {RootState} from "../redux/store.ts";
 import SearchModal from "./components/SearchModal.tsx";
 import SearchBookResults from "./pages/SearchBookResults.tsx";
+import apiClient from "../ApiClient.ts";
+import {setTranslation} from "../redux/translation-slice.ts";
+import {setIsTranslationTriggered} from "../redux/is_translation_triggerd.ts";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
+    const isTranslationTriggeredSlice = useSelector((state: RootState) => state.isTranslationTriggeredReducer)
     const dispatch = useDispatch()
 
     const [showHeader, setShowHeader] = useState(true);
@@ -40,6 +44,30 @@ function App() {
         }
     }, [location.pathname]);
 
+    const getTranslation = (namespace: string) => {
+        apiClient().get(`/translation/${namespace}`)
+            .then(res => {
+                dispatch(setTranslation(res.data.data))
+            })
+            .catch(err => enqueueSnackbar(err.response.data.errors))
+    }
+    const handleSelectLanguage = (language: 'ar' | 'en' | 'fr') => {
+        localStorage.setItem('language', JSON.stringify(language))
+        const namespace = location.pathname.split('/')[0] || 'home'
+        getTranslation(namespace)
+        dispatch(setIsTranslationTriggered(!isTranslationTriggeredSlice))
+    }
+
+
+
+    useEffect(() => {
+        const namespace = location.pathname.split('/')[1]; // index 1 to get the first segment after "/"
+
+        if (namespace) {
+            getTranslation(namespace);
+        }
+    }, [isTranslationTriggeredSlice]);
+
 
     return (
         <>
@@ -52,7 +80,7 @@ function App() {
                     horizontal: 'left',
                 }}
             />
-            {showHeader && <Header />}
+            {showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}
             <Routes>
                 <Route path={`/`} element={<Home/>}/>
                 <Route path="/categories" element={<Categories />} />

@@ -7,8 +7,11 @@ import {enqueueSnackbar} from "notistack";
 import useDebounce from "../hooks/UseDebounce.tsx";
 import {IoMdClose} from "react-icons/io";
 import CoolLoading from "../components/CoolLoading.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function Categories() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
 
     const [categories, setCategories] = useState<CategoryInterface[]>([]);
     const [categories_next_page_url, setCategories_next_page_url] = useState('');
@@ -116,7 +119,7 @@ export default function Categories() {
             {!is_loading &&
                 <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3`}>
-                        <h1 className={`text-2xl font-roboto-semi-bold`}>book categories</h1>
+                        <h1 className={`text-2xl font-roboto-semi-bold`}>{translation.categories_title}</h1>
 
                         <div className="relative">
                             <input

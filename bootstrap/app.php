@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\EnsureOnlyUsers;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -19,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'vendor.upload' => EnsureOnlyVendorsUploadBooks::class,
             'validate.temp.token' => ValidateTempToken::class,
             'user.access' => EnsureOnlyUsers::class,
+            'locale' => SetLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
