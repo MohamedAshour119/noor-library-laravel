@@ -12,15 +12,13 @@
     --font-noto_naskh: "Noto Naskh Arabic", serif;
 }
 
-[dir='rtl'] {
-    direction: rtl;
-    text-align: right;
+html[dir="rtl"] {
+    text-align: right !important;
+}
+html[dir="ltr"] {
+    text-align: left !important;
 }
 
-[dir='ltr'] {
-    direction: ltr;
-    text-align: left;
-}
 
 body {
     font-family: var(--font-roboto);

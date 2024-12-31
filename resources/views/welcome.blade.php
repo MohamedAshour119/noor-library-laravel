@@ -1,6 +1,8 @@
 <!doctype html>
-<html lang="{{ config('app.locale') }}"
-      dir="{{ config('app.locale') === 'ar' ? 'rtl' : 'ltr' }}">
+<html
+    lang="{{ app()->getLocale() }}"
+    dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"
+>
 
 <head>
     <meta charset="UTF-8"/>
