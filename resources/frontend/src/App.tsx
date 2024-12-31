@@ -21,7 +21,6 @@ import SearchModal from "./components/SearchModal.tsx";
 import SearchBookResults from "./pages/SearchBookResults.tsx";
 import apiClient from "../ApiClient.ts";
 import {setTranslation} from "../redux/translation-slice.ts";
-import {setIsTranslationTriggered} from "../redux/is_translation_triggerd.ts";
 import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 
 function App() {
@@ -52,19 +51,11 @@ function App() {
             })
             .catch(err => enqueueSnackbar(err.response.data.errors))
     }
-    const handleSelectLanguage = (language: 'ar' | 'en' | 'fr') => {
-        localStorage.setItem('language', JSON.stringify(language))
-        const namespace = location.pathname.split('/')[0] || 'home'
-        getTranslation(namespace)
-        dispatch(setIsTranslationTriggered(!isTranslationTriggeredSlice))
-    }
-
-
 
     useEffect(() => {
-        const namespace = location.pathname.split('/')[1]; // index 1 to get the first segment after "/"
-
-        if (namespace) {
+        const namespace = location.pathname === '/' ? 'home' : location.pathname.split('/')[1] // index 1 to get the first segment after "/"
+        console.log(namespace)
+        if (namespace || namespace === '/') {
             getTranslation(namespace);
         }
     }, [isTranslationTriggeredSlice]);
@@ -83,7 +74,8 @@ function App() {
             />
             <div className={`relative`}>
                 <AddToCartSidebar/>
-                {showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}
+                {/*{showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}*/}
+                {showHeader && <Header/>}
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>
                     <Route path="/categories" element={<Categories />} />

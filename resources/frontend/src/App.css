@@ -227,3 +227,23 @@ span[data-index="4"]
     0% { opacity: 0; }
     100% { opacity: 1; }
 }
+
+:dir(ltr) button[aria-label="Close"] {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+:dir(rtl) button[aria-label="Close"] {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+:dir(ltr) div[data-testid="modal-overlay"] {
+
+}
+
+:dir(rtl) div[data-testid="modal-overlay"] {
+    left: 0 !important;
+    right: 50% !important;
+    transform: translate(50%, -50%) !important;
+}

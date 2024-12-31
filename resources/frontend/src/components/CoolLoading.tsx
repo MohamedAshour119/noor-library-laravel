@@ -1,5 +1,9 @@
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function CoolLoading() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
+
     return (
         <div aria-label="Loading..." role="status" className="flex items-center space-x-2">
             <svg className="h-20 w-20 animate-spin stroke-gray-500" viewBox="0 0 256 256">
@@ -26,7 +30,7 @@ export default function CoolLoading() {
                       stroke-width="24">
                 </line>
             </svg>
-            <span className="text-4xl font-medium text-gray-500">Loading...</span>
+            <span className="text-4xl font-medium text-gray-500">{translation.loading}</span>
         </div>
     )
 }

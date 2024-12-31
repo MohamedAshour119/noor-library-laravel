@@ -15,6 +15,7 @@ import {useNavigate} from "react-router-dom";
 import {FormEventHandler} from "react/v18";
 
 export default function SearchModal() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
     const dispatch = useDispatch()
 
@@ -102,11 +103,11 @@ export default function SearchModal() {
         <Modal
             show={isSearchModalOpenSlice}
             onClose={handleClose}
-            className={`relative w-[23rem] xxs:w-[30rem] sm:w-[40rem] !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
+            className={`relative w-[23rem] xxs:w-[30rem] sm:w-[40rem] !top-1/2 ltr:!left-1/2 ltr:!-translate-x-1/2 !-translate-y-1/2 rtl:!right-1/2 rtl:!translate-x-1/2 animate-fade-in`}
             ref={modalRef}
         >
-            <Modal.Header className={`!border-b modal-header !py-3`}>
-                <h3 className="text-xl text-main_color_darker font-medium">Search</h3>
+            <Modal.Header className={`!border-b modal-header !py-3 flex justify-between`}>
+                <h3 className="text-xl text-main_color_darker font-medium">{translation.search}</h3>
             </Modal.Header>
             <Modal.Body className={`py-3 px-5`}>
                 <form
@@ -114,9 +115,9 @@ export default function SearchModal() {
                     onSubmit={getKeywordSearchingResults}
                 >
                     <GlobalInput
-                        label={`Search`}
+                        label={translation.search}
                         id={`search_id`}
-                        placeholder={`Search for books`}
+                        placeholder={translation.search_placeholder}
                         value={search_value}
                         name={`search`}
                         onChange={handleSearchValue}
@@ -128,11 +129,11 @@ export default function SearchModal() {
             {/* Results */}
             {search_value.length > 0 &&
                 <div className={`flex flex-col py-3 border-t`}>
-                    <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>Results</h1>
+                    <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h1>
                     <button
                         onClick={getKeywordSearchingResults}
-                        className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'text-left'}`}
-                    >Search for: <span className={`text-main_color_darker`}> "{search_value}"</span>
+                        className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
+                    >{translation.search_for}: <span className={`text-main_color_darker`}> "{search_value}"</span>
                     </button>
                     <div className={`flex flex-col gap-y-3`}>
                         {!is_loading && show_Results}

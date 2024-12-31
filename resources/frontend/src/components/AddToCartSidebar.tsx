@@ -4,9 +4,9 @@ import { setIsAddToCartSidebarOpenSlice } from "../../redux/is_add_to_card_sideb
 import {IoMdClose} from "react-icons/io";
 
 export default function AddToCartSidebar() {
-    const isAddToCartSidebarSlice = useSelector(
-        (state: RootState) => state.isAddToCartSidebarReducer.is_open
-    );
+    const isAddToCartSidebarSlice = useSelector((state: RootState) => state.isAddToCartSidebarReducer.is_open);
+    const translation = useSelector((state: RootState) => state.translationReducer)
+
     const dispatch = useDispatch();
 
     const closeSidebar = () => {
@@ -25,12 +25,12 @@ export default function AddToCartSidebar() {
 
             {/* Sidebar */}
             <div
-                className={`fixed right-0 top-0 h-full w-[20rem] bg-white shadow-[5px_5px_9px_black] border-text_color z-20 transform transition-transform duration-300 ${
-                    isAddToCartSidebarSlice ? "translate-x-0" : "translate-x-full"
+                className={`fixed ltr:right-0 rtl:left-0 top-0 h-full w-[20rem] bg-white ltr:shadow-[5px_5px_9px_black] ${isAddToCartSidebarSlice ? 'rtl:shadow-[5px_5px_9px_black]' : 'rtl:shadow-[0px_5px_0px_black]'} border-text_color z-20 transform transition-transform duration-300 ${
+                    isAddToCartSidebarSlice ? "translate-x-0" : "ltr:translate-x-full rtl:-translate-x-full"
                 }`}
             >
                 <div className="p-4 flex justify-between items-center border-b">
-                    <h2 className="text-lg font-semibold">Your Cart</h2>
+                    <h2 className="text-lg font-semibold">{translation.your_cart}</h2>
                     <button
                         className="font-bold text-xl hover:bg-main_bg p-2 rounded-full"
                         onClick={closeSidebar}

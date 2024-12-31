@@ -21,11 +21,11 @@ import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 
-interface Props {
-    handleSelectLanguage: (language: 'ar' | 'en' | 'fr') => void
-}
+// interface Props {
+//     handleSelectLanguage: (language: 'ar' | 'en' | 'fr') => void
+// }
 
-export default function Header({handleSelectLanguage}: Props) {
+export default function Header() {
 
     const user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
@@ -136,28 +136,31 @@ export default function Header({handleSelectLanguage}: Props) {
                         >
 
                             <MenuItem>
-                                <button
-                                    onClick={() => handleSelectLanguage('ar')}
+                                <a
+                                    // onClick={() => handleSelectLanguage('ar')}
+                                    href={`/locale/ar`}
                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
                                 >
                                     {translation.languages_list?.arabic}
-                                </button>
+                                </a>
                             </MenuItem>
                             <MenuItem>
-                                <button
-                                    onClick={() => handleSelectLanguage('en')}
+                                <a
+                                    // onClick={() => handleSelectLanguage('en')}
+                                    href={`/locale/en`}
                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
                                 >
                                     {translation.languages_list?.english}
-                                </button>
+                                </a>
                             </MenuItem>
                             <MenuItem>
-                                <button
-                                    onClick={() => handleSelectLanguage('fr')}
+                                <a
+                                    // onClick={() => handleSelectLanguage('fr')}
+                                    href={`/locale/fr`}
                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
                                 >
                                     {translation.languages_list?.french}
-                                </button>
+                                </a>
                             </MenuItem>
 
 
