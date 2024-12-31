@@ -1,6 +1,6 @@
 
 import {useEffect, useRef, useState} from 'react'
-import {MdGTranslate} from "react-icons/md";
+import {MdAddShoppingCart, MdGTranslate} from "react-icons/md";
 import {IoLogInOutline} from "react-icons/io5";
 import {FaBook, FaUser} from "react-icons/fa";
 import {RiMenuLine} from "react-icons/ri";
@@ -221,6 +221,9 @@ export default function Header({handleSelectLanguage}: Props) {
                             }
                             {user?.id &&
                                 <div className={`flex items-center gap-x-2`}>
+                                    <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
+                                        <MdAddShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
+                                    </span>
                                     <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
                                         <GoBell className={`size-6 text-main_color group-hover:text-white transition`}/>
                                     </span>
