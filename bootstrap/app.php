@@ -22,6 +22,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'user.access' => EnsureOnlyUsers::class,
             'locale' => SetLocale::class,
         ]);
+
+        $middleware->api([
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -21,6 +21,9 @@ class SetLocale
         if (!in_array($locale, ['en', 'fr', 'ar'])) {
             $locale = config('app.fallback_locale');
         }
+        session()->put('locale', $locale);
+//        dd(session()->get('locale'));
+
 
         app()->setLocale($locale);
 
