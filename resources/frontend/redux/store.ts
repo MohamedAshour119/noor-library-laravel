@@ -10,6 +10,7 @@ import isSearchModalOpenReducer from './is_search_modal_open.ts'
 import categoriesReducer from './categories-slice.ts'
 import translationReducer from './translation-slice.ts'
 import isTranslationTriggeredReducer from './is_translation_triggerd.ts'
+import isAddToCartSidebarReducer from './is_add_to_card_sidebar_open.ts'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from "redux-persist"
 import { combineReducers } from '@reduxjs/toolkit'
@@ -22,7 +23,8 @@ const persistConfig = {
         'usersProfileIsActiveReducer',
         'vendorsProfileIsActiveReducer',
         'categoriesReducer',
-        'isSearchModalOpenReducer'
+        'isSearchModalOpenReducer',
+        'isAddToCartSidebarReducer'
     ],
 }
 
@@ -38,6 +40,7 @@ const reducer = combineReducers({
     isSearchModalOpenReducer: isSearchModalOpenReducer,
     translationReducer: translationReducer,
     isTranslationTriggeredReducer: isTranslationTriggeredReducer,
+    isAddToCartSidebarReducer: isAddToCartSidebarReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

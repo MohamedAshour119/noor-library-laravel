@@ -22,6 +22,7 @@ import SearchBookResults from "./pages/SearchBookResults.tsx";
 import apiClient from "../ApiClient.ts";
 import {setTranslation} from "../redux/translation-slice.ts";
 import {setIsTranslationTriggered} from "../redux/is_translation_triggerd.ts";
+import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
@@ -80,25 +81,28 @@ function App() {
                     horizontal: 'left',
                 }}
             />
-            {showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}
-            <Routes>
-                <Route path={`/`} element={<Home/>}/>
-                <Route path="/categories" element={<Categories />} />
-                <Route path="/users/:user" element={<Profile />} />
-                <Route path="/categories/:category" element={<Category />} />
-                <Route path="/reviews" element={<Reviews />} />
-                <Route path="/books/:slug" element={<ShowBook/>}/>
-                <Route path="/search-books-results" element={<SearchBookResults/>}/>
+            <div className={`relative`}>
+                <AddToCartSidebar/>
+                {showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}
+                <Routes>
+                    <Route path={`/`} element={<Home/>}/>
+                    <Route path="/categories" element={<Categories />} />
+                    <Route path="/users/:user" element={<Profile />} />
+                    <Route path="/categories/:category" element={<Category />} />
+                    <Route path="/reviews" element={<Reviews />} />
+                    <Route path="/books/:slug" element={<ShowBook/>}/>
+                    <Route path="/search-books-results" element={<SearchBookResults/>}/>
 
-                <Route element={<AuthRoute />}>
-                    <Route path="/add-book" element={<AddBook />} />
-                </Route>
+                    <Route element={<AuthRoute />}>
+                        <Route path="/add-book" element={<AddBook />} />
+                    </Route>
 
-                <Route element={<AuthRedirect />}>
-                    <Route path={`/sign-up`} element={<SignUp/>}/>
-                    <Route path={`/sign-in`} element={<SignIn/>}/>
-                </Route>
-            </Routes>
+                    <Route element={<AuthRedirect />}>
+                        <Route path={`/sign-up`} element={<SignUp/>}/>
+                        <Route path={`/sign-in`} element={<SignIn/>}/>
+                    </Route>
+                </Routes>
+            </div>
         </>
   )
 }

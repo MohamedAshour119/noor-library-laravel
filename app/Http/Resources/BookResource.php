@@ -31,7 +31,9 @@ class BookResource extends JsonResource
         $pages_count = $book_file ? $this->getPdfPageCount($book_file) : null;
         $category = $this->category;
         $vendor = $this->vendor;
-        $is_added_to_wishlist = Auth::user()->wishlists()->where('book_id', $this->id)->exists();;
+        $is_added_to_wishlist = '';
+        if (Auth::guard('user')->check()) Auth::user()->wishlists()->where('book_id', $this->id)->exists();
+
 
         return [
             'id' => $this->id,

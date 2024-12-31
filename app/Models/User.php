@@ -23,7 +23,7 @@ class User extends Authenticatable implements HasMedia
      * @var list<string>
      */
     protected $guarded = [];
-    protected $with = ['wishlistedBooks'];
+    protected $with = ['wishlistedBooks', 'wishlists'];
     protected $withCount = ['wishlists'];
     public function ratings()
     {

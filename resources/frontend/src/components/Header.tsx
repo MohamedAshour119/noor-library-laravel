@@ -19,6 +19,7 @@ import {Modal} from "flowbite-react";
 import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
+import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 
 interface Props {
     handleSelectLanguage: (language: 'ar' | 'en' | 'fr') => void
@@ -93,6 +94,10 @@ export default function Header({handleSelectLanguage}: Props) {
             window.removeEventListener('mousedown', handleClickOutside)
         }
     }, []);
+
+    const openAddToCartSidebar = () => {
+        dispatch(setIsAddToCartSidebarOpenSlice(true))
+    }
 
     return (
         <>
@@ -221,7 +226,10 @@ export default function Header({handleSelectLanguage}: Props) {
                             }
                             {user?.id &&
                                 <div className={`flex items-center gap-x-2`}>
-                                    <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
+                                    <span
+                                        className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
+                                        onClick={openAddToCartSidebar}
+                                    >
                                         <MdAddShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
                                     </span>
                                     <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
