@@ -8,13 +8,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Translatable\HasTranslations;
 
 class Book extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, HasTranslations;
     protected $guarded = [];
     protected $with = ['media', 'vendor', 'category', 'ratings', 'comments'];
     protected $withCount = ['ratings', 'comments'];
+    public $translatable = ['title', 'description', 'author_name'];
     public function vendor(): BelongsTo
     {
         return $this->belongsTo(Vendor::class);

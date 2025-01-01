@@ -51,8 +51,6 @@ class AddBookRequest extends FormRequest
 
     public function rules(): array
     {
-        Log::info('AddBookRequest rules method triggered.');
-
         return [
             'title' => ['required', 'min:3', 'max:64', 'unique:books,title'],
             'description' => ['required', 'min:50', 'max:2000'],

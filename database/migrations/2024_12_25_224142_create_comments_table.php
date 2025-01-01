@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('book_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->text('body');
+            $table->json('body');
             $table->timestamps();
         });
     }

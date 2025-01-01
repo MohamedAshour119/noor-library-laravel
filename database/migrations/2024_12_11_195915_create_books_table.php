@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->unique();
-            $table->text('description');
+            $table->json('title');
+            $table->string('slug');
+            $table->json('description');
             $table->boolean('is_author')->default(false);
-            $table->string('author_name');
+            $table->json('author_name');
+            $table->boolean('is_free')->default(true);
             $table->string('language');
             $table->boolean('downloadable')->default(false);
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('vendor_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
