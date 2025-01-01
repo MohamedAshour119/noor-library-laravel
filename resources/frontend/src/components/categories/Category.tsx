@@ -4,21 +4,22 @@ import {Ref} from "react";
 
 interface Props {
     id: number
-    title: string
+    name: string
+    slug: string
     ref?: Ref<HTMLAnchorElement>
     books_count: number
 }
 export default function Category(props: Props) {
-    const { title, ref, books_count } = props
-
+    const { name, slug, ref, books_count } = props
+    console.log(slug)
     return (
         <Link
             ref={ref}
-            to={`./${title.toLowerCase()}`}
+            to={`./${slug}`}
             className={`flex gap-x-4 bg-white px-4 py-3 items-center text-lg hover:text-main_color_darker`}
         >
             <FaBook/>
-            {title} {`(${books_count})`}
+            {name} {`(${books_count})`}
         </Link>
     )
 }

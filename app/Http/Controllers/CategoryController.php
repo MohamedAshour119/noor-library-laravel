@@ -18,10 +18,30 @@ class CategoryController extends Controller
         $pagination_count = $sidebar ? 20 : 10;
 
         if ($pagination_count !== 20) {
-            $categories = Category::withCount('books')->paginate($pagination_count);
+            // Paginate and then map the results
+            $categories = Category::withCount('books')
+                ->paginate($pagination_count)
+                ->through(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->localized_name,
+                        'slug' => $category->localized_slug,
+                        'books_count' => $category->books_count,
+                    ];
+                });
+
             return $this->response_success($categories, 'Categories retrieved');
         }else {
-            $categories = Category::withCount('books')->get();
+            $categories = Category::withCount('books')
+                ->get()
+                ->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->localized_name,
+                        'slug' => $category->localized_slug,
+                        'books_count' => $category->books_count,
+                    ];
+                });
             return $this->response_success($categories, 'Categories retrieved');
         }
 

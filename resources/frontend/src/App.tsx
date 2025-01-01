@@ -45,20 +45,66 @@ function App() {
     }, [location.pathname]);
 
     const getTranslation = (namespace: string) => {
-        apiClient().get(`/translation/${namespace}`)
-            .then(res => {
-                dispatch(setTranslation(res.data.data))
-            })
-            .catch(err => enqueueSnackbar(err.response.data.errors))
-    }
+        // Decode only when necessary
+        const decodedNamespace = decodeURIComponent(namespace);
+
+        // Define a pattern matching system to map dynamic namespaces
+        const namespaceMapping: { [key: string]: string } = {
+            categories: 'categories', // For static 'categories' page
+            home: 'home', // For home page (both '/' and '/home')
+            // Add more static namespaces as needed
+        };
+
+        // Check if the namespace starts with category_ or any other pattern
+        if (decodedNamespace.startsWith('category_')) {
+            // Handle category pages (e.g., category_{slug})
+            return decodedNamespace; // No need to modify, just pass the full namespace
+        }
+
+        if (decodedNamespace.startsWith('user_')) {
+            // Handle user pages (e.g., user_{username_or_id})
+            return decodedNamespace; // No need to modify, just pass the full namespace
+        }
+
+        // Return the corresponding namespace if exists in the map
+        return namespaceMapping[decodedNamespace] || null; // Return null if not found
+    };
 
     useEffect(() => {
-        const namespace = location.pathname === '/' ? 'home' : location.pathname.split('/')[1] // index 1 to get the first segment after "/"
-        console.log(namespace)
-        if (namespace || namespace === '/') {
-            getTranslation(namespace);
+        const pathSegments = location.pathname.split('/');
+        let namespace = pathSegments[1];
+
+        // If the path is '/', treat it as 'home'
+        if (location.pathname === '/') {
+            namespace = 'home';
         }
-    }, [isTranslationTriggeredSlice]);
+
+        // Handle dynamic slugs (e.g., category_slug or user_slug)
+        if (pathSegments[1] === 'categories' && pathSegments.length === 3) {
+            namespace = 'category_' + decodeURIComponent(pathSegments[2]); // For category page with slug
+        } else if (pathSegments[1] === 'users' && pathSegments.length === 3) {
+            namespace = 'user_' + decodeURIComponent(pathSegments[2]); // For user page with username or id
+        }
+
+        // Get the valid namespace for the current page
+        const validNamespace = getTranslation(namespace);
+
+        if (validNamespace) {
+            // Make the API call only once with the valid namespace
+            apiClient()
+                .get(`/translation/${validNamespace}`)
+                .then((res) => {
+                    dispatch(setTranslation(res.data.data));
+                })
+                .catch((err) => {
+                    enqueueSnackbar(err.response.data.errors);
+                });
+        }
+    }, [location.pathname]); // Trigger when pathname changes
+
+
+
+
 
 
     return (
@@ -80,7 +126,7 @@ function App() {
                     <Route path={`/`} element={<Home/>}/>
                     <Route path="/categories" element={<Categories />} />
                     <Route path="/users/:user" element={<Profile />} />
-                    <Route path="/categories/:category" element={<Category />} />
+                    <Route path="/categories/:category_slug" element={<Category />} />
                     <Route path="/reviews" element={<Reviews />} />
                     <Route path="/books/:slug" element={<ShowBook/>}/>
                     <Route path="/search-books-results" element={<SearchBookResults/>}/>

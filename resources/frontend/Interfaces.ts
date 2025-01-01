@@ -121,6 +121,7 @@ export interface BookCardInterface {
 export interface CategoryInterface {
     id: number
     name: string
+    slug: string
     books_count: number
     created_at?: string
     updated_at?: string

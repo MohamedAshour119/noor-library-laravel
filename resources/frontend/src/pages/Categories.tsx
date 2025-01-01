@@ -54,7 +54,8 @@ export default function Categories() {
         <Category
             key={index}
             id={category.id}
-            title={category.name}
+            name={category.name}
+            slug={category.slug}
             ref={index === categories.length - 1 ? last_category_ref : null}
             books_count={category.books_count}
         />

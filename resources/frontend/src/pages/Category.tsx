@@ -8,8 +8,8 @@ import {enqueueSnackbar} from "notistack";
 import BookCard from "../components/BookCard.tsx";
 
 export default function Category() {
-    const { category } = useParams()
-    const categoryName = category ?? "Unknown Category";
+    const { category_slug } = useParams()
+    const categoryName = category_slug ?? "Unknown Category";
 
     const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
@@ -38,7 +38,7 @@ export default function Category() {
     }
 
     useEffect(() => {
-        getCategoryBooks(`/categories/${category}`)
+        getCategoryBooks(`/categories/${category_slug}`)
     }, []);
 
     const last_book_ref = useRef(null);

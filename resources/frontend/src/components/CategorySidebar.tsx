@@ -41,6 +41,7 @@ export default function CategorySidebar({styles}: Props) {
         <CategorySample
             key={index}
             name={category.name}
+            slug={category.slug}
         />
     ))
 
