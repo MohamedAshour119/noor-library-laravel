@@ -60,8 +60,8 @@ class AddBookRequest extends FormRequest
             'language' => ['min:2', 'max:2'],
             'author' => ['required', 'max:80'],
             'downloadable' => ['boolean'],
-            'cover' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
-            'book_file' => ['file', 'mimes:pdf', 'max:81920'],
+//            'cover' => ['image', 'mimes:jpeg,jpg,png,webp', 'max:5120'],
+//            'book_file' => ['file', 'mimes:pdf', 'max:81920'],
         ];
     }
 
@@ -75,11 +75,11 @@ class AddBookRequest extends FormRequest
             'errors' => $errors,
         ], 422));
     }
-    protected function passedValidation(): void
-    {
-        // Capitalize the first letter of the category
-        $this->merge([
-            'category' => ucfirst($this->input('category')),
-        ]);
-    }
+//    protected function passedValidation(): void
+//    {
+//        // Capitalize the first letter of the category
+//        $this->merge([
+//            'category' => ucfirst($this->input('category')),
+//        ]);
+//    }
 }

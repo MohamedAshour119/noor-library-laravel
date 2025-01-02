@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->json('title');
-            $table->string('slug');
+            $table->json('slug')->nullable();
             $table->json('description');
             $table->boolean('is_author')->default(false);
             $table->json('author_name');
