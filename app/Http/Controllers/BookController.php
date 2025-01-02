@@ -66,9 +66,6 @@ class BookController extends Controller
     }
     private function detectLanguage($title, $description, $authorName)
     {
-        // Use language detection logic, such as checking if the input is mostly in one language
-        // For simplicity, assuming we already know it's one of the languages (en, ar, fr)
-
         // Checking if Arabic characters are present in the text
         if (preg_match('/[\x{0600}-\x{06FF}]/u', $title) || preg_match('/[\x{0600}-\x{06FF}]/u', $description) || preg_match('/[\x{0600}-\x{06FF}]/u', $authorName)) {
             return 'ar';
