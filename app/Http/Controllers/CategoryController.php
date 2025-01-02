@@ -18,34 +18,36 @@ class CategoryController extends Controller
         $pagination_count = $sidebar ? 20 : 10;
 
         if ($pagination_count !== 20) {
-            // Paginate and then map the results
+            // Paginate and map the results
             $categories = Category::withCount('books')
                 ->paginate($pagination_count)
                 ->through(function ($category) {
                     return [
                         'id' => $category->id,
-                        'name' => $category->localized_name,
-                        'slug' => $category->localized_slug,
+                        'name' => $category->getTranslation('name', app()->getLocale()),
+                        'slug' => $category->getTranslation('slug', app()->getLocale()),
                         'books_count' => $category->books_count,
                     ];
                 });
 
             return $this->response_success($categories, 'Categories retrieved');
-        }else {
+        } else {
+            // Get all categories and map them
             $categories = Category::withCount('books')
                 ->get()
                 ->map(function ($category) {
                     return [
                         'id' => $category->id,
-                        'name' => $category->localized_name,
-                        'slug' => $category->localized_slug,
+                        'name' => $category->getTranslation('name', app()->getLocale()),
+                        'slug' => $category->getTranslation('slug', app()->getLocale()),
                         'books_count' => $category->books_count,
                     ];
                 });
+
             return $this->response_success($categories, 'Categories retrieved');
         }
-
     }
+
 
     public function searchForCategory($keyword): JsonResponse
     {
@@ -61,7 +63,10 @@ class CategoryController extends Controller
         $books = Book::paginate(3);
         $next_page_url = $books->nextPageUrl();
         $books = BookCardResource::collection($books);
+        $category = Category::whereJsonContains('slug->' . app()->getLocale(), $category)->first();
+        $category_name = $category->getTranslation('name', app()->getLocale());
         $data = [
+            'category_name' => $category_name,
             'books' =>  $books,
             'next_page_url' => $next_page_url,
             'books_count' => 20,

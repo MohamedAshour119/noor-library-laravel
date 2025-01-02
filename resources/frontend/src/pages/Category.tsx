@@ -46,15 +46,7 @@ export default function Category() {
             <BookCard
                 key={index}
                 ref={last_book_ref}
-                author={book.slug}
-                cover={book.cover}
-                id={book.id}
-                is_free={book.is_free}
-                price={book.price}
-                slug={book.slug}
-                title={book.title}
-                ratings_count={book.ratings_count}
-                average_ratings={book.average_ratings}
+                {...book}
             />
         )
     )
@@ -81,13 +73,13 @@ export default function Category() {
         };
     }, [books_next_page_url, is_fetching]);
 
-
+    const category_name = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
     return (
         <div className="flex flex-col min-h-[643px] text-text_color">
             {!is_loading &&
                 <div className={`flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3 pt-5`}>
-                        <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} Category {`(${books_count})`}</h1>
+                        <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{category_name} Category {`(${books_count})`}</h1>
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                             {show_books}
                         </div>

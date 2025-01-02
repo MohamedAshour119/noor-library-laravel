@@ -26,5 +26,21 @@ trait GoogleTranslationSlug
             return $text;
         }
     }
+//    private function translateTextDynamically($text, $sourceLanguage, $targetLanguage, $id)
+//    {
+//        try {
+//            $translator = new GoogleTranslate($targetLanguage);
+//            $translator->setSource($sourceLanguage);
+//            $translatedText = $translator->translate($text);
+//
+//            // Add hyphens and append the ID
+//            $words = explode(' ', $translatedText);
+//            $translatedTextWithHyphens = implode('-', $words) . '-' . $id;
+//
+//            return $translatedTextWithHyphens;
+//        } catch (\Exception $e) {
+//            return $text; // Fallback to the original text
+//        }
+//    }
 }
 

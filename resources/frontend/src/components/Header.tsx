@@ -21,10 +21,6 @@ import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 
-// interface Props {
-//     handleSelectLanguage: (language: 'ar' | 'en' | 'fr') => void
-// }
-
 export default function Header() {
 
     const user = useSelector((state: RootState) => state.user)

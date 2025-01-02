@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Translatable\HasTranslations;
 
 class Category extends Model
 {
+    use HasTranslations;
     protected $guarded = [];
 //    protected $withCount = ['books'];
+    public $translatable = ['name', 'slug'];
     protected $casts = [
         'name' => 'array',
         'slug' => 'array',
@@ -16,16 +19,5 @@ class Category extends Model
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);
-    }
-
-    public function getLocalizedNameAttribute()
-    {
-        $locale = app()->getLocale();
-        return $this->name[$locale] ?? $this->name['en'];
-    }
-    public function getLocalizedSlugAttribute()
-    {
-        $locale = app()->getLocale();
-        return $this->slug[$locale] ?? $this->slug['en'];
     }
 }

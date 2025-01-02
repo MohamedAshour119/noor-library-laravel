@@ -46,7 +46,7 @@ class BookController extends Controller
             'is_author' => $request->is_author,
             'is_free' => $request->is_free,
             'price' => $price,
-            'language' => $sentLanguage,
+            'language' => $request->language,
             'downloadable' => $request->downloadable,
             'vendor_id' => Auth::id(),
             'category_id' => $category->id,

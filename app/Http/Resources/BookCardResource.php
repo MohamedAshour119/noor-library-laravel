@@ -15,11 +15,12 @@ class BookCardResource extends JsonResource
     public function toArray(Request $request): array
     {
         $vendor = $this->vendor;
+        $locale = app()->getLocale();
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'slug' => $this->slug,
-            'author' => $this->author_name,
+            'slug' => $this->getTranslation('slug', $locale),
+            'author' => $this->getTranslation('author_name', $locale),
             'price' => (int) $this->price,
             'is_free' => $this->is_free === 1,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',

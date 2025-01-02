@@ -25,7 +25,7 @@ import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
-    const isTranslationTriggeredSlice = useSelector((state: RootState) => state.isTranslationTriggeredReducer)
+    // const isTranslationTriggeredSlice = useSelector((state: RootState) => state.isTranslationTriggeredReducer)
     const dispatch = useDispatch()
 
     const [showHeader, setShowHeader] = useState(true);
@@ -103,10 +103,6 @@ function App() {
     }, [location.pathname]); // Trigger when pathname changes
 
 
-
-
-
-
     return (
         <>
             {isSearchModalOpenSlice && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
@@ -124,10 +120,10 @@ function App() {
                 {showHeader && <Header/>}
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>
-                    <Route path="/categories" element={<Categories />} />
+                    <Route path={'/categories'} element={<Categories />}/>
                     <Route path="/users/:user" element={<Profile />} />
-                    <Route path="/categories/:category_slug" element={<Category />} />
-                    <Route path="/reviews" element={<Reviews />} />
+                    <Route path={'/categories/:category_slug'} element={<Category />}/>
+                    <Route path={'/reviews'} element={<Reviews />}/>
                     <Route path="/books/:slug" element={<ShowBook/>}/>
                     <Route path="/search-books-results" element={<SearchBookResults/>}/>
 

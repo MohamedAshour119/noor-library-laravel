@@ -52,7 +52,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                 <div className={`${isActive.categories && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
-                    to={`/categories`}
+                    to={'/categories'}
                     onClick={() => {
                         if (is_small_screens_menu) {
                             handleActiveLink(`categories`)
@@ -69,7 +69,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                 <div className={`${isActive.reviews && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
-                    to={`/reviews`}
+                    to={'/reviews'}
                     onClick={() => {
                         if (is_small_screens_menu) {
                             handleActiveLink(`reviews`)
