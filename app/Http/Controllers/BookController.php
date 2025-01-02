@@ -99,7 +99,7 @@ class BookController extends Controller
     }
     public function getBookData($slug): JsonResponse
     {
-        $book = Book::where('slug', $slug)->first();
+        $book = Book::whereJsonContains('slug->' . app()->getLocale(), $slug)->first();
 
         if ($book) {
             $book = new BookResource($book);

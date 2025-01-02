@@ -9,8 +9,7 @@ import BookCard from "../components/BookCard.tsx";
 
 export default function Category() {
     const { category_slug } = useParams()
-    const categoryName = category_slug ?? "Unknown Category";
-
+    const [category_name, setCategory_name] = useState('');
     const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_fetching, setIs_fetching] = useState(false);
@@ -27,6 +26,7 @@ export default function Category() {
                 setBooks(prevState => ([...prevState, ...res.data.data.books]))
                 setBooks_next_page_url(res.data.data.next_page_url)
                 setBooks_count(res.data.data.books_count)
+                setCategory_name(res.data.data.category_name)
                 setIs_loading(false)
                 setIs_fetching(false)
             })
@@ -73,13 +73,12 @@ export default function Category() {
         };
     }, [books_next_page_url, is_fetching]);
 
-    const category_name = categoryName.charAt(0).toUpperCase() + categoryName.slice(1)
     return (
         <div className="flex flex-col min-h-[643px] text-text_color">
             {!is_loading &&
                 <div className={`flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3 pt-5`}>
-                        <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{category_name} Category {`(${books_count})`}</h1>
+                        <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{category_name} {`(${books_count})`}</h1>
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
                             {show_books}
                         </div>
