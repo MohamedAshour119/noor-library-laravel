@@ -56,13 +56,14 @@ function App() {
             categories: 'categories', // Static categories page
             users: 'users', // Static users page
             'sign-up': 'sign-up',
+            'sign-in': 'sign-in',
             // Add more static namespaces if needed
         };
 
         // Check if the namespace matches any static mapping
         if (namespaceMapping[decodedNamespace]) {
             if (namespaceMapping[decodedNamespace] === 'sign-up' || namespaceMapping[decodedNamespace] === 'sign-in') {
-                return 'auth';
+                return 'Auth';
             }else {
                 return namespaceMapping[decodedNamespace];
             }

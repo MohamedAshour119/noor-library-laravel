@@ -4,16 +4,19 @@ import TextInputAuth from "../../components/core/TextInputAuth.tsx";
 import LoginProviders from "../../components/LoginProviders.tsx";
 import Footer from "../../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../../redux/user-slice.ts";
 import apiClient from "../../../ApiClient.ts";
+import {RootState} from "../../../redux/store.ts";
 
 export default function SignIn() {
     const is_sign_in_page = location.pathname === '/sign-in';
     const navigate = useNavigate()
 
-    const [isLoading, setIsLoading] = useState(false);
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
+
+    const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -46,8 +49,8 @@ export default function SignIn() {
             .catch(err => {
                 console.log(err.response)
                 setIsLoading(false)
-                setSignInError(err.response.data.message)
-                enqueueSnackbar("Wrong credentials.", { variant: "error" });
+                setSignInError(err.response.data.errors.message)
+                enqueueSnackbar(err.response.data.errors.message, { variant: "error" });
             })
     }
 
@@ -67,13 +70,13 @@ export default function SignIn() {
                                 src={`/logo.svg`}
                                 alt={`logo`}/>
                         </Link>
-                        <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>Sign in</h1>
+                        <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>{translation.sign_in}</h1>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className={`flex flex-col gap-y-5`}>
                             <TextInputAuth
                                 onChange={handleFormChange}
-                                placeholder={`Email`}
+                                placeholder={translation.email}
                                 id={`email_id`}
                                 name={`email`}
                                 type={`email`}
@@ -81,32 +84,32 @@ export default function SignIn() {
                             />
                             <TextInputAuth
                                 onChange={handleFormChange}
-                                placeholder={`Password`}
+                                placeholder={translation.password}
                                 id={`password_id`}
                                 type={`password`}
                                 name={`password`}
                                 is_sign_in_failed={!!signInError}
                             />
-                            {signInError && <span className={`text-red-600 -mt-4`}>Wrong credentials!</span>}
+                            {signInError && <span className={`text-red-600 -mt-4`}>{signInError}</span>}
 
                             <button
                                 className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
                                 type={`submit`}
                             >
-                                {isLoading ? 'Signing in...' : 'Sign in'}
+                                {isLoading ? translation.signing_in : translation.sign_in}
                             </button>
                         </div>
                     </form>
 
                     <div className="flex items-center justify-center">
                         <hr className="w-1/2 border-t border-gray-300" />
-                        <span className="mx-4 text-gray-500">OR</span>
+                        <span className="mx-4 text-gray-500">{translation.or}</span>
                         <hr className="w-1/2 border-t border-gray-300" />
                     </div>
 
                     <div className={`text-center text-lg`}>
-                        Don't have an account? <Link to={`/sign-up`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>Sign up</Link> <br/>
-                        Forget Password? <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>Restore Password</Link>
+                        {translation.dont_have_an_account} <Link to={`/sign-up`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.sign_up}</Link> <br/>
+                        {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
                     </div>
 
                     <div className="flex items-center justify-center">

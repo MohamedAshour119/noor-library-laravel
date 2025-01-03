@@ -24,4 +24,6 @@ return [
     'cookies_policy' => 'سياسة ملفات تعريف الارتباط',
     'login_via_google' => 'تسجيل الدخول عبر جوجل',
     'login_via_facebook' => 'تسجيل الدخول عبر فيس بوك',
+    'signing_in' => 'جار تسجيل الدخول...',
+    'dont_have_an_account' => 'ليس لديك حساب؟',
 ];

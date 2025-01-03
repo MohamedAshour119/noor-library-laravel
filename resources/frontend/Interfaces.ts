@@ -149,7 +149,7 @@ export interface Errors {
     email?: string
     password?: string
     password_confirmation?: string
-    recaptcha?: string
+    google_recaptcha?: string
 }
 
 export interface ShowBookInterface extends Book {

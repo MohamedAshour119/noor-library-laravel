@@ -18,6 +18,6 @@ trait HttpResponses {
             'status' => 'Error has occurred!',
             'message' => $message,
             'errors' => $errors,
-        ], $status_code);
+        ], $status_code, [], JSON_UNESCAPED_UNICODE);
     }
 }

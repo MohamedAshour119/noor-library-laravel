@@ -80,11 +80,6 @@ export default function SignUp() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
-        if (!formData.google_recaptcha) {
-            setErrors(prevErrors => ({ ...prevErrors, recaptcha: 'Please complete the reCAPTCHA.' }))
-            return
-        }
-
         const end_point = formData.is_vendor ? '/sign-up-as-vendor' : '/sign-up-as-customer'
 
         apiClient().post(end_point, formData, {headers: {'Content-Type': 'application/json'}})
@@ -98,7 +93,6 @@ export default function SignUp() {
             })
             .catch(err => {
                 setErrors(err.response.data.errors)
-                enqueueSnackbar('Registration process failed!', { variant: "error" });
             })
     }
 
@@ -189,7 +183,7 @@ export default function SignUp() {
                         hl={document.documentElement.lang || "en"}
                     />
 
-                    {errors?.recaptcha && <span className={`text-red-600`}>{errors.recaptcha}</span>}
+                    {errors?.google_recaptcha && <span className={`text-red-600`}>{errors.google_recaptcha}</span>}
                 </div>
 
                 <button

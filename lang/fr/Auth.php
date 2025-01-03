@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'sign_up_as_vendor' => 'Inscrivez-vous en tant que vendeur',
+    'sign_up_as_customer' => 'Inscrivez-vous en tant que client',
+    'username' => 'Username',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'email' => 'Email',
+    'password' => 'Password',
+    'password_confirmation' => 'Password Confirmation',
+    'country_code' => 'Code pays',
+    'enter_phone_number' => 'Entrez votre numéro de téléphone',
+    'show' => 'Show',
+    'hide' => 'Masquer',
+    'terms_and_conditions' => 'By signing up, you agree to our Terms, Data Policy and Cookies Policy.',
+    'have_an_account' => 'Have an account?',
+    'forget_password' => 'Forget Password?',
+    'restore_password' => 'Restore Password',
+    'by_signing_up_you_agree_to_our' => 'En vous inscrivant, vous acceptez nos',
+    'data_policy' => 'Politique de données',
+    'cookies_policy' => 'Politique sur les cookies',
+    'login_via_google' => 'Se connecter via Google',
+    'login_via_facebook' => 'Se connecter via Facebook',
+    'signing_in' => 'Connexion en cours...',
+    'dont_have_an_account' => 'Vous n\'avez pas de compte?',
+];
