@@ -23,4 +23,6 @@ return [
     'unauthorized_message_part_one' => 'لقد قمت بتسجيل الدخول كعميل',
     'unauthorized_message_part_two' => 'يجب عليك تسجيل الدخول كبائع.',
     'your_cart' => 'عربة التسوق.',
+    'sign_in' => 'تسجيل الدخول',
+    'sign_up' => 'تسجيل',
 ];

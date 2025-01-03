@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Book;
 use App\Models\Category;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
@@ -18,24 +20,51 @@ Route::get('/locale/{locale}', function ($locale) {
 
         $previousUrl = url()->previous();
         $parsedUrl = parse_url($previousUrl);
-
         $path = $parsedUrl['path'] ?? '/';
-        preg_match('#/categories/([^/]+)#', $path, $matches);
-        if (!empty($matches[1]) && session()->get('locale')) {
-            $slug = urldecode($matches[1]);  // Decode the slug if necessary
-            $category = Category::whereJsonContains('slug->' . app()->getLocale(), $slug)->first();
-            if ($category) {
-                $category_name = $category->getTranslation('slug', session()->get('locale'));
-                // Replace the old slug in the URL with the new translated slug
-                $newPath = str_replace($slug, $category_name, urldecode($path) );
+        $patterns = [
+            'categories' => '/categories/([^/]+)',
+            'books' => '/books/([^/]+)',
+            'users' => '/users/([^/]+)',
+            // Add more routes here as needed
+        ];
+        // Iterate through the patterns and check if the path matches any of them
+        foreach ($patterns as $route => $pattern) {
+            if (preg_match('#' . $pattern . '#', $path, $matches)) {
+                $slug = urldecode($matches[1]);  // Decode the slug if necessary
 
-                // Rebuild the full URL with the new path and redirect
-                $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
-                return redirect($newUrl);
+                // Handle the category, book, or user slug lookup
+                switch ($route) {
+                    case 'categories':
+                        $model = Category::class;
+                        $slugField = 'slug';
+                        break;
+                    case 'books':
+                        $model = Book::class; // Assuming Book model exists
+                        $slugField = 'slug';
+                        break;
+                    case 'users':
+                        $model = User::class; // Assuming User model exists
+                        $slugField = 'username'; // Use 'username' for users
+                        break;
+                    // Add cases for more routes as needed
+                    default:
+                        return redirect()->back();
+                }
+
+                // Lookup the model by the slug (translated if necessary)
+                $modelInstance = $model::whereJsonContains("{$slugField}->" . app()->getLocale(), $slug)->first();
+
+                if ($modelInstance) {
+                    $newSlug = $modelInstance->getTranslation($slugField, $locale);
+
+                    // Replace the old slug in the URL with the new translated slug
+                    $newPath = str_replace($slug, $newSlug, urldecode($path));
+
+                    // Rebuild the full URL with the new path and redirect
+                    $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
+                    return redirect($newUrl);
+                }
             }
-
-        } else {
-            Log::info('Slug not found in URL');
         }
     }
     return redirect()->back();

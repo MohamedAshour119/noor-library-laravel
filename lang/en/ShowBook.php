@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'author' => 'Author',
+    'category' => 'Category',
+    'language' => 'Language',
+    'publisher' => 'Publisher',
+    'pages' => 'Pages',
+    'file_size' => 'File Size',
+    'extension' => 'Extension',
+    'add_date' => 'Add Date',
+    'preview' => 'Preview',
+    'preview_not_allowed' => 'Preview is not allowed because the book is not free',
+    'purchase' => 'Purchase',
+    'ratings' => 'Ratings',
+    'book_ratings' => 'Book ratings',
+    'average_rating' => 'Average Rating',
+    'rate_this_book' => 'Rate this book',
+    'comments' => 'Comments',
+    'comment_description' => 'Comment Description',
+    'comment' => 'Comment',
+    'add_to_wishlist' => 'Add to wishlist',
+    'add_to_cart' => 'Add to cart',
+    'remove_from_wishlist' => 'Remove from wishlist',
+    'download' => 'Download',
+];

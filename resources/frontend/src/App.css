@@ -12,6 +12,16 @@
     --font-noto_naskh: "Noto Naskh Arabic", serif;
 }
 
+@layer utilities {
+    .icon-popup-clip-path-ltr {
+        clip-path: polygon(0% 0%, 95% 0, 95% 40%, 100% 50%, 95% 60%, 95% 100%, 0 100%);
+    }
+    .icon-popup-clip-path-rtl {
+        clip-path: polygon(0% 50%, 5% 40%, 5% 0%, 100% 0%, 100% 100%, 5% 100%, 5% 60%);
+    }
+}
+
+
 html[dir="rtl"] {
     text-align: right !important;
 }
@@ -137,10 +147,6 @@ button[aria-label="Close"]:hover{
 
 div[tabindex="-1"] {
     height: fit-content;
-}
-
-.icon-popup-clip-path {
-    clip-path: polygon(0% 0%, 95% 0, 95% 40%, 100% 50%, 95% 60%, 95% 100%, 0 100%);
 }
 
 div[aria-describedby="rpv-core__tooltip-body-open"],

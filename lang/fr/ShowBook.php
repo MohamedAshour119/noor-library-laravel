@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'author' => 'Auteur',
+    'category' => 'Catégorie',
+    'language' => 'Langue',
+    'publisher' => 'Éditeur',
+    'pages' => 'Pages',
+    'file_size' => 'Taille du fichier',
+    'extension' => 'Extension',
+    'add_date' => 'Date d\'ajout',
+    'preview' => 'Aperçu',
+    'preview_not_allowed' => 'L\'aperçu n\'est pas autorisé car le livre n\'est pas gratuit',
+    'purchase' => 'Acheter',
+    'ratings' => 'Évaluations',
+    'book_ratings' => 'Notes du livre',
+    'average_rating' => 'Évaluation moyenne',
+    'rate_this_book' => 'Évaluez ce livre',
+    'comments' => 'Commentaires',
+    'comment_description' => 'Description du commentaire',
+    'comment' => 'Commentaire',
+    'add_to_wishlist' => 'Ajouter à la liste de souhaits',
+    'add_to_cart' => 'Ajouter au panier',
+    'remove_from_wishlist' => 'Supprimer de la liste de souhaits',
+    'sign_in' => 'Se connecter',
+    'sign_up' => 'S\'inscrire',
+    'download' => 'Télécharger',
+];

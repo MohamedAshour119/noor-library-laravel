@@ -23,4 +23,6 @@ return [
     'unauthorized_message_part_one' => 'You are logged in as a customer',
     'unauthorized_message_part_two' => 'You must log in as a seller.',
     'your_cart' => 'Your Cart.',
+    'sign_in' => 'Sign In',
+    'sign_up' => 'Sign Up',
 ];

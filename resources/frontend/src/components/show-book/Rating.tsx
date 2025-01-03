@@ -13,6 +13,7 @@ interface Props {
     book_data: ShowBookInterface | undefined
 }
 export default function Rating(props: Props) {
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const { book_id, setBook_data, book_data } = props
     const auth_user = useSelector((state: RootState) => state.user)
     const [rating, setRating] = useState<number>(book_data?.your_rate ?? 0);
@@ -38,7 +39,7 @@ export default function Rating(props: Props) {
 
     return (
         <>
-            <h1 className={`font-roboto-semi-bold text-lg`}>Rate this book:</h1>
+            <h1 className={`font-roboto-semi-bold text-lg`}>{translation.rate_this_book}:</h1>
             <div className={`flex items-center gap-x-3`}>
                 <div className={`flex items-center relative`}>
                     <ReactStars

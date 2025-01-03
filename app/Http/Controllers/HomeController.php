@@ -36,12 +36,15 @@ class HomeController extends Controller
         } else {
             foreach ($translationsConfig['dynamic'] as $prefix => $pattern) {
                 // Check if the namespace matches the dynamic pattern
+                Log::info('$prefix', [$prefix]);
                 if (Str::startsWith($decodedNamespace, $prefix)) {
                     // Use preg_match to extract the dynamic part of the namespace
-                    preg_match("/$prefix-(.*)$/", $decodedNamespace, $matches);
+                    preg_match("/$prefix\_(.*)$/", $decodedNamespace, $matches);
+
                     if (isset($matches[1])) {
                         // Replace the dynamic part (e.g., {slug} with the actual value)
-                        $namespace = str_replace('{slug}', $matches[1], $pattern);
+//                        $namespace = str_replace('{slug}', $matches[1], $pattern);
+                        $namespace = 'Show' . ucfirst($prefix);
                     }
                     break;
                 }

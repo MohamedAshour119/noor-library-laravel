@@ -48,42 +48,49 @@ function App() {
         // Decode only when necessary
         const decodedNamespace = decodeURIComponent(namespace);
 
-        // Define a pattern matching system to map dynamic namespaces
+        // Define a pattern matching system to map namespaces
         const namespaceMapping: { [key: string]: string } = {
-            categories: 'categories', // For static 'categories' page
-            home: 'home', // For home page (both '/' and '/home')
-            // Add more static namespaces as needed
+            home: 'home', // For the home page
+            books: 'books', // Static books page
+            categories: 'categories', // Static categories page
+            users: 'users', // Static users page
+            // Add more static namespaces if needed
         };
 
-        // Check if the namespace starts with category_ or any other pattern
+        // Check if the namespace matches any static mapping
+        if (namespaceMapping[decodedNamespace]) {
+            return namespaceMapping[decodedNamespace];
+        }
+
+        // Handle dynamic slugs for specific namespaces
         if (decodedNamespace.startsWith('category_')) {
-            // Handle category pages (e.g., category_{slug})
-            return decodedNamespace; // No need to modify, just pass the full namespace
+            return decodedNamespace; // Category page with slug
         }
-
         if (decodedNamespace.startsWith('user_')) {
-            // Handle user pages (e.g., user_{username_or_id})
-            return decodedNamespace; // No need to modify, just pass the full namespace
+            return decodedNamespace; // User page with username
+        }
+        if (decodedNamespace.startsWith('book_')) {
+            return decodedNamespace; // Book page with slug
         }
 
-        // Return the corresponding namespace if exists in the map
-        return namespaceMapping[decodedNamespace] || null; // Return null if not found
+        // Return null if no match found
+        return null;
     };
 
     useEffect(() => {
-        const pathSegments = location.pathname.split('/');
-        let namespace = pathSegments[1];
+        const pathSegments = location.pathname.split('/').filter(Boolean); // Remove empty segments
+        let namespace = pathSegments[0] || 'home'; // Default to home if no path
 
-        // If the path is '/', treat it as 'home'
-        if (location.pathname === '/') {
-            namespace = 'home';
-        }
+        // Handle dynamic routes based on the pattern
+        const dynamicRoutePatterns: { [key: string]: string } = {
+            categories: 'category_',
+            users: 'user_',
+            books: 'book_',
+            // Add more dynamic routes as needed
+        };
 
-        // Handle dynamic slugs (e.g., category_slug or user_slug)
-        if (pathSegments[1] === 'categories' && pathSegments.length === 3) {
-            namespace = 'category_' + decodeURIComponent(pathSegments[2]); // For category page with slug
-        } else if (pathSegments[1] === 'users' && pathSegments.length === 3) {
-            namespace = 'user_' + decodeURIComponent(pathSegments[2]); // For user page with username or id
+        if (pathSegments.length === 2 && dynamicRoutePatterns[pathSegments[0]]) {
+            namespace = dynamicRoutePatterns[pathSegments[0]] + decodeURIComponent(pathSegments[1]);
         }
 
         // Get the valid namespace for the current page
@@ -97,10 +104,11 @@ function App() {
                     dispatch(setTranslation(res.data.data));
                 })
                 .catch((err) => {
-                    enqueueSnackbar(err.response.data.errors);
+                    enqueueSnackbar(err.response.data.errors || 'An error occurred');
                 });
         }
     }, [location.pathname]); // Trigger when pathname changes
+
 
 
     return (

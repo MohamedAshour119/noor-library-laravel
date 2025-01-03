@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'author' => 'المؤلف',
+    'category' => 'التصنيف',
+    'language' => 'اللغة',
+    'publisher' => 'الناشر',
+    'pages' => 'الصفحات',
+    'file_size' => 'حجم الملف',
+    'extension' => 'الامتداد',
+    'add_date' => 'تاريخ الإضافة',
+    'preview' => 'معاينة',
+    'preview_not_allowed' => 'لا يُسمح بالمعاينة لأن الكتاب ليس مجانًا',
+    'purchase' => 'شراء',
+    'ratings' => 'التقييمات',
+    'book_ratings' => 'تقييمات الكتاب',
+    'average_rating' => 'متوسط التقييم',
+    'rate_this_book' => 'قيم هذا الكتاب',
+    'comments' => 'تعليقات',
+    'comment_description' => 'وصف التعليق',
+    'comment' => 'تعليق',
+    'add_to_wishlist' => 'إضافة إلى قائمة الرغبات',
+    'add_to_cart' => 'أضف إلى السلة',
+    'remove_from_wishlist' => 'إزالة من قائمة الرغبات',
+    'download' => 'تحميل',
+];

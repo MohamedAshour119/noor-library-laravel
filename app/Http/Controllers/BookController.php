@@ -101,6 +101,7 @@ class BookController extends Controller
     {
         $book = Book::whereJsonContains('slug->' . app()->getLocale(), $slug)->first();
 
+
         if ($book) {
             $book = new BookResource($book);
             return $this->response_success(['book' => $book], 'Book Retrieved Successfully.');
