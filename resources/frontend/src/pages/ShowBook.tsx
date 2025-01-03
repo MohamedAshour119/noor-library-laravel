@@ -9,15 +9,17 @@ import {Link, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
-import { TfiShoppingCart } from "react-icons/tfi";
 import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
 import Comment from "../components/show-book/Comment.tsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import ReactStars from "react-stars";
+import {MdAddShoppingCart} from "react-icons/md";
+import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
+import {Modal} from "flowbite-react";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -25,6 +27,8 @@ export default function ShowBook() {
 
     const auth_user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
+    const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
+    const dispatch = useDispatch()
     // State to track loading status
     const [is_loading, setIs_loading] = useState(false);
     const [is_fetching, setIs_fetching] = useState(false);
@@ -156,26 +160,30 @@ export default function ShowBook() {
     }
     const handleSubmitComment = (e: FormEvent) => {
         e.preventDefault()
-        setIs_comment_loading(true)
+        if (!auth_user.is_vendor) {
+            setIs_comment_loading(true)
 
-        apiClient().post(`/book/comments/${book_data?.id}`, {body: comment})
-            .then(res => {
-                setComments(prevState => ([
-                    res.data.data.comment,
-                    ...prevState,
-                ]))
-                setComment('')
-                setCounter(0)
-                // @ts-ignore
-                setBook_data(prevState => ({
-                    ...prevState,
-                    comments_count: res.data.data.comments_count
-                }))
-            })
-            .catch(err => {
-                setError(err.response.data.errors.body[0])
-            })
-            .finally(() => setIs_comment_loading(false))
+            apiClient().post(`/book/comments/${book_data?.id}`, {body: comment})
+                .then(res => {
+                    setComments(prevState => ([
+                        res.data.data.comment,
+                        ...prevState,
+                    ]))
+                    setComment('')
+                    setCounter(0)
+                    // @ts-ignore
+                    setBook_data(prevState => ({
+                        ...prevState,
+                        comments_count: res.data.data.comments_count
+                    }))
+                })
+                .catch(err => {
+                    setError(err.response.data.errors.body[0])
+                })
+                .finally(() => setIs_comment_loading(false))
+        }else {
+            handleOpenUnauthorizedMessage()
+        }
     }
 
     // Handlers for hover effects on the "Add to Cart" icon
@@ -218,8 +226,57 @@ export default function ShowBook() {
 
     const is_book_free = book_data?.price === 0
 
+    const handleOpenUnauthorizedMessage = () => {
+        if (auth_user.is_vendor) {
+            dispatch(setIsUnauthorizedMessageOpenSlice(true))
+        }
+    }
+
+    const handleAddToWishlistMessage = () => {
+        if (!auth_user.is_vendor) {
+            if (is_add_to_wishlist) {
+                handleDeleteFromWishlist()
+            } else {
+                handleAddToWishlist()
+            }
+        } else {
+            handleOpenUnauthorizedMessage()
+        }
+    }
+    const modalRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!modalRef.current?.contains(e.target as Node)) {
+                dispatch(setIsUnauthorizedMessageOpenSlice(false))
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, []);
     return (
         <div className="flex flex-col min-h-[669px] text-text_color">
+            {auth_user.is_vendor &&
+                <Modal
+                    show={isUnauthorizedMessageOpenSlice}
+                    onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
+                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
+                    ref={modalRef}
+                >
+                    <Modal.Header className={`!border-b modal-header`}>
+                        <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <div className="space-y-6 p-5">
+                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                                {translation.unauthorized_vendor_message}
+                            </p>
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            }
             {/* Main container */}
             <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
                 <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
@@ -241,11 +298,11 @@ export default function ShowBook() {
                                                 className="relative flex justify-center items-center bg-main_bg w-fit p-2 rounded-full !size-[44px]"
                                                 onMouseEnter={handleAddToCartIconMouseEnter}
                                                 onMouseLeave={handleAddToCartIconMouseLeave}
+                                                onClick={handleOpenUnauthorizedMessage}
                                             >
-                                                <TfiShoppingCart className="size-6 text-main_color_darker"/>
+                                                <MdAddShoppingCart className="size-6 text-main_color_darker"/>
                                                 {is_add_to_cart_icon_hovered && (
-                                                    <div
-                                                        className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
+                                                    <div className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
                                                         <div
                                                             className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
                                                             <p>{translation.add_to_cart}</p>
@@ -258,7 +315,7 @@ export default function ShowBook() {
                                             className="relative bg-main_bg w-fit p-2 rounded-full"
                                             onMouseEnter={handleAddToCartWishlistMouseEnter}
                                             onMouseLeave={handleAddToCartWishlistMouseLeave}
-                                            onClick={is_add_to_wishlist ? handleDeleteFromWishlist : handleAddToWishlist}
+                                            onClick={handleAddToWishlistMessage}
                                             disabled={is_add_to_wishlist_loading}
                                         >
                                             {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600"/>}
@@ -323,6 +380,7 @@ export default function ShowBook() {
                                             {!is_book_free &&
                                                 <div className={`mt-2`}>
                                                     <button
+                                                        onClick={handleOpenUnauthorizedMessage}
                                                         className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         {translation.purchase} <strong>{book_data?.price + '$'}</strong>
                                                     </button>
@@ -342,7 +400,7 @@ export default function ShowBook() {
                                         </div>
                                     </div>
 
-                                    {/* Book PReview */}
+                                    {/* Book Preview */}
                                     {is_book_free &&
                                         <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[700px] lg:w-full`}>
                                             <h1 className={`font-semibold text-lg text-main_color text-center`}>{translation.preview}</h1>
@@ -368,6 +426,7 @@ export default function ShowBook() {
                             book_id={book_data?.id}
                             setBook_data={setBook_data}
                             book_data={book_data}
+                            handleOpenUnauthorizedMessage={handleOpenUnauthorizedMessage}
                         />
 
                         {/* Book Reviews */}
@@ -387,6 +446,7 @@ export default function ShowBook() {
                                         <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
                                         <div className={`relative`}>
                                             <textarea
+                                                onClick={handleOpenUnauthorizedMessage}
                                                 placeholder={translation.comment_description}
                                                 className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
                                                 maxLength={1000}
@@ -401,7 +461,6 @@ export default function ShowBook() {
                                         </div>
 
                                         <button
-                                            type={"submit"}
                                             disabled={is_comment_loading}
                                             className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
                                         >

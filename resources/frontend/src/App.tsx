@@ -25,6 +25,7 @@ import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
+    const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
     // const isTranslationTriggeredSlice = useSelector((state: RootState) => state.isTranslationTriggeredReducer)
     const dispatch = useDispatch()
 
@@ -54,12 +55,17 @@ function App() {
             books: 'books', // Static books page
             categories: 'categories', // Static categories page
             users: 'users', // Static users page
+            'sign-up': 'sign-up',
             // Add more static namespaces if needed
         };
 
         // Check if the namespace matches any static mapping
         if (namespaceMapping[decodedNamespace]) {
-            return namespaceMapping[decodedNamespace];
+            if (namespaceMapping[decodedNamespace] === 'sign-up' || namespaceMapping[decodedNamespace] === 'sign-in') {
+                return 'auth';
+            }else {
+                return namespaceMapping[decodedNamespace];
+            }
         }
 
         // Handle dynamic slugs for specific namespaces
@@ -95,7 +101,6 @@ function App() {
 
         // Get the valid namespace for the current page
         const validNamespace = getTranslation(namespace);
-
         if (validNamespace) {
             // Make the API call only once with the valid namespace
             apiClient()
@@ -113,7 +118,7 @@ function App() {
 
     return (
         <>
-            {isSearchModalOpenSlice && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            {(isSearchModalOpenSlice || isUnauthorizedMessageOpenSlice) && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
             {isSearchModalOpenSlice && <SearchModal/>}
             <SnackbarProvider
                 autoHideDuration={3000}

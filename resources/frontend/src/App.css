@@ -253,3 +253,18 @@ span[data-index="4"]
     right: 50% !important;
     transform: translate(50%, -50%) !important;
 }
+
+:dir(rtl) .react-tel-input .selected-flag {
+    padding-left: 0 !important;
+    padding-right: 8px !important;
+}
+
+:dir(rtl) .react-tel-input .selected-flag .arrow {
+    left: 0 !important;
+    right: 20px !important;
+}
+
+:dir(rtl) .react-tel-input .form-control::placeholder {
+    position: absolute;
+    right: 50px;
+}

@@ -1,6 +1,6 @@
 
 import {useEffect, useRef, useState} from 'react'
-import {MdAddShoppingCart, MdGTranslate} from "react-icons/md";
+import {MdGTranslate} from "react-icons/md";
 import {IoLogInOutline} from "react-icons/io5";
 import {FaBook, FaUser} from "react-icons/fa";
 import {RiMenuLine} from "react-icons/ri";
@@ -20,6 +20,7 @@ import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts"
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
+import {TfiShoppingCart} from "react-icons/tfi";
 
 export default function Header() {
 
@@ -107,12 +108,12 @@ export default function Header() {
                     ref={modalRef}
                 >
                     <Modal.Header className={`!border-b modal-header`}>
-                        <h3 className="text-red-600 text-xl font-medium">Unauthorized!</h3>
+                        <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
                     </Modal.Header>
                     <Modal.Body>
                         <div className="space-y-6 p-5">
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {user.id ? `You are signed in as a customer,` : ''} You must sign in as a vendor.
+                                {translation.unauthorized_customer_message}
                             </p>
                         </div>
                     </Modal.Body>
@@ -229,7 +230,7 @@ export default function Header() {
                                         className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
                                         onClick={openAddToCartSidebar}
                                     >
-                                        <MdAddShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
+                                        <TfiShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
                                     </span>
                                     <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
                                         <GoBell className={`size-6 text-main_color group-hover:text-white transition`}/>

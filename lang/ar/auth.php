@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'sign_up_as_vendor' => 'تسجيل الدخول كتاجر',
+    'sign_up_as_customer' => 'تسجيل الدخول كعميل',
+    'username' => 'اسم المستخدم',
+    'first_name' => 'الاسم الأول',
+    'last_name' => 'الاسم الأخير',
+    'email' => 'البريد الإلكتروني',
+    'password' => 'كلمة المرور',
+    'password_confirmation' => 'تأكيد كلمة المرور',
+    'country_code' => 'كود الدولة',
+    'enter_phone_number' => 'أدخل رقم الهاتف',
+    'show' => 'إظهار',
+    'hide' => 'إخفاء',
+    'im_not_a_robot' => 'أنا لست روبوت',
+    'privacy_policy' => 'سياسة الخصوصية',
+    'terms_and_conditions' => 'الشروط والأحكام',
+    'have_an_account' => 'هل لديك حساب؟',
+    'forgot_password' => 'نسيت كلمة المرور؟',
+    'reset_password' => 'استعادة كلمة المرور',
+    'by_signing_up_you_agree_to_our' => 'بالتسجيل، فإنك توافق على ',
+    'data_policy' => 'سياسة البيانات',
+    'cookies_policy' => 'سياسة ملفات تعريف الارتباط',
+    'login_via_google' => 'تسجيل الدخول عبر جوجل',
+    'login_via_facebook' => 'تسجيل الدخول عبر فيس بوك',
+];

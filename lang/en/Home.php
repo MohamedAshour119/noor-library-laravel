@@ -23,8 +23,5 @@ return [
     'search_for' => 'Search for',
     'results' => 'Results',
     'loading' => 'Loading...',
-    'unauthorized' => 'Unauthorized!',
-    'unauthorized_message_part_one' => 'You are signed in as a customer,',
-    'unauthorized_message_part_two' => 'You must sign in as a vendor.',
     'your_cart' => 'Your Cart',
 ];

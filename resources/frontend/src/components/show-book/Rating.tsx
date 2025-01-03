@@ -11,10 +11,11 @@ interface Props {
     book_id: number | undefined
     setBook_data: Dispatch<SetStateAction<ShowBookInterface | undefined>>
     book_data: ShowBookInterface | undefined
+    handleOpenUnauthorizedMessage?: Dispatch<SetStateAction<boolean>>
 }
 export default function Rating(props: Props) {
     const translation = useSelector((state: RootState) => state.translationReducer)
-    const { book_id, setBook_data, book_data } = props
+    const { book_id, setBook_data, book_data, handleOpenUnauthorizedMessage } = props
     const auth_user = useSelector((state: RootState) => state.user)
     const [rating, setRating] = useState<number>(book_data?.your_rate ?? 0);
     useEffect(() => {
@@ -22,20 +23,27 @@ export default function Rating(props: Props) {
     }, [book_data]);
 
     const handleRatingChange = (new_rating: number) => {
-        if (!auth_user.id) {
-            enqueueSnackbar('You must sign in to rate.', {variant: "error"})
-        }else {
-            setRating(new_rating);
-            apiClient().post(`/books/rating/${book_id}`, { rating: new_rating })
-                .then(res => {
-                    const book_language_label = get_book_language_label(res.data.data.book.language)
-                    const book = res.data.data.book
-                    book.language = book_language_label
-                    setBook_data(book)
-                })
-                .catch(err => console.error(err));
+        if (auth_user.is_vendor) {
+            if (handleOpenUnauthorizedMessage) {
+                handleOpenUnauthorizedMessage(true)
+            }
+        } else {
+            if (!auth_user.id) {
+                enqueueSnackbar('You must sign in to rate.', { variant: "error" });
+            } else {
+                setRating(new_rating);
+                apiClient().post(`/books/rating/${book_id}`, { rating: new_rating })
+                    .then(res => {
+                        const book_language_label = get_book_language_label(res.data.data.book.language);
+                        const book = res.data.data.book;
+                        book.language = book_language_label;
+                        setBook_data(book);
+                    })
+                    .catch(err => console.error(err));
+            }
         }
     };
+
 
     return (
         <>

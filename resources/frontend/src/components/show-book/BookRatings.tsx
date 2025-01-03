@@ -8,10 +8,11 @@ interface Props {
     book_id: number | undefined
     setBook_data: Dispatch<SetStateAction<ShowBookInterface | undefined>>
     book_data: ShowBookInterface | undefined
+    handleOpenUnauthorizedMessage?: Dispatch<SetStateAction<boolean>>
 }
 export default function BookRatings(props: Props) {
     const translation = useSelector((state: RootState) => state.translationReducer)
-    const { book_id, setBook_data, book_data } = props
+    const { book_id, setBook_data, book_data, handleOpenUnauthorizedMessage } = props
     let percentage = 0
     if (book_data?.average) percentage = (book_data?.average / 5) * 100;
 
@@ -25,6 +26,7 @@ export default function BookRatings(props: Props) {
                         book_id={book_id}
                         setBook_data={setBook_data}
                         book_data={book_data}
+                        handleOpenUnauthorizedMessage={handleOpenUnauthorizedMessage}
                     />
                 </div>
                 <div className={`sm:w-1/2 xs:w-[45%] w-full flex flex-col items-center gap-y-3`}>

@@ -5,16 +5,17 @@ import LoginProviders from "../../components/LoginProviders.tsx";
 import Footer from "../../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useRef, useState} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../../redux/user-slice.ts";
 import apiClient from "../../../ApiClient.ts";
 import 'react-phone-input-2/lib/style.css';
 import PhoneInput from 'react-phone-input-2';
 import '../../index.css'
 import {Errors, SignUpForm} from "../../../Interfaces.ts";
+import {RootState} from "../../../redux/store.ts";
 
 export default function SignUp() {
-
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch();
 
     const is_sign_in_page = location.pathname === '/sign-in';
@@ -105,7 +106,7 @@ export default function SignUp() {
         <form onSubmit={handleSubmit}>
             <div className={`flex flex-col gap-y-5`}>
                 <TextInputAuth
-                    placeholder={`Username`}
+                    placeholder={translation.username}
                     id={`username_id`}
                     name={`username`}
                     value={formData.username}
@@ -113,7 +114,7 @@ export default function SignUp() {
                     error={errors?.username}
                 />
                 <TextInputAuth
-                    placeholder={`First Name`}
+                    placeholder={translation.first_name}
                     id={`first_name_id`}
                     name={`first_name`}
                     value={formData.first_name}
@@ -121,7 +122,7 @@ export default function SignUp() {
                     error={errors?.first_name}
                 />
                 <TextInputAuth
-                    placeholder={`Last Name`}
+                    placeholder={translation.last_name}
                     id={`last_name_id`}
                     name={`last_name`}
                     value={formData.last_name}
@@ -129,7 +130,7 @@ export default function SignUp() {
                     error={errors?.last_name}
                 />
                 <TextInputAuth
-                    placeholder={`Email`}
+                    placeholder={translation.email}
                     id={`email_id`}
                     name={`email`}
                     type={`email`}
@@ -138,7 +139,7 @@ export default function SignUp() {
                     error={errors?.email}
                 />
                 <TextInputAuth
-                    placeholder={`Password`}
+                    placeholder={translation.password}
                     id={`password_id`}
                     type={`password`}
                     name={`password`}
@@ -147,7 +148,7 @@ export default function SignUp() {
                     error={errors?.password}
                 />
                 <TextInputAuth
-                    placeholder={`Password Confirmation`}
+                    placeholder={translation.password_confirmation}
                     id={`password_confirmation_id`}
                     type={`password`}
                     name={`password_confirmation`}
@@ -160,18 +161,19 @@ export default function SignUp() {
                     value={formData.phone_number}
                     onChange={handlePhoneChange}
                     enableSearch={true}
-                    placeholder="Enter phone number"
+                    placeholder={translation.enter_phone_number}
                     inputStyle={{
                         width: '100%',
                         height: '40px',
                         borderRadius: '8px',
                         border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
-                        padding: '10px 10px 10px 45px',
+                        padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
                     }}
                     containerStyle={{
                         width: '100%',
                         display: 'flex',
                         alignItems: 'center',
+                        position: 'relative',
                     }}
                     buttonStyle={{
                         border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
@@ -184,6 +186,7 @@ export default function SignUp() {
                         ref={recaptchaRef}
                         sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
                         onChange={handleRecaptchaToken}
+                        hl={document.documentElement.lang || "en"}
                     />
 
                     {errors?.recaptcha && <span className={`text-red-600`}>{errors.recaptcha}</span>}
@@ -193,7 +196,7 @@ export default function SignUp() {
                     className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
                     type={`submit`}
                 >
-                    Sign up
+                    {translation.sign_up}
                 </button>
             </div>
         </form>
@@ -201,7 +204,7 @@ export default function SignUp() {
     return (
         <>
             <img
-                src="./home/hero-section-bg.svg"
+                src="/home/hero-section-bg.svg"
                 alt="Auth background"
                 className={`w-screen h-svh min-h-svh absolute !z-10`}
             />
@@ -216,20 +219,20 @@ export default function SignUp() {
                                     src={`/logo.svg`}
                                     alt={`logo`}/>
                             </Link>
-                            <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>Sign up</h1>
+                            <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>{translation.sign_up}</h1>
                         </div>
                         <div className={`grid grid-cols-2 gap-x-3`}>
                             <button
                                 onClick={handleClickSignUpAsCustomer}
                                 className={`bg-main_color text-white rounded py-1`}
                             >
-                                Sign up as customer
+                                {translation.sign_up_as_customer}
                             </button>
                             <button
                                 onClick={handleClickSignUpAsVendor}
                                 className={`bg-main_color text-white rounded py-1`}
                             >
-                                Sign up as vendor
+                                {translation.sign_up_as_vendor}
                             </button>
                         </div>
                         {!show_sign_up_as_vendor &&
@@ -244,26 +247,26 @@ export default function SignUp() {
                         }
 
                         <div className={`text-text_color/70 text-center`}>
-                            By signing up, you agree to our
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ml-1`}>Terms</Link>,
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ml-1`}>Data Policy</Link> <br/> and
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ml-1`}>Cookies Policy</Link>.
+                            {translation.by_signing_up_you_agree_to_our}
+                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.terms_and_conditions}</Link>,
+                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.data_policy}</Link> {translation.and}
+                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.cookies_policy}</Link>.
                         </div>
 
                         <div className="flex items-center justify-center">
                             <hr className="w-1/2 border-t border-gray-300" />
-                            <span className="mx-4 text-gray-500">OR</span>
+                            <span className="mx-4 text-gray-500">{translation.or}</span>
                             <hr className="w-1/2 border-t border-gray-300" />
                         </div>
 
                         <div className={`text-center text-lg`}>
-                            Have an account? <Link to={`/sign-in`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>Login</Link> <br/>
-                            Forget Password? <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>Restore Password</Link>
+                            {translation.have_an_account} <Link to={`/sign-in`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.sign_in}</Link> <br/>
+                            {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
                         </div>
 
                         <div className="flex items-center justify-center">
                             <hr className="w-1/2 border-t border-gray-300" />
-                            <span className="mx-4 text-gray-500">OR</span>
+                            <span className="mx-4 text-gray-500">{translation.or}</span>
                             <hr className="w-1/2 border-t border-gray-300" />
                         </div>
 
