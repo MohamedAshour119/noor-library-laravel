@@ -132,7 +132,12 @@ export default function ClientSearchInput() {
                         value={search_value}
                         onChange={handleSearchValue}
                     />
-                    <button className={`bg-main_color absolute ltr:right-[2px] rtl:left-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}>{translation.search}</button>
+                    <button
+                        className={`bg-main_color absolute ltr:right-[2px] rtl:left-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}
+                        type={`button`}
+                        disabled={search_value.length === 0}
+                        onClick={getKeywordSearchingResults}
+                    >{translation.search}</button>
                 </div>
                 {/* Results */}
                 {search_value.length > 0 && is_results_open &&

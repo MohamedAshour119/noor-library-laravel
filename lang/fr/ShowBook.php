@@ -22,7 +22,9 @@ return [
     'add_to_wishlist' => 'Ajouter à la liste de souhaits',
     'add_to_cart' => 'Ajouter au panier',
     'remove_from_wishlist' => 'Supprimer de la liste de souhaits',
-    'sign_in' => 'Se connecter',
-    'sign_up' => 'S\'inscrire',
     'download' => 'Télécharger',
+    'my_rating' => 'Ma Note:',
+    'delete' => 'Supprimer',
+    'comment_body_empty' => 'Le corps du commentaire ne peut pas être vide.',
+    'comment_max_length' => 'Le commentaire ne peut pas dépasser 1000 caractères.',
 ];

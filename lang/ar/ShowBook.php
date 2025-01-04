@@ -23,4 +23,8 @@ return [
     'add_to_cart' => 'أضف إلى السلة',
     'remove_from_wishlist' => 'إزالة من قائمة الرغبات',
     'download' => 'تحميل',
+    'my_rating' => 'تقييمي:',
+    'delete' => 'حذف',
+    'comment_body_empty' => 'لا يمكن أن يكون نص التعليق فارغًا.',
+    'comment_max_length' => 'لا يمكن أن يتجاوز نص التعليق 1000 حرف.',
 ];

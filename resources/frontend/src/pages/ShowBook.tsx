@@ -150,6 +150,8 @@ export default function ShowBook() {
                 setBook_data={setBook_data}
                 ref={index === comments.length - 1 ? last_comment_ref : null}
                 {...comment}
+                comments={comments}
+                setComments={setComments}
             />
         )
     )
@@ -178,7 +180,7 @@ export default function ShowBook() {
                     }))
                 })
                 .catch(err => {
-                    setError(err.response.data.errors.body[0])
+                    setError(err.response.data.errors.message)
                 })
                 .finally(() => setIs_comment_loading(false))
         }else {

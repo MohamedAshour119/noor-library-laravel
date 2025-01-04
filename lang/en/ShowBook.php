@@ -23,4 +23,8 @@ return [
     'add_to_cart' => 'Add to cart',
     'remove_from_wishlist' => 'Remove from wishlist',
     'download' => 'Download',
+    'my_rating' => 'My Rating:',
+    'delete' => 'Delete',
+    'comment_body_empty' => 'The comment body cannot be empty.',
+    'comment_max_length' => 'The comment cannot exceed 1000 characters.',
 ];

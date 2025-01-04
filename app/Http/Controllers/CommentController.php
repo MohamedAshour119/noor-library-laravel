@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCommentRequest;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\CommentResource;
 use App\Models\Book;
@@ -15,24 +16,17 @@ class CommentController extends Controller
 {
     use HttpResponses;
 
-    public function addComment(Request $request ,$book_id)
+    public function addComment(AddCommentRequest $request ,$book_id)
     {
         $is_auth_user = Auth::guard('user')->check();
         if (!$is_auth_user) {
             return $this->response_error('You must be customer to comment.', [], 403);
         }
-        $custom_messages = [
-            'body.required' => 'The comment body cannot be empty.',
-            'body.max' => 'The comment cannot exceed 1000 characters.',
-        ];
-        $validated_data = $request->validate([
-           'body' => ['required', 'max:1000']
-        ], $custom_messages);
 
         $comment = Comment::create([
             'user_id' =>  Auth::id(),
             'book_id' => $book_id,
-            'body' => $validated_data['body'],
+            'body' => $request->body,
         ]);
         $comment = new CommentResource($comment);
         $book = Book::find($book_id);

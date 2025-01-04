@@ -13,24 +13,29 @@ interface Props extends CommentInterface {
     setBook_data?: Dispatch<SetStateAction<ShowBookInterface | undefined>>
     ref?: Ref<HTMLDivElement>
     is_review?: boolean
+    comments: CommentInterface[]
+    setComments: Dispatch<SetStateAction<CommentInterface[]>>
 }
 export default function Comment(props: Props) {
-    const {id, user, rating, body, created_at, setBook_data, book_data, ref, is_review = false, book} = props
+    const {id, user, rating, body, created_at, setBook_data, book_data, ref, is_review = false, book, comments, setComments} = props
     const display_name = user ? (user?.first_name[0]?.toUpperCase() + user.first_name.slice(1)) + ' ' + (user?.last_name[0]?.toUpperCase() + user.last_name.slice(1)) : ''
     const auth_user = useSelector((state: RootState) => state.user)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const [is_loading, setIs_loading] = useState(false);
 
     const deleteComment = () => {
         setIs_loading(true)
         apiClient().delete(`/book/comments/delete/${id}`)
             .then(res => {
-                const filtered_data = book_data?.comments?.filter(comment => comment.id !== id)
+                const filtered_data = comments?.filter(comment => comment.id !== id)
+                console.log('Before Delete' ,comments)
+                console.log('After Delete' ,filtered_data)
                 // @ts-ignore
                 setBook_data(prevState => ({
                     ...prevState,
-                    comments: filtered_data,
                     comments_count: res.data.data.comments_count
                 }))
+                setComments(filtered_data)
                 enqueueSnackbar(res.data.message, {variant: "success"})
             })
             .catch(err => enqueueSnackbar(err.response.data.errors, {variant: "error"}))
@@ -58,7 +63,7 @@ export default function Comment(props: Props) {
                     <span className={`text-sm text-main_color_darker -me-2`}>{created_at}</span>
                 </header>
                 <div>
-                    <h1 className={`font-roboto-semi-bold flex items-center -mt-2 gap-x-2`}>My Rating:
+                    <h1 className={`font-roboto-semi-bold flex items-center -mt-2 gap-x-2`}>{translation.my_rating}
                         {rating > 0 &&
                             <span className={`font-roboto-medium`}>
                                 <ReactStars
@@ -83,7 +88,7 @@ export default function Comment(props: Props) {
                                 disabled={is_loading}
                                 className={`flex gap-x-2 items-center rounded text-white px-3 py-[5px] w-fit hover:opacity-95 transition`}
                             >
-                                <FaAngleUp className={`text-main_color_darker absolute right-2 bottom-2`}/>
+                                <FaAngleUp className={`text-main_color_darker absolute ltr:right-2 rtl:left-2 bottom-2`}/>
                             </MenuButton>
 
                             <MenuItems
@@ -96,7 +101,7 @@ export default function Comment(props: Props) {
                                         onClick={deleteComment}
                                         className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                     >
-                                        Delete
+                                        {translation.delete}
                                     </button>
                                 </MenuItem>
 
