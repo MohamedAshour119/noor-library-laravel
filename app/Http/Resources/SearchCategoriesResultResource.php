@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class SearchCategoriesResultResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        $locale = app()->getLocale();
+        return [
+            'id' => $this->id,
+            'name' => $this->getTranslation('name', $locale),
+            'slug' => $this->getTranslation('slug', $locale),
+            'books_count' => $this->books_count,
+        ];
+    }
+}

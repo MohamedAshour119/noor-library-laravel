@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\BookCardResource;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\SearchCategoriesResultResource;
 use App\Models\Book;
 use App\Models\Category;
 use App\Traits\HttpResponses;
@@ -51,11 +52,20 @@ class CategoryController extends Controller
 
     public function searchForCategory($keyword): JsonResponse
     {
-        $categories = Category::where('name', 'like', "%{$keyword}%")
-            ->withCount('books')
-            ->orderBy('name', 'asc')
-            ->paginate(10);
-        return $this->response_success($categories, 'Categories search results retrieved');
+        $results = Category::where(function($query) use ($keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                ->orWhere('slug', 'like', "%{$keyword}%")
+                ->withCount('books')
+                ->orderBy('name', 'asc');
+        })->paginate(10);
+        Log::info('ss', [$results]);
+        $results = SearchCategoriesResultResource::collection($results);
+        $next_page_url = $results->nextPageUrl();
+        $data = [
+            'results' => $results,
+            'next_page_url' => $next_page_url
+        ];
+        return $this->response_success($data, 'Categories search results retrieved');
     }
 
     public function getCategoryBooks($category): JsonResponse

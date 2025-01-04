@@ -11,25 +11,27 @@ import {enqueueSnackbar} from "notistack";
 
 export default function SearchBookResults() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const [results, setResults] = useState<BookCardInterface[]>([]);
-    const [results_next_page_url, setResults_next_page_url] = useState('');
+    const [results_next_page_url, setResults_next_page_url] = useState<null | string>(null);
     const [show_placeholders, setShow_placeholders] = useState(true);
     const [is_fetching, setIs_fetching] = useState(false);
 
     const getStoredResults = () => {
         const stored_results = localStorage.getItem('books_results')
         const stored_results_next_page_url = localStorage.getItem('books_results_next_page_url')
+        const results_next_page_url_actual = stored_results_next_page_url === "null" ? null : stored_results_next_page_url;
 
-        if (stored_results_next_page_url !== results_next_page_url) {
+        if (results_next_page_url_actual !== results_next_page_url) {
             setShow_placeholders(true)
         }
 
-        if (stored_results && stored_results_next_page_url) {
+        if (stored_results) {
             setTimeout(() => {
                 setShow_placeholders(false)
             }, 1000)
             setResults(JSON.parse(stored_results))
-            setResults_next_page_url(stored_results_next_page_url)
+            setResults_next_page_url(results_next_page_url_actual)
         }
     }
 
@@ -49,12 +51,17 @@ export default function SearchBookResults() {
         )
     )
 
+    useEffect(() => {
+        console.log(results)
+        console.log(results_next_page_url)
+    }, [results]);
+
     const getNextResults = (page_url: string) => {
         setIs_fetching(true)
         apiClient().get(page_url)
             .then(res => {
-                console.log(res.data.data)
-                setResults(prevState => [...prevState, ...res.data.data.results])
+                console.log(res.data)
+                setResults(prevState => [...prevState, ...res.data.data?.results])
                 setResults_next_page_url(res.data.data.next_page_url)
             })
             .catch(err => {
@@ -66,6 +73,9 @@ export default function SearchBookResults() {
     }
 
     useEffect(() => {
+        if (!results_next_page_url) {
+            return
+        }
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && !is_fetching && results_next_page_url && !show_placeholders) {
                 getNextResults(results_next_page_url);
@@ -91,7 +101,7 @@ export default function SearchBookResults() {
         <main className={`flex flex-col justify-between min-h-[643px] h-max items-center bg-main_bg pt-8`}>
             <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 pb-10`}>
                 <div className={`flex flex-col gap-y-4`}>
-                    <h1 className={`text-2xl font-roboto-semi-bold`}>Search for <span className={`text-main_color_darker`}> "{localStorage.getItem('keyword')}"</span></h1>
+                    <h1 className={`text-2xl font-roboto-semi-bold`}>{translation.search_for} <span className={`text-main_color_darker`}> "{localStorage.getItem('keyword')}"</span></h1>
                     {show_placeholders &&
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
                             {Array.from({length: 10}).map((_, index) => (

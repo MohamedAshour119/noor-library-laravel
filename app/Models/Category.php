@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasTranslations;
     protected $guarded = [];
-//    protected $withCount = ['books'];
+    protected $withCount = ['books'];
     public $translatable = ['name', 'slug'];
     protected $casts = [
         'name' => 'array',

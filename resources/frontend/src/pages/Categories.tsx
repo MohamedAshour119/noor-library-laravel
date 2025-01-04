@@ -50,7 +50,7 @@ export default function Categories() {
     }, []);
 
     const last_category_ref = useRef(null)
-    const show_categories = categories.map((category, index) => (
+    const show_categories = categories?.map((category, index) => (
         <Category
             key={index}
             id={category.id}
@@ -89,7 +89,7 @@ export default function Categories() {
 
         apiClient().get(`/search-category/${keyword}`)
             .then(res => {
-                setCategories(res.data.data.data)
+                setCategories(res.data.data.results)
                 setCategories_next_page_url(res.data.data.next_page_url)
                 setSearch_loading(false)
             })
@@ -127,17 +127,17 @@ export default function Categories() {
                                 ref={search_input_ref}
                                 type="text"
                                 className="w-full px-4 pe-14 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-main_color"
-                                placeholder="Search for category"
+                                placeholder={translation.search_for_category}
                                 value={search_value}
                                 onChange={handleSearchChange}
                                 onFocus={() => setIs_focused(true)}
                                 onBlur={() => setIs_focused(false)}
                             />
-                            {(search_value.length > 0 || is_focused) &&
+                            {(search_value.length > 0 && is_focused) &&
                                 <button
                                     onMouseDown={(e) => e.preventDefault()}
                                     onClick={clearSearchInput}
-                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
+                                    className="absolute ltr:right-2 rtl: left-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
                                     <IoMdClose size={24} className="text-gray-500"/>
                                 </button>
                             }
@@ -150,7 +150,7 @@ export default function Categories() {
                                     <CoolLoading/>
                                 </div>
                             }
-                            {search_value.length > 0 && categories.length === 0 &&
+                            {search_value.length > 0 && categories?.length === 0 &&
                                 <>
                                     <div className="w-full flex items-center flex-wrap justify-center gap-10 pt-20 lg:pt-28">
                                         <div className="grid gap-4 w-60">
@@ -225,7 +225,7 @@ export default function Categories() {
                                             </svg>
                                         </div>
                                     </div>
-                                    <h2 className="text-center text-text_color/70 text-xl font-semibold leading-relaxed pb-1">Category not found!</h2>
+                                    <h2 className="text-center text-text_color/70 text-xl font-semibold leading-relaxed pb-1">{translation.category_not_found}</h2>
                                 </>
                             }
                         </div>
