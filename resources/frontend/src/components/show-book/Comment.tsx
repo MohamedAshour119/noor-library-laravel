@@ -9,7 +9,6 @@ import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
 interface Props extends CommentInterface {
-    book_data?: ShowBookInterface | undefined
     setBook_data?: Dispatch<SetStateAction<ShowBookInterface | undefined>>
     ref?: Ref<HTMLDivElement>
     is_review?: boolean
@@ -17,7 +16,7 @@ interface Props extends CommentInterface {
     setComments: Dispatch<SetStateAction<CommentInterface[]>>
 }
 export default function Comment(props: Props) {
-    const {id, user, rating, body, created_at, setBook_data, book_data, ref, is_review = false, book, comments, setComments} = props
+    const {id, user, rating, body, created_at, setBook_data, ref, is_review = false, book, comments, setComments} = props
     const display_name = user ? (user?.first_name[0]?.toUpperCase() + user.first_name.slice(1)) + ' ' + (user?.last_name[0]?.toUpperCase() + user.last_name.slice(1)) : ''
     const auth_user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
