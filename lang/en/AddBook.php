@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'upload_book' => 'Upload Book',
+    'book_title' => 'Book Title',
+    'book_title_placeholder' => 'Enter Book Title',
+    'book_description' => 'Book Description',
+    'book_description_placeholder' => 'Enter Book Description',
+    'at_least_50_characters' => 'At least 50 characters',
+    'are_you_the_author' => 'Are you the author of the book?',
+    'language_of_the_book' => 'Language of the book',
+    'language_of_the_book_placeholder' => 'Select Language',
+    'author_of_the_book' => 'Author of the book (Full Name)',
+    'author_of_the_book_placeholder' => 'Enter Full Name',
+    'full_name' => 'Full Name',
+    'category' => 'Category',
+    'category_placeholder' => 'Select Category',
+    'is_the_book_free' => 'Is the book free?',
+    'upload_the_front_cover' => 'Upload the front cover (PDF only)',
+    'submit' => 'Submit',
+    'the_book_is_for_review_only' => 'The book is for review only and not for downloading, because copyright is reserved. Users will not be able to download the book.',
+    'select' => 'Select...',
+    'price_in_usd' => 'Price in USD',
+    'price' => 'Price',
+    'enter_amount' => 'Enter amount',
+    'pdf_only' => 'PDF only',
+    'loading' => 'Loading...',
+];

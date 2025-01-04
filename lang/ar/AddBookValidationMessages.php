@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'required' => ':attribute مطلوب.',
+    'unique' => ':attribute مُسجل بالفعل.',
+    'min' => ':attribute يجب أن يكون على الأقل :min حرفًا.',
+    'max' => ':attribute يجب ألا يتجاوز :max حرفًا.',
+    'boolean' => ':attribute يجب أن يكون صحيحًا أو خطأ.',
+    'present' => ':attribute يجب أن يكون موجودًا.',
+    'image' => ':attribute يجب أن يكون صورة.',
+    'mimes' => ':attribute يجب أن يكون ملفًا من نوع: :values.',
+    'file' => ':attribute يجب أن يكون ملفًا صالحًا.',
+    'numeric' => ':attribute يجب أن يكون رقماً.',
+    'digits_between' => ':attribute يجب أن يحتوي على بين :min و :max أرقام.',
+    'title_attribute' => 'العنوان',
+    'description_attribute' => 'الوصف',
+    'is_author_attribute' => 'هل المؤلف',
+    'is_free_attribute' => 'هل مجاني',
+    'price_attribute' => 'السعر',
+    'language_attribute' => 'اللغة',
+    'author_attribute' => 'المؤلف',
+    'category_attribute' => 'الفئة',
+    'downloadable_attribute' => 'قابل للتنزيل',
+    'cover_attribute' => 'غلاف الكتاب',
+    'book_file_attribute' => 'ملف الكتاب',
+];

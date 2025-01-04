@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'required' => ':attribute is required.',
+    'unique' => ':attribute has already been taken.',
+    'min' => ':attribute must be at least :min characters.',
+    'max' => ':attribute may not be greater than :max characters.',
+    'boolean' => ':attribute must be a boolean value.',
+    'present' => ':attribute must be present.',
+    'image' => ':attribute must be an image.',
+    'mimes' => ':attribute must be a file of type: :values.',
+    'file' => ':attribute must be a valid file.',
+    'numeric' => ':attribute must be a number.',
+    'digits_between' => ':attribute must be between :min and :max digits.',
+    'title_attribute' => 'Title',
+    'description_attribute' => 'Description',
+    'is_author_attribute' => 'Is Author',
+    'is_free_attribute' => 'Is Free',
+    'price_attribute' => 'Price',
+    'language_attribute' => 'Language',
+    'author_attribute' => 'Author',
+    'category_attribute' => 'Category',
+    'downloadable_attribute' => 'Downloadable',
+    'cover_attribute' => 'Book Cover',
+    'book_file_attribute' => 'Book File',
+];

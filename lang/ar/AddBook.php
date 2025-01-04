@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'upload_book_page' => 'إضافة كتاب',
+    'book_title' => 'عنوان الكتاب',
+    'book_title_placeholder' => 'أدخل عنوان الكتاب',
+    'book_description' => 'وصف الكتاب',
+    'book_description_placeholder' => 'أدخل وصف الكتاب',
+    'at_least_50_characters' => 'على الأقل 50 حرفًا',
+    'are_you_the_author' => 'هل أنت مؤلف الكتاب؟',
+    'language_of_the_book' => 'لغة الكتاب',
+    'language_of_the_book_placeholder' => 'اختر اللغة',
+    'author_of_the_book' => 'مؤلف الكتاب (الاسم الكامل)',
+    'author_of_the_book_placeholder' => 'أدخل الاسم الكامل',
+    'full_name' => 'الاسم الكامل',
+    'category' => 'الفئة',
+    'category_placeholder' => 'اختر الفئة',
+    'is_the_book_free' => 'هل الكتاب مجاني؟',
+    'upload_the_front_cover' => 'رفع الغلاف الأمامي (PDF فقط)',
+    'submit' => 'إرسال',
+    'the_book_is_for_review_only' => 'الكتاب مخصص للمراجعة فقط وليس للتحميل، حيث إن حقوق النشر محفوظة. لن يتمكن المستخدمون من تنزيل الكتاب.',
+    'select' => 'اختر...',
+    'price_in_usd' => 'السعر بالدولار الأمريكي',
+    'price' => 'السعر',
+    'enter_amount' => 'أدخل المبلغ',
+    'pdf_only' => 'PDF فقط',
+    'loading' => 'جار التحميل...',
+];

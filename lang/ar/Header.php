@@ -8,7 +8,7 @@ return [
         'french' => 'الفرنسية',
     ],
     'home' => 'الرئيسية',
-    'categories' => 'تصنيفات',
+    'categories' => 'الفئات',
     'reviews' => 'المراجعات',
     'search' => 'بحث',
     'search_placeholder' => 'ابحث عن كتاب',

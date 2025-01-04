@@ -8,6 +8,8 @@ import {SingleValue} from "react-select";
 import {MdDone} from "react-icons/md";
 import apiClient from "../../ApiClient.ts";
 import {FaUpload} from "react-icons/fa";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 type BinaryOptions = {
     value: boolean
@@ -20,6 +22,7 @@ type OtherBookOptions = {
     type: string
 }
 export default function AddBook() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
 
     const [formData, setFormData] = useState<AddBookInterface>(AddBookDefaultValues);
     const [descriptionCount, setDescriptionCount] = useState(0);
@@ -221,7 +224,7 @@ export default function AddBook() {
         <div className={`flex justify-center bg-main_bg py-5`}>
             <div className={`container w-full flex justify-center`}>
                 <div className={`2xl:w-1/2 flex flex-col gap-y-10 bg-white p-8 rounded-lg border`}>
-                    <h1 className={`font-roboto-bold text-2xl border-b-2 border-main_color w-fit pb-2`}>Upload Book</h1>
+                    <h1 className={`font-roboto-bold text-2xl border-b-2 border-main_color w-fit pb-2`}>{translation.upload_book_page}</h1>
 
                     <form
                         onSubmit={handleSubmit}
@@ -229,9 +232,9 @@ export default function AddBook() {
                     >
                         <div>
                             <GlobalInput
-                                label={`Book Title`}
+                                label={translation.book_title}
                                 id={`bookTitle`}
-                                placeholder={`Enter book title`}
+                                placeholder={translation.book_title_placeholder}
                                 value={formData.book_title}
                                 name={`book_title`}
                                 onChange={handleFormChange}
@@ -244,16 +247,16 @@ export default function AddBook() {
                                 className="block text-gray-700 text-lg font-bold mb-2"
                                 htmlFor="bookDescription"
                             >
-                                Book Description<span className={`text-red-700`}>
+                                {translation.book_description}<span className={`text-red-700`}>
                                 <span className={`text-red-700 font-roboto-light`}>* </span>
-                                (At least 50 characters)
+                                ({translation.at_least_50_characters})
                                 </span>
                             </label>
                             <div className={`relative`}>
                                 <textarea
                                     className={`${errors?.description ? 'border-red-600 placeholder:text-red-600' : 'shadow'} appearance-none border rounded w-full min-h-[167px] pb-2 px-3 ${isScrollbarVisible ? 'pt-7' : 'pt-3'} text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                                     id="bookDescription"
-                                    placeholder="Enter book description"
+                                    placeholder={translation.book_description_placeholder}
                                     value={formData.book_description}
                                     name={`book_description`}
                                     onChange={handleFormChange}
@@ -261,11 +264,11 @@ export default function AddBook() {
                                     ref={textareaRef}
                                 />
                                 {/*  Count  */}
-                                <span className={`${descriptionCount >= 2000 ? 'text-red-700' : 'text-main_color'} z-10 absolute right-1 text-sm`}>
+                                <span className={`${descriptionCount >= 2000 ? 'text-red-700' : 'text-main_color'} z-10 absolute ltr:right-1 rtl:left-1 text-sm`}>
                                     {descriptionCount} / 2000
                                 </span>
                                 {isScrollbarVisible &&
-                                    <span className={`h-5 bg-white w-[calc(100%-4px)] ml-[2px] absolute top-[1px] left-0`}></span>
+                                    <span className={`h-5 bg-white w-[calc(100%-4px)] ltr:ml-[2px] rtl:mr-[2px] absolute top-[1px] ltr:left-0 rtl:right-0`}></span>
                                 }
                                 {errors?.description && <span className={`text-red-700`}>{errors?.description}</span>}
                             </div>
@@ -273,7 +276,7 @@ export default function AddBook() {
 
                         <div>
                             <span className={`block text-gray-700 text-lg font-bold mb-2`}>
-                                Are you the author of the book?
+                                {translation.are_you_the_author}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
                             <ReactSelect
@@ -286,6 +289,7 @@ export default function AddBook() {
                                         }
                                         : null
                                 }
+                                placeholder={translation.select}
                                 handleSelectChange={handleBinaryOptionsSelectChange}
                                 options={is_author_options}
                                 error={errors?.is_author}
@@ -295,7 +299,7 @@ export default function AddBook() {
 
                         <div>
                             <span className={`block text-gray-700 text-lg font-bold mb-2`}>
-                                Language of the book
+                                {translation.language_of_the_book}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
                             <ReactSelect
@@ -310,26 +314,27 @@ export default function AddBook() {
                                 }                                handleSelectChange={handleOtherBookSelectChange}
                                 options={languages_options}
                                 error={errors?.language}
+                                placeholder={translation.language_of_the_book_placeholder}
                             />
                             {errors?.language && <span className={`text-red-700`}>{errors?.language}</span>}
                         </div>
 
                         <div>
                             <GlobalInput
-                                label={`Author of the book`}
+                                label={translation.author_of_the_book}
                                 id={`author`}
-                                placeholder={`Enter author name`}
+                                placeholder={translation.author_of_the_book_placeholder}
                                 value={formData.author}
                                 name={`author`}
                                 onChange={handleFormChange}
-                                additional_text={`Full Name`}
+                                additional_text={translation.full_name}
                                 error={errors?.author}
                             />
                         </div>
 
                         <div>
                             <span className={`block text-gray-700 text-lg font-bold mb-2`}>
-                                Category
+                                {translation.category}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
                             <ReactSelect
@@ -345,13 +350,14 @@ export default function AddBook() {
                                 handleSelectChange={handleOtherBookSelectChange}
                                 options={book_categories}
                                 error={errors?.category}
+                                placeholder={translation.category_placeholder}
                             />
                             {errors?.category && <span className={`text-red-700`}>{errors?.category}</span>}
                         </div>
 
                         <div>
                             <span className={`block text-gray-700 text-lg font-bold mb-2`}>
-                                Is the book free?
+                                {translation.is_the_book_free}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
                             <ReactSelect
@@ -367,6 +373,7 @@ export default function AddBook() {
                                 handleSelectChange={handleBinaryOptionsSelectChange}
                                 options={is_book_free_options}
                                 error={errors?.is_free}
+                                placeholder={translation.select}
                             />
                             {errors?.is_free && <span className={`text-red-700`}>{errors?.is_free}</span>}
                         </div>
@@ -374,14 +381,14 @@ export default function AddBook() {
                         {show_price_input &&
                             <div>
                                 <GlobalInput
-                                    label={`Price`}
+                                    label={translation.price}
                                     id={`price`}
                                     type={`number`}
-                                    placeholder={`Enter amount`}
+                                    placeholder={translation.enter_amount}
                                     value={formData.price}
                                     name={`price`}
                                     onChange={handleFormChange}
-                                    additional_text={`Price in USD`}
+                                    additional_text={translation.price_in_usd}
                                     error={errors?.price}
                                 />
                             </div>
@@ -392,7 +399,7 @@ export default function AddBook() {
                             htmlFor={`cover-image`}
                         >
                             <FaUpload className={`size-5 text-text_color`}/>
-                            {!formData.cover ? `Upload the front cover` : (formData.cover instanceof File ? formData.cover?.name : '')}
+                            {!formData.cover ? translation.upload_the_front_cover : (formData.cover instanceof File ? formData.cover?.name : '')}
                             <input
                                 type="file"
                                 id={`cover-image`}
@@ -415,7 +422,7 @@ export default function AddBook() {
                                     />
                                     <MdDone className={`absolute text-white opacity-0 peer-checked:opacity-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none`}/>
                                 </div>
-                                <span className={`mx-2 -mt-1`}>The book is for review only and not for downloading, because copyright is reserved, Users will not be able to download the book.</span>
+                                <span className={`mx-2 -mt-1`}>{translation.the_book_is_for_review_only}</span>
                             </label>
                         </div>
 
@@ -424,23 +431,23 @@ export default function AddBook() {
                             htmlFor={`book-file`}
                         >
                             <FaUpload className={`size-5 text-text_color`}/>
-                            {!formData.book_file ? `Upload Book` : (formData.book_file instanceof File ? formData.book_file?.name : '')}
+                            {!formData.book_file ? translation.upload_book : (formData.book_file instanceof File ? formData.book_file?.name : '')}
                             <input
                                 type="file"
                                 id={`book-file`}
                                 className="hidden"
                                 onChange={handleFileUpload}
                             />
-                            <span className={`text-red-700`}> {!formData.book_file ? `(PDF only)` : ``}</span>
+                            <span className={`text-red-700`}> {!formData.book_file ? `(${translation.pdf_only})` : ``}</span>
                         </label>
                         {errors?.book_file && <span className={`text-red-700 -mt-4`}>{errors?.book_file}</span>}
 
                         <button className={`flex justify-center text-xl gap-x-2 items-center rounded border border-main_color text-white px-3 py-2 bg-main_color hover:opacity-95 transition`}>
-                            {!isLoading && 'Submit'}
+                            {!isLoading && translation.submit}
                             {isLoading &&
                                 <div
                                     className='flex space-x-2 justify-center items-center py-2'>
-                                    <span className='sr-only'>Loading...</span>
+                                    <span className='sr-only'>{translation.loading}</span>
                                     <div className='size-3 bg-white rounded-full animate-bounce [animation-delay:-0.3s]'></div>
                                     <div className='size-3 bg-white rounded-full animate-bounce [animation-delay:-0.15s]'></div>
                                     <div className='size-3 bg-white rounded-full animate-bounce'></div>

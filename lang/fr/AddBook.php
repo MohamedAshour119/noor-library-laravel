@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'upload_book' => 'Télécharger le livre',
+    'book_title' => 'Titre du livre',
+    'book_title_placeholder' => 'Entrez le titre du livre',
+    'book_description' => 'Description du livre',
+    'book_description_placeholder' => 'Entrez la description du livre',
+    'at_least_50_characters' => 'Au moins 50 caractères',
+    'are_you_the_author' => 'Êtes-vous l\'auteur du livre ?',
+    'language_of_the_book' => 'Langue du livre',
+    'language_of_the_book_placeholder' => 'Sélectionnez la langue',
+    'author_of_the_book' => 'Auteur du livre (Nom complet)',
+    'author_of_the_book_placeholder' => 'Entrez le nom complet',
+    'full_name' => 'Nom complet',
+    'category' => 'Catégorie',
+    'category_placeholder' => 'Sélectionnez la catégorie',
+    'is_the_book_free' => 'Le livre est-il gratuit ?',
+    'upload_the_front_cover' => 'Télécharger la couverture (PDF seulement)',
+    'submit' => 'Soumettre',
+    'the_book_is_for_review_only' => "Le livre est uniquement destiné à la revue et non au téléchargement, car les droits d'auteur sont réservés. Les utilisateurs ne pourront pas télécharger le livre.",
+    'select' => 'Sélectionner...',
+    'price_in_usd' => 'Prix en USD',
+    'price' => 'Prix',
+    'enter_amount' => 'Saisissez le montant',
+    'pdf_only' => 'PDF seulement',
+    'loading' => 'Chargement...',
+];

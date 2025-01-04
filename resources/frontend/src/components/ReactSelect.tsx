@@ -6,6 +6,7 @@ interface Props {
     handleSelectChange: (selectedOption: SingleValue<IsAuthorOption | OtherBookOptions>) => void;
     error?: string | boolean | null;
     value?: IsAuthorOption | OtherBookOptions | null;
+    placeholder?: string
 }
 
 type IsAuthorOption = {
@@ -19,8 +20,7 @@ type OtherBookOptions = {
     type: string
 }
 
-export default function ReactSelect({options, handleSelectChange, error, value}: Props) {
-
+export default function ReactSelect({options, handleSelectChange, error, value, placeholder}: Props) {
     const customStyles: StylesConfig<IsAuthorOption | OtherBookOptions, false, GroupBase<IsAuthorOption | OtherBookOptions>> = {
         control: (styles, { isDisabled }) => ({
             ...styles,
@@ -90,6 +90,7 @@ export default function ReactSelect({options, handleSelectChange, error, value}:
             styles={customStyles}
             onChange={handleSelectChange}
             value={value}
+            placeholder={placeholder}
         />
     )
 }

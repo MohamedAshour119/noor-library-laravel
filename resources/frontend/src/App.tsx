@@ -58,6 +58,7 @@ function App() {
             'sign-up': 'sign-up',
             'sign-in': 'sign-in',
             reviews: 'reviews',
+            'add-book': 'add-book',
             // Add more static namespaces if needed
         };
 
@@ -65,7 +66,9 @@ function App() {
         if (namespaceMapping[decodedNamespace]) {
             if (namespaceMapping[decodedNamespace] === 'sign-up' || namespaceMapping[decodedNamespace] === 'sign-in') {
                 return 'Auth';
-            }else {
+            }else if (namespaceMapping[decodedNamespace] === 'add-book') {
+                return 'AddBook'
+            } else {
                 return namespaceMapping[decodedNamespace];
             }
         }

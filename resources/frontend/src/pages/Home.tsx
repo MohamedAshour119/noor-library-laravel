@@ -128,7 +128,7 @@ export default function Home() {
                         <Modal.Body>
                             <div className="space-y-6 p-5">
                                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                    {user.id ? `${translation.unauthorized_message_part_one},` : ''} {translation.unauthorized_message_part_two}
+                                    {translation.unauthorized_customer_message}
                                 </p>
                             </div>
                         </Modal.Body>
