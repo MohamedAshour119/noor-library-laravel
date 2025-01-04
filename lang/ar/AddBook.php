@@ -16,7 +16,7 @@ return [
     'category' => 'الفئة',
     'category_placeholder' => 'اختر الفئة',
     'is_the_book_free' => 'هل الكتاب مجاني؟',
-    'upload_the_front_cover' => 'رفع الغلاف الأمامي (PDF فقط)',
+    'upload_the_front_cover' => 'رفع الغلاف الأمامي',
     'submit' => 'إرسال',
     'the_book_is_for_review_only' => 'الكتاب مخصص للمراجعة فقط وليس للتحميل، حيث إن حقوق النشر محفوظة. لن يتمكن المستخدمون من تنزيل الكتاب.',
     'select' => 'اختر...',

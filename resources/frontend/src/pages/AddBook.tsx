@@ -148,65 +148,66 @@ export default function AddBook() {
 
 // The main form handle function
     const handleForm = () => {
-        const title = formData.book_title;
-        const description = formData.book_description;
-        const author = formData.author;
+        const data = new FormData();
+        data.append('title', formData.book_title);
+        data.append('description', formData.book_description);
+        data.append('is_author', String(formData.is_author?.value === true || formData.is_author?.value === false ? formData.is_author?.value : null));
+        data.append('is_free', String(formData.is_free?.value === true || formData.is_free?.value === false ? formData.is_free?.value : null));
+        data.append('price', String(formData.price));
+        data.append('language', formData.book_language?.value || '');
+        data.append('author', formData.author);
+        data.append('category', formData.category?.value || '');
+        data.append('downloadable', String(formData.downloadable));
+        data.append('cover', formData.cover as Blob);
+        data.append('book_file', formData.book_file as Blob);
 
-        // Detect language based on title, description, or author
-        let detectedLanguage: 'ar' | 'en' | 'fr' = 'en'; // Type assertion to ensure it's one of these values
-
-        if (getRegex().ar.test(title) || getRegex().ar.test(description) || getRegex().ar.test(author)) {
-            detectedLanguage = 'ar'; // If any field matches Arabic regex, set to Arabic
-        } else if (getRegex().fr.test(title) || getRegex().fr.test(description) || getRegex().fr.test(author)) {
-            detectedLanguage = 'fr'; // If any field matches French regex, set to French
-        }
-
-        // Validate each field based on the detected language
-        const isValid = validateFields(detectedLanguage, title, description, author);
-
-        if (isValid) {
-            // Proceed with form submission if validation passes
-            const data = new FormData();
-            data.append('title', title);
-            data.append('description', description);
-            data.append('is_author', String(formData.is_author?.value === true || formData.is_author?.value === false ? formData.is_author?.value : null));
-            data.append('is_free', String(formData.is_free?.value === true || formData.is_free?.value === false ? formData.is_free?.value : null));
-            data.append('price', String(formData.price));
-            data.append('language', formData.book_language?.value || '');
-            data.append('author', author);
-            data.append('category', formData.category?.value || '');
-            data.append('downloadable', String(formData.downloadable));
-            data.append('cover', formData.cover as Blob);
-            data.append('book_file', formData.book_file as Blob);
-
-            setIsLoading(true);
-            apiClient().post('/add-book', data)
-                .then((res) => {
-                    setIsLoading(false);
-                    enqueueSnackbar(res.data.message, { variant: "success", autoHideDuration: 10000 });
-                    // setFormData(AddBookDefaultValues);
-                    setDescriptionCount(0);
-                    if (cover_input && book_input) {
-                        cover_input.value = '';
-                        book_input.value = '';
-                    }
-                    setErrors({});
-                })
-                .catch((err) => {
-                    setIsLoading(false);
-                    setErrors(err.response.data.errors);
-                    enqueueSnackbar('Something wrong happened!', { variant: "error" });
-                });
-        } else {
-            // If validation fails, show an error message
-            setErrors(prevState => ({
-                ...prevState,
-                title: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-                description: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-                author: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-            }))
-            enqueueSnackbar('Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).', { variant: "error" });
-        }
+        setIsLoading(true);
+        apiClient().post('/add-book', data)
+            .then((res) => {
+                setIsLoading(false);
+                enqueueSnackbar(res.data.message, { variant: "success", autoHideDuration: 10000 });
+                // setFormData(AddBookDefaultValues);
+                setDescriptionCount(0);
+                if (cover_input && book_input) {
+                    cover_input.value = '';
+                    book_input.value = '';
+                }
+                setErrors({});
+            })
+            .catch((err) => {
+                setIsLoading(false);
+                setErrors(err.response.data.errors);
+                enqueueSnackbar('Something wrong happened!', { variant: "error" });
+            });
+        // const title = formData.book_title;
+        // const description = formData.book_description;
+        // const author = formData.author;
+        //
+        // // Detect language based on title, description, or author
+        // let detectedLanguage: 'ar' | 'en' | 'fr' = 'en'; // Type assertion to ensure it's one of these values
+        //
+        // if (getRegex().ar.test(title) || getRegex().ar.test(description) || getRegex().ar.test(author)) {
+        //     detectedLanguage = 'ar'; // If any field matches Arabic regex, set to Arabic
+        // } else if (getRegex().fr.test(title) || getRegex().fr.test(description) || getRegex().fr.test(author)) {
+        //     detectedLanguage = 'fr'; // If any field matches French regex, set to French
+        // }
+        //
+        // // Validate each field based on the detected language
+        // const isValid = validateFields(detectedLanguage, title, description, author);
+        //
+        // if (isValid) {
+        //     // Proceed with form submission if validation passes
+        //
+        // } else {
+        //     // If validation fails, show an error message
+        //     setErrors(prevState => ({
+        //         ...prevState,
+        //         title: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
+        //         description: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
+        //         author: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
+        //     }))
+        //     enqueueSnackbar('Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).', { variant: "error" });
+        // }
     };
 
 
@@ -399,7 +400,16 @@ export default function AddBook() {
                             htmlFor={`cover-image`}
                         >
                             <FaUpload className={`size-5 text-text_color`}/>
-                            {!formData.cover ? translation.upload_the_front_cover : (formData.cover instanceof File ? formData.cover?.name : '')}
+                            {!formData.cover
+                                ? (
+                                    <>
+                                        {translation.upload_the_front_cover} <span className={`text-red-600`}>(jpeg, jpg, png, webp)</span>
+                                    </>
+                                )
+                                : (
+                                    formData.cover instanceof File ? formData.cover.name : ''
+                                )
+                            }
                             <input
                                 type="file"
                                 id={`cover-image`}

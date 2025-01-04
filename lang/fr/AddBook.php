@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'upload_book' => 'Télécharger le livre',
+    'upload_book_page' => 'Télécharger le livre',
     'book_title' => 'Titre du livre',
     'book_title_placeholder' => 'Entrez le titre du livre',
     'book_description' => 'Description du livre',

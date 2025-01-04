@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'upload_book' => 'Upload Book',
+    'upload_book_page' => 'Upload Book',
     'book_title' => 'Book Title',
     'book_title_placeholder' => 'Enter Book Title',
     'book_description' => 'Book Description',

@@ -76,15 +76,16 @@ class ValidateBookPrice implements Rule
     {
         // If is_free is true, ensure price is null
         if ($this->is_free === true) {
-            return 'The price field must be null when the is_free field is true.';
+            return __('AddBookValidationMessages.price_attribute_null');
+//            return 'The price field must be null when the is_free field is true.';
         }
 
         // If is_free is false and price is null, ensure price is not null
         if ($this->is_free === false && is_null($this->value)) {
-            return 'The price field is required.';
+            return __('AddBookValidationMessages.price_attribute_required');
         }
 
         // General validation message for price being below 10
-        return 'The price field must be greater than or equal to 10.';
+        return __('AddBookValidationMessages.price_attribute_min');
     }
 }
