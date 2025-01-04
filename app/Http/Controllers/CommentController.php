@@ -73,18 +73,18 @@ class CommentController extends Controller
             $query->without(['media', 'vendor', 'category', 'ratings', 'comments']);
         }, 'user' => function($query) {
             $query->without(['wishlistedBooks', 'wishlists']);
-        }])->orderBy('created_at', 'desc')->paginate(3);
+        }])->orderBy('created_at', 'desc')->paginate(5);
 
         if (!$reviews) {
             return $this->response_error('Failed to fetch the reviews.', [], 404);
         }
 
         $next_page_url = $reviews->nextPageUrl();
-
         // Add the `is_review` flag for all comments
         $reviews = $reviews->map(function ($review) {
-            return new CommentResource($review, true);  // Pass 'true' to include the book data
+            return new CommentResource($review, true);
         });
+        Log::info('$reviews', [$reviews]);
 
         $data = [
             'reviews' => $reviews,

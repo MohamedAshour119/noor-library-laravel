@@ -57,6 +57,7 @@ function App() {
             users: 'users', // Static users page
             'sign-up': 'sign-up',
             'sign-in': 'sign-in',
+            reviews: 'reviews',
             // Add more static namespaces if needed
         };
 

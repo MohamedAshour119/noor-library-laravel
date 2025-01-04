@@ -133,7 +133,7 @@ export default function Categories() {
                                 onFocus={() => setIs_focused(true)}
                                 onBlur={() => setIs_focused(false)}
                             />
-                            {(search_value.length > 0 && is_focused) &&
+                            {(search_value.length > 0 || is_focused) &&
                                 <button
                                     onMouseDown={(e) => e.preventDefault()}
                                     onClick={clearSearchInput}

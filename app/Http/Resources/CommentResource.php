@@ -20,6 +20,7 @@ class CommentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $locale = app()->getLocale();
         $user = $this->user;
         $user_avatar = '';
         if ($this->resource && method_exists($user, 'getFirstMedia')) {
@@ -53,7 +54,10 @@ class CommentResource extends JsonResource
                 'rating' => $user_rating,
                 'body' => $this->body,
                 'created_at' => $this->created_at->diffForHumans(),
-                'book' => $this->book,
+                'book' => [
+                    'title' => $this->book->getTranslation('title', $locale),
+                    'slug' => $this->book->getTranslation('slug', $locale)
+                ],
             ];
         }
 

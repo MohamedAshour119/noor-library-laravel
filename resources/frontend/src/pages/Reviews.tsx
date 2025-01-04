@@ -6,8 +6,12 @@ import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import Comment from "../components/show-book/Comment.tsx";
 import {CommentInterface} from "../../Interfaces.ts";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function Reviews() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
+
     const [is_loading, setIs_loading] = useState(true);
     const [is_fetching, setIs_fetching] = useState(false);
     const [reviews, setReviews] = useState<CommentInterface[]>([]);

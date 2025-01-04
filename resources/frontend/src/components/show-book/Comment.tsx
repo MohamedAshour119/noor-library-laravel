@@ -12,8 +12,8 @@ interface Props extends CommentInterface {
     setBook_data?: Dispatch<SetStateAction<ShowBookInterface | undefined>>
     ref?: Ref<HTMLDivElement>
     is_review?: boolean
-    comments: CommentInterface[]
-    setComments: Dispatch<SetStateAction<CommentInterface[]>>
+    comments?: CommentInterface[]
+    setComments?: Dispatch<SetStateAction<CommentInterface[]>>
 }
 export default function Comment(props: Props) {
     const {id, user, rating, body, created_at, setBook_data, ref, is_review = false, book, comments, setComments} = props
@@ -34,7 +34,9 @@ export default function Comment(props: Props) {
                     ...prevState,
                     comments_count: res.data.data.comments_count
                 }))
-                setComments(filtered_data)
+                if (setComments && filtered_data) {
+                    setComments(filtered_data)
+                }
                 enqueueSnackbar(res.data.message, {variant: "success"})
             })
             .catch(err => enqueueSnackbar(err.response.data.errors, {variant: "error"}))
