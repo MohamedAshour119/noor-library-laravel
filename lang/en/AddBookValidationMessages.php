@@ -28,4 +28,5 @@ return [
     'downloadable_attribute' => 'Downloadable',
     'cover_attribute' => 'Book Cover',
     'book_file_attribute' => 'Book File',
+    'book_exist' => 'This book already exists.',
 ];

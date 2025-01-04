@@ -125,28 +125,9 @@ export default function AddBook() {
         // e.target.value = ''
     };
 
-
     const cover_input = document.getElementById('cover-image') as HTMLInputElement;
     const book_input = document.getElementById('book-file') as HTMLInputElement;
 
-// Function to return regex for different languages
-    const getRegex = () => ({
-        ar: /^[\u0621-\u064A0-9\s]+$/, // Arabic characters and numbers
-        en: /^[a-zA-Z0-9\s]+$/,         // English characters and numbers
-        fr: /^[a-zA-Z0-9\séèêôàùîï]+$/  // French characters, numbers, and accented characters
-    });
-
-// Function to validate fields (title, description, author) based on detected language
-    const validateFields = (detectedLanguage: 'ar' | 'en' | 'fr', title: string, description: string, author: string) => {
-        const regex = getRegex(); // Get regex based on language
-        const isTitleValid = regex[detectedLanguage].test(title);
-        const isDescriptionValid = regex[detectedLanguage].test(description);
-        const isAuthorValid = regex[detectedLanguage].test(author);
-
-        return isTitleValid && isDescriptionValid && isAuthorValid; // Return if all fields are valid
-    };
-
-// The main form handle function
     const handleForm = () => {
         const data = new FormData();
         data.append('title', formData.book_title);
@@ -166,7 +147,7 @@ export default function AddBook() {
             .then((res) => {
                 setIsLoading(false);
                 enqueueSnackbar(res.data.message, { variant: "success", autoHideDuration: 10000 });
-                // setFormData(AddBookDefaultValues);
+                setFormData(AddBookDefaultValues);
                 setDescriptionCount(0);
                 if (cover_input && book_input) {
                     cover_input.value = '';
@@ -177,37 +158,8 @@ export default function AddBook() {
             .catch((err) => {
                 setIsLoading(false);
                 setErrors(err.response.data.errors);
-                enqueueSnackbar('Something wrong happened!', { variant: "error" });
+                enqueueSnackbar(err.response.data.message, { variant: "error" });
             });
-        // const title = formData.book_title;
-        // const description = formData.book_description;
-        // const author = formData.author;
-        //
-        // // Detect language based on title, description, or author
-        // let detectedLanguage: 'ar' | 'en' | 'fr' = 'en'; // Type assertion to ensure it's one of these values
-        //
-        // if (getRegex().ar.test(title) || getRegex().ar.test(description) || getRegex().ar.test(author)) {
-        //     detectedLanguage = 'ar'; // If any field matches Arabic regex, set to Arabic
-        // } else if (getRegex().fr.test(title) || getRegex().fr.test(description) || getRegex().fr.test(author)) {
-        //     detectedLanguage = 'fr'; // If any field matches French regex, set to French
-        // }
-        //
-        // // Validate each field based on the detected language
-        // const isValid = validateFields(detectedLanguage, title, description, author);
-        //
-        // if (isValid) {
-        //     // Proceed with form submission if validation passes
-        //
-        // } else {
-        //     // If validation fails, show an error message
-        //     setErrors(prevState => ({
-        //         ...prevState,
-        //         title: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-        //         description: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-        //         author: 'Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).',
-        //     }))
-        //     enqueueSnackbar('Please make sure your title, description, and author only contain valid characters for the detected language (English, Arabic, or French).', { variant: "error" });
-        // }
     };
 
 

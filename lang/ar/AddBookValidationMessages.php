@@ -28,4 +28,6 @@ return [
     'downloadable_attribute' => 'قابل للتنزيل',
     'cover_attribute' => 'غلاف الكتاب',
     'book_file_attribute' => 'ملف الكتاب',
+
+    'book_exist' => 'هذا الكتاب موجود بالفعل.'
 ];

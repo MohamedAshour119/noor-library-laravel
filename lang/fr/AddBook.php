@@ -10,7 +10,7 @@ return [
     'are_you_the_author' => 'Êtes-vous l\'auteur du livre ?',
     'language_of_the_book' => 'Langue du livre',
     'language_of_the_book_placeholder' => 'Sélectionnez la langue',
-    'author_of_the_book' => 'Auteur du livre (Nom complet)',
+    'author_of_the_book' => 'Auteur du livre',
     'author_of_the_book_placeholder' => 'Entrez le nom complet',
     'full_name' => 'Nom complet',
     'category' => 'Catégorie',

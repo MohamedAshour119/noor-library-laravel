@@ -90,7 +90,6 @@ class Book extends Model implements HasMedia
 
     private function getTranslatedText($text, $sentLanguage, $id)
     {
-        // Map the detected language to other languages
         $languages = ['en', 'ar', 'fr'];
         $translations = [];
 
@@ -101,31 +100,5 @@ class Book extends Model implements HasMedia
 
         return $translations;
     }
-
-//    protected static function booted()
-//    {
-//        static::creating(function ($book) {
-//            // Set a temporary slug in the 'creating' event
-//            $book->slug = $book->generateSlug($book->title, 'temp-id');
-//        });
-//
-//        static::created(function ($book) {
-//            // Update the slug with the actual book ID
-//            $book->slug = $book->generateSlug($book->title, $book->id);
-//            $book->save();
-//        });
-//    }
-//    private function generateSlug($text, $id)
-//    {
-//        // Map the slug to multiple languages
-//        $languages = ['en', 'ar', 'fr'];
-//        $translations = [];
-//
-//        foreach ($languages as $language) {
-//            $translations[$language] = $this->translateTextDynamically($text, 'en', $language, $id);
-//        }
-//
-//        return $translations;
-//    }
 
 }

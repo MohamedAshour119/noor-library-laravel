@@ -28,4 +28,5 @@ return [
     'downloadable_attribute' => 'Téléchargeable',
     'cover_attribute' => 'Couverture du livre',
     'book_file_attribute' => 'Fichier du livre',
+    'book_exist' => 'Ce livre existe déjà.',
 ];

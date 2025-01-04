@@ -15,7 +15,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class BookController extends Controller
 {
@@ -29,7 +28,7 @@ class BookController extends Controller
         $description = $request->description;
         $authorName = $request->author;
         // Detect the language of the input fields (title, description, author)
-        $sentLanguage = $this->detectLanguage($title, $description, $authorName);
+        $sentLanguage = 'en';
 
         // Translate the title, description, and author_name into three languages
         $translatedTitle = $this->getTranslatedText($title, $sentLanguage);
@@ -38,6 +37,14 @@ class BookController extends Controller
 
         // Retrieve the category based on the translated name
         $category = Category::whereJsonContains('slug->' . app()->getLocale(), $request->category)->first();
+
+        $book_exist = Book::whereJsonContains('title->' . app()->getLocale(), $request->title)->first('title');
+        $book_exist_title = $book_exist->getTranslation('title', 'en');
+
+        if ($book_exist_title === $translatedTitle['en']) {
+            $message = __('AddBookValidationMessages.book_exist');
+            return $this->response_error($message, [], 422);
+        }
         // Create the book with translations
         $book = Book::create([
             'title' => $translatedTitle,
@@ -86,13 +93,7 @@ class BookController extends Controller
         $translations = [];
 
         foreach ($languages as $language) {
-            // If the detected language is the current language, keep the original text
-            if ($language === $sentLanguage) {
-                $translations[$language] = $text;
-            } else {
-                // Translate the text dynamically to the other languages
-                $translations[$language] = $this->translateTextDynamically($text, $sentLanguage, $language);
-            }
+            $translations[$language] = $this->translateTextDynamically($text, $language);
         }
 
         return $translations;

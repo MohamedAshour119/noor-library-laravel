@@ -54,7 +54,7 @@ class AddBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'min:3', 'max:64', 'unique:books,title'],
+            'title' => ['required', 'min:3', 'max:64'],
             'description' => ['required', 'min:50', 'max:2000'],
             'is_author' => ['required', 'boolean', 'present'],
             'is_free' => ['required', 'boolean', 'present'],
