@@ -3,7 +3,7 @@
 return [
     'author' => 'Author',
     'category' => 'Category',
-    'language' => 'Option',
+    'language' => 'Language',
     'publisher' => 'Publisher',
     'pages' => 'Pages',
     'file_size' => 'File Size',

@@ -181,8 +181,3 @@ export interface SearchBooks {
     title: string
 }
 
-export interface OtherBookOptions {
-    value: string
-    label: string
-    type: string
-}

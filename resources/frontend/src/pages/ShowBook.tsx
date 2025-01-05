@@ -12,7 +12,6 @@ import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
 import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
-import {get_book_language_label} from "../Utilities/getBookLanguageLabel.ts";
 import Comment from "../components/show-book/Comment.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
@@ -20,6 +19,7 @@ import ReactStars from "react-stars";
 import {MdAddShoppingCart} from "react-icons/md";
 import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
 import {Modal} from "flowbite-react";
+import {useBookLanguageLabel} from "../hooks/UseBookLanguageLabel.ts";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -146,7 +146,7 @@ export default function ShowBook() {
     const show_comments = comments.map((comment, index) => (
             <Comment
                 key={index}
-                book_data={book_data}
+                // book_data={book_data}
                 setBook_data={setBook_data}
                 ref={index === comments.length - 1 ? last_comment_ref : null}
                 {...comment}
@@ -197,15 +197,25 @@ export default function ShowBook() {
     const handleAddToCartWishlistMouseLeave = () => setIs_add_to_wishlist_icon_hovered(false);
 
     // Fetch book data from the API
+    const { languageLabel } = useBookLanguageLabel(book_data?.language)
+
+    // Update the language field once the language label is available
+    useEffect(() => {
+        if (book_data && languageLabel) {
+            // @ts-ignore
+            setBook_data((prevBookData) => ({
+                ...prevBookData,
+                language: languageLabel, // Add human-readable language label
+            }));
+        }
+    }, [book_data, languageLabel]);
     const getBookData = () => {
         setIs_loading(true); // Set loading state
 
         apiClient()
             .get(`/books/${slug}`)
             .then(res => {
-                const book_language_label = get_book_language_label(res.data.data.book.language);
                 const book = res.data.data.book;
-                book.language = book_language_label; // Add human-readable language label
                 setBook_data(book); // Update book data state
             })
             .catch(err => {

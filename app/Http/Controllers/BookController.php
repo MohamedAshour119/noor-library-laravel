@@ -160,7 +160,7 @@ class BookController extends Controller
         return $this->response_success([], 'Book deleted from wishlist successfully.');
     }
 
-    public function addBookOptions()
+    public function addBookOptions($languages = null)
     {
         $locale = app()->getLocale();
 
@@ -168,6 +168,13 @@ class BookController extends Controller
             ->whereRaw("JSON_EXTRACT(label, '$.\"$locale\"') IS NOT NULL")
             ->get();
         $languages_options = OptionsResource::collection($languages_options);
+
+        if ($languages) {
+            $data = [
+                'languages_options' => $languages_options,
+            ];
+            return $this->response_success($data, '');
+        }
 
         $boolean_options = Option::where('type', 'boolean')
             ->whereRaw("JSON_EXTRACT(label, '$.\"$locale\"') IS NOT NULL")

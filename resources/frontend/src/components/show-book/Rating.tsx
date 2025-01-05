@@ -2,10 +2,10 @@ import ReactStars from "react-stars";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import apiClient from "../../../ApiClient.ts";
 import {ShowBookInterface} from "../../../Interfaces.ts";
-import {get_book_language_label} from "../../Utilities/getBookLanguageLabel.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
 import {enqueueSnackbar} from "notistack";
+import {useBookLanguageLabel} from "../../hooks/UseBookLanguageLabel.ts";
 
 interface Props {
     book_id: number | undefined
@@ -34,7 +34,7 @@ export default function Rating(props: Props) {
                 setRating(new_rating);
                 apiClient().post(`/books/rating/${book_id}`, { rating: new_rating })
                     .then(res => {
-                        const book_language_label = get_book_language_label(res.data.data.book.language);
+                        const book_language_label = useBookLanguageLabel(res.data.data.book.language);
                         const book = res.data.data.book;
                         book.language = book_language_label;
                         setBook_data(book);

@@ -6,26 +6,27 @@ import {
     AddBookDefaultValues,
     AddBookErrors,
     AddBookErrorsDefaultValues,
-    OtherBookOptions
 } from "../../Interfaces.ts";
 import ReactSelect from "../components/ReactSelect.tsx";
 import {SingleValue} from "react-select";
 import {MdDone} from "react-icons/md";
 import apiClient from "../../ApiClient.ts";
 import {FaUpload} from "react-icons/fa";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import {setlanguagesOptionsSlice} from "../../redux/languages-options-slice.ts";
 
 type BinaryOptions = {
     value: boolean
     label: string
     type: string
 }
+type OtherBookOptions = {
+    value: string
+    label: string
+    type: string
+}
 export default function AddBook() {
     const translation = useSelector((state: RootState) => state.translationReducer)
-    const languagesOptions = useSelector((state: RootState) => state.languagesOptionsReducer)
-    const dispatch = useDispatch()
 
     const [formData, setFormData] = useState<AddBookInterface>(AddBookDefaultValues)
     const [descriptionCount, setDescriptionCount] = useState(0)
@@ -34,7 +35,7 @@ export default function AddBook() {
     const [show_price_input, setShow_price_input] = useState(false)
     const [is_author_options, setIs_author_options] = useState<BinaryOptions[]>([])
     const [is_book_free_options, setIs_book_free_options] = useState<BinaryOptions[]>([])
-    // const [languages_options, setLanguages_options] = useState<OtherBookOptions[]>([])
+    const [languages_options, setLanguages_options] = useState<OtherBookOptions[]>([])
     const [categories_options, setCategories_options] = useState<OtherBookOptions[]>([])
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -197,8 +198,7 @@ export default function AddBook() {
                 setIs_book_free_options(is_book_free_options_modified)
 
                 const languages = res.data.data.languages_options
-                dispatch(setlanguagesOptionsSlice(languages))
-                // setLanguages_options(languages)
+                setLanguages_options(languages)
 
                 const categories = res.data.data.categories_options
                 setCategories_options(categories)
@@ -303,7 +303,7 @@ export default function AddBook() {
                                         : null
                                 }
                                 handleSelectChange={handleOtherBookSelectChange}
-                                options={languagesOptions}
+                                options={languages_options}
                                 error={errors?.language}
                                 placeholder={translation.language_of_the_book_placeholder}
                             />
