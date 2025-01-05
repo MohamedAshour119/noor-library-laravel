@@ -16,7 +16,7 @@ return [
     'title_attribute' => 'Title',
     'description_attribute' => 'Description',
     'is_author_attribute' => 'Is Author',
-    'is_free_attribute' => 'Is Free',
+    'is_free_attribute' => 'You must choose whether the book will be free or paid.',
     'price_attribute_null' => 'Price must be empty when the book is free.',
     'price_attribute_min' => 'Price must be at least $10.',
     'price_attribute_required' => 'Price is required.',

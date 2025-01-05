@@ -9,7 +9,7 @@ return [
     'at_least_50_characters' => 'At least 50 characters',
     'are_you_the_author' => 'Are you the author of the book?',
     'language_of_the_book' => 'Language of the book',
-    'language_of_the_book_placeholder' => 'Select Language',
+    'language_of_the_book_placeholder' => 'Select Option',
     'author_of_the_book' => 'Author of the book',
     'author_of_the_book_placeholder' => 'Enter Full Name',
     'full_name' => 'Full Name',

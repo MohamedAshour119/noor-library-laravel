@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AddBookRequest;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\OptionsResource;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Option;
 use App\Models\Rating;
 use App\Models\Wishlist;
 use App\Traits\GoogleTranslation;
@@ -156,5 +158,33 @@ class BookController extends Controller
         }
         $wishlist->delete();
         return $this->response_success([], 'Book deleted from wishlist successfully.');
+    }
+
+    public function addBookOptions()
+    {
+        $locale = app()->getLocale();
+
+        $languages_options = Option::where('type', 'language')
+            ->whereRaw("JSON_EXTRACT(label, '$.\"$locale\"') IS NOT NULL")
+            ->get();
+        $languages_options = OptionsResource::collection($languages_options);
+
+        $boolean_options = Option::where('type', 'boolean')
+            ->whereRaw("JSON_EXTRACT(label, '$.\"$locale\"') IS NOT NULL")
+            ->get();
+        $boolean_options = OptionsResource::collection($boolean_options);
+
+        $categories_options = Option::where('type', 'category')
+            ->whereRaw("JSON_EXTRACT(label, '$.\"$locale\"') IS NOT NULL")
+            ->get();
+        $categories_options = OptionsResource::collection($categories_options);
+
+        $data = [
+            'languages_options' => $languages_options,
+            'boolean_options' => $boolean_options,
+            'categories_options' => $categories_options,
+        ];
+
+        return $this->response_success($data, '');
     }
 }

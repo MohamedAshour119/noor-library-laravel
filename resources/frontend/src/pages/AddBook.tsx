@@ -1,34 +1,41 @@
 import {enqueueSnackbar} from "notistack";
 import GlobalInput from "../components/core/GlobalInput.tsx";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
-import {AddBookInterface, AddBookDefaultValues, AddBookErrors, AddBookErrorsDefaultValues} from "../../Interfaces.ts";
+import {
+    AddBookInterface,
+    AddBookDefaultValues,
+    AddBookErrors,
+    AddBookErrorsDefaultValues,
+    OtherBookOptions
+} from "../../Interfaces.ts";
 import ReactSelect from "../components/ReactSelect.tsx";
-import {is_author_options, book_categories, languages_options, is_book_free_options} from "../React-Select-Options.ts";
 import {SingleValue} from "react-select";
 import {MdDone} from "react-icons/md";
 import apiClient from "../../ApiClient.ts";
 import {FaUpload} from "react-icons/fa";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
+import {setlanguagesOptionsSlice} from "../../redux/languages-options-slice.ts";
 
 type BinaryOptions = {
     value: boolean
     label: string
     type: string
 }
-type OtherBookOptions = {
-    value: string
-    label: string
-    type: string
-}
 export default function AddBook() {
     const translation = useSelector((state: RootState) => state.translationReducer)
+    const languagesOptions = useSelector((state: RootState) => state.languagesOptionsReducer)
+    const dispatch = useDispatch()
 
-    const [formData, setFormData] = useState<AddBookInterface>(AddBookDefaultValues);
-    const [descriptionCount, setDescriptionCount] = useState(0);
-    const [errors, setErrors] = useState<AddBookErrors | null>(AddBookErrorsDefaultValues);
-    const [isLoading, setIsLoading] = useState(false);
-    const [show_price_input, setShow_price_input] = useState(false);
+    const [formData, setFormData] = useState<AddBookInterface>(AddBookDefaultValues)
+    const [descriptionCount, setDescriptionCount] = useState(0)
+    const [errors, setErrors] = useState<AddBookErrors | null>(AddBookErrorsDefaultValues)
+    const [isLoading, setIsLoading] = useState(false)
+    const [show_price_input, setShow_price_input] = useState(false)
+    const [is_author_options, setIs_author_options] = useState<BinaryOptions[]>([])
+    const [is_book_free_options, setIs_book_free_options] = useState<BinaryOptions[]>([])
+    // const [languages_options, setLanguages_options] = useState<OtherBookOptions[]>([])
+    const [categories_options, setCategories_options] = useState<OtherBookOptions[]>([])
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, type, value } = e.target;
@@ -85,7 +92,7 @@ export default function AddBook() {
 
     const handleOtherBookSelectChange = (selectedOption: SingleValue<OtherBookOptions | BinaryOptions>) => {
         if (selectedOption && "value" in selectedOption && typeof selectedOption.value === "string") {
-            if (selectedOption?.type === 'book_category') {
+            if (selectedOption?.type === 'category') {
                 setFormData(prevState => ({
                     ...prevState,
                     category: selectedOption,
@@ -172,6 +179,36 @@ export default function AddBook() {
     useEffect(() => {
         setShow_price_input(formData.is_free?.value === false);
     }, [formData.is_free]);
+
+    useEffect(() => {
+        apiClient().get(`/add-book-options`)
+            .then(res => {
+                const boolean_options = res.data.data.boolean_options
+                const is_author_options_modified = boolean_options.map((option: BinaryOptions) => {
+                    option.type = 'is_author'
+                    return option
+                })
+                setIs_author_options(is_author_options_modified)
+
+                const is_book_free_options_modified = boolean_options.map((option: BinaryOptions) => {
+                    option.type = 'is_book_free'
+                    return option
+                })
+                setIs_book_free_options(is_book_free_options_modified)
+
+                const languages = res.data.data.languages_options
+                dispatch(setlanguagesOptionsSlice(languages))
+                // setLanguages_options(languages)
+
+                const categories = res.data.data.categories_options
+                setCategories_options(categories)
+
+            })
+            .catch(() => {
+                enqueueSnackbar("Can't fetch the options", {variant: "error"})
+            })
+    }, []);
+
 
     return (
         <div className={`flex justify-center bg-main_bg py-5`}>
@@ -264,8 +301,9 @@ export default function AddBook() {
                                             type: "language"
                                         }
                                         : null
-                                }                                handleSelectChange={handleOtherBookSelectChange}
-                                options={languages_options}
+                                }
+                                handleSelectChange={handleOtherBookSelectChange}
+                                options={languagesOptions}
                                 error={errors?.language}
                                 placeholder={translation.language_of_the_book_placeholder}
                             />
@@ -296,12 +334,12 @@ export default function AddBook() {
                                         ? {
                                             label: formData.category.label,
                                             value: formData.category.value,
-                                            type: "book_category"
+                                            type: "category"
                                         }
                                         : null
                                 }
                                 handleSelectChange={handleOtherBookSelectChange}
-                                options={book_categories}
+                                options={categories_options}
                                 error={errors?.category}
                                 placeholder={translation.category_placeholder}
                             />

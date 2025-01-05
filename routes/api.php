@@ -32,6 +32,7 @@ Route::middleware('api')->group(function () {
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/sign-out', [AuthController::class, 'signOut']);
         Route::post('/add-book', [BookController::class, 'addBook'])->middleware('vendor.upload');
+        Route::get('/add-book-options', [BookController::class, 'addBookOptions'])->middleware('vendor.upload');
         Route::post('/verify-password', [UserProfileController::class, 'verifyPassword']);
         Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->middleware('validate.temp.token');
         Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar']);
