@@ -35,6 +35,7 @@ Route::middleware('api')->group(function () {
         Route::post('/verify-password', [UserProfileController::class, 'verifyPassword']);
         Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->middleware('validate.temp.token');
         Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar']);
+        Route::get('/wishlist/{user_id}', [WishlistController::class, 'getWishlistBooks']);
 
         Route::middleware('user.access')->group(function () {
             Route::post('/books/rating/{id}', [BookController::class, 'ratingBook']);
@@ -42,7 +43,6 @@ Route::middleware('api')->group(function () {
             Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment']);
             Route::post('/wishlist/add/{book_id}', [WishlistController::class, 'addBookToWishlist']);
             Route::delete('/wishlist/delete/{book_id}', [WishlistController::class, 'deleteBookToWishlist']);
-            Route::get('/wishlist/{user_id}', [WishlistController::class, 'getWishlistBooks']);
         });
     });
 });

@@ -32,7 +32,7 @@ class BookResource extends JsonResource
         $category = $this->category;
         $vendor = $this->vendor;
         $is_added_to_wishlist = '';
-        if (Auth::guard('user')->check()) Auth::user()->wishlists()->where('book_id', $this->id)->exists();
+        if (Auth::guard('user')->check()) $is_added_to_wishlist = Auth::user()->wishlists()->where('book_id', $this->id)->exists();
 
 
         return [

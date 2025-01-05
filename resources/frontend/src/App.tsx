@@ -77,9 +77,6 @@ function App() {
         if (decodedNamespace.startsWith('category_')) {
             return decodedNamespace; // Category page with slug
         }
-        if (decodedNamespace.startsWith('user_')) {
-            return decodedNamespace; // User page with username
-        }
         if (decodedNamespace.startsWith('book_')) {
             return decodedNamespace; // Book page with slug
         }
@@ -95,7 +92,6 @@ function App() {
         // Handle dynamic routes based on the pattern
         const dynamicRoutePatterns: { [key: string]: string } = {
             categories: 'category_',
-            users: 'user_',
             books: 'book_',
             // Add more dynamic routes as needed
         };

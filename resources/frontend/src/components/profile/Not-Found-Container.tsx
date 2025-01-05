@@ -2,7 +2,6 @@ import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
 import {useParams} from "react-router-dom";
-import vendorsProfileIsActiveSlice from "../../../redux/vendors-profile-is-active-slice.ts";
 
 interface Props {
     src: string
@@ -15,12 +14,10 @@ interface Props {
 }
 
 export default function NotFoundContainer(props: Props) {
-    const {src, content, is_book_section_active = true, is_purchased_books_active = false, content_style, visited_user} = props
+    const {src, content, is_purchased_books_active = false, content_style, visited_user} = props
 
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const user_state = useSelector((state: RootState) => state.user)
-    const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
-    const is_visited_user_sections_active = useSelector((state: RootState) => state.isVisitedUserSectionsActive);
-    const is_visited_vendor_sections_active = useSelector((state: RootState) => state.isVisitedVendorSectionsActive);
     const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
 
     const { user } = useParams()
@@ -40,7 +37,7 @@ export default function NotFoundContainer(props: Props) {
                             to={`/`}
                             className={`text-main_color_darker`}
                         >
-                            Browse Books
+                            {translation.browse_books}
                         </Link>
                     }
                     {is_purchased_books_active &&
@@ -48,7 +45,7 @@ export default function NotFoundContainer(props: Props) {
                             to={`/`}
                             className={`text-main_color_darker`}
                         >
-                            Explore Books
+                            {translation.explore_books}
                         </Link>
                     }
                 </span>

@@ -16,6 +16,7 @@ interface Props {
 export default function Sections(props: Props) {
     const { books_count, setErrors } = props
     const { user } = useParams()
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const user_state = useSelector((state: RootState) => state.user)
     const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const usersIsActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -42,19 +43,19 @@ export default function Sections(props: Props) {
                             onClick={() => handleUsersActiveChange(`personal_info`)}
                             styles={`${usersIsActive.personal_info ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={usersIsActive.personal_info ? '/profile/personal-info-active.svg' : '/profile/personal-info-not-active.svg'}
-                            content={`Personal Info`}
+                            content={translation.personal_info}
                         />
                         <MainHeaderBtn
                             onClick={() => handleUsersActiveChange(`wishlist`)}
                             styles={`${usersIsActive.wishlist ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={usersIsActive.wishlist ? '/profile/wishlist-active.svg' : '/profile/wishlist-not-active.svg'}
-                            content={`Wishlist (${user_info.wishlists_count})`}
+                            content={`${translation.wishlist} (${user_info.wishlists_count})`}
                         />
                         <MainHeaderBtn
                             onClick={() => handleUsersActiveChange(`order_history`)}
                             styles={`${usersIsActive.order_history ? 'text-main_color !border-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={usersIsActive.order_history ? '/profile/order-history-active.svg' : '/profile/order-history-not-active.svg'}
-                            content={`Orders History`}
+                            content={translation.orders_history}
                         />
                     </>
                 }
@@ -64,13 +65,13 @@ export default function Sections(props: Props) {
                             onClick={() => handleVendorsActiveChange(`personal_info`)}
                             styles={`${vendorsIsActive.personal_info ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={vendorsIsActive.personal_info ? '/profile/personal-info-active.svg' : '/profile/personal-info-not-active.svg'}
-                            content={`Personal Info`}
+                            content={translation.personal_info}
                         />
                         <MainHeaderBtn
                             onClick={() => handleVendorsActiveChange(`reviews`)}
                             styles={`${vendorsIsActive.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={vendorsIsActive.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
-                            content={`Reviews`}
+                            content={translation.reviews}
                         />
                     </>
                 }
@@ -81,13 +82,13 @@ export default function Sections(props: Props) {
                             onClick={() => dispatch(setIsVisitedUserSectionsActive(`wishlist`))}
                             styles={`${is_visited_user_sections_active.wishlist ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_user_sections_active.wishlist ? '/profile/wishlist-active.svg' : '/profile/wishlist-not-active.svg'}
-                            content={`Wishlist (${user_info.wishlists_count})`}
+                            content={`${translation.wishlist} (${user_info.wishlists_count})`}
                         />
                         <MainHeaderBtn
                             onClick={() => dispatch(setIsVisitedUserSectionsActive(`reviews`))}
                             styles={`${is_visited_user_sections_active.reviews ? 'text-main_color !border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_user_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
-                            content={`Reviews`}
+                            content={translation.reviews}
                         />
                     </>
                 }
@@ -98,13 +99,13 @@ export default function Sections(props: Props) {
                             onClick={() => dispatch(setIsVisitedVendorSectionsActive(`books`))}
                             styles={`${is_visited_vendor_sections_active.books ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.books ? '/profile/books-active.svg' : '/profile/books-not-active.svg'}
-                            content={`Books (${books_count})`}
+                            content={`${translation.books} (${books_count})`}
                         />
                         <MainHeaderBtn
                             onClick={() => dispatch(setIsVisitedVendorSectionsActive(`reviews`))}
                             styles={`${is_visited_vendor_sections_active.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
-                            content={`Reviews`}
+                            content={translation.reviews}
                         />
                     </>
                 }

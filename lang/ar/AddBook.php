@@ -10,7 +10,7 @@ return [
     'are_you_the_author' => 'هل أنت مؤلف الكتاب؟',
     'language_of_the_book' => 'لغة الكتاب',
     'language_of_the_book_placeholder' => 'اختر اللغة',
-    'author_of_the_book' => 'مؤلف الكتاب (الاسم الكامل)',
+    'author_of_the_book' => 'مؤلف الكتاب',
     'author_of_the_book_placeholder' => 'أدخل الاسم الكامل',
     'full_name' => 'الاسم الكامل',
     'category' => 'الفئة',

@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             $avatar = $this->resource->getFirstMedia('users_avatars')?->getUrl() ?? '';
         }
 
-        return [
+        $data = [
             'id' => $this->id,
             'username' => $this->username,
             'first_name' => $this->first_name,
@@ -35,5 +35,7 @@ class UserResource extends JsonResource
             'is_vendor' => false,
             'wishlists_count' => $this->wishlists_count,
         ];
+
+        return $data;
     }
 }

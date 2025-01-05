@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -89,6 +90,7 @@ class UserProfileController extends Controller implements HasMedia
 
             $user = Auth::user();
             $user->clearMediaCollection('users_avatars');
+            Log::info('sss');
 
             $media = $user->addMediaFromRequest('avatar')->toMediaCollection('users_avatars');
             $data = [
@@ -108,6 +110,7 @@ class UserProfileController extends Controller implements HasMedia
             $data = [
                 'user' => $user
             ];
+
             return $this->response_success($data, 'User found!');
         }
 
@@ -116,14 +119,14 @@ class UserProfileController extends Controller implements HasMedia
             ->first();
         if ($vendor) {
             $vendor = new VendorResource($vendor);
-            $books = Book::where('vendor_id', $vendor->id)->paginate(3);
+            $books = Book::where('vendor_id', $vendor->id)->paginate(12);
             $next_page_url = $books->nextPageUrl();
             $books = BookResource::collection($books);
 
             $data = [
                 'vendor' => $vendor,
-                'books' => $books,
-                'next_page_url' => $next_page_url,
+                'books' => [],
+                'next_page_url' => [],
                 'books_count' => $vendor->books_count,
             ];
             return $this->response_success($data, 'Vendor found!');

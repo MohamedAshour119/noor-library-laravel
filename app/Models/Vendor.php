@@ -5,10 +5,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Vendor extends Authenticatable
+class Vendor extends Authenticatable implements HasMedia
 {
-    use HasApiTokens;
+    use HasApiTokens, InteractsWithMedia;
     protected $guarded = [];
 
     public function books(): HasMany

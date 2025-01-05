@@ -24,7 +24,7 @@ import {TfiShoppingCart} from "react-icons/tfi";
 
 export default function Header() {
 
-    const user = useSelector((state: RootState) => state.user)
+    const auth_user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
     const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
@@ -100,7 +100,7 @@ export default function Header() {
         <>
             {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
             <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto z-10 border-t-[3px] border-main_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
-            {!user.is_vendor &&
+            {!auth_user.is_vendor &&
                 <Modal
                     show={isFocused}
                     onClose={handleClose}
@@ -208,7 +208,7 @@ export default function Header() {
                             </div>
                         </div>
                         <div className={`sm:hidden flex lg:flex font-roboto-bold gap-x-2`}>
-                            {!user?.id &&
+                            {!auth_user?.id &&
                                 <>
                                     <Link
                                         to={`/sign-in`}
@@ -224,7 +224,7 @@ export default function Header() {
                                     </Link>
                                 </>
                             }
-                            {user?.id &&
+                            {auth_user?.id &&
                                 <div className={`flex items-center gap-x-2`}>
                                     <span
                                         className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
@@ -249,18 +249,18 @@ export default function Header() {
 
                                             <MenuItem>
                                                 <Link
-                                                    to={`/users/${user.username}`}
+                                                    to={`/users/${auth_user.username}`}
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                 >
                                                     <img
-                                                        src={`/profile-default-img.svg`}
+                                                        src={auth_user.avatar}
                                                         alt={`profile-default-img`}
-                                                        width={30}
+                                                        className={`rounded-full size-8`}
                                                     />
                                                     {translation.profile}
                                                 </Link>
                                             </MenuItem>
-                                            {user?.is_vendor &&
+                                            {auth_user?.is_vendor &&
                                                 <MenuItem>
                                                     <Link
                                                         to={`/add-book`}
@@ -271,7 +271,7 @@ export default function Header() {
                                                     </Link>
                                                 </MenuItem>
                                             }
-                                            {!user?.is_vendor &&
+                                            {!auth_user?.is_vendor &&
                                                 <MenuItem>
                                                     <button
                                                         onClick={handleOpen}
@@ -302,7 +302,7 @@ export default function Header() {
                     </div>
                 </nav>
                 <div className={`lg:hidden hidden sm:flex font-roboto-bold gap-x-2`}>
-                    {!user?.id &&
+                    {!auth_user?.id &&
                         <>
                             <button
                                 className={`flex gap-x-2 items-center rounded border border-main_color text-main_color px-3 py-[5px] hover:bg-main_color hover:text-white transition`}>
@@ -313,7 +313,7 @@ export default function Header() {
                             </button>
                         </>
                     }
-                    {user?.id &&
+                    {auth_user?.id &&
                         <div className={`flex items-center gap-x-2`}>
                                     <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
                                         <GoBell className={`size-6 text-main_color group-hover:text-white transition`}/>
@@ -332,7 +332,7 @@ export default function Header() {
 
                                     <MenuItem>
                                         <Link
-                                            to={`/users/${user.username}`}
+                                            to={`/users/${auth_user.username}`}
                                             className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                         >
                                             <img
