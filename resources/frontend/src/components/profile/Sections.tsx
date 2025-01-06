@@ -12,9 +12,10 @@ import {setIsVisitedVendorSectionsActive} from "../../../redux/is_visited_vendor
 interface Props {
     books_count: number
     setErrors: Dispatch<SetStateAction<Errors | null>>
+    reviews_count: number | undefined
 }
 export default function Sections(props: Props) {
-    const { books_count, setErrors } = props
+    const { books_count, setErrors, reviews_count } = props
     const { user } = useParams()
     const translation = useSelector((state: RootState) => state.translationReducer)
     const user_state = useSelector((state: RootState) => state.user)
@@ -71,7 +72,7 @@ export default function Sections(props: Props) {
                             onClick={() => handleVendorsActiveChange(`reviews`)}
                             styles={`${vendorsIsActive.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={vendorsIsActive.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
-                            content={translation.reviews}
+                            content={translation.reviews + ` (${reviews_count})`}
                         />
                     </>
                 }
@@ -105,7 +106,7 @@ export default function Sections(props: Props) {
                             onClick={() => dispatch(setIsVisitedVendorSectionsActive(`reviews`))}
                             styles={`${is_visited_vendor_sections_active.reviews ? 'text-main_color border-b-main_color' : ''} !border-r-main_color max-sm:pt-4 w-full`}
                             src={is_visited_vendor_sections_active.reviews ? '/profile/reviews-active.svg' : '/profile/reviews-not-active.svg'}
-                            content={translation.reviews}
+                                content={translation.reviews + ` (${reviews_count})`}
                         />
                     </>
                 }

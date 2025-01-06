@@ -35,6 +35,9 @@ export default function Profile() {
     const [is_fetching, setIs_fetching] = useState(false);
     const [reviews, setReviews] = useState<CommentInterface[]>([]);
     const [reviews_next_page_url, setReviews_next_page_url] = useState('');
+    const [reviews_is_loading, setReviews_is_loading] = useState(false);
+    const [reviews_is_fetching, setReviews_is_fetching] = useState(false);
+    const [reviews_count, setReviews_count] = useState();
     const [wishlist_books, setWishlist_books] = useState<BookCardInterface[]>([]);
     const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState('');
     const [wishlist_books_is_fetching, setWishlist_books_is_fetching] = useState(false);
@@ -98,6 +101,9 @@ export default function Profile() {
         setIs_fetching(true)
         apiClient().get(`/users/${user}`)
             .then(res  => {
+                setReviews(res.data.data.reviews)
+                setReviews_next_page_url(res.data.data.reviews_next_page_url)
+                setReviews_count(res.data.data.reviews_count)
                 if (res.data.data.user) {
                     dispatch(setUserProfileInfo(res.data.data.user))
                 }else if (res.data.data.vendor.id !== auth_user.id) {
@@ -471,6 +477,7 @@ export default function Profile() {
                     <Sections
                         setErrors={setErrors}
                         books_count={books_count}
+                        reviews_count={reviews_count}
                     />
                 </div>
                 {!is_loading &&
@@ -639,10 +646,16 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {user_info?.is_vendor && user === auth_user.username && reviews.length > 0 && vendor_isActive.reviews &&
+                        {user_info?.is_vendor && reviews.length > 0 && (is_visited_vendor_sections_active.reviews && vendor_isActive.reviews) &&
                             <Reviews
                                 reviews={reviews}
-                                set_reviews={setReviews}
+                                setReviews={setReviews}
+                                next_page_url={reviews_next_page_url}
+                                setNext_page_url={setReviews_next_page_url}
+                                is_loading={reviews_is_loading}
+                                setIs_loading={setReviews_is_loading}
+                                is_fetching={reviews_is_fetching}
+                                setIs_fetching={setReviews_is_fetching}
                             />
                         }
                     </div>

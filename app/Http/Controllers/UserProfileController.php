@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Requests\VerifyPasswordRequest;
 use App\Http\Resources\BookResource;
+use App\Http\Resources\CommentResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\VendorResource;
 use App\Models\Book;
@@ -132,11 +133,13 @@ class UserProfileController extends Controller implements HasMedia
                 $books = Book::where('vendor_id', $vendor->id)->paginate(12);
                 $data['books'] = BookResource::collection($books);
                 $data['next_page_url'] = $books->nextPageUrl();
-                $reviews_data = $this->getReviews();
+                $reviews_data = $this->getReviews($vendor->id);
+                $data['reviews_count'] = $reviews_data['reviews_count'];
                 $data['reviews'] = $reviews_data['reviews'];
                 $data['reviews_next_page_url'] = $reviews_data['reviews_next_page_url'];
             } else {
-                $reviews_data = $this->getReviews();
+                $reviews_data = $this->getReviews($vendor->id);
+                $data['reviews_count'] = $reviews_data['reviews_count'];
                 $data['reviews'] = $reviews_data['reviews'];
                 $data['reviews_next_page_url'] = $reviews_data['reviews_next_page_url'];
             }
@@ -147,15 +150,21 @@ class UserProfileController extends Controller implements HasMedia
 
         return $this->response_error('User not found!', [], 404);
     }
-    private function getReviews ()
+    private function getReviews ($vendor_id)
     {
-        $vendor_id = Auth::guard('vendor')->id();
         $reviews = Comment::whereHas('book', function ($query) use ($vendor_id) {
             $query->where('vendor_id', $vendor_id);
-        })->paginate(2);
-        Log::info('xx', [$reviews]);
+        })->paginate(5);
+
         $reviews_next_page_url = $reviews->nextPageUrl();
+        $reviews_count = $reviews->total();
+
+        $reviews = $reviews->map(function ($review) {
+            return new CommentResource($review, true);
+        });
+
         return [
+            'reviews_count' => $reviews_count,
             'reviews' => $reviews,
             'reviews_next_page_url' => $reviews_next_page_url,
         ];
