@@ -8,6 +8,7 @@ use App\Http\Resources\BookResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\VendorResource;
 use App\Models\Book;
+use App\Models\Comment;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Traits\HttpResponses;
@@ -117,21 +118,46 @@ class UserProfileController extends Controller implements HasMedia
         $vendor = Vendor::where('username', $username)
             ->withCount('books')
             ->first();
+
         if ($vendor) {
+            $is_current_vendor = $vendor->id === Auth::guard('vendor')->id();
             $vendor = new VendorResource($vendor);
-            $books = Book::where('vendor_id', $vendor->id)->paginate(12);
-            $next_page_url = $books->nextPageUrl();
-            $books = BookResource::collection($books);
 
             $data = [
                 'vendor' => $vendor,
-                'books' => $books,
-                'next_page_url' => $next_page_url,
                 'books_count' => $vendor->books_count,
             ];
+
+            if (!$is_current_vendor) {
+                $books = Book::where('vendor_id', $vendor->id)->paginate(12);
+                $data['books'] = BookResource::collection($books);
+                $data['next_page_url'] = $books->nextPageUrl();
+                $reviews_data = $this->getReviews();
+                $data['reviews'] = $reviews_data['reviews'];
+                $data['reviews_next_page_url'] = $reviews_data['reviews_next_page_url'];
+            } else {
+                $reviews_data = $this->getReviews();
+                $data['reviews'] = $reviews_data['reviews'];
+                $data['reviews_next_page_url'] = $reviews_data['reviews_next_page_url'];
+            }
+
             return $this->response_success($data, 'Vendor found!');
         }
 
+
         return $this->response_error('User not found!', [], 404);
+    }
+    private function getReviews ()
+    {
+        $vendor_id = Auth::guard('vendor')->id();
+        $reviews = Comment::whereHas('book', function ($query) use ($vendor_id) {
+            $query->where('vendor_id', $vendor_id);
+        })->paginate(2);
+        Log::info('xx', [$reviews]);
+        $reviews_next_page_url = $reviews->nextPageUrl();
+        return [
+            'reviews' => $reviews,
+            'reviews_next_page_url' => $reviews_next_page_url,
+        ];
     }
 }
