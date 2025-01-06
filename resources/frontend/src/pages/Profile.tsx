@@ -224,7 +224,7 @@ export default function Profile() {
 
         axios.put('/api/users/update-profile', formData, {
             headers: {
-                "Authorization": `Bearer ${temp_token}`, // Include the token as a Bearer token
+                "Authorization": `Bearer ${temp_token}`,
                 "Content-Type": "application/json"
             }})
             .then(res => {
@@ -233,8 +233,10 @@ export default function Profile() {
             })
             .catch(err => {
                 setErrors(err.response.data.errors)
-                if (err.status === 401) {
+                console.log(err.response.status)
+                if (err.response.status === 401) {
                     dispatch(setTempToken(''))
+                    setIs_edit_active(false)
                 }
             })
     }
@@ -327,11 +329,11 @@ export default function Profile() {
     }
 
     useEffect(() => {
+        // dispatch(setTempToken(''))
         getUserInfo()
     }, [user]);
 
     const display_name = user_info ? (user_info?.first_name[0]?.toUpperCase() + user_info.first_name.slice(1)) + ' ' + (user_info?.last_name[0]?.toUpperCase() + user_info.last_name.slice(1)) : ''
-
 
     return (
         <>
@@ -557,10 +559,10 @@ export default function Profile() {
                                     {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
 
                                     <button
-                                        onClick={is_edit_active ? handleSubmit : handleIsEditActive}
+                                        onClick={temp_token.length !== 0 ? handleSubmit : handleIsEditActive}
                                         className={`bg-main_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
                                     >
-                                        {!is_edit_active ? translation.edit : translation.save}
+                                        {temp_token.length === 0 ? translation.edit : translation.save}
                                     </button>
                                 </div>
                             </form>
