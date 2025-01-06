@@ -2,9 +2,10 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class ValidateBookPrice implements Rule
+class ValidateBookPrice implements ValidationRule
 {
     /**
      * The `is_free` value.
@@ -87,5 +88,10 @@ class ValidateBookPrice implements Rule
 
         // General validation message for price being below 10
         return __('AddBookValidationMessages.price_attribute_min');
+    }
+
+    public function validate(string $attribute, mixed $value, Closure $fail): void
+    {
+        // TODO: Implement validate() method.
     }
 }

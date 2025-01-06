@@ -17,6 +17,7 @@ import PhoneInput from "react-phone-input-2";
 import axios from "axios";
 import {setUser} from "../../redux/user-slice.ts";
 import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
+import {setTempToken} from "../../redux/temp-token.ts";
 export default function Profile() {
     const translation = useSelector((state: RootState) => state.translationReducer)
     const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -25,6 +26,7 @@ export default function Profile() {
     const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const is_visited_user_sections_active = useSelector((state: RootState) => state.isVisitedUserSectionsActive);
     const is_visited_vendor_sections_active = useSelector((state: RootState) => state.isVisitedVendorSectionsActive);
+    const temp_token = useSelector((state: RootState) => state.tempTokenReducer)
     const { user } = useParams()
     const dispatch = useDispatch();
 
@@ -43,7 +45,7 @@ export default function Profile() {
         first_name: user_state.first_name,
         last_name: user_state.last_name,
         phone_number: user_state.phone,
-        country_code: '',
+        country_code: user_state.country_code,
         email: user_state.email,
         password: '',
         password_confirmation: '',
@@ -55,7 +57,7 @@ export default function Profile() {
     const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
     const [is_loading_password_confirmation, setIs_loading_password_confirmation] = useState(false);
     const [error_password_confirmation, setError_password_confirmation] = useState(null);
-    const [temp_token, setTemp_token] = useState('');
+    // const [temp_token, setTemp_token] = useState('');
     const [avatar, setAvatar] = useState<string | File | null>(null);
     const [show_save_avatar_btn, setShow_save_avatar_btn] = useState(false);
 
@@ -231,8 +233,9 @@ export default function Profile() {
             })
             .catch(err => {
                 setErrors(err.response.data.errors)
-                setTemp_token('')
-                setIs_edit_active(false)
+                if (err.status === 401) {
+                    dispatch(setTempToken(''))
+                }
             })
     }
 
@@ -282,7 +285,7 @@ export default function Profile() {
             .then(res => {
                 setErrors({})
                 setError_password_confirmation(null)
-                setTemp_token(res.data.data.token)
+                dispatch(setTempToken(res.data.data.token))
                 enqueueSnackbar(res.data.message, {variant: "success"})
                 setIs_confirm_password_open(false)
                 setIs_edit_active(true)
@@ -339,17 +342,17 @@ export default function Profile() {
                 onClose={handleCloseModal}
                 popup
                 ref={modal_ref}
-                className={`animate-fade-in`}
+                className={`animate-fade-in !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2`}
             >
                 <Modal.Header className={`!bg-white rounded-t`}/>
                 <Modal.Body className={`pt-0 !bg-white rounded-b`}>
                     <div className="space-y-4 pb-4">
-                        <h3 className="text-xl font-roboto-semi-bold text-gray-900">Confirm who you are.</h3>
+                        <h3 className="text-xl font-roboto-semi-bold text-gray-900">{translation.confirm_who_you_are}</h3>
                         <div className={`relative`}>
                             <Label
                                 htmlFor="confirm_user_password"
-                                value="Current Password"
-                                className={`absolute !text-black/40 text-md cursor-text left-4 top-1/2 -translate-y-1/2 px-1 z-10 transition-all duration-200 ${confirm_user_password.length > 0 || is_confirm_user_password_input_focused ? '!text-sm !top-0 !text-text_color bg-white' : 'bg-transparent'}`}
+                                value={translation.current_password}
+                                className={`absolute !text-black/40 text-md cursor-text ltr:left-4 rtl:right-4 top-1/2 -translate-y-1/2 px-1 z-10 transition-all duration-200 ${confirm_user_password.length > 0 || is_confirm_user_password_input_focused ? '!text-sm !top-0 !text-text_color bg-white' : 'bg-transparent'}`}
                             />
                             <TextInput
                                 id="confirm_user_password"
@@ -375,11 +378,11 @@ export default function Profile() {
                                 onClick={submitConfirmPassword}
                             >
                                 {is_loading_password_confirmation && <Spinner className="!text-white fill-zinc-400" />}
-                                {!is_loading_password_confirmation && "Confirm"}
+                                {!is_loading_password_confirmation && translation.confirm}
                             </Button>
                         </div>
                     </div>
-                    <span className={`text-main_color_darker font-roboto-semi-bold`}>For your security, you’ll need to confirm your password again if you refresh the page.</span>
+                    <span className={`text-main_color_darker font-roboto-semi-bold`}>{translation.security_refresh_password}</span>
 
                 </Modal.Body>
             </Modal>
@@ -470,7 +473,7 @@ export default function Profile() {
                             <form className={`bg-white p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.first_name?.length !== 0 ? '' : `First Name`}
+                                        placeholder={!is_edit_active && formData.first_name?.length !== 0 ? '' : translation.first_name}
                                         id={`first_name_id`}
                                         name={`first_name`}
                                         value={formData.first_name}
@@ -481,7 +484,7 @@ export default function Profile() {
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.last_name?.length !== 0 ? '' : `Last Name`}
+                                        placeholder={!is_edit_active && formData.last_name?.length !== 0 ? '' : translation.last_name}
                                         id={`last_name_id`}
                                         name={`last_name`}
                                         value={formData.last_name}
@@ -493,7 +496,7 @@ export default function Profile() {
                                     />
 
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.email?.length !== 0 ? '' : `Email`}
+                                        placeholder={!is_edit_active && formData.email?.length !== 0 ? '' : translation.email}
                                         id={`email_id`}
                                         name={`email`}
                                         type={`email`}
@@ -505,7 +508,7 @@ export default function Profile() {
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
-                                        placeholder={`New Password`}
+                                        placeholder={translation.new_password}
                                         id={`password_id`}
                                         type={`password`}
                                         name={`password`}
@@ -517,7 +520,7 @@ export default function Profile() {
                                         styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
-                                        placeholder={`Password Confirmation`}
+                                        placeholder={translation.password_confirmation}
                                         id={`password_confirmation_id`}
                                         type={`password`}
                                         name={`password_confirmation`}
@@ -540,7 +543,7 @@ export default function Profile() {
                                             height: '40px',
                                             borderRadius: '8px',
                                             border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
-                                            padding: '10px 10px 10px 45px',
+                                            padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
                                         }}
                                         containerStyle={{
                                             width: '100%',
@@ -557,7 +560,7 @@ export default function Profile() {
                                         onClick={is_edit_active ? handleSubmit : handleIsEditActive}
                                         className={`bg-main_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
                                     >
-                                        {!is_edit_active ? 'Edit' : 'Save'}
+                                        {!is_edit_active ? translation.edit : translation.save}
                                     </button>
                                 </div>
                             </form>

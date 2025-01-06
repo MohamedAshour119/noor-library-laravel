@@ -253,7 +253,7 @@ export default function Header() {
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
                                                 >
                                                     <img
-                                                        src={auth_user.avatar}
+                                                        src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
                                                         alt={`profile-default-img`}
                                                         className={`rounded-full size-8`}
                                                     />

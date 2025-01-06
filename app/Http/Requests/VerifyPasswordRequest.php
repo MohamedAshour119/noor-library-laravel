@@ -29,10 +29,10 @@ class VerifyPasswordRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'confirm_user_password.required' => 'Password confirmation is required.',
-            'confirm_user_password.string' => 'Password confirmation must type of string.',
-            'confirm_user_password.min' => 'Password confirmation must be at least 8 characters.',
-            'confirm_user_password.max' => 'Password confirmation must not exceed 64 characters.',
+            'confirm_user_password.required' => __('EditProfileValidationMessages.password_confirmation_required'),
+            'confirm_user_password.min' => __('EditProfileValidationMessages.password_min_length'),
+            'confirm_user_password.max' => __('EditProfileValidationMessages.password_max_length'),
+            'confirm_user_password.string' => __('EditProfileValidationMessages.password_string'),
         ];
     }
 }

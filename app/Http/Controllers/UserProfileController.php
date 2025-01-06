@@ -49,7 +49,7 @@ class UserProfileController extends Controller implements HasMedia
         }
 
         $token = $user->createToken('ProfileChangeToken', ['profile-update'], expiresAt: now()->addMinutes(15))->plainTextToken;
-        return $this->response_success(['token' => $token], 'Confirmation success');
+        return $this->response_success(['token' => $token], __('EditProfileValidationMessages.confirmation_success'));
     }
 
     public function updateProfile(UpdateProfileRequest $request)
@@ -125,8 +125,8 @@ class UserProfileController extends Controller implements HasMedia
 
             $data = [
                 'vendor' => $vendor,
-                'books' => [],
-                'next_page_url' => [],
+                'books' => $books,
+                'next_page_url' => $next_page_url,
                 'books_count' => $vendor->books_count,
             ];
             return $this->response_success($data, 'Vendor found!');

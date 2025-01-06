@@ -15,7 +15,6 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class BookController extends Controller
@@ -41,7 +40,10 @@ class BookController extends Controller
         $category = Category::whereJsonContains('slug->' . app()->getLocale(), $request->category)->first();
 
         $book_exist = Book::whereJsonContains('title->' . app()->getLocale(), $request->title)->first('title');
-        $book_exist_title = $book_exist->getTranslation('title', 'en');
+        $book_exist_title = '';
+        if ($book_exist_title) {
+            $book_exist_title = $book_exist->getTranslation('title', 'en');
+        }
 
         if ($book_exist_title === $translatedTitle['en']) {
             $message = __('AddBookValidationMessages.book_exist');

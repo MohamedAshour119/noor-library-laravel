@@ -9,7 +9,8 @@ export interface User {
     is_vendor?: boolean | null
     phone?: string | null
     avatar?: string
-    wishlists_count?: number
+    wishlists_count?: number | null
+    country_code: undefined | null | string,
 }
 
 type BinaryOptionsInterface = {
@@ -132,7 +133,7 @@ export interface SignUpForm {
     first_name?: string
     last_name?: string
     phone_number?: string | null
-    country_code?: string
+    country_code?: string | undefined | null
     email?: string
     password?: string
     password_confirmation?: string

@@ -24,7 +24,7 @@ return [
     'language_attribute_max' => 'The language must be no more than 2 characters.',
     'author_attribute_required' => 'Author name is required.',
     'author_attribute_max' => 'Author name may not be greater than 80 characters.',
-    'category_attribute' => 'Category',
+    'category_attribute' => 'Category required',
     'downloadable_attribute' => 'Downloadable',
     'cover_attribute' => 'Book Cover',
     'book_file_attribute' => 'Book File',

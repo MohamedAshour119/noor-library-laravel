@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'password_confirmation_required' => 'Password confirmation is required.',
+    'password_max_length' => 'Password cannot be longer than 64 characters.',
+    'password_min_length' => 'Password must be at least 8 characters.',
+    'password_string' => 'Password must be a string.',
+    'confirmation_success' => 'Confirmation success.',
+    'first_name_required' => 'First name is required.',
+    'first_name_min' => 'First name must be at least 3 characters.',
+    'first_name_max' => 'First name cannot be longer than 20 characters.',
+    'last_name_required' => 'Last name is required.',
+    'last_name_min' => 'Last name must be at least 3 characters.',
+    'last_name_max' => 'Last name cannot be longer than 20 characters.',
+    'phone_number_required' => 'Phone number is required.',
+    'phone_number_phone' => 'Please provide a valid phone number.',
+    'phone_number_unique' => 'This phone number is already associated with another account.',
+    'country_code_required' => 'Country code is required.',
+    'country_code_numeric' => 'Country code must be a number.',
+    'country_code_digits_between' => 'Country code must be between 1 and 3 digits.',
+    'country_code_required_with' => 'Country code is required when phone number is provided.',
+    'email_required' => 'Email address is required.',
+    'email_email' => 'Please provide a valid email address.',
+    'email_unique' => 'This email is already registered.',
+    'password_min' => 'Password must be at least 8 characters.',
+    'password_max' => 'Password cannot be longer than 64 characters.',
+    'password_confirmed' => 'Password confirmation does not match.',
+];

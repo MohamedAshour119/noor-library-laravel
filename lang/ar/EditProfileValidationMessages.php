@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'password_confirmation_required' => 'يجب تأكيد كلمة المرور.',
+    'password_max_length' => 'يجب ألا تزيد كلمة المرور عن 64 حرف.',
+    'password_min_length' => 'يجب ألا تقل كلمة المرور عن 8 حرف.',
+    'password_string' => 'يجب أن تكون كلمة المرور نصًا.',
+    'confirmation_success' => 'تم التأكيد بنجاح.',
+    'first_name_required' => 'الاسم الأول مطلوب.',
+    'first_name_min' => 'يجب أن يحتوي الاسم الأول على 3 أحرف على الأقل.',
+    'first_name_max' => 'يجب ألا يتجاوز الاسم الأول 20 حرفًا.',
+    'last_name_required' => 'الاسم الأخير مطلوب.',
+    'last_name_min' => 'يجب أن يحتوي الاسم الأخير على 3 أحرف على الأقل.',
+    'last_name_max' => 'يجب ألا يتجاوز الاسم الأخير 20 حرفًا.',
+    'phone_number_required' => 'رقم الهاتف مطلوب.',
+    'phone_number_phone' => 'الرجاء إدخال رقم هاتف صالح.',
+    'phone_number_unique' => 'هذا رقم الهاتف مرتبط بالفعل بحساب آخر.',
+    'country_code_required' => 'رمز الدولة مطلوب.',
+    'country_code_numeric' => 'يجب أن يكون رمز الدولة رقماً.',
+    'country_code_digits_between' => 'يجب أن يتكون رمز الدولة من رقم واحد إلى ثلاثة أرقام.',
+    'country_code_required_with' => 'يجب إدخال رمز الدولة عند إدخال رقم الهاتف.',
+    'email_required' => 'عنوان البريد الإلكتروني مطلوب.',
+    'email_email' => 'الرجاء إدخال عنوان بريد إلكتروني صالح.',
+    'email_unique' => 'هذا البريد الإلكتروني مسجل بالفعل.',
+    'password_min' => 'يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.',
+    'password_max' => 'يجب ألا تزيد كلمة المرور عن 64 حرفًا.',
+    'password_confirmed' => 'تأكيد كلمة المرور غير متطابق.',
+];

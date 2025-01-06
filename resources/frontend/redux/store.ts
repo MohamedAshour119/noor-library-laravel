@@ -12,6 +12,7 @@ import translationReducer from './translation-slice.ts'
 import isTranslationTriggeredReducer from './is_translation_triggerd.ts'
 import isAddToCartSidebarReducer from './is_add_to_card_sidebar_open.ts'
 import isUnauthorizedMessageOpenReducer from './is_unauthorized_message_open.ts'
+import tempTokenReducer from './temp-token.ts'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from "redux-persist"
 import { combineReducers } from '@reduxjs/toolkit'
@@ -44,6 +45,7 @@ const reducer = combineReducers({
     isTranslationTriggeredReducer: isTranslationTriggeredReducer,
     isAddToCartSidebarReducer: isAddToCartSidebarReducer,
     isUnauthorizedMessageOpenReducer: isUnauthorizedMessageOpenReducer,
+    tempTokenReducer: tempTokenReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

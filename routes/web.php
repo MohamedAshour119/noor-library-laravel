@@ -52,7 +52,11 @@ Route::get('/locale/{locale}', function ($locale) {
                 }
 
                 // Lookup the model by the slug (translated if necessary)
-                $modelInstance = $model::whereJsonContains("{$slugField}->" . app()->getLocale(), $slug)->first();
+                if ($slugField === 'username') {
+                    $modelInstance = $model::where("{$slugField}", $slug)->first();
+                }else {
+                    $modelInstance = $model::whereJsonContains("{$slugField}->" . app()->getLocale(), $slug)->first();
+                }
 
                 if ($modelInstance) {
                     $newSlug = $modelInstance->getTranslation($slugField, $locale);
@@ -64,6 +68,7 @@ Route::get('/locale/{locale}', function ($locale) {
                     $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
                     return redirect($newUrl);
                 }
+
             }
         }
     }

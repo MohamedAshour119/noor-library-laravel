@@ -24,7 +24,7 @@ return [
     'language_attribute_max' => 'La langue ne doit pas dépasser 2 caractères.',
     'author_attribute_required' => 'Le nom de l\'auteur est requis.',
     'author_attribute_max' => 'Le nom de l\'auteur ne peut pas dépasser 80 caractères.',
-    'category_attribute' => 'Catégorie',
+    'category_attribute' => 'Catégorie requise',
     'downloadable_attribute' => 'Téléchargeable',
     'cover_attribute' => 'Couverture du livre',
     'book_file_attribute' => 'Fichier du livre',

@@ -73,23 +73,24 @@ export default function AddBook() {
     useEffect(() => {
         checkScrollbar();
     }, [formData.book_description]);
-
     const handleBinaryOptionsSelectChange = (selectedOption: SingleValue<BinaryOptions | OtherBookOptions>) => {
-        if (selectedOption && "value" in selectedOption && typeof selectedOption.value === "boolean") {
-            if (selectedOption?.type === 'is_author') {
+
+        if (selectedOption && "value" in selectedOption) {
+            if (selectedOption.type === 'is_author') {
+                // @ts-ignore
                 setFormData(prevState => ({
                     ...prevState,
                     is_author: selectedOption,
                 }));
-            }else {
+            } else if (selectedOption.type === 'is_book_free') {
+                // @ts-ignore
                 setFormData(prevState => ({
                     ...prevState,
                     is_free: selectedOption,
-                }))
+                }));
             }
         }
     };
-
 
     const handleOtherBookSelectChange = (selectedOption: SingleValue<OtherBookOptions | BinaryOptions>) => {
         if (selectedOption && "value" in selectedOption && typeof selectedOption.value === "string") {
@@ -140,8 +141,10 @@ export default function AddBook() {
         const data = new FormData();
         data.append('title', formData.book_title);
         data.append('description', formData.book_description);
-        data.append('is_author', String(formData.is_author?.value === true || formData.is_author?.value === false ? formData.is_author?.value : null));
-        data.append('is_free', String(formData.is_free?.value === true || formData.is_free?.value === false ? formData.is_free?.value : null));
+        // @ts-ignore
+        data.append('is_author', String(formData.is_author?.value === 'yes' ? true :  formData.is_author?.value === 'no' ? false : null));
+        // @ts-ignore
+        data.append('is_free', String(formData.is_free?.value === 'yes' ? true :  formData.is_free?.value === 'no' ? false : null));
         data.append('price', String(formData.price));
         data.append('language', formData.book_language?.value || '');
         data.append('author', formData.author);
@@ -178,36 +181,38 @@ export default function AddBook() {
     }
 
     useEffect(() => {
-        setShow_price_input(formData.is_free?.value === false);
+        // @ts-ignore
+        setShow_price_input(formData.is_free?.value === 'no');
     }, [formData.is_free]);
 
     useEffect(() => {
         apiClient().get(`/add-book-options`)
             .then(res => {
-                const boolean_options = res.data.data.boolean_options
-                const is_author_options_modified = boolean_options.map((option: BinaryOptions) => {
-                    option.type = 'is_author'
-                    return option
-                })
-                setIs_author_options(is_author_options_modified)
+                const boolean_options = res.data.data.boolean_options;
 
-                const is_book_free_options_modified = boolean_options.map((option: BinaryOptions) => {
-                    option.type = 'is_book_free'
-                    return option
-                })
-                setIs_book_free_options(is_book_free_options_modified)
+                const is_author_options_modified = boolean_options.map((option: BinaryOptions) => ({
+                    ...option,
+                    type: 'is_author',
+                }));
+                setIs_author_options(is_author_options_modified);
 
-                const languages = res.data.data.languages_options
-                setLanguages_options(languages)
+                const is_book_free_options_modified = boolean_options.map((option: BinaryOptions) => ({
+                    ...option,
+                    type: 'is_book_free',
+                }));
+                setIs_book_free_options(is_book_free_options_modified);
 
-                const categories = res.data.data.categories_options
-                setCategories_options(categories)
+                const languages = res.data.data.languages_options;
+                setLanguages_options(languages);
 
+                const categories = res.data.data.categories_options;
+                setCategories_options(categories);
             })
             .catch(() => {
-                enqueueSnackbar("Can't fetch the options", {variant: "error"})
-            })
+                enqueueSnackbar("Can't fetch the options", { variant: "error" });
+            });
     }, []);
+
 
 
     return (
