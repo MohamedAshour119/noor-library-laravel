@@ -67,12 +67,6 @@ export default function ShowBook() {
         dispatch(setAddToCartItemsCount(add_to_cart_items_count + 1));
     };
 
-
-    useEffect(() => {
-
-    }, [handleAddBookToCart]);
-
-
     useEffect(() => {
         if (book_data?.is_added_to_wishlist) {
             setIs_add_to_wishlist(book_data?.is_added_to_wishlist)

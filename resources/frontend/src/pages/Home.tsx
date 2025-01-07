@@ -138,18 +138,12 @@ export default function Home() {
                         <ClientSearchInput/>
                     </form>
 
-                    <div className={`flex flex-col items-center gap-y-8`}>
-                        <div className={`flex flex-col xs:flex-row gap-x-4 xs:gap-x-4 gap-y-3 mt-4`}>
-                            <HeroSectionBtn content={translation.highest_rated}/>
-                            <HeroSectionBtn content={translation.popular_books}/>
-                            <HeroSectionBtn content={translation.latest_books}/>
-                        </div>
-
+                    <div className={`flex flex-col items-center`}>
                         {!user.is_vendor &&
                             <button onClick={handleOpen}>
                                 <HeroSectionBtn
                                     content={translation.upload_book}
-                                    styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
+                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white text-main_color font-roboto-semi-bold`}
                                 />
                             </button>
                         }
@@ -158,7 +152,7 @@ export default function Home() {
                             <Link to={`/add-book`}>
                                 <HeroSectionBtn
                                     content={translation.upload_book}
-                                    styles={`w-fit min-[490px]:ml-2 bg-white text-main_color font-roboto-semi-bold`}
+                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white text-main_color font-roboto-semi-bold`}
                                 />
                             </Link>
                         }

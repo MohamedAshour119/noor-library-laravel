@@ -8,6 +8,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
 import {Modal} from "flowbite-react";
+import {Book} from "../../Interfaces.ts";
+import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
 
 interface Props {
     average_ratings?: number;
@@ -27,14 +29,16 @@ interface Props {
     styles?: string
     ratings_count: number
     is_added_to_wishlist?: boolean
+    category?: string
 }
 
 export default function BookCard(props: Props) {
-    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free, id, is_added_to_wishlist } = props
+    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free, id, is_added_to_wishlist, category } = props
 
     const auth_user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
     const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
+    const add_to_cart_items_count = useSelector((state: RootState) => state.addToCartItemsCountReducer)
     const dispatch = useDispatch()
 
     const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
@@ -90,6 +94,33 @@ export default function BookCard(props: Props) {
         }
     }
 
+    const handleAddBookToCart = () => {
+        if (!auth_user.is_vendor) {
+            const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
+
+            const book = {
+                id: id,
+                cover: cover,
+                title: title,
+                author: author,
+                category: category,
+                price: price,
+            };
+
+            const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === book.id);
+
+            if (is_book_exist) {
+                return
+            }
+
+            localStorage.setItem('book', JSON.stringify([...previous_books, book]));
+            dispatch(setAddToCartItemsCount(add_to_cart_items_count + 1));
+
+        } else {
+            handleOpenUnauthorizedMessage()
+        }
+    }
+
     const modalRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -135,6 +166,11 @@ export default function BookCard(props: Props) {
                     {!is_free &&
                         <button
                             className={`bg-white p-3 rounded-full w-fit invisible group-hover:visible transition-all duration-75 text-main_color hover:bg-main_color hover:text-white`}
+                            onClick={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                                handleAddBookToCart()
+                            }}
                         >
                             <MdAddShoppingCart className={`size-5`}/>
                         </button>
