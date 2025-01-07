@@ -29,6 +29,7 @@ Route::middleware('api')->group(function () {
     Route::get('/books/search-keyword/{keyword}', [SearchController::class, 'searchBooksByKeyword']);
     Route::get('/translation/{namespace}', [HomeController::class, 'getTranslation']);
     Route::get('/add-book-options/{languages?}', [BookController::class, 'addBookOptions']);
+    Route::get('/home/books/{section}', [HomeController::class, 'getSectionBooks']);
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/sign-out', [AuthController::class, 'signOut']);

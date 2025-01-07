@@ -13,6 +13,11 @@ import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import BookPlaceholder from "../components/BookPlaceholder.tsx";
 
+type IsActive = {
+    highest_rated: boolean
+    popular_books: boolean
+    latest_books: boolean
+}
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -21,6 +26,11 @@ export default function Home() {
     const [is_loading, setIs_loading] = useState(true);
     const [is_fetching, setIs_fetching] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
+    const [isActive, setIsActive] = useState<IsActive>({
+        highest_rated: true,
+        popular_books: false,
+        latest_books: false
+    });
     const body_el = document.body;
     const handleOpen = () => {
         setIsFocused(true)
@@ -51,25 +61,28 @@ export default function Home() {
         }
     }, []);
 
-    const getBook = (page_url: string, is_fetch_at_start = false) => {
-        if (is_fetch_at_start) setIs_loading(false)
-        setIs_fetching(true)
-        apiClient().get(page_url)
-            .then(res => {
-                setBooks(prevState => [...prevState, ...res.data.data.books])
-                setBooks_next_page_url(res.data.data.next_page_url)
-            })
-            .catch(err => {
-                enqueueSnackbar(err.response.data.message, {variant: "error"})
-            })
-            .finally(() => {
-                setIs_fetching(false)
-            })
-    }
-
-    useEffect(() => {
-        getBook('/home/get-books', true)
-    }, []);
+    // const getBook = (page_url: string, is_fetch_at_start = false) => {
+    //     if (is_fetch_at_start) {
+    //         setIs_loading(true)
+    //     }
+    //     setIs_fetching(true)
+    //     apiClient().get(page_url)
+    //         .then(res => {
+    //             setBooks(prevState => [...prevState, ...res.data.data.books])
+    //             setBooks_next_page_url(res.data.data.next_page_url)
+    //         })
+    //         .catch(err => {
+    //             enqueueSnackbar(err.response.data.message, {variant: "error"})
+    //         })
+    //         .finally(() => {
+    //             setIs_fetching(false)
+    //             setIs_loading(false)
+    //         })
+    // }
+    //
+    // useEffect(() => {
+    //     getBook('/home/get-books', true)
+    // }, []);
 
 
     const last_book_ref = useRef<HTMLAnchorElement>(null);
@@ -87,7 +100,7 @@ export default function Home() {
 
         const observer = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && !is_fetching && books_next_page_url) {
-                getBook(books_next_page_url);
+                getSectionBooks(books_next_page_url);
             }
         }, {
             threshold: 0.5 // Trigger when 50% of the last tweet is visible
@@ -103,6 +116,42 @@ export default function Home() {
             }
         };
     }, [books_next_page_url, is_fetching]);
+
+    const getSectionBooks = (page_url: string, is_fetch_at_start = false) => {
+        if (is_fetch_at_start) {
+            setIs_loading(true)
+        }
+        setIs_fetching(true)
+
+        apiClient().get(page_url)
+            .then(res => {
+                setBooks(prevState => [...prevState, ...res.data.data.books])
+                setBooks_next_page_url(res.data.data.next_page_url)
+            })
+            .catch(err => {
+                enqueueSnackbar(err.response.data.message, {variant: "error"})
+            })
+            .finally(() => {
+                setIs_fetching(false)
+                setIs_loading(false)
+            })
+    }
+
+    useEffect(() => {
+        setBooks([])
+        if (is_loading) {
+            getSectionBooks('/home/books/highest_rated', true)
+        } else {
+            if (isActive.highest_rated) {
+                getSectionBooks('/home/books/highest_rated', true)
+            }else if (isActive.popular_books) {
+                getSectionBooks('/home/books/popular_books', true)
+            }else {
+                getSectionBooks('/home/books/latest_books', true)
+            }
+        }
+    }, [isActive]);
+
 
     return (
         <>
@@ -164,7 +213,10 @@ export default function Home() {
             <main className={`flex justify-center bg-main_bg py-8`}>
                 <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8`}>
                     <div className={`flex flex-col gap-y-4`}>
-                        <MainHeader/>
+                        <MainHeader
+                            isActive={isActive}
+                            setIsActive={setIsActive}
+                        />
 
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
                             {!is_loading && show_books}

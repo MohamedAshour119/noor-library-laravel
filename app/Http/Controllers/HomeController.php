@@ -13,17 +13,18 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     use HttpResponses;
-    public function getBooks()
-    {
-        $books = Book::with('category')->paginate(10);
-        $next_page_url = $books->nextPageUrl();
-        $books = BookCardResource::collection($books);
-        $data = [
-            'books' => $books,
-            'next_page_url' => $next_page_url,
-        ];
-        return $this->response_success($data, 'Fetch Home Books.');
-    }
+//    public function getBooks()
+//    {
+////        sleep(100000);
+//        $books = Book::with('category')->paginate(10);
+//        $next_page_url = $books->nextPageUrl();
+//        $books = BookCardResource::collection($books);
+//        $data = [
+//            'books' => $books,
+//            'next_page_url' => $next_page_url,
+//        ];
+//        return $this->response_success($data, 'Fetch Home Books.');
+//    }
     public function getTranslation($namespace)
     {
         // Decode URL-encoded namespace
@@ -43,7 +44,6 @@ class HomeController extends Controller
 
                     if (isset($matches[1])) {
                         // Replace the dynamic part (e.g., {slug} with the actual value)
-//                        $namespace = str_replace('{slug}', $matches[1], $pattern);
                         $namespace = 'Show' . ucfirst($prefix);
                     }
                     break;
@@ -70,18 +70,44 @@ class HomeController extends Controller
         return $this->response_success($translations, 'Translation text.');
     }
 
+    public function getSectionBooks($section)
+    {
+        if ($section === 'highest_rated') {
+            $books = Book::query()
+                ->with('category') // Eager load relationships
+                ->leftJoin('ratings', 'books.id', '=', 'ratings.book_id') // Join ratings table
+                ->select('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Specify columns explicitly
+                ->selectRaw('ROUND(AVG(ratings.rate), 2) as average_rating_value') // Use a different alias
+                ->selectRaw('COUNT(ratings.id) as ratings_count') // Calculate ratings count
+                ->groupBy('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Group by all selected columns
+                ->orderBy('average_rating_value', 'desc') // Order by average rating
+                ->paginate(10);
+        } else if ($section === 'popular_books') {
+            $books = Book::query()
+                ->with('category') // Eager load relationships
+                ->leftJoin('ratings', 'books.id', '=', 'ratings.book_id') // Join ratings table
+                ->select('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Specify columns explicitly
+                ->selectRaw('ROUND(AVG(ratings.rate), 2) as average_rating_value') // Use a different alias
+                ->selectRaw('COUNT(ratings.id) as ratings_count') // Calculate ratings count
+                ->groupBy('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Group by all selected columns
+                ->orderBy('ratings_count', 'desc') // Order by ratings count
+                ->paginate(10);
+        } else {
+            $books = Book::with('category')
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        }
+
+        $next_page_url = $books->nextPageUrl();
+        $books = BookCardResource::collection($books);
+
+        $data = [
+            'books' => $books,
+            'next_page_url' => $next_page_url,
+        ];
+        return $this->response_success($data, 'Fetch Home Books.');
+    }
 
 
 
-
-
-//    public function getHomeTranslationText($namespace)
-//    {
-//        $decodedNamespace = urldecode($namespace);
-//        dd($decodedNamespace);
-//        $translations_current_page = Lang::get($namespace);
-//        $translations_common = Lang::get('Home');
-//        $translations = array_merge($translations_current_page, $translations_common);
-//        return $this->response_success($translations, 'Translation text.');
-//    }
 }

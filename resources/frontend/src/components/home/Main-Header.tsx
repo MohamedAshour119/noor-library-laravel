@@ -1,15 +1,20 @@
-import {useState} from 'react'
+import {Dispatch, SetStateAction} from 'react'
 import MainHeaderBtn from "./Main-Header-Btn.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
 
-export default function MainHeader() {
+interface Props {
+    isActive: IsActive
+    setIsActive: Dispatch<SetStateAction<IsActive>>
+}
+type IsActive = {
+    highest_rated: boolean
+    popular_books: boolean
+    latest_books: boolean
+}
+export default function MainHeader(props: Props) {
+    const {isActive, setIsActive} = props
     const translation = useSelector((state: RootState) => state.translationReducer)
-    const [isActive, setIsActive] = useState({
-        highest_rated: true,
-        popular_books: false,
-        latest_books: false
-    });
 
     const handleActiveChoice = (type: string) => {
         setIsActive({
