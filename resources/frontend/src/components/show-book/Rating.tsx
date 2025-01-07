@@ -34,9 +34,7 @@ export default function Rating(props: Props) {
                 setRating(new_rating);
                 apiClient().post(`/books/rating/${book_id}`, { rating: new_rating })
                     .then(res => {
-                        const book_language_label = useBookLanguageLabel(res.data.data.book.language);
                         const book = res.data.data.book;
-                        book.language = book_language_label;
                         setBook_data(book);
                     })
                     .catch(err => console.error(err));
@@ -44,6 +42,18 @@ export default function Rating(props: Props) {
         }
     };
 
+    const { languageLabel } = useBookLanguageLabel(book_data?.language)
+
+    // Update the language field once the language label is available
+    useEffect(() => {
+        if (book_data && languageLabel) {
+            // @ts-ignore
+            setBook_data((prevBookData) => ({
+                ...prevBookData,
+                language: languageLabel, // Add human-readable language label
+            }));
+        }
+    }, [book_data, languageLabel]);
 
     return (
         <>
@@ -57,7 +67,7 @@ export default function Rating(props: Props) {
                         size={35}
                         color1={`#d9d9d9`}
                         color2={`#FFC64BFF`}
-                        className={`-ml-1`}
+                        className={``}
                         edit={!!auth_user.id}
                     />
                     {!auth_user.id &&

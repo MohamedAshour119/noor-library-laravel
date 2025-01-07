@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import {Ref, useEffect, useRef, useState} from "react";
 import ReactStars from "react-stars";
 import {MdAddShoppingCart} from "react-icons/md";
