@@ -15,7 +15,7 @@ class HomeController extends Controller
     use HttpResponses;
     public function getBooks()
     {
-        $books = Book::paginate(10);
+        $books = Book::with('category')->paginate(10);
         $next_page_url = $books->nextPageUrl();
         $books = BookCardResource::collection($books);
         $data = [

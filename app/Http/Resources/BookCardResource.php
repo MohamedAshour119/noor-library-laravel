@@ -27,6 +27,7 @@ class BookCardResource extends JsonResource
             'slug' => $this->getTranslation('slug', $locale),
             'author' => $this->getTranslation('author_name', $locale),
             'price' => (int) $this->price,
+            'category' => $this->category?->getTranslation('name', $locale) ?? '',
             'is_free' => $this->is_free === 1,
             'cover' => $this->getMedia('books_covers')->first()?->getUrl() ?? '',
             'average_ratings' => $this->average_rating(),

@@ -18,7 +18,7 @@ class Book extends Model implements HasMedia
     protected $guarded = [];
     protected $with = ['media', 'vendor', 'category', 'ratings', 'comments'];
     protected $withCount = ['ratings', 'comments'];
-    public $translatable = ['title', 'slug', 'description', 'author_name'];
+    public $translatable = ['title', 'slug', 'description', 'author_name', 'name'];
     protected $casts = ['slug' => 'array'];
 
     public function vendor(): BelongsTo
