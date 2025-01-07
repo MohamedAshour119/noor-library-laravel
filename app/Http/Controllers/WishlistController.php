@@ -17,7 +17,7 @@ class WishlistController extends Controller
     {
         $wishlist = Wishlist::where('user_id', Auth::id())->where('book_id', $book_id)->first();
         if ($wishlist) {
-            return $this->response_error("It's already added.", [], 401);
+            return $this->response_error("It's already added.", [], 403);
         }
         Wishlist::create([
             'user_id' => Auth::id(),

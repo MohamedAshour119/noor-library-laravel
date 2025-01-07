@@ -76,14 +76,7 @@ export default function Home() {
     const show_books = books.map((book, index) => (
             <BookCard
                 key={index}
-                average_ratings={book.average_ratings}
-                ratings_count={book.ratings_count}
-                title={book.title}
-                cover={book.cover}
-                is_free={book.is_free}
-                slug={book.slug}
-                author={book.author}
-                price={book.price}
+                {...book}
                 ref={index === books.length - 1 ? last_book_ref : null}
             />
         )

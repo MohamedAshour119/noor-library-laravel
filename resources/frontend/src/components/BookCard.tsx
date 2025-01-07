@@ -27,10 +27,11 @@ interface Props {
     ref?: Ref<HTMLAnchorElement>
     styles?: string
     ratings_count: number
+    is_added_to_wishlist?: boolean
 }
 
 export default function BookCard(props: Props) {
-    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free, id } = props
+    const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free, id, is_added_to_wishlist } = props
 
     const auth_user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -40,6 +41,12 @@ export default function BookCard(props: Props) {
     const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
     const [is_add_to_wishlist_loading, setIs_add_to_wishlist_loading] = useState(false);
     const [unAuthError, setUnAuthError] = useState('');
+
+    useEffect(() => {
+        if (is_added_to_wishlist) {
+            setIs_add_to_wishlist(is_added_to_wishlist)
+        }
+    }, [is_added_to_wishlist]);
 
     const handleOpenUnauthorizedMessage = () => {
         if (auth_user.is_vendor) {
