@@ -139,7 +139,7 @@ export default function Home() {
                     </form>
 
                     <div className={`flex flex-col items-center gap-y-8`}>
-                        <div className={`flex flex-col min-503:flex-row gap-x-4 min-503:gap-x-4 gap-y-3 mt-4`}>
+                        <div className={`flex flex-col xs:flex-row gap-x-4 xs:gap-x-4 gap-y-3 mt-4`}>
                             <HeroSectionBtn content={translation.highest_rated}/>
                             <HeroSectionBtn content={translation.popular_books}/>
                             <HeroSectionBtn content={translation.latest_books}/>
