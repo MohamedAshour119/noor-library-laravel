@@ -1,10 +1,14 @@
 
-export default function BookPlaceholder() {
+interface Props {
+    styles?: string
+}
+export default function BookPlaceholder({styles}: Props) {
+
     return (
-        <div role='status' className='max-w-sm border border-gray-300 rounded-lg bg-white w-[242px] h-[420px] p-5'>
+        <div role='status' className={`${styles ? styles : ''} max-w-sm border border-gray-300 rounded-lg bg-white w-[242px] h-[420px] p-5`}>
             <h3 className='h-3 bg-gray-300 rounded-full  w-full mb-4 animate-pulse'></h3>
             <div
-                className="animate-pulse w-[200px] bg-gray-300 h-[278px] rounded-lg mb-5 flex justify-center items-center">
+                className="animate-pulse bg-gray-300 h-[278px] rounded-lg mb-5 flex justify-center items-center">
                 <svg className="w-8 h-8 stroke-gray-400" viewBox="0 0 24 24" fill="none"
                      xmlns="http://www.w3.org/2000/svg">
                     <path

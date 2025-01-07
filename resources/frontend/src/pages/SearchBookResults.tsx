@@ -105,7 +105,10 @@ export default function SearchBookResults() {
                     {show_placeholders &&
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap sm:grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4`}>
                             {Array.from({length: 10}).map((_, index) => (
-                                <BookPlaceholder key={index}/>
+                                <BookPlaceholder
+                                    key={index}
+                                    styles={`sm:w-[200px] md:w-[242px] 2xl:w-[210px] 3xl:w-[242px]`}
+                                />
                             ))}
                         </div>
                     }

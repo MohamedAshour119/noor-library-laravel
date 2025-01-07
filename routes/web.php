@@ -59,14 +59,16 @@ Route::get('/locale/{locale}', function ($locale) {
                 }
 
                 if ($modelInstance) {
-                    $newSlug = $modelInstance->getTranslation($slugField, $locale);
+                    if ($slugField !== 'username') {
+                        $newSlug = $modelInstance->getTranslation($slugField, $locale);
 
-                    // Replace the old slug in the URL with the new translated slug
-                    $newPath = str_replace($slug, $newSlug, urldecode($path));
+                        // Replace the old slug in the URL with the new translated slug
+                        $newPath = str_replace($slug, $newSlug, urldecode($path));
 
-                    // Rebuild the full URL with the new path and redirect
-                    $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
-                    return redirect($newUrl);
+                        // Rebuild the full URL with the new path and redirect
+                        $newUrl = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . $newPath;
+                        return redirect($newUrl);
+                    }
                 }
 
             }
