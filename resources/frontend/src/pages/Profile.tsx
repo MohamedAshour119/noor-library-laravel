@@ -41,7 +41,7 @@ export default function Profile() {
     const [reviews_count, setReviews_count] = useState(0);
     const [wishlist_books, setWishlist_books] = useState<BookCardInterface[]>([]);
     const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState('');
-    const [wishlist_books_is_fetching, setWishlist_books_is_fetching] = useState(false);
+    // const [wishlist_books_is_fetching, setWishlist_books_is_fetching] = useState(false);
     const [orders_history, setOrders_history] = useState([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_loading, setIs_loading] = useState(true);

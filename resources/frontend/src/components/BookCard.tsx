@@ -107,7 +107,9 @@ export default function BookCard(props: Props) {
                 price: price,
             };
 
-            const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === book.id);
+            console.log(previous_books)
+            console.log('book_id', book.id)
+            const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === id);
 
             if (is_book_exist) {
                 return
