@@ -20,7 +20,7 @@ return [
     'results' => 'Results',
     'loading' => 'Loading...',
     'unauthorized' => 'Unauthorized!',
-    'unauthorized_customer_message' => 'You are logged in as a customer, you must log in as a vendor.',
+    'unauthorized_customer_message' => 'You are signed in as a customer, you must sign in as a vendor.',
     'unauthorized_vendor_message' => 'You are signed in as a vendor, You must sign in as a customer to do this action.',
     'your_cart' => 'Your Cart.',
     'sign_in' => 'Sign In',
