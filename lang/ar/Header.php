@@ -32,4 +32,9 @@ return [
     'copyrights' => 'حقوق النشر',
     'privacy_policy' => 'سياسة الخصوصية',
     'terms_of_use' => 'شروط الاستخدام',
+    'category' => 'التصنيف',
+    'author' => 'المؤلف',
+    'remove' => 'إزالة',
+    'total' => 'الإجمالي',
+    'proceed_to_checkout' => 'متابعة الدفع',
 ];

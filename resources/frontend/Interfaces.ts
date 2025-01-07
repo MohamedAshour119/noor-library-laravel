@@ -83,6 +83,7 @@ export interface Book {
     title: string
     slug: string
     description: string
+    category?: string
     is_author: boolean
     is_free: boolean
     price: number

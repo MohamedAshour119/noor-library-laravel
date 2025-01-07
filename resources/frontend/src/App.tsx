@@ -22,11 +22,12 @@ import SearchBookResults from "./pages/SearchBookResults.tsx";
 import apiClient from "../ApiClient.ts";
 import {setTranslation} from "../redux/translation-slice.ts";
 import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
+import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
     const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
-    // const isTranslationTriggeredSlice = useSelector((state: RootState) => state.isTranslationTriggeredReducer)
+    const isAddToCartSidebarSlice = useSelector((state: RootState) => state.isAddToCartSidebarReducer.is_open);
     const dispatch = useDispatch()
 
     const [showHeader, setShowHeader] = useState(true);
@@ -115,6 +116,10 @@ function App() {
         }
     }, [location.pathname]); // Trigger when pathname changes
 
+    useEffect(() => {
+        const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
+        dispatch(setAddToCartItemsCount(previous_books.length))
+    }, []);
 
 
     return (
@@ -128,9 +133,9 @@ function App() {
                     horizontal: 'left',
                 }}
             />
-            <div className={`relative`}>
+            <div className={`relative ${isAddToCartSidebarSlice ? 'max-h-svh overflow-hidden' : ''}`}>
                 <AddToCartSidebar/>
-                {/*{showHeader && <Header handleSelectLanguage={handleSelectLanguage}/>}*/}
+
                 {showHeader && <Header/>}
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>

@@ -26,6 +26,7 @@ export default function Header() {
 
     const auth_user = useSelector((state: RootState) => state.user)
     const checkIsLocationIsNotInNavlinkSlice = useSelector((state: RootState) => state.checkIsLocationIsNotInNavlinkSlice)
+    const addToCartItemsCount = useSelector((state: RootState) => state.addToCartItemsCountReducer)
     const translation = useSelector((state: RootState) => state.translationReducer)
     const dispatch = useDispatch()
 
@@ -229,9 +230,14 @@ export default function Header() {
                             {auth_user?.id &&
                                 <div className={`flex items-center gap-x-2`}>
                                     <span
-                                        className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
+                                        className={`relative border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
                                         onClick={openAddToCartSidebar}
                                     >
+                                    {addToCartItemsCount > 0 &&
+                                        <span className={`absolute -top-2 ltr:-left-3 rtl: -right-3 bg-red-400 text-white size-5 flex justify-center items-center rounded`}>
+                                            {addToCartItemsCount}
+                                        </span>
+                                    }
                                         <TfiShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
                                     </span>
                                     <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>

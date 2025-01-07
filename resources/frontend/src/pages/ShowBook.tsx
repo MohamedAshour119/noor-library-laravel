@@ -9,7 +9,7 @@ import {Link, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
-import {CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
+import {Book, CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import Comment from "../components/show-book/Comment.tsx";
@@ -20,6 +20,7 @@ import {MdAddShoppingCart} from "react-icons/md";
 import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
 import {Modal} from "flowbite-react";
 import {useBookLanguageLabel} from "../hooks/UseBookLanguageLabel.ts";
+import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -28,14 +29,12 @@ export default function ShowBook() {
     const auth_user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
     const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
+    const add_to_cart_items_count = useSelector((state: RootState) => state.addToCartItemsCountReducer)
     const dispatch = useDispatch()
-    // State to track loading status
+
     const [is_loading, setIs_loading] = useState(false);
     const [is_fetching, setIs_fetching] = useState(false);
-    // State to store the fetched book data
     const [book_data, setBook_data] = useState<ShowBookInterface>();
-
-    // States for hover effects on icons
     const [is_add_to_cart_icon_hovered, setIs_add_to_cart_icon_hovered] = useState(false);
     const [is_add_to_wishlist_icon_hovered, setIs_add_to_wishlist_icon_hovered] = useState(false);
     const [comment, setComment] = useState('');
@@ -46,6 +45,33 @@ export default function ShowBook() {
     const [comments_next_page_url, setComments_next_page_url] = useState('');
     const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
     const [is_add_to_wishlist_loading, setIs_add_to_wishlist_loading] = useState(false);
+    const handleAddBookToCart = () => {
+        const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
+
+        const book = {
+            id: book_data?.id,
+            cover: book_data?.cover,
+            title: book_data?.title,
+            author: book_data?.author,
+            category: book_data?.category,
+            price: book_data?.price,
+        };
+
+        const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === book.id);
+
+        if (is_book_exist) {
+            return
+        }
+
+        localStorage.setItem('book', JSON.stringify([...previous_books, book]));
+        dispatch(setAddToCartItemsCount(add_to_cart_items_count + 1));
+    };
+
+
+    useEffect(() => {
+
+    }, [handleAddBookToCart]);
+
 
     useEffect(() => {
         if (book_data?.is_added_to_wishlist) {
@@ -307,7 +333,12 @@ export default function ShowBook() {
                                                 className="relative flex justify-center items-center bg-main_bg w-fit p-2 rounded-full !size-[44px]"
                                                 onMouseEnter={handleAddToCartIconMouseEnter}
                                                 onMouseLeave={handleAddToCartIconMouseLeave}
-                                                onClick={handleOpenUnauthorizedMessage}
+                                                onClick={() => {
+                                                    if (auth_user.is_vendor) {
+                                                        handleOpenUnauthorizedMessage()
+                                                    }
+                                                    handleAddBookToCart()
+                                                }}
                                             >
                                                 <MdAddShoppingCart className="size-6 text-main_color_darker"/>
                                                 {is_add_to_cart_icon_hovered && (
@@ -389,7 +420,10 @@ export default function ShowBook() {
                                             {!is_book_free &&
                                                 <div className={`mt-2`}>
                                                     <button
-                                                        onClick={handleOpenUnauthorizedMessage}
+                                                        onClick={() => {
+                                                            if (auth_user.is_vendor)
+                                                                handleOpenUnauthorizedMessage()
+                                                        }}
                                                         className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         {translation.purchase} <strong>{book_data?.price + '$'}</strong>
                                                     </button>

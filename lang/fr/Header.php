@@ -32,4 +32,9 @@ return [
     'copyrights' => "Droits d'auteur",
     'privacy_policy' => 'Politique de confidentialité',
     'terms_of_use' => "Conditions d'utilisation",
+    'category' => 'Catégorie',
+    'author' => 'Auteur',
+    'remove' => 'Supprimer',
+    'total' => 'Total',
+    'proceed_to_checkout' => 'Passer à la caisse',
 ];

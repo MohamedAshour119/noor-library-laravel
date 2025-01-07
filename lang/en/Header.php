@@ -32,4 +32,9 @@ return [
     'copyrights' => 'Copyrights',
     'privacy_policy' => 'Privacy Policy',
     'terms_of_use' => 'Terms of Use',
+    'category' => 'Category',
+    'author' => 'Author',
+    'remove' => 'Remove',
+    'total' => 'Total',
+    'proceed_to_checkout' => 'Proceed to Checkout',
 ];
