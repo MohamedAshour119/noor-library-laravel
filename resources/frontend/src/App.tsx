@@ -37,7 +37,7 @@ function App() {
         else
             setShowHeader(true)
 
-        const nav_links = ['/', '/home', '/categories', '/authors'];
+        const nav_links = ['/', '/home', '/categories', '/reviews'];
         if (!nav_links.includes(location.pathname)) {
             dispatch(setActive(true))
         }else {

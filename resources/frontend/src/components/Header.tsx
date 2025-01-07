@@ -6,7 +6,7 @@ import {FaBook, FaUser} from "react-icons/fa";
 import {RiMenuLine} from "react-icons/ri";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 import {IoIosArrowDown} from "react-icons/io";
 import {GoBell} from "react-icons/go";
@@ -48,7 +48,8 @@ export default function Header() {
             [type]: true
         })
     }
-    const singOut = () => {
+    const navigate = useNavigate()
+    const signOut = () => {
         apiClient().post('/sign-out', {},
             {headers: {'Content-Type': 'application/json', 'Authorization':'Bearer ' + localStorage.getItem('token')}})
             .then(() => {
@@ -58,6 +59,7 @@ export default function Header() {
                 dispatch(clearUserProfileInfo())
                 dispatch(setResetUsersActive())
                 dispatch(setResetVendorsActive())
+                navigate('/')
             }).catch(err => {
                 enqueueSnackbar(err.response.data.message, {variant: "error"})
         })
@@ -285,7 +287,7 @@ export default function Header() {
                                             <MenuItem>
                                                 <button
                                                     className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
-                                                    onClick={singOut}
+                                                    onClick={signOut}
                                                 >
                                                     <TbLogout2 className={`size-6`}/>
                                                     {translation.logout}
@@ -355,7 +357,7 @@ export default function Header() {
                                     <MenuItem >
                                         <button
                                             className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
-                                            onClick={singOut}
+                                            onClick={signOut}
                                         >
                                             <TbLogout2 className={`size-6`}/>
                                             Logout

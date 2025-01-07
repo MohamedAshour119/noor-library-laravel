@@ -24,4 +24,5 @@ return [
     'login_via_facebook' => 'Login via Facebook',
     'signing_in' => 'Signing in...',
     'dont_have_an_account' => 'Don\'t have an account?',
+    'must_sign_in' => 'You must sign in to do this action.',
 ];

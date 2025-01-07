@@ -7,12 +7,13 @@ const initialState: User = {
     first_name: '',
     last_name: '',
     email: '',
+    country_code: '',
     createdAt: null,
     updatedAt: null,
     is_vendor: null,
     phone: null,
     avatar: '',
-    wishlists_count: null
+    wishlists_count: 0
 }
 
 export const userProfileInfoSlice = createSlice({
@@ -25,6 +26,7 @@ export const userProfileInfoSlice = createSlice({
             state.first_name = action.payload.first_name
             state.last_name = action.payload.last_name
             state.email = action.payload.email
+            state.country_code = action.payload.country_code
             state.createdAt = action.payload.createdAt
             state.updatedAt = action.payload.updatedAt
             state.is_vendor = action.payload.is_vendor
@@ -38,12 +40,13 @@ export const userProfileInfoSlice = createSlice({
             state.first_name = ''
             state.last_name = ''
             state.email = ''
+            state.country_code = ''
             state.createdAt = null
             state.updatedAt = null
             state.is_vendor = null
             state.phone = null
             state.avatar = ''
-            state.wishlists_count = null
+            state.wishlists_count = 0
         },
     },
 })

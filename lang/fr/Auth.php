@@ -24,4 +24,5 @@ return [
     'login_via_facebook' => 'Se connecter via Facebook',
     'signing_in' => 'Connexion en cours...',
     'dont_have_an_account' => 'Vous n\'avez pas de compte?',
+    'must_sign_in' => 'Vous devez vous connecter pour effectuer cette action.',
 ];

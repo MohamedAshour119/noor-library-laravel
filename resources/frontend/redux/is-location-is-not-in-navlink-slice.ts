@@ -4,7 +4,7 @@ export const isLocationIsNotInNavlinkSlice = createSlice({
     name: 'check-is-location-is-not-in-navlink',
     initialState: false,
     reducers: {
-        setActive: (state, action: PayloadAction<boolean>) => action.payload,
+        setActive: (_, action: PayloadAction<boolean>) => action.payload,
     },
 })
 

@@ -53,7 +53,6 @@ export default function ShowBook() {
         }
     }, [book_data?.is_added_to_wishlist]);
 
-
     const handleAddToWishlist = () => {
         setIs_add_to_wishlist_loading(true)
 
@@ -78,7 +77,17 @@ export default function ShowBook() {
             })
             .finally(() => setIs_add_to_wishlist_loading(false))
     }
-
+    const handleAddToWishlistMessage = () => {
+        if (!auth_user.is_vendor) {
+            if (is_add_to_wishlist) {
+                handleDeleteFromWishlist()
+            } else {
+                handleAddToWishlist()
+            }
+        } else {
+            handleOpenUnauthorizedMessage()
+        }
+    }
     const getComments = (page_url: string) => {
         setIs_fetching(true)
         setIs_loading(true)
@@ -193,8 +202,8 @@ export default function ShowBook() {
     const handleAddToCartIconMouseLeave = () => setIs_add_to_cart_icon_hovered(false);
 
     // Handlers for hover effects on the "Add to Wishlist" icon
-    const handleAddToCartWishlistMouseEnter = () => setIs_add_to_wishlist_icon_hovered(true);
-    const handleAddToCartWishlistMouseLeave = () => setIs_add_to_wishlist_icon_hovered(false);
+    const handleAddToWishlistMouseEnter = () => setIs_add_to_wishlist_icon_hovered(true);
+    const handleAddToWishlistMouseLeave = () => setIs_add_to_wishlist_icon_hovered(false);
 
     // Fetch book data from the API
     const { languageLabel } = useBookLanguageLabel(book_data?.language)
@@ -241,18 +250,6 @@ export default function ShowBook() {
     const handleOpenUnauthorizedMessage = () => {
         if (auth_user.is_vendor) {
             dispatch(setIsUnauthorizedMessageOpenSlice(true))
-        }
-    }
-
-    const handleAddToWishlistMessage = () => {
-        if (!auth_user.is_vendor) {
-            if (is_add_to_wishlist) {
-                handleDeleteFromWishlist()
-            } else {
-                handleAddToWishlist()
-            }
-        } else {
-            handleOpenUnauthorizedMessage()
         }
     }
     const modalRef = useRef<HTMLDivElement>(null);
@@ -325,8 +322,8 @@ export default function ShowBook() {
                                         }
                                         <button
                                             className="relative bg-main_bg w-fit p-2 rounded-full"
-                                            onMouseEnter={handleAddToCartWishlistMouseEnter}
-                                            onMouseLeave={handleAddToCartWishlistMouseLeave}
+                                            onMouseEnter={handleAddToWishlistMouseEnter}
+                                            onMouseLeave={handleAddToWishlistMouseLeave}
                                             onClick={handleAddToWishlistMessage}
                                             disabled={is_add_to_wishlist_loading}
                                         >

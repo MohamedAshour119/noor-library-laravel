@@ -104,9 +104,6 @@ class AuthController extends Controller
         if (Auth::check()) {
             Auth::user()->currentAccessToken()->delete();
             return $this->response_success([], 'You logged out successfully');
-        }else if (Auth::guard('vendor')->check()) {
-            Auth::guard('vendor')->user()->currentAccessToken()->delete();
-            return $this->response_success([], 'Vendor logged out successfully');
         }
 
         return $this->response_error('No active session found', [], 403);

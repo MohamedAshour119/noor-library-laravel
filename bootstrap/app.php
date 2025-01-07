@@ -2,11 +2,13 @@
 
 use App\Http\Middleware\EnsureOnlyUsers;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
-use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ValidateTempToken;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -31,5 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(\App\Http\Middleware\SetLocale::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        $exceptions->map(\Illuminate\Auth\AuthenticationException::class, function ($exception) {
+            $message = __('Auth.must_sign_in', [], session('locale'));
+
+            throw new UnauthorizedHttpException('', $message, $exception, 401);
+        });
+    })
+    ->create();

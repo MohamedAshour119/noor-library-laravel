@@ -19,6 +19,7 @@ import {setUser} from "../../redux/user-slice.ts";
 import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setTempToken} from "../../redux/temp-token.ts";
 import Reviews from "../components/profile/Reviews.tsx";
+import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 export default function Profile() {
     const translation = useSelector((state: RootState) => state.translationReducer)
     const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -37,7 +38,7 @@ export default function Profile() {
     const [reviews_next_page_url, setReviews_next_page_url] = useState('');
     const [reviews_is_loading, setReviews_is_loading] = useState(false);
     const [reviews_is_fetching, setReviews_is_fetching] = useState(false);
-    const [reviews_count, setReviews_count] = useState();
+    const [reviews_count, setReviews_count] = useState(0);
     const [wishlist_books, setWishlist_books] = useState<BookCardInterface[]>([]);
     const [wishlist_books_next_page_url, setWishlist_books_next_page_url] = useState('');
     const [wishlist_books_is_fetching, setWishlist_books_is_fetching] = useState(false);
@@ -103,7 +104,9 @@ export default function Profile() {
             .then(res  => {
                 setReviews(res.data.data.reviews)
                 setReviews_next_page_url(res.data.data.reviews_next_page_url)
-                setReviews_count(res.data.data.reviews_count)
+                if (res.data.data.reviews_count) {
+                    setReviews_count(res.data.data.reviews_count)
+                }
                 if (res.data.data.user) {
                     dispatch(setUserProfileInfo(res.data.data.user))
                 }else if (res.data.data.vendor.id !== auth_user.id) {
@@ -149,10 +152,10 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        if ((user_isActive.wishlist || is_visited_user_sections_active.wishlist) && wishlist_books.length === 0) {
+        if ((user_isActive.wishlist || is_visited_user_sections_active.wishlist) && wishlist_books.length === 0 && !user_info.is_vendor && user_info.id) {
             getWishlistBooks(`/wishlist/${user_info.id}`, true)
         }
-    }, [user_isActive, is_visited_user_sections_active.wishlist]);
+    }, [user_isActive, is_visited_user_sections_active, user_info.username]);
 
 
     const last_book_ref = useRef(null);
@@ -340,7 +343,9 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        // dispatch(setTempToken(''))
+        setReviews_count(0)
+        dispatch(setResetVendorsActive())
+        setWishlist_books([])
         getUserInfo()
     }, [user]);
 
@@ -596,7 +601,7 @@ export default function Profile() {
                                 </div>
                             )
                         }
-                        {user_info?.is_vendor && user !== auth_user.username && reviews.length === 0 && is_visited_vendor_sections_active.reviews &&
+                        {user_info?.is_vendor && user !== auth_user.username && reviews_count === 0 && is_visited_vendor_sections_active.reviews &&
                             <NotFoundContainer
                                 src={`/profile/reviews-not-found.svg`}
                                 visited_user={display_name}
@@ -612,7 +617,7 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {!user_info?.is_vendor && user !== auth_user.username && reviews.length === 0 && is_visited_user_sections_active.reviews &&
+                        {!user_info?.is_vendor && user !== auth_user.username && reviews_count === 0 && is_visited_user_sections_active.reviews &&
                             <NotFoundContainer
                                 src={`/profile/reviews-not-found.svg`}
                                 visited_user={display_name}
@@ -627,7 +632,7 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {!user_info?.is_vendor && user_info.wishlists_count !== undefined && user_info.wishlists_count > 0 && (user_isActive.wishlist || is_visited_user_sections_active.wishlist) &&
+                        {!user_info?.is_vendor && user_info.wishlists_count !== undefined && user_info.wishlists_count > 0 && ((user_isActive.wishlist && user_info.username === auth_user.username) || (is_visited_user_sections_active.wishlist && user_info.username !== auth_user.username)) &&
                             <div className={`max-xxs:px-10 grid xxs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 !w-full`}>
                                 {show_wishlist_books}
                             </div>
@@ -639,14 +644,14 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {user_info?.is_vendor && user === auth_user.username && reviews.length === 0 && vendor_isActive.reviews &&
+                        {user_info?.is_vendor && user === auth_user.username && reviews_count === 0 && vendor_isActive.reviews &&
                             <NotFoundContainer
                                 src={`/profile/reviews-not-found.svg`}
                                 content={translation.your_books_have_no_reviews}
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {user_info?.is_vendor && reviews.length > 0 && (is_visited_vendor_sections_active.reviews && vendor_isActive.reviews) &&
+                        {user_info?.is_vendor && reviews_count > 0 && (is_visited_vendor_sections_active.reviews || vendor_isActive.reviews) &&
                             <Reviews
                                 reviews={reviews}
                                 setReviews={setReviews}

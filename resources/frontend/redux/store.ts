@@ -28,6 +28,9 @@ const persistConfig = {
         'isSearchModalOpenReducer',
         'isAddToCartSidebarReducer',
         'isUnauthorizedMessageOpenReducer',
+        'userProfileInfoReducer',
+        'isVisitedUserSectionsActive',
+        'isVisitedVendorSectionsActive',
     ],
 }
 
