@@ -19,6 +19,7 @@ export default {
                 border_color: "#E8E8E8",
                 main_bg: "#F1F1F1",
                 input_bg: "#FAFAFA",
+                disable_color: "#D2CFCF",
             },
         },
         screens: {

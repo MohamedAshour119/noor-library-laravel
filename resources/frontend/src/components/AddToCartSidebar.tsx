@@ -5,6 +5,7 @@ import {IoMdClose} from "react-icons/io";
 import CartItem from "./CartItem.tsx";
 import {useEffect, useState} from "react";
 import {Book} from "../../Interfaces.ts";
+import {Link, useLocation} from "react-router-dom";
 
 export default function AddToCartSidebar() {
     const isAddToCartSidebarSlice = useSelector((state: RootState) => state.isAddToCartSidebarReducer.is_open);
@@ -46,6 +47,12 @@ export default function AddToCartSidebar() {
         </li>
     ))
 
+    const location = useLocation()
+    useEffect(() => {
+        dispatch(setIsAddToCartSidebarOpenSlice(false))
+    }, [location.pathname]);
+
+
     return (
         <>
             {/* Backdrop */}
@@ -82,10 +89,12 @@ export default function AddToCartSidebar() {
                         <span className="text-lg font-bold">{translation.total}:</span>
                         <span className="text-2xl font-bold text-green-500">{total_price}$</span>
                     </div>
-                    <button
-                        className="bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 rounded mt-4 w-full">
+                    <Link
+                        onClick={() => dispatch(setIsAddToCartSidebarOpenSlice(false))}
+                        to={`/check-out`}
+                        className="block text-center bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 rounded mt-4 w-full">
                         {translation.proceed_to_checkout}
-                    </button>
+                    </Link>
                 </div>
             </div>
         </>

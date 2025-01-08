@@ -268,3 +268,10 @@ span[data-index="4"]
     position: absolute;
     right: 50px;
 }
+
+div[aria-label="progressbar"] div div {
+    background-color: var(--main_color);
+}
+div[aria-label="progressbar"] div {
+    height: 5px;
+}

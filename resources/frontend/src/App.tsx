@@ -23,6 +23,7 @@ import apiClient from "../ApiClient.ts";
 import {setTranslation} from "../redux/translation-slice.ts";
 import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
+import CheckOut from "./pages/CheckOut.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
@@ -148,6 +149,7 @@ function App() {
 
                     <Route element={<AuthRoute />}>
                         <Route path="/add-book" element={<AddBook />} />
+                        <Route path="/check-out" element={<CheckOut />} />
                     </Route>
 
                     <Route element={<AuthRedirect />}>

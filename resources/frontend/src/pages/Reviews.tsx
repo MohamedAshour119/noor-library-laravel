@@ -6,8 +6,12 @@ import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import Comment from "../components/show-book/Comment.tsx";
 import {CommentInterface} from "../../Interfaces.ts";
+import {useSelector} from "react-redux";
+import {RootState} from "../../redux/store.ts";
 
 export default function Reviews() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
+
     const [is_loading, setIs_loading] = useState(true);
     const [is_fetching, setIs_fetching] = useState(false);
     const [reviews, setReviews] = useState<CommentInterface[]>([]);
@@ -73,7 +77,7 @@ export default function Reviews() {
         <main className={`flex flex-col justify-between min-h-[643px] h-max items-center bg-main_bg pt-8`}>
             <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 pb-10`}>
                 <div className={`flex flex-col gap-y-4`}>
-                    <h1 className={`text-2xl font-roboto-semi-bold`}>Books Reviews</h1>
+                    <h1 className={`text-2xl font-roboto-semi-bold`}>{translation.books_reviews}</h1>
                     <div className={`pb-4 container w-full flex flex-col gap-y-8`}>
                         {!is_loading && show_reviews}
                     </div>
