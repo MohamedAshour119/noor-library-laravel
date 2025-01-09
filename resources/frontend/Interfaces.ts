@@ -187,7 +187,7 @@ export interface SearchBooks {
 export interface BillingInfo {
     first_name: string
     last_name: string
-    City: string
-    Street_address: string
-    phone: number
+    city: string
+    street_address: string
+    phone_number: string
 }

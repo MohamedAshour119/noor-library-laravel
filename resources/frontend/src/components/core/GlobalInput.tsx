@@ -6,6 +6,7 @@ interface Props {
     type?: string
     label_styles?: string
     input_styles?: string
+    parent_styles?: string
     placeholder: string
     value: string | number | null
     name: string
@@ -15,9 +16,9 @@ interface Props {
     error?: string | null
 }
 export default function GlobalInput(props: Props) {
-    const { label, id, type = 'text', label_styles, input_styles, placeholder, value, is_required = true, additional_text, name, onChange, error } = props
+    const { label, id, type = 'text', label_styles, input_styles, parent_styles, placeholder, value, is_required = true, additional_text, name, onChange, error } = props
     return (
-        <>
+        <div className={parent_styles ? `${parent_styles}` : ''}>
             <label
                 className={`${label_styles} block text-gray-700 text-lg font-bold mb-2`}
                 htmlFor={id}
@@ -40,6 +41,6 @@ export default function GlobalInput(props: Props) {
                 onChange={onChange}
             />
             {error && <span className={`text-red-700`}>{error}</span>}
-        </>
+        </div>
     )
 }

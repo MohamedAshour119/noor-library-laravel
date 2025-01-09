@@ -1,19 +1,40 @@
 import Footer from "../components/Footer.tsx";
-import {useEffect, useState} from "react";
-import {Book} from "../../Interfaces.ts";
+import {ChangeEvent, useEffect, useState} from "react";
+import {BillingInfo, Book, Errors} from "../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
+import GlobalInput from "../components/core/GlobalInput.tsx";
+import PhoneInput from "react-phone-input-2";
+import Sidebar from "../components/checkout/Sidebar.tsx";
 export default function CheckOut() {
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
     const [cart_books, setCart_books] = useState<Book[]>([]);
-    const [total_price, setTotal_price] = useState();
+    const [total_price, setTotal_price] = useState(0);
 
     const [currentStep, setCurrentStep] = useState(1);
     const steps = ["Step 1", "Step 2", "Step 3"];
 
-    const [billing_info, setBilling_info] = useState({
-
+    const [billing_info, setBilling_info] = useState<BillingInfo>({
+        first_name: '',
+        last_name: '',
+        city: '',
+        street_address: '',
+        phone_number: ''
     });
+    const [errors, setErrors] = useState<Errors | null>(null)
+
+    const handleBillingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setBilling_info(prevState => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }))
+    }
+    const handlePhoneChange = (phone: string, country: any) => {
+        setBilling_info(prevState => ({
+            ...prevState,
+            phone_number: phone, // The full phone number with country code
+        }));
+    };
 
     useEffect(() => {
         const books = JSON.parse(localStorage.getItem('book') || '[]');
@@ -118,12 +139,41 @@ export default function CheckOut() {
     return (
         <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
             <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
-                <div className={`container w-full overflow-auto grid ${currentStep === 2 ? 'grid-cols-[3fr_1fr]' : ''} gap-x-10`}>
-
-
+                {/* Progress Bar */}
+                <div className="w-[80%] mx-auto mt-10">
+                    <div className="relative">
+                        <div className="w-full h-2 bg-gray-200 rounded-full">
+                            <div
+                                className="h-2 bg-main_color rounded-full transition-all duration-300"
+                                style={{ width: progressWidth }}
+                            ></div>
+                        </div>
+                        <div className="absolute top-1/2 -translate-y-1/2 flex justify-between w-full">
+                            {steps.map((_, index) => (
+                                <div className={`relative`}>
+                                    <div
+                                        key={index}
+                                        className={`size-14 flex items-center justify-center rounded-full border-2 ${
+                                            currentStep > index
+                                                ? "border-main_color_darker bg-main_color_darker text-white"
+                                                : "border-gray-300 bg-white text-gray-500"
+                                        } transition-all duration-300`}
+                                    >
+                                        {index + 1}
+                                    </div>
+                                    <span className={`absolute w-max mt-1 font-semibold ${index + 1 !== 1 ? '-left-1/2' : ''}`}>
+                                            {index + 1 === 1 ? 'Your Cart' : index + 1 === 2 ? 'Checkout Details' : 'Order Complete'}
+                                        </span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className={`container pb-10 px-2 mt-10 w-full overflow-auto grid ${currentStep === 2 ? 'md:grid-cols-2 lg:grid-cols-[3fr_2fr] xl:grid-cols-[3fr_1.3fr] 2xl:grid-cols-[3fr_1fr]' : ''} gap-x-10`}>
                     {/* Content */}
-                    <div className={`flex flex-col gap-y-4 mt-20`}>
-                        {currentStep === 1 && <div className="flex flex-col mt-10 ">
+                    {currentStep === 1 &&
+                        <div className={`flex flex-col gap-y-4 mt-20`}>
+                            <div className="flex flex-col ">
                             <div className="overflow-x-hidden">
                                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                                 {/*<div className="inline-block min-w-full py-2">*/}
@@ -162,14 +212,92 @@ export default function CheckOut() {
                                     </div>
                                 </div>
                             </div>
-                        </div>}
-                    </div>
+                        </div>
+                        </div>
+                    }
 
+                    {currentStep === 2 &&
+                        <div className={`mt-20`}>
+                            <div className={`grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-6 lg:gap-y-10`}>
+                                <GlobalInput
+                                    label={`First Name`}
+                                    id={`first_name`}
+                                    placeholder={`First Name`}
+                                    value={billing_info.first_name}
+                                    name={'first_name'}
+                                    onChange={handleBillingInfoChange}
+                                />
+                                <GlobalInput
+                                    label={`Last Name`}
+                                    id={`last_name`}
+                                    placeholder={`Last Name`}
+                                    value={billing_info.last_name}
+                                    name={'last_name'}
+                                    onChange={handleBillingInfoChange}
+                                />
+                                <GlobalInput
+                                    label={`City`}
+                                    id={`city`}
+                                    placeholder={`City`}
+                                    value={billing_info.city}
+                                    name={'city'}
+                                    onChange={handleBillingInfoChange}
+                                />
+                                <GlobalInput
+                                    label={`Street Address`}
+                                    id={`street_address`}
+                                    placeholder={`Street Address`}
+                                    value={billing_info.street_address}
+                                    name={'street_address'}
+                                    onChange={handleBillingInfoChange}
+                                />
+                                <div>
+                                    <label
+                                        className={`block text-gray-700 text-lg font-bold mb-2`}
+                                    >
+                                        Phone Number
+                                        <span className={`text-red-700 font-roboto-light`}>* </span>
+                                    </label>
+                                    <PhoneInput
+                                        country={'eg'}
+                                        value={billing_info.phone_number}
+                                        onChange={handlePhoneChange}
+                                        enableSearch={true}
+                                        placeholder={`Phone Number`}
+                                        inputStyle={{
+                                            width: '100%',
+                                            height: '40px',
+                                            borderRadius: '8px',
+                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
+                                        }}
+                                        containerStyle={{
+                                            width: '100%',
+                                            height: 'fit-content',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            position: 'relative',
+                                        }}
+                                        buttonStyle={{
+                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                        }}
+                                    />
+                                </div>
+                                {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
+
+                            </div>
+                        </div>
+                    }
                     {/*  Check out Sidebar  */}
-                    {currentStep === 2 && <div className={`bg-red-400`}>Check out Sidebar</div>}
+                    {currentStep === 2 &&
+                        <Sidebar
+                            cart_books={cart_books}
+                            total_price={total_price}
+                        />
+                    }
                 </div>
                 {/* Navigation Buttons */}
-                <div className="container flex justify-end w-full mt-6 pb-6">
+                {currentStep < 2 && <div className="container flex justify-end w-full mt-6 pb-6">
                     <button
                         onClick={handleNext}
                         disabled={currentStep === steps.length}
@@ -181,7 +309,7 @@ export default function CheckOut() {
                     >
                         Proceed to checkout details
                     </button>
-                </div>
+                </div>}
             </div>
             <Footer/>
         </div>
