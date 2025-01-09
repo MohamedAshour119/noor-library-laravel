@@ -2,52 +2,56 @@ import {Book} from "../../Interfaces.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
-import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 interface Props extends Book {
     is_last_book?: boolean
-    total_price: number
-    setTotal_price: Dispatch<SetStateAction<number>>
 }
 export default function CartItem(props: Props) {
-    const {title, author, price, cover, id, is_last_book = false, setTotal_price, total_price} = props
+    const {title, author, price, cover, id, is_last_book = false, } = props
     const translation = useSelector((state: RootState) => state.translationReducer)
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
 
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(1);
 
-    // useEffect(() => {
-    //     const book = getStoredBook()
-    //     setQuantity(quantity)
-    // }, []);
-
-    const getStoredBook = () => {
+    useEffect(() => {
         const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
-        return previous_books.filter((storedBook: Book) => storedBook.id === id)[0]
-    }
+        const book = previous_books.find((item: Book ) => item.id === id)
+        setQuantity(book.quantity)
+    }, []);
+
     const decrementQuantity = () => {
-        const book = getStoredBook()
+        const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
         if (quantity > 1) {
+            const book = previous_books.find((item: Book ) => item.id === id)
+            book.quantity = book.quantity - 1
+            localStorage.setItem('book', JSON.stringify(previous_books))
             setQuantity(quantity - 1)
-            setTotal_price(total_price - price)
-            localStorage.setItem('total_price', JSON.stringify(total_price))
+
+            const previous_total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+            localStorage.setItem('total_price', JSON.stringify(previous_total_price - price ))
         }
     }
     const incrementQuantity = () => {
-        const book = getStoredBook()
-        // quantity = (quantity + 1)
+        const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
+        const book = previous_books.find((item: Book ) => item.id === id)
+        book.quantity = book.quantity + 1
+        localStorage.setItem('book', JSON.stringify(previous_books))
         setQuantity(quantity + 1)
-        setTotal_price(total_price + price)
-        localStorage.setItem('total_price', JSON.stringify(total_price))
+
+        const previous_total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+        localStorage.setItem('total_price', JSON.stringify(previous_total_price + price ))
     }
 
     const removeItem = () => {
         const all_items = JSON.parse(localStorage.getItem('book') || '[]')
         const filtered_items = all_items.filter((book: Book) => book.id !== id)
 
+        const previous_total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+        localStorage.setItem('total_price', JSON.stringify(previous_total_price - (quantity * price)))
+
         localStorage.setItem('book', JSON.stringify(filtered_items))
-        localStorage.setItem('total_price', JSON.stringify(total_price))
         dispatch(setAddToCartItemsCount(add_to_cart_count - 1))
     }
 

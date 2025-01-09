@@ -28,7 +28,7 @@ export default {
             'min-503': { min: '503px' },
             'min-513': { min: '513px' },
             'max-527': { max: '527px' },
-
+            'xxxs': '360px',
             'xxs': '445px',
             'xs': '500px',
             'sm': '640px',

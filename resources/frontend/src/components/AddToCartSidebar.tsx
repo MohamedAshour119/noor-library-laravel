@@ -17,19 +17,35 @@ export default function AddToCartSidebar() {
     const [added_books, setAdded_books] = useState<Book[]>([]);
     const [total_price, setTotal_price] = useState(0);
 
+    useEffect(() => {
+        const handleStorageChange = () => {
+                const total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+                setTotal_price(total_price)
+        };
+
+        // Listen for custom events
+        window.addEventListener('storageChange', handleStorageChange);
+
+        // Monkey-patch localStorage.setItem
+        const originalSetItem = localStorage.setItem;
+        // @ts-ignore
+        localStorage.setItem = function (key, value) {
+            // @ts-ignore
+            originalSetItem.apply(this, arguments);
+            window.dispatchEvent(new Event('storageChange')); // Trigger custom event
+        };
+
+        // Cleanup
+        return () => {
+            window.removeEventListener('storageChange', handleStorageChange);
+            localStorage.setItem = originalSetItem; // Restore original setItem
+        };
+    }, []);
+
+
     const closeSidebar = () => {
         dispatch(setIsAddToCartSidebarOpenSlice(false));
     };
-
-    const getTotalPrice = () => {
-        const total = added_books.reduce((sum, book) => sum + book.price, 0);
-        setTotal_price(total);
-    };
-
-    useEffect(() => {
-        getTotalPrice()
-    }, [added_books]);
-
 
     useEffect(() => {
         const books = JSON.parse(localStorage.getItem('book') || '[]');
@@ -43,8 +59,6 @@ export default function AddToCartSidebar() {
                 key={index}
                 {...book}
                 is_last_book={added_books.length - 1 === index}
-                setTotal_price={setTotal_price}
-                total_price={total_price}
             />
         </li>
     ))
@@ -53,7 +67,6 @@ export default function AddToCartSidebar() {
     useEffect(() => {
         dispatch(setIsAddToCartSidebarOpenSlice(false))
     }, [location.pathname]);
-
 
     return (
         <>
