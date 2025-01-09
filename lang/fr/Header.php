@@ -37,4 +37,5 @@ return [
     'remove' => 'Supprimer',
     'total' => 'Total',
     'proceed_to_checkout' => 'Passer à la caisse',
+    'quantity' => 'Quantité',
 ];

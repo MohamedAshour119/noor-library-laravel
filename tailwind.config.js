@@ -20,6 +20,7 @@ export default {
                 main_bg: "#F1F1F1",
                 input_bg: "#FAFAFA",
                 disable_color: "#D2CFCF",
+                table_border: "#cfcfcf",
             },
         },
         screens: {

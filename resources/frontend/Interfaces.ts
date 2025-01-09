@@ -183,3 +183,10 @@ export interface SearchBooks {
     title: string
 }
 
+export interface BillingInfo {
+    first_name: string
+    last_name: string
+    City: string
+    Street_address: string
+    phone: number
+}

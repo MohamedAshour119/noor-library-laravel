@@ -275,3 +275,13 @@ div[aria-label="progressbar"] div div {
 div[aria-label="progressbar"] div {
     height: 5px;
 }
+._2Jtxm._35Ago ._2kL0S{
+    background-color: var(--main_color) !important;
+}
+@layer base {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+}

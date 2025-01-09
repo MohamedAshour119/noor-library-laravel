@@ -37,4 +37,5 @@ return [
     'remove' => 'إزالة',
     'total' => 'الإجمالي',
     'proceed_to_checkout' => 'متابعة الدفع',
+    'quantity' => 'الكمية',
 ];
