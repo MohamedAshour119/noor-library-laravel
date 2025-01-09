@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {Book} from "../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
-import Stepper from "../components/stepper.tsx";
 export default function CheckOut() {
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
     const [cart_books, setCart_books] = useState<Book[]>([]);
@@ -42,6 +41,7 @@ export default function CheckOut() {
                                aria-describedby="helper-text-explanation"
                                className="bg-transparent border-x-0 border-y border-table_border h-11 text-center text-sm block w-full py-2.5 dark:placeholder-gray-400 focus:outline-0"
                                required
+                               value={book.quantity}
                         />
                         <button type="button" id="increment-button" data-input-counter-increment="quantity-input"
                                 className="hover:bg-white transition-all border border-table_border rounded-e-lg p-3 h-11 focus:outline-0">
@@ -96,7 +96,7 @@ export default function CheckOut() {
                                         >
                                             {index + 1}
                                         </div>
-                                        <span className={`absolute w-max mt-1 ${index + 1 !== 1 ? '-left-1/2' : ''}`}>
+                                        <span className={`absolute w-max mt-1 font-semibold ${index + 1 !== 1 ? '-left-1/2' : ''}`}>
                                             {index + 1 === 1 ? 'Your Cart' : index + 1 === 2 ? 'Checkout Details' : 'Order Complete'}
                                         </span>
                                     </div>
@@ -111,7 +111,7 @@ export default function CheckOut() {
                             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                                     <div className="overflow-hidden">
-                                        <table className="min-w-full text-left text-sm font-light">
+                                        <table className="min-w-full text-left font-light">
                                             <thead className="border-b font-medium dark:border-neutral-500">
                                             <tr>
                                                 <th scope="col" className="px-6 py-4">#</th>

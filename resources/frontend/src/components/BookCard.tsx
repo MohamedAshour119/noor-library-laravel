@@ -105,16 +105,17 @@ export default function BookCard(props: Props) {
                 author: author,
                 category: category,
                 price: price,
+                quantity: 1,
             };
 
-            console.log(previous_books)
-            console.log('book_id', book.id)
             const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === id);
 
             if (is_book_exist) {
                 return
             }
 
+            const previous_total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+            localStorage.setItem('total_price', JSON.stringify(previous_total_price + book.price))
             localStorage.setItem('book', JSON.stringify([...previous_books, book]));
             dispatch(setAddToCartItemsCount(add_to_cart_items_count + 1));
 

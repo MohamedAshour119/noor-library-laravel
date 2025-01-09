@@ -101,6 +101,7 @@ export interface Book {
     downloadable: boolean
     created_at: string
     is_added_to_wishlist: boolean
+    quantity?: number
 }
 
 export interface BookCardInterface {

@@ -2,25 +2,52 @@ import {Book} from "../../Interfaces.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useEffect, useState} from "react";
 
 interface Props extends Book {
     is_last_book?: boolean
+    total_price: number
+    setTotal_price: Dispatch<SetStateAction<number>>
 }
 export default function CartItem(props: Props) {
-    const {title, author, price, cover, id, is_last_book = false} = props
+    const {title, author, price, cover, id, is_last_book = false, setTotal_price, total_price} = props
     const translation = useSelector((state: RootState) => state.translationReducer)
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
 
     const dispatch = useDispatch()
     const [quantity, setQuantity] = useState(1);
 
+    // useEffect(() => {
+    //     const book = getStoredBook()
+    //     setQuantity(quantity)
+    // }, []);
+
+    const getStoredBook = () => {
+        const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
+        return previous_books.filter((storedBook: Book) => storedBook.id === id)[0]
+    }
+    const decrementQuantity = () => {
+        const book = getStoredBook()
+        if (quantity > 1) {
+            setQuantity(quantity - 1)
+            setTotal_price(total_price - price)
+            localStorage.setItem('total_price', JSON.stringify(total_price))
+        }
+    }
+    const incrementQuantity = () => {
+        const book = getStoredBook()
+        // quantity = (quantity + 1)
+        setQuantity(quantity + 1)
+        setTotal_price(total_price + price)
+        localStorage.setItem('total_price', JSON.stringify(total_price))
+    }
 
     const removeItem = () => {
         const all_items = JSON.parse(localStorage.getItem('book') || '[]')
         const filtered_items = all_items.filter((book: Book) => book.id !== id)
 
         localStorage.setItem('book', JSON.stringify(filtered_items))
+        localStorage.setItem('total_price', JSON.stringify(total_price))
         dispatch(setAddToCartItemsCount(add_to_cart_count - 1))
     }
 
@@ -34,6 +61,7 @@ export default function CartItem(props: Props) {
                     <p className="text-gray-500">{translation.quantity}: {quantity}</p>
                     <div className="relative flex items-center justify-end w-28 text-text_color">
                         <button
+                            onClick={decrementQuantity}
                             type="button"
                             id="decrement-button"
                             data-input-counter-decrement="quantity-input"
@@ -51,8 +79,10 @@ export default function CartItem(props: Props) {
                                aria-describedby="helper-text-explanation"
                                className="bg-transparent border-x-0 border-y border-table_border h-4 py-3 text-center text-sm block w-10 focus:outline-0"
                                required
+                               value={quantity}
                         />
                         <button
+                            onClick={incrementQuantity}
                             type="button"
                             id="increment-button"
                             data-input-counter-increment="quantity-input"

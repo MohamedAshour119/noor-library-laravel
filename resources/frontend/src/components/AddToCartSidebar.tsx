@@ -43,6 +43,8 @@ export default function AddToCartSidebar() {
                 key={index}
                 {...book}
                 is_last_book={added_books.length - 1 === index}
+                setTotal_price={setTotal_price}
+                total_price={total_price}
             />
         </li>
     ))
