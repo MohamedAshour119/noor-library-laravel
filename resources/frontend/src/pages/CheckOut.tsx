@@ -7,6 +7,7 @@ import GlobalInput from "../components/core/GlobalInput.tsx";
 import PhoneInput from "react-phone-input-2";
 import Sidebar from "../components/checkout/Sidebar.tsx";
 export default function CheckOut() {
+    const translation = useSelector((state: RootState) => state.translationReducer)
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
     const [cart_books, setCart_books] = useState<Book[]>([]);
     const [total_price, setTotal_price] = useState(0);
@@ -124,7 +125,7 @@ export default function CheckOut() {
         ))
     ) : (
         <tr>
-            <td colSpan={5} className="text-center py-4">No products in cart.</td>
+            <td colSpan={5} className="text-center py-4">{translation.no_products_in_cart}</td>
         </tr>
     );
 
@@ -162,7 +163,7 @@ export default function CheckOut() {
                                         {index + 1}
                                     </div>
                                     <span className={`absolute w-max mt-1 font-semibold ${index + 1 !== 1 ? '-left-1/2' : ''}`}>
-                                            {index + 1 === 1 ? 'Your Cart' : index + 1 === 2 ? 'Checkout Details' : 'Order Complete'}
+                                            {index + 1 === 1 ? translation.your_cart : index + 1 === 2 ? translation.checkout_details : translation.order_complete}
                                         </span>
                                 </div>
                             ))}
@@ -178,14 +179,14 @@ export default function CheckOut() {
                                 <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
                                 {/*<div className="inline-block min-w-full py-2">*/}
                                     <div className="overflow-x-scroll">
-                                        <table className="min-w-full text-left font-light font-roboto-semi-bold">
+                                        <table className="min-w-full ltr:text-left rtl:text-right font-light font-roboto-semi-bold">
                                             <thead className="border-b dark:border-neutral-500">
                                             <tr className={`text-main_color_darker`}>
                                                 <th className="px-6 py-4">#</th>
-                                                <th className="px-6 py-4">Image</th>
-                                                <th className="px-6 py-4">Title</th>
-                                                <th className="px-6 py-4">Quantity</th>
-                                                <th className="px-6 py-4">Price</th>
+                                                <th className="px-6 py-4">{translation.image}</th>
+                                                <th className="px-6 py-4">{translation.title}</th>
+                                                <th className="px-6 py-4">{translation.quantity}</th>
+                                                <th className="px-6 py-4">{translation.price}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -197,7 +198,7 @@ export default function CheckOut() {
                                                         colSpan={4}
                                                         className="px-6 py-4 font-roboto-semi-bold "
                                                     >
-                                                        Total:
+                                                        {translation.total}:
                                                     </td>
                                                     <td
                                                         colSpan={1}
@@ -220,33 +221,33 @@ export default function CheckOut() {
                         <div className={`mt-20`}>
                             <div className={`grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-5 gap-y-6 lg:gap-y-10`}>
                                 <GlobalInput
-                                    label={`First Name`}
+                                    label={translation.first_name}
                                     id={`first_name`}
-                                    placeholder={`First Name`}
+                                    placeholder={translation.first_name}
                                     value={billing_info.first_name}
                                     name={'first_name'}
                                     onChange={handleBillingInfoChange}
                                 />
                                 <GlobalInput
-                                    label={`Last Name`}
+                                    label={translation.last_name}
                                     id={`last_name`}
-                                    placeholder={`Last Name`}
+                                    placeholder={translation.last_name}
                                     value={billing_info.last_name}
                                     name={'last_name'}
                                     onChange={handleBillingInfoChange}
                                 />
                                 <GlobalInput
-                                    label={`City`}
+                                    label={translation.city}
                                     id={`city`}
-                                    placeholder={`City`}
+                                    placeholder={translation.city}
                                     value={billing_info.city}
                                     name={'city'}
                                     onChange={handleBillingInfoChange}
                                 />
                                 <GlobalInput
-                                    label={`Street Address`}
+                                    label={translation.street_address}
                                     id={`street_address`}
-                                    placeholder={`Street Address`}
+                                    placeholder={translation.street_address}
                                     value={billing_info.street_address}
                                     name={'street_address'}
                                     onChange={handleBillingInfoChange}
@@ -255,7 +256,7 @@ export default function CheckOut() {
                                     <label
                                         className={`block text-gray-700 text-lg font-bold mb-2`}
                                     >
-                                        Phone Number
+                                        {translation.phone_number}
                                         <span className={`text-red-700 font-roboto-light`}>* </span>
                                     </label>
                                     <PhoneInput
@@ -307,7 +308,7 @@ export default function CheckOut() {
                                 : "bg-main_color hover:bg-main_color_darker text-white"
                         } transition-all duration-300`}
                     >
-                        Proceed to checkout details
+                        {translation.proceed_to_checkout_details}
                     </button>
                 </div>}
             </div>

@@ -61,6 +61,7 @@ function App() {
             'sign-in': 'sign-in',
             reviews: 'reviews',
             'add-book': 'add-book',
+            checkout: 'checkout',
             // Add more static namespaces if needed
         };
 
@@ -149,7 +150,7 @@ function App() {
 
                     <Route element={<AuthRoute />}>
                         <Route path="/add-book" element={<AddBook />} />
-                        <Route path="/check-out" element={<CheckOut />} />
+                        <Route path="/checkout" element={<CheckOut />} />
                     </Route>
 
                     <Route element={<AuthRedirect />}>

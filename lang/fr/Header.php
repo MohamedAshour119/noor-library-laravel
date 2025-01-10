@@ -22,7 +22,7 @@ return [
     'unauthorized' => 'Non autorisé!',
     'unauthorized_customer_message' => 'Vous êtes connecté en tant que client, vous devez vous connecter en tant que commerçant.',
     'unauthorized_vendor_message' => 'Vous êtes connecté en tant que vendeur, vous devez vous connecter en tant que client pour effectuer cette action.',
-    'your_cart' => 'Votre panier.',
+    'cart' => 'Votre panier.',
     'sign_in' => 'Se connecter',
     'sign_up' => 'S\'inscrire',
     'and' => 'et',

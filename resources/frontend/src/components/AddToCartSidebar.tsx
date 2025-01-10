@@ -85,7 +85,7 @@ export default function AddToCartSidebar() {
             >
                 <div className="h-full overflow-y-scroll">
                         <div className="p-4 flex justify-between items-center border-b">
-                            <h2 className="text-lg font-semibold">{translation.your_cart}</h2>
+                            <h2 className="text-lg font-semibold">{translation.cart}</h2>
                             <button
                                 className="font-bold text-xl hover:bg-main_bg p-2 rounded-full"
                                 onClick={closeSidebar}
@@ -106,7 +106,7 @@ export default function AddToCartSidebar() {
                     </div>
                     <Link
                         onClick={() => dispatch(setIsAddToCartSidebarOpenSlice(false))}
-                        to={`/check-out`}
+                        to={`/checkout`}
                         className="block text-center bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 rounded mt-4 w-full">
                         {translation.proceed_to_checkout}
                     </Link>
