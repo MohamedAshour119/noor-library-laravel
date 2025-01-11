@@ -1,16 +1,18 @@
 import Footer from "../components/Footer.tsx";
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {BillingInfo, Book, Errors} from "../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import GlobalInput from "../components/core/GlobalInput.tsx";
 import PhoneInput from "react-phone-input-2";
 import Sidebar from "../components/checkout/Sidebar.tsx";
+import axios from "axios";
+import {enqueueSnackbar} from "notistack";
+
 export default function CheckOut() {
     const translation = useSelector((state: RootState) => state.translationReducer)
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
     const [cart_books, setCart_books] = useState<Book[]>([]);
-    const [total_price, setTotal_price] = useState(0);
 
     const [currentStep, setCurrentStep] = useState(1);
     const steps = ["Step 1", "Step 2", "Step 3"];
@@ -19,8 +21,11 @@ export default function CheckOut() {
         first_name: '',
         last_name: '',
         city: '',
-        street_address: '',
-        phone_number: ''
+        street: '',
+        phone_number: '',
+        amount: 0,
+        cash_on_delivery: false,
+        pay_with_credit_card: false,
     });
     const [errors, setErrors] = useState<Errors | null>(null)
 
@@ -30,11 +35,40 @@ export default function CheckOut() {
             [e.target.name]: e.target.value
         }))
     }
-    const handlePhoneChange = (phone: string, country: any) => {
+    const handlePhoneChange = (phone: string) => {
         setBilling_info(prevState => ({
             ...prevState,
             phone_number: phone, // The full phone number with country code
         }));
+    };
+
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+
+        try {
+            // Step 1: Create an order
+            const orderResponse = await axios.post("/api/paymob/create-order", {
+                amount_cents: billing_info.amount * 100, // Convert EGP to cents
+                first_name: billing_info.first_name,
+                last_name: billing_info.last_name,
+                phone_number: billing_info.phone_number,
+            }, {headers: {
+                'Accept': 'application/json',
+                'Authorization':'Bearer ' + localStorage.getItem('token'),
+            }})
+
+            // Step 2: Get order details from response
+            const { id: order_id, integration_id, token, order_url } = orderResponse.data.data;
+
+            // Step 3: Redirect the user to the payment page
+            if (order_url) {
+                window.location.href = order_url;  // Redirecting to Paymob payment page
+            }
+
+        } catch (error) {
+            // @ts-ignore
+            enqueueSnackbar(error.response.data.errors, {variant: "error"})
+        }
     };
 
     useEffect(() => {
@@ -45,7 +79,10 @@ export default function CheckOut() {
     useEffect(() => {
         const handleStorageChange = () => {
             const total_price = JSON.parse(localStorage.getItem('total_price') || '0')
-            setTotal_price(total_price)
+            setBilling_info(prevState => ({
+                ...prevState,
+                amount: total_price
+            }))
 
             const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
             setCart_books(previous_books)
@@ -205,7 +242,7 @@ export default function CheckOut() {
                                                         className="px-6 py-4 font-roboto-semi-bold"
                                                         id="totalPrice"
                                                     >
-                                                        {total_price}$
+                                                        {billing_info.amount}$
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -248,8 +285,8 @@ export default function CheckOut() {
                                     label={translation.street_address}
                                     id={`street_address`}
                                     placeholder={translation.street_address}
-                                    value={billing_info.street_address}
-                                    name={'street_address'}
+                                    value={billing_info.street}
+                                    name={'street'}
                                     onChange={handleBillingInfoChange}
                                 />
                                 <div>
@@ -293,7 +330,9 @@ export default function CheckOut() {
                     {currentStep === 2 &&
                         <Sidebar
                             cart_books={cart_books}
-                            total_price={total_price}
+                            billing_info={billing_info}
+                            setBilling_info={setBilling_info}
+                            handleSubmit={handleSubmit}
                         />
                     }
                 </div>

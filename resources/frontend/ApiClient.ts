@@ -7,7 +7,6 @@ const instance = () => {
         headers: {
             'Accept': 'application/json',
             'Authorization':'Bearer ' + localStorage.getItem('token'),
-            // 'Accept-Option': language,
         }
     });
 }

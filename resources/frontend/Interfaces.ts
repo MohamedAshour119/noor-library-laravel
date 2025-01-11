@@ -188,6 +188,9 @@ export interface BillingInfo {
     first_name: string
     last_name: string
     city: string
-    street_address: string
+    street: string
     phone_number: string
+    amount: number
+    cash_on_delivery: boolean
+    pay_with_credit_card: boolean
 }
