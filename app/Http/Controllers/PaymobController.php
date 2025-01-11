@@ -56,4 +56,9 @@ class PaymobController extends Controller
             'data' => $orderResponse->json(),
         ]);
     }
+
+    public function callback()
+    {
+        info('Callback run');
+    }
 }

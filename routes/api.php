@@ -49,6 +49,7 @@ Route::middleware('api')->group(function () {
             Route::post('/paymob/authenticate', [PaymobController::class, 'authenticate']);
             Route::post('/paymob/create-order', [PaymobController::class, 'createOrder']);
             Route::post('/paymob/initiate-payment', [PaymobController::class, 'initiatePayment']);
+            Route::get('/callback', [PaymobController::class, 'callback']);
         });
     });
 });
