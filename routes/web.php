@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialController;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\User;
@@ -13,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/auth/google/redirect', [SocialController::class, 'googleRedirect']);
+Route::get('/auth/google/callback', [SocialController::class, 'googleCallback']);
 Route::get('/locale/{locale}', function ($locale) {
     if (in_array($locale, ['ar', 'en', 'fr'])) {
         session()->put('locale', $locale);

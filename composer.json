@@ -14,6 +14,7 @@
         "fpdf/fpdf": "^1.86",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/socialite": "^5.16",
         "laravel/telescope": "^5.2",
         "laravel/tinker": "^2.9",
         "opcodesio/log-viewer": "^3.12",

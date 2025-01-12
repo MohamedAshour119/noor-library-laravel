@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymobController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SocialController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
@@ -53,5 +54,3 @@ Route::middleware('api')->group(function () {
         });
     });
 });
-
-
