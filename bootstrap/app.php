@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CorsMiddleware;
 use App\Http\Middleware\EnsureOnlyUsers;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
 use App\Http\Middleware\ValidateTempToken;
@@ -22,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'vendor.upload' => EnsureOnlyVendorsUploadBooks::class,
             'validate.temp.token' => ValidateTempToken::class,
             'user.access' => EnsureOnlyUsers::class,
+            'cors' => CorsMiddleware::class,
         ]);
 
         $middleware->api([
@@ -29,8 +31,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Session\Middleware\StartSession::class,
 //            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \App\Http\Middleware\SetLocale::class,
+            CorsMiddleware::class,
         ]);
-        $middleware->web(\App\Http\Middleware\SetLocale::class);
+        $middleware->web([
+            \App\Http\Middleware\SetLocale::class,
+            CorsMiddleware::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->map(\Illuminate\Auth\AuthenticationException::class, function ($exception) {

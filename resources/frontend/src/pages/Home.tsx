@@ -31,6 +31,27 @@ export default function Home() {
         popular_books: false,
         latest_books: false
     });
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const encodedData = urlParams.get('data');
+
+    if (encodedData) {
+        try {
+            // Decode the data
+            const decodedData = JSON.parse(atob(encodedData));
+
+            // Use the decoded data
+            console.log('User Resource:', decodedData.data);
+            console.log('Token:', decodedData.token);
+            console.log('Expires At:', decodedData.expires_at);
+
+            // Optionally store the token securely
+            localStorage.setItem('authToken', decodedData.token);
+        } catch (error) {
+            console.error('Error decoding data:', error);
+        }
+    }
+
     const body_el = document.body;
     const handleOpen = () => {
         setIsFocused(true)
@@ -60,30 +81,6 @@ export default function Home() {
             window.removeEventListener('mousedown', handleClickOutside)
         }
     }, []);
-
-    // const getBook = (page_url: string, is_fetch_at_start = false) => {
-    //     if (is_fetch_at_start) {
-    //         setIs_loading(true)
-    //     }
-    //     setIs_fetching(true)
-    //     apiClient().get(page_url)
-    //         .then(res => {
-    //             setBooks(prevState => [...prevState, ...res.data.data.books])
-    //             setBooks_next_page_url(res.data.data.next_page_url)
-    //         })
-    //         .catch(err => {
-    //             enqueueSnackbar(err.response.data.message, {variant: "error"})
-    //         })
-    //         .finally(() => {
-    //             setIs_fetching(false)
-    //             setIs_loading(false)
-    //         })
-    // }
-    //
-    // useEffect(() => {
-    //     getBook('/home/get-books', true)
-    // }, []);
-
 
     const last_book_ref = useRef<HTMLAnchorElement>(null);
     const show_books = books.map((book, index) => (

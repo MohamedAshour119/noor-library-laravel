@@ -54,6 +54,10 @@ export default function SignIn() {
             })
     }
 
+    const googleSignIn = () => {
+        window.location.href = '/auth/google/redirect';
+    }
+
     return (
         <>
             <img
@@ -117,7 +121,7 @@ export default function SignIn() {
                         <span className="mx-4 text-gray-500">OR</span>
                         <hr className="w-1/2 border-t border-gray-300" />
                     </div>
-                    <LoginProviders/>
+                    <LoginProviders googleSignIn={googleSignIn}/>
                 </div>
                 <Footer styles={`text-white border-t-0`}/>
             </div>

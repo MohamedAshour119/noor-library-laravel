@@ -58,7 +58,7 @@ export default function CheckOut() {
             }})
 
             // Step 2: Get order details from response
-            const { id: order_id, integration_id, token, order_url } = orderResponse.data.data;
+            const { order_url } = orderResponse.data.data;
 
             // Step 3: Redirect the user to the payment page
             if (order_url) {
