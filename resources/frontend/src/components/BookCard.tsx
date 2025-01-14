@@ -43,7 +43,7 @@ export default function BookCard(props: Props) {
 
     const [is_add_to_wishlist, setIs_add_to_wishlist] = useState(false);
     const [is_add_to_wishlist_loading, setIs_add_to_wishlist_loading] = useState(false);
-    const [unAuthError, setUnAuthError] = useState('');
+    // const [unAuthError, setUnAuthError] = useState('');
 
     useEffect(() => {
         if (is_added_to_wishlist) {
@@ -52,9 +52,7 @@ export default function BookCard(props: Props) {
     }, [is_added_to_wishlist]);
 
     const handleOpenUnauthorizedMessage = () => {
-        if (auth_user.is_vendor) {
-            dispatch(setIsUnauthorizedMessageOpenSlice(true))
-        }
+        dispatch(setIsUnauthorizedMessageOpenSlice(true))
     }
     const handleAddToWishlist = () => {
         setIs_add_to_wishlist_loading(true)
@@ -64,7 +62,6 @@ export default function BookCard(props: Props) {
                 setIs_add_to_wishlist(true)
             })
             .catch(err => {
-                setUnAuthError(err.response.data.message)
                 dispatch(setIsUnauthorizedMessageOpenSlice(true))
                 enqueueSnackbar(err.response.data.errors)
             })
@@ -95,7 +92,7 @@ export default function BookCard(props: Props) {
     }
 
     const handleAddBookToCart = () => {
-        if (!auth_user.is_vendor) {
+        if (!auth_user.is_vendor && auth_user.is_vendor !== null) {
             const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
 
             const book = {
@@ -141,7 +138,7 @@ export default function BookCard(props: Props) {
 
     return (
         <>
-            {(unAuthError || auth_user.is_vendor) &&
+            {(auth_user.is_vendor || auth_user.is_vendor === null) &&
                 <Modal
                     show={isUnauthorizedMessageOpenSlice}
                     onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
@@ -154,7 +151,7 @@ export default function BookCard(props: Props) {
                     <Modal.Body>
                         <div className="space-y-6 p-5">
                             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {auth_user.is_vendor ? translation.unauthorized_vendor_message : unAuthError}
+                                {auth_user.is_vendor ? translation.unauthorized_vendor_message : !auth_user.is_vendor ? translation.must_sign_in : ''}
                             </p>
                         </div>
                     </Modal.Body>

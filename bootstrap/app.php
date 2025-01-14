@@ -1,13 +1,16 @@
 <?php
 
-use App\Http\Middleware\CorsMiddleware;
 use App\Http\Middleware\EnsureOnlyUsers;
 use App\Http\Middleware\EnsureOnlyVendorsUploadBooks;
+use App\Http\Middleware\EnsureUserIsSocial;
+use App\Http\Middleware\SetLocale;
 use App\Http\Middleware\ValidateTempToken;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Illuminate\Http\Request;
+use Illuminate\Session\Middleware\StartSession;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 
@@ -23,23 +26,21 @@ return Application::configure(basePath: dirname(__DIR__))
             'vendor.upload' => EnsureOnlyVendorsUploadBooks::class,
             'validate.temp.token' => ValidateTempToken::class,
             'user.access' => EnsureOnlyUsers::class,
-            'cors' => CorsMiddleware::class,
+            'social.only' => EnsureUserIsSocial::class,
         ]);
 
         $middleware->api([
-            \Illuminate\Cookie\Middleware\EncryptCookies::class,
-            \Illuminate\Session\Middleware\StartSession::class,
+            EncryptCookies::class,
+            StartSession::class,
 //            \Illuminate\Session\Middleware\AuthenticateSession::class,
-            \App\Http\Middleware\SetLocale::class,
-            CorsMiddleware::class,
+            SetLocale::class,
         ]);
         $middleware->web([
-            \App\Http\Middleware\SetLocale::class,
-            CorsMiddleware::class,
+            SetLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->map(\Illuminate\Auth\AuthenticationException::class, function ($exception) {
+        $exceptions->map(AuthenticationException::class, function ($exception) {
             $message = __('Auth.must_sign_in', [], session('locale'));
 
             throw new UnauthorizedHttpException('', $message, $exception, 401);

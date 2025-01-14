@@ -38,4 +38,5 @@ return [
     'total' => 'Total',
     'proceed_to_checkout' => 'Passer à la caisse',
     'quantity' => 'Quantité',
+    'must_sign_in' => 'Vous devez vous connecter pour effectuer cette action.',
 ];

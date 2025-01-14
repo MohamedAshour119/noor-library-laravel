@@ -5,13 +5,14 @@ import MainHeader from "../components/home/Main-Header.tsx";
 import BookCard from "../components/BookCard.tsx";
 import {useEffect, useRef, useState} from "react";
 import {Modal} from "flowbite-react";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import {BookCardInterface} from "../../Interfaces.ts";
 import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import BookPlaceholder from "../components/BookPlaceholder.tsx";
+import {setUser} from "../../redux/user-slice.ts";
 
 type IsActive = {
     highest_rated: boolean
@@ -21,6 +22,9 @@ type IsActive = {
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
+
+    const dispatch = useDispatch()
+
     const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [books_next_page_url, setBooks_next_page_url] = useState('');
     const [is_loading, setIs_loading] = useState(true);
@@ -41,12 +45,10 @@ export default function Home() {
             const decodedData = JSON.parse(atob(encodedData));
 
             // Use the decoded data
-            console.log('User Resource:', decodedData.data);
-            console.log('Token:', decodedData.token);
-            console.log('Expires At:', decodedData.expires_at);
+            localStorage.setItem('token', decodedData.token)
+            localStorage.setItem('expires_at', decodedData.expires_at)
+            dispatch(setUser(decodedData.data))
 
-            // Optionally store the token securely
-            localStorage.setItem('authToken', decodedData.token);
         } catch (error) {
             console.error('Error decoding data:', error);
         }

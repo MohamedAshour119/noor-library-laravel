@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::middleware(['cors'])->group(function () {
-    Route::get('/auth/google/redirect', [SocialController::class, 'googleRedirect']);
-    Route::get('/auth/google/callback', [SocialController::class, 'googleCallback']);
-});
+
+Route::get('/auth/google/redirect', [SocialController::class, 'googleRedirect']);
+Route::get('/auth/google/callback', [SocialController::class, 'googleCallback']);
+Route::get('/auth/twitter/redirect', [SocialController::class, 'twitterRedirect']);
+Route::get('/auth/twitter/callback', [SocialController::class, 'twitterCallback']);
+
 Route::get('/locale/{locale}', function ($locale) {
     if (in_array($locale, ['ar', 'en', 'fr'])) {
         session()->put('locale', $locale);
@@ -82,3 +84,5 @@ Route::get('/locale/{locale}', function ($locale) {
 })->name('locale');
 
 Route::view('/{any}', 'welcome')->where('any', '.*');
+
+

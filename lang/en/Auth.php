@@ -21,7 +21,7 @@ return [
     'data_policy' => 'Data Policy',
     'cookies_policy' => 'Cookies Policy',
     'login_via_google' => 'Login via Google',
-    'login_via_facebook' => 'Login via Facebook',
+    'login_via_x' => 'Login via X',
     'signing_in' => 'Signing in...',
     'dont_have_an_account' => 'Don\'t have an account?',
     'must_sign_in' => 'You must sign in to do this action.',

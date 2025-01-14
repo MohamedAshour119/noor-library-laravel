@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,6 +21,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+//        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+//            $event->extendSocialite('twitter-oauth-2', \SocialiteProviders\Twitter\Provider::class);
+//        });
     }
 }

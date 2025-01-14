@@ -307,7 +307,11 @@ export default function Profile() {
                 setIs_edit_active(true)
             })
             .catch(err => {
-                setError_password_confirmation(err.response.data.message)
+                if (err.response.data.message.length !== 0) {
+                    setError_password_confirmation(err.response.data.message)
+                }else {
+                    setError_password_confirmation(err.response.data.errors)
+                }
             })
             .finally(() => setIs_loading_password_confirmation(false))
     }

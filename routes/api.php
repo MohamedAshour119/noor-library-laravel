@@ -54,3 +54,7 @@ Route::middleware('api')->group(function () {
         });
     });
 });
+
+Route::post('/set-password', [AuthController::class, 'setPassword'])->middleware('social.only');
+
+

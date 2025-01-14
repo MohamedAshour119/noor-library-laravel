@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SetSocialAccountPasswordRequest;
 use App\Http\Requests\SignInRequest;
 use App\Http\Requests\SignUpAsCustomerRequest;
 use App\Http\Requests\SignUpAsVendorRequest;
@@ -109,4 +110,11 @@ class AuthController extends Controller
         return $this->response_error('No active session found', [], 403);
     }
 
+    public function setPassword(SetSocialAccountPasswordRequest $request)
+    {
+        $user = Auth::guard('user')->user();
+        $user->update([
+            'password' => $request->password,
+        ]);
+    }
 }

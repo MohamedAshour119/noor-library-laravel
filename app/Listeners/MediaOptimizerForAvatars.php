@@ -7,7 +7,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Spatie\Image\Image;
 use Spatie\MediaLibrary\MediaCollections\Events\MediaHasBeenAddedEvent;
 
-class MediaOptimizer
+class MediaOptimizerForAvatars
 {
     /**
      * Create the event listener.
@@ -24,14 +24,14 @@ class MediaOptimizer
     {
         $media = $event->media;
 
-        if ($media->type !== 'image' && $media->collection_name === 'users_avatars') {
+        if ($media->type !== 'image' && $media->collection_name !== 'users_avatars') {
             return;
         }
 
         $pathToImage = $media->getPath();
 
         // Load the image and optimize it
-        $optimizedImage = Image::load($pathToImage)->resize(182, 277)->optimize()->quality(75)->format('webp');
+        $optimizedImage = Image::load($pathToImage)->resize(200, 200)->optimize()->quality(100)->format('webp');
 
         // Save the optimized image
         $optimizedImage->save();

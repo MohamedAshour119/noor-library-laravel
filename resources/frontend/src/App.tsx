@@ -24,6 +24,7 @@ import {setTranslation} from "../redux/translation-slice.ts";
 import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
 import CheckOut from "./pages/CheckOut.tsx";
+import SetPassword from "./pages/SetPassword.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
@@ -34,7 +35,7 @@ function App() {
     const [showHeader, setShowHeader] = useState(true);
     const location = useLocation();
     useEffect(() => {
-        if (location.pathname === '/sign-up' || location.pathname === '/sign-in')
+        if (location.pathname === '/sign-up' || location.pathname === '/sign-in' || location.pathname === '/set-password')
             setShowHeader(false)
         else
             setShowHeader(true)
@@ -123,7 +124,6 @@ function App() {
         dispatch(setAddToCartItemsCount(previous_books.length))
     }, []);
 
-
     return (
         <>
             {(isSearchModalOpenSlice || isUnauthorizedMessageOpenSlice) && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
@@ -151,6 +151,10 @@ function App() {
                     <Route element={<AuthRoute />}>
                         <Route path="/add-book" element={<AddBook />} />
                         <Route path="/checkout" element={<CheckOut />} />
+                    </Route>
+
+                    <Route element={<AuthRoute requireSocial />}>
+                        <Route path="/set-password" element={<SetPassword />} />
                     </Route>
 
                     <Route element={<AuthRedirect />}>
