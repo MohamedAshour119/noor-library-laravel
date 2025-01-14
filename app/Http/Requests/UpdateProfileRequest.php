@@ -24,11 +24,11 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['required', 'min:3', 'max:20'],
-            'last_name' => ['required', 'min:3', 'max:20'],
-            'phone_number' => ['required', 'phone', new PhoneNumberUpdate],
-            'country_code' => ['required', 'numeric', 'digits_between:1,3', 'required_with:phone_number'],
-            'email' => ['required', 'email', 'unique:users,email', 'required'],
+            'first_name' => ['min:3', 'max:20'],
+            'last_name' => ['min:3', 'max:20'],
+            'phone_number' => ['phone', new PhoneNumberUpdate],
+            'country_code' => ['numeric', 'digits_between:1,3', 'required_with:phone_number'],
+            'email' => ['email', 'unique:users,email'],
             'password' => ['nullable', 'min:8', 'max:64', 'confirmed'],
         ];
     }

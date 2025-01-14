@@ -61,25 +61,38 @@ class UserProfileController extends Controller implements HasMedia
     public function updateProfile(UpdateProfileRequest $request)
     {
         $user = Auth::user();
-        $new_data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number']);
-        $update_data = [
-            'first_name' => $new_data['first_name'],
-            'last_name' => $new_data['last_name'],
-            'email' => $new_data['email'],
-            'phone' => $new_data['phone_number'],
-        ];
 
+        // Extract only provided inputs from the request
+        $new_data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number']);
+
+        // Dynamically build the update data
+        $update_data = [];
+        if (array_key_exists('first_name', $new_data)) {
+            $update_data['first_name'] = $new_data['first_name'];
+        }
+        if (array_key_exists('last_name', $new_data)) {
+            $update_data['last_name'] = $new_data['last_name'];
+        }
+        if (array_key_exists('email', $new_data)) {
+            $update_data['email'] = $new_data['email'];
+        }
+        if (array_key_exists('phone_number', $new_data)) {
+            $update_data['phone'] = $new_data['phone_number'];
+        }
         if (!empty($new_data['password'])) {
             $update_data['password'] = Hash::make($new_data['password']);
         }
 
+        // Update the user with the dynamic data
         $user->update($update_data);
 
-        $user = new UserResource($user);
-        $data = ['user' => $user];
+        // Return the updated user data
+        $userResource = new UserResource($user);
+        $data = ['user' => $userResource];
 
         return $this->response_success($data, 'Your info updated successfully.');
     }
+
 
     public function updateProfileAvatar(Request $request)
     {

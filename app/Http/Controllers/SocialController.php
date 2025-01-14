@@ -56,7 +56,6 @@ class SocialController extends Controller implements HasMedia
         ];
 
         $encodedData = base64_encode(json_encode($data));
-//        return redirect('/?data=' . $encodedData);
         if ($user->password) {
             return redirect('/?data=' . $encodedData);
         }else {
@@ -117,7 +116,11 @@ class SocialController extends Controller implements HasMedia
         ];
 
         $encodedData = base64_encode(json_encode($data));
-        return redirect('/?data=' . $encodedData);
+        if ($user->password) {
+            return redirect('/?data=' . $encodedData);
+        }else {
+            return redirect('/set-password/?data=' . $encodedData);
+        }
     }
     function extractFirstAndLastName($fullName)
     {

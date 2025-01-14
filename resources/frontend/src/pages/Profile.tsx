@@ -79,7 +79,6 @@ export default function Profile() {
         setIs_confirm_password_open(true);
     };
 
-
     const getBook = (page_url: string) => {
         setIs_fetching(true)
         apiClient().get(page_url)
@@ -231,17 +230,44 @@ export default function Profile() {
         };
     }, [wishlist_books_next_page_url, is_fetching]);
 
+    const filter_updated_formData = () => {
+        const filtered_inputs = []
+
+        if (formData.first_name === auth_user.first_name || formData.first_name === '') filtered_inputs.push('first_name')
+        if (formData.last_name === auth_user.last_name || formData.last_name === '') filtered_inputs.push('last_name')
+        if (formData.email === auth_user.email || formData.email === '') filtered_inputs.push('email')
+        if (formData.country_code === auth_user.country_code || formData.country_code === '') filtered_inputs.push('country_code')
+        if (formData.phone_number === auth_user.phone || formData.phone_number === '') filtered_inputs.push('phone_number')
+        if (formData.password === '') filtered_inputs.push('password')
+        if (formData.password_confirmation === '') filtered_inputs.push('password_confirmation')
+
+        return filtered_inputs
+    }
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault()
 
-        axios.put('/api/users/update-profile', formData, {
+        const filteredFields = filter_updated_formData();
+
+        // Create a new object excluding the filtered fields
+        const updatedFormData = Object.keys(formData)
+            .filter((key) => !filteredFields.includes(key))
+            .reduce((acc, key) => {
+                acc[key] = formData[key as keyof typeof formData];
+                return acc;
+            }, {} as Partial<typeof formData>);
+
+        console.log(updatedFormData);
+
+        axios.put('/api/users/update-profile', updatedFormData, {
             headers: {
                 "Authorization": `Bearer ${temp_token}`,
                 "Content-Type": "application/json"
             }})
             .then(res => {
+                dispatch(setUser(res.data.data.user))
                 setErrors({})
                 enqueueSnackbar(res.data.message, {variant: "success"})
+                setTemp_token('')
             })
             .catch(err => {
                 setErrors(err.response.data.errors)
