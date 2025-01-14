@@ -17,7 +17,6 @@ import PhoneInput from "react-phone-input-2";
 import axios from "axios";
 import {setUser} from "../../redux/user-slice.ts";
 import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
-import {setTempToken} from "../../redux/temp-token.ts";
 import Reviews from "../components/profile/Reviews.tsx";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 export default function Profile() {
@@ -28,10 +27,10 @@ export default function Profile() {
     const user_info = useSelector((state: RootState) => state.userProfileInfoReducer)
     const is_visited_user_sections_active = useSelector((state: RootState) => state.isVisitedUserSectionsActive);
     const is_visited_vendor_sections_active = useSelector((state: RootState) => state.isVisitedVendorSectionsActive);
-    const temp_token = useSelector((state: RootState) => state.tempTokenReducer)
     const { user } = useParams()
     const dispatch = useDispatch();
 
+    const [temp_token, setTemp_token] = useState('');
     const [books, setBooks] = useState<BookCardInterface[]>([]);
     const [is_fetching, setIs_fetching] = useState(false);
     const [reviews, setReviews] = useState<CommentInterface[]>([]);
@@ -56,7 +55,6 @@ export default function Profile() {
         password_confirmation: '',
     })
     const [errors, setErrors] = useState<Errors | null>(null)
-    const [is_edit_active, setIs_edit_active] = useState(false);
     const [confirm_user_password, setConfirm_user_password] = useState('');
     const [is_confirm_password_open, setIs_confirm_password_open] = useState(false);
     const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
@@ -249,8 +247,7 @@ export default function Profile() {
                 setErrors(err.response.data.errors)
                 console.log(err.response.status)
                 if (err.response.status === 401) {
-                    dispatch(setTempToken(''))
-                    setIs_edit_active(false)
+                    setTemp_token('')
                 }
             })
     }
@@ -301,10 +298,9 @@ export default function Profile() {
             .then(res => {
                 setErrors({})
                 setError_password_confirmation(null)
-                dispatch(setTempToken(res.data.data.token))
+                setTemp_token(res.data.data.token)
                 enqueueSnackbar(res.data.message, {variant: "success"})
                 setIs_confirm_password_open(false)
-                setIs_edit_active(true)
             })
             .catch(err => {
                 if (err.response.data.message.length !== 0) {
@@ -496,39 +492,39 @@ export default function Profile() {
                             <form className={`bg-white p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.first_name?.length !== 0 ? '' : translation.first_name}
+                                        placeholder={!temp_token && formData.first_name?.length !== 0 ? '' : translation.first_name}
                                         id={`first_name_id`}
                                         name={`first_name`}
                                         value={formData.first_name}
                                         onChange={handleInputChange}
                                         error={errors?.first_name}
-                                        readonly={!is_edit_active}
-                                        disable_label_animation={!is_edit_active}
-                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                        readonly={!temp_token}
+                                        disable_label_animation={!temp_token}
+                                        styles={`!text-[16px] ${!temp_token ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.last_name?.length !== 0 ? '' : translation.last_name}
+                                        placeholder={!temp_token && formData.last_name?.length !== 0 ? '' : translation.last_name}
                                         id={`last_name_id`}
                                         name={`last_name`}
                                         value={formData.last_name}
                                         onChange={handleInputChange}
                                         error={errors?.last_name}
-                                        readonly={!is_edit_active}
-                                        disable_label_animation={!is_edit_active}
-                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                        readonly={!temp_token}
+                                        disable_label_animation={!temp_token}
+                                        styles={`!text-[16px] ${!temp_token ? 'cursor-not-allowed' : ''}`}
                                     />
 
                                     <TextInputAuth
-                                        placeholder={!is_edit_active && formData.email?.length !== 0 ? '' : translation.email}
+                                        placeholder={!temp_token && formData.email?.length !== 0 ? '' : translation.email}
                                         id={`email_id`}
                                         name={`email`}
                                         type={`email`}
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         error={errors?.email}
-                                        readonly={!is_edit_active}
-                                        disable_label_animation={!is_edit_active}
-                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                        readonly={!temp_token}
+                                        disable_label_animation={!temp_token}
+                                        styles={`!text-[16px] ${!temp_token ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
                                         placeholder={translation.new_password}
@@ -538,9 +534,9 @@ export default function Profile() {
                                         value={formData.password}
                                         onChange={handleInputChange}
                                         error={errors?.password}
-                                        readonly={!is_edit_active}
-                                        disable_label_animation={!is_edit_active}
-                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                        readonly={!temp_token}
+                                        disable_label_animation={!temp_token}
+                                        styles={`!text-[16px] ${!temp_token ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <TextInputAuth
                                         placeholder={translation.password_confirmation}
@@ -550,17 +546,17 @@ export default function Profile() {
                                         value={formData.password_confirmation}
                                         onChange={handleInputChange}
                                         error={errors?.password_confirmation}
-                                        readonly={!is_edit_active}
-                                        disable_label_animation={!is_edit_active}
-                                        styles={`!text-[16px] ${!is_edit_active ? 'cursor-not-allowed' : ''}`}
+                                        readonly={!temp_token}
+                                        disable_label_animation={!temp_token}
+                                        styles={`!text-[16px] ${!temp_token ? 'cursor-not-allowed' : ''}`}
                                     />
                                     <PhoneInput
                                         country={'eg'}
                                         value={formData.phone_number}
                                         onChange={handlePhoneChange}
                                         enableSearch={true}
-                                        disabled={!is_edit_active}
-                                        placeholder={!is_edit_active ? auth_user.phone : 'Enter Phone Number'}
+                                        disabled={!temp_token}
+                                        placeholder={!temp_token ? auth_user.phone : 'Enter Phone Number'}
                                         inputStyle={{
                                             width: '100%',
                                             height: '40px',

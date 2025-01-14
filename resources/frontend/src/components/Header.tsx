@@ -21,7 +21,6 @@ import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 import {TfiShoppingCart} from "react-icons/tfi";
-import {setTempToken} from "../../redux/temp-token.ts";
 
 export default function Header() {
 
@@ -61,7 +60,6 @@ export default function Header() {
                 dispatch(clearUserProfileInfo())
                 dispatch(setResetUsersActive())
                 dispatch(setResetVendorsActive())
-                dispatch(setTempToken(''))
                 navigate('/')
             }).catch(err => {
                 enqueueSnackbar(err.response.data.message, {variant: "error"})

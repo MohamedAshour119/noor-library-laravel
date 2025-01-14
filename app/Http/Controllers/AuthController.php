@@ -70,7 +70,7 @@ class AuthController extends Controller
             return $this->createSuccessResponse($vendorResource, $token, 'You are logged in as a vendor successfully.', true);
         }
 
-        return $this->response_error('You entered wrong credentials', [], 403);
+        return $this->response_error('', ['message' => 'You entered wrong credentials'], 403);
     }
 
     private function createSuccessResponse($entity, $token, $message, $is_vendor = false)

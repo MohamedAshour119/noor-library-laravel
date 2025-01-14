@@ -43,15 +43,16 @@ class UserProfileController extends Controller implements HasMedia
         $user = Auth::user();
 
         if (!$user) {
-            return $this->response_error([], 'Unauthorized!', 403);
+            return $this->response_error([], 'Unauthorized!', 401);
         }
 
-        info('request pass', [$request->confirm_user_password]);
-        info('user pass', [$user->password]);
+        info($user);
+        info($user->password);
+        info($request->confirm_user_password);
+
         if (!Hash::check(trim($request->confirm_user_password), $user->password)) {
             return $this->response_error([], 'Invalid password.', 403);
         }
-
 
         $token = $user->createToken('ProfileChangeToken', ['profile-update'], expiresAt: now()->addMinutes(15))->plainTextToken;
         return $this->response_success(['token' => $token], __('EditProfileValidationMessages.confirmation_success'));

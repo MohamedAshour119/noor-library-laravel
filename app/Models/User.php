@@ -65,15 +65,4 @@ class User extends Authenticatable implements HasMedia
             'password' => 'hashed',
         ];
     }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::updating(function ($model) {
-            if ($model->isDirty('password') && !empty($model->password)) {
-                $model->password = Hash::make($model->password);
-            }
-        });
-    }
 }
