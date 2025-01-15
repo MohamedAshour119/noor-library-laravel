@@ -60,6 +60,8 @@ export default function Header() {
                 dispatch(clearUserProfileInfo())
                 dispatch(setResetUsersActive())
                 dispatch(setResetVendorsActive())
+                localStorage.removeItem('book')
+                localStorage.removeItem('total_price')
                 navigate('/')
             }).catch(err => {
                 enqueueSnackbar(err.response.data.message, {variant: "error"})

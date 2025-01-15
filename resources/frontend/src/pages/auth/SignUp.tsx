@@ -95,7 +95,12 @@ export default function SignUp() {
                 setErrors(err.response.data.errors)
             })
     }
-
+    const googleSignIn = () => {
+        window.location.href = '/auth/google/redirect';
+    }
+    const twitterSignIn = () => {
+        window.location.href = '/auth/twitter/redirect';
+    }
     const form =
         <form onSubmit={handleSubmit}>
             <div className={`flex flex-col gap-y-5`}>
@@ -264,7 +269,10 @@ export default function SignUp() {
                             <hr className="w-1/2 border-t border-gray-300" />
                         </div>
 
-                        <LoginProviders/>
+                        <LoginProviders
+                            googleSignIn={googleSignIn}
+                            twitterSignIn={twitterSignIn}
+                        />
                     </div>
                     <Footer styles={`text-white border-none`}/>
                 </div>

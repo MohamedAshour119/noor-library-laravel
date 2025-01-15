@@ -174,14 +174,8 @@ export default function Profile() {
     const show_wishlist_books = wishlist_books.map((book, index) => (
             <BookCard
                 key={index}
-                title={book.title}
-                cover={book.cover}
-                slug={book.slug}
-                author={book.author}
                 ref={index === wishlist_books.length - 1 ? last_wishlist_book_ref : null}
-                price={book.price}
-                average_ratings={book.average_ratings}
-                ratings_count={book.ratings_count}
+                {...book}
             />
         )
     )
@@ -252,11 +246,10 @@ export default function Profile() {
         const updatedFormData = Object.keys(formData)
             .filter((key) => !filteredFields.includes(key))
             .reduce((acc, key) => {
+                // @ts-ignore
                 acc[key] = formData[key as keyof typeof formData];
                 return acc;
             }, {} as Partial<typeof formData>);
-
-        console.log(updatedFormData);
 
         axios.put('/api/users/update-profile', updatedFormData, {
             headers: {
@@ -658,7 +651,7 @@ export default function Profile() {
                                 content_style={`font-roboto-semi-bold`}
                             />
                         }
-                        {!user_info?.is_vendor && user_info.wishlists_count !== undefined && user_info.wishlists_count > 0 && ((user_isActive.wishlist && user_info.username === auth_user.username) || (is_visited_user_sections_active.wishlist && user_info.username !== auth_user.username)) &&
+                        {!user_info?.is_vendor && user_info.wishlists_count !== undefined && user_info.wishlists_count !== null && user_info.wishlists_count > 0 && ((user_isActive.wishlist && user_info.username === auth_user.username) || (is_visited_user_sections_active.wishlist && user_info.username !== auth_user.username)) &&
                             <div className={`max-xxs:px-10 grid xxs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-5 !w-full`}>
                                 {show_wishlist_books}
                             </div>

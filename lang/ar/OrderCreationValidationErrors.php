@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'first_name_required' => 'الاسم الأول مطلوب.',
+    'first_name_min' => 'يجب أن يحتوي الاسم الأول على 3 أحرف على الأقل.',
+    'last_name_required' => 'الاسم الأخير مطلوب.',
+    'last_name_min' => 'يجب أن يحتوي الاسم الأخير على 3 أحرف على الأقل.',
+    'phone_number_required' => 'رقم الهاتف مطلوب.',
+    'phone_number_invalid' => 'صيغة رقم الهاتف غير صحيحة.',
+    'phone_number_unique' => 'هذا رقم الهاتف مرتبط بالفعل بحساب آخر.',
+    'country_code_required' => 'رمز الدولة مطلوب.',
+    'country_code_numeric' => 'يجب أن يكون رمز الدولة رقماً.',
+    'country_code_digits_between' => 'يجب أن يتكون رمز الدولة من رقم واحد إلى ثلاثة أرقام.',
+    'country_code_required_with' => 'يجب إدخال رمز الدولة عند إدخال رقم الهاتف.',
+    'city_required' => 'المدينة مطلوبة.',
+    'city_max' => 'لا يمكن أن يتجاوز اسم المدينة 40 حرفًا.',
+    'street_required' => 'الشارع مطلوب.',
+    'street_max' => 'لا يمكن أن يتجاوز اسم الشارع 100 حرفًا.',
+    'amount_required' => 'المبلغ مطلوب.',
+    'amount_numeric' => 'يجب أن يكون المبلغ قيمة رقمية.',
+    'payment_method_required' => 'طريقة الدفع مطلوبة.',
+    'payment_method_in' => 'يجب أن تكون طريقة الدفع إما الدفع عند الاستلام أو بطاقة الائتمان.',
+    'cart_books_ids_required' => 'معرفات كتب عربة التسوق مطلوبة.',
+    'cart_books_ids_array' => 'يجب أن تكون معرفات كتب عربة التسوق عبارة عن مصفوفة.',
+    'cart_books_ids_numeric' => 'يجب أن تكون كل معرفات كتب عربة التسوق قيمة رقمية.',
+];

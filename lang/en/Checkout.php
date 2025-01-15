@@ -18,4 +18,6 @@ return [
     'your_order' => 'Your Order',
     'place_order' => 'Place Order',
     'no_products_in_cart' => 'No products in cart.',
+    'pay_with_credit_card' => 'Pay with credit card',
+    'cash_on_delivery' => 'Cash on delivery',
 ];

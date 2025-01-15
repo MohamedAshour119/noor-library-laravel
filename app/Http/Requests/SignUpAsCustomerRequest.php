@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Rules\Recaptcha;
-use App\Rules\ValidPhoneNumber;
 use App\Traits\HttpResponses;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;

@@ -1,6 +1,6 @@
 import Footer from "../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
-import {BillingInfo, Book, Errors} from "../../Interfaces.ts";
+import {AddOrderErrors, BillingInfo, Book} from "../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import GlobalInput from "../components/core/GlobalInput.tsx";
@@ -23,11 +23,12 @@ export default function CheckOut() {
         city: '',
         street: '',
         phone_number: '',
+        country_code: '',
         amount: 0,
-        cash_on_delivery: false,
+        cash_on_delivery: true,
         pay_with_credit_card: false,
     });
-    const [errors, setErrors] = useState<Errors | null>(null)
+    const [errors, setErrors] = useState<AddOrderErrors | null>(null)
 
     const handleBillingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
         setBilling_info(prevState => ({
@@ -35,13 +36,20 @@ export default function CheckOut() {
             [e.target.name]: e.target.value
         }))
     }
-    const handlePhoneChange = (phone: string) => {
-        setBilling_info(prevState => ({
-            ...prevState,
-            phone_number: phone, // The full phone number with country code
-        }));
-    };
+    // const handlePhoneChange = (phone: string) => {
+    //     setBilling_info(prevState => ({
+    //         ...prevState,
+    //         phone_number: phone, // The full phone number with country code
+    //     }));
+    // };
 
+    const handlePhoneChange = (phone: string, country: any) => {
+        setBilling_info({
+            ...billing_info,
+            phone_number: phone, // The full phone number with country code
+            country_code: country.dialCode, // The country code only
+        });
+    };
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
@@ -264,6 +272,7 @@ export default function CheckOut() {
                                     value={billing_info.first_name}
                                     name={'first_name'}
                                     onChange={handleBillingInfoChange}
+                                    error={errors?.first_name}
                                 />
                                 <GlobalInput
                                     label={translation.last_name}
@@ -272,6 +281,7 @@ export default function CheckOut() {
                                     value={billing_info.last_name}
                                     name={'last_name'}
                                     onChange={handleBillingInfoChange}
+                                    error={errors?.last_name}
                                 />
                                 <GlobalInput
                                     label={translation.city}
@@ -280,6 +290,7 @@ export default function CheckOut() {
                                     value={billing_info.city}
                                     name={'city'}
                                     onChange={handleBillingInfoChange}
+                                    error={errors?.city}
                                 />
                                 <GlobalInput
                                     label={translation.street_address}
@@ -288,6 +299,7 @@ export default function CheckOut() {
                                     value={billing_info.street}
                                     name={'street'}
                                     onChange={handleBillingInfoChange}
+                                    error={errors?.street}
                                 />
                                 <div>
                                     <label
@@ -320,8 +332,8 @@ export default function CheckOut() {
                                             border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
                                         }}
                                     />
+                                    {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
                                 </div>
-                                {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
 
                             </div>
                         </div>
@@ -333,7 +345,48 @@ export default function CheckOut() {
                             billing_info={billing_info}
                             setBilling_info={setBilling_info}
                             handleSubmit={handleSubmit}
+                            handleNext={handleNext}
+                            setErrors={setErrors}
                         />
+                    }
+                    {currentStep === 3 &&
+                        <div className={`mt-20 flex justify-center items-center`}>
+                            <div className={`max-w-lg w-full bg-white rounded-lg shadow-lg p-6 border-t-4 border-green-500`}>
+                                <div className={`flex items-center space-x-4`}>
+                                    <div className={`bg-green-500 text-white rounded-full h-10 w-10 flex justify-center items-center`}>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2}
+                                            stroke="currentColor"
+                                            className={`w-6 h-6`}
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <h2 className={`text-2xl font-bold text-gray-800`}>
+                                        Order Placed Successfully!
+                                    </h2>
+                                </div>
+                                <p className={`mt-4 text-gray-600`}>
+                                    Thank you for your order! Your items will be delivered to you within{' '}
+                                    <span className={`font-semibold text-gray-900`}>3 business days</span>.
+                                </p>
+                                <p className={`mt-2 text-gray-600`}>
+                                    If you have any questions, feel free to contact our support team.
+                                </p>
+                                <button
+                                    className={`mt-6 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition`}
+                                >
+                                    View Order Details
+                                </button>
+                            </div>
+                        </div>
                     }
                 </div>
                 {/* Navigation Buttons */}

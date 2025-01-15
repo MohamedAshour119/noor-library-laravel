@@ -1,16 +1,19 @@
-import {BillingInfo, Book} from "../../../Interfaces.ts";
+import {AddOrderErrors, BillingInfo, Book} from "../../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
 import {Radio} from "flowbite-react";
 import {Dispatch, FormEvent, SetStateAction} from "react";
+import apiClient from "../../../ApiClient.ts";
 
 interface Props {
     cart_books: Book[]
     billing_info: BillingInfo
     setBilling_info: Dispatch<SetStateAction<BillingInfo>>
     handleSubmit: (e: FormEvent) => void
+    handleNext: () => void
+    setErrors: Dispatch<SetStateAction<AddOrderErrors | null>>
 }
-export default function Sidebar({cart_books, billing_info, setBilling_info, handleSubmit}: Props) {
+export default function Sidebar({cart_books, billing_info, setBilling_info, handleSubmit, handleNext, setErrors}: Props) {
     const translation = useSelector((state: RootState) => state.translationReducer)
 
     const show_books = cart_books.map(book => (
@@ -29,6 +32,22 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
         });
     };
 
+    const placeOrder = () => {
+        const cart_books_ids = cart_books.map(book => book.id)
+        const data = {
+            billing_info,
+            cart_books_ids,
+        }
+
+        if (billing_info.cash_on_delivery) {
+            apiClient().post('/orders/add', data)
+                .then(() => handleNext())
+                .catch(err => setErrors(err.response.data.errors))
+        }else {
+            handleSubmit
+        }
+    }
+
     return (
         <div className="flex flex-col gap-y-4 bg-white p-4 rounded-lg mt-20 shadow-[0px_0px_12px_-5px]">
             <h2 className="text-lg font-semibold">{translation.your_order}</h2>
@@ -40,13 +59,14 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
             <div>
                 <div className={`flex items-center gap-x-2`}>
                     <Radio
+                        checked={billing_info.cash_on_delivery}
                         id={`cash_on_delivery`}
                         name={`payment_method`}
                         value={`cash_on_delivery`}
                         onChange={handlePaymentChange}
                         className={`focus:ring-0`}
                     />
-                    <label htmlFor="cash_on_delivery">Cash on delivery</label>
+                    <label htmlFor="cash_on_delivery">{translation.cash_on_delivery}</label>
                 </div>
                 <div className={`flex items-center gap-x-2`}>
                     <Radio
@@ -56,7 +76,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
                         onChange={handlePaymentChange}
                         className={`focus:ring-0`}
                     />
-                    <label htmlFor="pay_with_credit_card">Pay with credit card</label>
+                    <label htmlFor="pay_with_credit_card">{translation.pay_with_credit_card}</label>
                 </div>
             </div>
 
@@ -64,7 +84,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
             <div className={`font-semibold`}>{translation.total + ': '}{billing_info.amount}$</div>
 
             <button
-                onClick={handleSubmit}
+                onClick={placeOrder}
                 className="bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 mt-3 rounded"
             >
                 {translation.place_order}

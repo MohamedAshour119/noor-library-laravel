@@ -18,4 +18,6 @@ return [
     'your_order' => 'طلبك',
     'place_order' => 'إتمام الطلب',
     'no_products_in_cart' => 'لا يوجد منتجات في عربة التسوق.',
+    'pay_with_credit_card' => 'الدفع ببطاقة الائتمان',
+    'cash_on_delivery' => 'الدفع عند الاستلام',
 ];

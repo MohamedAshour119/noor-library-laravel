@@ -18,4 +18,6 @@ return [
     'your_order' => 'Votre commande',
     'place_order' => 'Passer la commande',
     'no_products_in_cart' => 'Aucun produit dans le panier.',
+    'pay_with_credit_card' => 'Payer par carte de crédit',
+    'cash_on_delivery' => 'Paiement à la livraison',
 ];

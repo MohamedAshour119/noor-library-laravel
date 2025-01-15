@@ -155,6 +155,15 @@ export interface Errors {
     google_recaptcha?: string
 }
 
+export interface AddOrderErrors {
+    first_name?: string
+    last_name?: string
+    phone_number?: string
+    cash_on_delivery?: string
+    credit_card?: string
+    city?: string
+    street?: string
+}
 export interface ShowBookInterface extends Book {
     vendor: User
     category: string
@@ -190,6 +199,7 @@ export interface BillingInfo {
     city: string
     street: string
     phone_number: string
+    country_code: string
     amount: number
     cash_on_delivery: boolean
     pay_with_credit_card: boolean

@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'first_name_required' => 'First name is required.',
+    'first_name_min' => 'First name must be at least 3 characters long.',
+    'last_name_required' => 'Last name is required.',
+    'last_name_min' => 'Last name must be at least 3 characters long.',
+    'phone_number_required' => 'Phone number is required.',
+    'phone_number_invalid' => 'Phone number format is invalid.',
+    'phone_number_unique' => 'This phone number is already registered.',
+    'country_code_required' => 'Country code is required.',
+    'country_code_numeric' => 'Country code must be a number.',
+    'country_code_digits_between' => 'Country code must be between 1 and 3 digits.',
+    'country_code_required_with' => 'Country code is required when phone number is provided.',
+    'city_required' => 'City is required.',
+    'city_max' => 'City cannot exceed 40 characters.',
+    'street_required' => 'Street is required.',
+    'street_max' => 'Street cannot exceed 100 characters.',
+    'amount_required' => 'Amount is required.',
+    'amount_numeric' => 'Amount must be a numeric value.',
+    'payment_method_required' => 'Payment method is required.',
+    'payment_method_in' => 'Payment method must be either cash on delivery or credit card.',
+    'cart_books_ids_required' => 'Cart books IDs are required.',
+    'cart_books_ids_array' => 'Cart books IDs must be an array.',
+    'cart_books_ids_numeric' => 'Each cart book ID must be a numeric value.',
+];

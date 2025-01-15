@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymobController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SocialController;
@@ -51,6 +52,7 @@ Route::middleware('api')->group(function () {
             Route::post('/paymob/create-order', [PaymobController::class, 'createOrder']);
             Route::post('/paymob/initiate-payment', [PaymobController::class, 'initiatePayment']);
             Route::get('/callback', [PaymobController::class, 'callback']);
+            Route::post('/orders/add', [OrdersController::class, 'addOrder']);
         });
     });
 });

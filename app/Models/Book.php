@@ -72,6 +72,10 @@ class Book extends Model implements HasMedia
         return $this->belongsToMany(User::class, 'wishlists')->withTimestamps();
     }
 
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'book_order', 'book_id', 'order_id');
+    }
     protected static function booted()
     {
         static::creating(function ($book) {
