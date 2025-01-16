@@ -14,7 +14,7 @@ class PaymobController extends Controller
     {
         $headers = [
             'Accept' => 'application/json',
-            'Authorization' => 'Token ' . env('PAYMOB_SECRET_KEY'), // Example token
+            'Authorization' => 'Token ' . env('PAYMOB_SECRET_KEY'),
         ];
         $payload = [
             'amount' => $request->billing_info['amount'] * 100,

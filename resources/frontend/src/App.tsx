@@ -25,6 +25,7 @@ import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
 import CheckOut from "./pages/CheckOut.tsx";
 import SetPassword from "./pages/SetPassword.tsx";
+import ChatSupport from "./components/ChatSupport.tsx";
 
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
@@ -137,7 +138,7 @@ function App() {
             />
             <div className={`relative ${isAddToCartSidebarSlice ? 'max-h-svh overflow-hidden' : ''}`}>
                 <AddToCartSidebar/>
-
+                <ChatSupport/>
                 {showHeader && <Header/>}
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>

@@ -79,9 +79,7 @@ export default function AddToCartSidebar() {
             )}
 
             <div
-                className={`fixed ltr:right-0 rtl:left-0 top-0 h-full w-[22rem] bg-white ltr:shadow-[5px_5px_9px_black] ${isAddToCartSidebarSlice ? 'rtl:shadow-[5px_5px_9px_black]' : 'rtl:shadow-[0px_5px_0px_black]'} border-text_color z-20 transform transition-transform duration-300 ${
-                    isAddToCartSidebarSlice ? "translate-x-0" : "ltr:translate-x-full rtl:-translate-x-full"
-                }`}
+                className={`fixed ltr:right-0 rtl:left-0 top-0 h-full w-[22rem] bg-white ltr:shadow-[5px_5px_9px_black] ${isAddToCartSidebarSlice ? 'rtl:shadow-[5px_5px_9px_black] translate-x-0' : 'rtl:shadow-[0px_5px_0px_black] ltr:translate-x-full rtl:-translate-x-full'} border-text_color z-20 transform transition-transform duration-300`}
             >
                 <div className="h-full overflow-y-scroll">
                         <div className="p-4 flex justify-between items-center border-b">
