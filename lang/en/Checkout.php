@@ -20,4 +20,8 @@ return [
     'no_products_in_cart' => 'No products in cart.',
     'pay_with_credit_card' => 'Pay with credit card',
     'cash_on_delivery' => 'Cash on delivery',
+    'order_placed_successfully' => 'Order Placed Successfully!',
+    'order_confirmation_message' => 'Thank you for your order! Your order will be delivered within 3 business days. If you have any questions, please feel free to contact our support team.',
+    'view_order_details' => 'View Order Details',
+
 ];

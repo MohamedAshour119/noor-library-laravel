@@ -236,7 +236,7 @@ export default function Header() {
                                         onClick={openAddToCartSidebar}
                                     >
                                     {addToCartItemsCount > 0 &&
-                                        <span className={`absolute -top-2 ltr:-left-3 rtl:-right-3 bg-yellow-500 text-white size-5 flex justify-center items-center rounded`}>
+                                        <span className={`absolute -top-2 ltr:-left-3 rtl:-right-3 bg-second_main_color text-white size-5 flex justify-center items-center rounded`}>
                                             {addToCartItemsCount}
                                         </span>
                                     }

@@ -154,12 +154,13 @@ export default function CheckOut() {
     };
 
     const progressWidth = `${((currentStep - 1) / (steps.length - 1)) * 100}%`;
+    const lang = document.documentElement.lang
 
     return (
         <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
             <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
                 {/* Progress Bar */}
-                <div className="w-[80%] mx-auto mt-10">
+                <div className="xs:w-[80%] w-[85%] mx-auto mt-10">
                     <div className="relative">
                         <div className="w-full h-2 bg-gray-200 rounded-full">
                             <div
@@ -180,9 +181,9 @@ export default function CheckOut() {
                                     >
                                         {index + 1}
                                     </div>
-                                    <span className={`absolute w-max mt-1 font-semibold ${index + 1 !== 1 ? '-left-1/2' : ''}`}>
+                                    <span className={`absolute w-max mt-1 font-semibold text-sm xs:text-[16px] ${index + 1 !== 1 ? '-left-1/2' : ''} ${index + 1 === 2 && lang === 'fr' ? '-left-0' : ''} ${index + 1 === 3 && lang === 'fr' ? '-left-full' : ''}`}>
                                             {index + 1 === 1 ? translation.your_cart : index + 1 === 2 ? translation.checkout_details : translation.order_complete}
-                                        </span>
+                                    </span>
                                 </div>
                             ))}
                         </div>
@@ -323,9 +324,9 @@ export default function CheckOut() {
                     }
                     {currentStep === 3 &&
                         <div className={`mt-20 flex justify-center items-center`}>
-                            <div className={`max-w-lg w-full bg-white rounded-lg shadow-lg p-6 border-t-4 border-green-500`}>
+                            <div className={`max-w-lg w-full bg-white rounded-lg shadow-lg p-6 border-t-4 border-second_main_color`}>
                                 <div className={`flex items-center space-x-4`}>
-                                    <div className={`bg-green-500 text-white rounded-full h-10 w-10 flex justify-center items-center`}>
+                                    <div className={`bg-second_main_color text-white rounded-full min-h-10 min-w-10 flex justify-center items-center`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -342,20 +343,16 @@ export default function CheckOut() {
                                         </svg>
                                     </div>
                                     <h2 className={`text-2xl font-bold text-gray-800`}>
-                                        Order Placed Successfully!
+                                        {translation.order_placed_successfully}
                                     </h2>
                                 </div>
                                 <p className={`mt-4 text-gray-600`}>
-                                    Thank you for your order! Your items will be delivered to you within{' '}
-                                    <span className={`font-semibold text-gray-900`}>3 business days</span>.
-                                </p>
-                                <p className={`mt-2 text-gray-600`}>
-                                    If you have any questions, feel free to contact our support team.
+                                    {translation.order_confirmation_message}
                                 </p>
                                 <button
-                                    className={`mt-6 w-full bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-600 transition`}
+                                    className={`mt-6 w-full bg-second_main_color text-white font-semibold py-2 px-4 rounded-lg hover:bg-second_main_color/90 transition`}
                                 >
-                                    View Order Details
+                                    {translation.view_order_details}
                                 </button>
                             </div>
                         </div>

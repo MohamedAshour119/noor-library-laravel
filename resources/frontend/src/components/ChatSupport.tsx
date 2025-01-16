@@ -37,7 +37,7 @@ export default function ChatSupport(props: Props) {
                 {!is_open &&
                     <IoChatbubbleEllipsesSharp
                         onClick={openChat}
-                        className={`text-yellow-500 size-12 cursor-pointer fixed bottom-4 z-50`}
+                        className={`text-second_main_color hover:text-second_main_color/90 size-12 cursor-pointer fixed bottom-4 z-50`}
                     />
                 }
 
@@ -62,7 +62,7 @@ export default function ChatSupport(props: Props) {
                                 alt="Support Avatar"
                                 className={`w-10 h-10 rounded-full`}
                             />
-                            <div className={`bg-main_color text-white rounded-lg p-3`}>
+                            <div className={`bg-second_main_color text-white rounded-lg p-3`}>
                                 <p className={`text-sm`}>
                                     Hello, Veronica! Thanks for getting in touch. How can I help you?
                                 </p>
@@ -88,7 +88,7 @@ export default function ChatSupport(props: Props) {
                                 alt="Support Avatar"
                                 className={`w-10 h-10 rounded-full`}
                             />
-                            <div className={`bg-main_color text-white rounded-lg p-3`}>
+                            <div className={`bg-second_main_color text-white rounded-lg p-3`}>
                                 <p className={`text-sm`}>
                                     What’s the error you’re getting while trying to make the payment?
                                 </p>
@@ -114,7 +114,7 @@ export default function ChatSupport(props: Props) {
                                 alt="Support Avatar"
                                 className={`w-10 h-10 rounded-full`}
                             />
-                            <div className={`bg-main_color text-white rounded-lg p-3`}>
+                            <div className={`bg-second_main_color text-white rounded-lg p-3`}>
                                 <p className={`text-sm`}>What card did you use?</p>
                             </div>
                         </div>

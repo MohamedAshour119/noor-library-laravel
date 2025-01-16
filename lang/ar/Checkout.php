@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'your_cart' => 'عربة التسوق الخاصة بك',
+    'your_cart' => 'عربة التسوق',
     'checkout_details' => 'تفاصيل الدفع',
     'order_complete' => 'تمت عملية الطلب',
     'image' => 'الصورة',
@@ -20,4 +20,7 @@ return [
     'no_products_in_cart' => 'لا يوجد منتجات في عربة التسوق.',
     'pay_with_credit_card' => 'الدفع ببطاقة الائتمان',
     'cash_on_delivery' => 'الدفع عند الاستلام',
+    'order_placed_successfully' => 'تمت عملية الطلب بنجاح!',
+    'order_confirmation_message' => 'شكراً لك على طلبك! سيتم تسليم طلبك خلال 3 أيام عمل. إذا كان لديك أي أسئلة، فلا تتردد في الاتصال بفريق الدعم لدينا.',
+    'view_order_details' => 'عرض تفاصيل الطلب',
 ];

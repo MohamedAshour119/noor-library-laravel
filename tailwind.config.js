@@ -13,6 +13,7 @@ export default {
         extend: {
             colors: {
                 main_color: "#45B09E",
+                second_main_color: "#5ec5dd",
                 main_color_placeholder: "rgba(69,176,158,0.38)",
                 main_color_darker: "#00786D",
                 text_color: "#444444",
@@ -21,6 +22,7 @@ export default {
                 input_bg: "#FAFAFA",
                 disable_color: "#D2CFCF",
                 table_border: "#cfcfcf",
+
             },
         },
         screens: {
