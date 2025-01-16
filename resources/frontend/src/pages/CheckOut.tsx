@@ -28,19 +28,22 @@ export default function CheckOut() {
     });
     const [errors, setErrors] = useState<AddOrderErrors | null>(null)
 
+    useEffect(() => {
+        const query_params = new URLSearchParams(window.location.search)
+        const status = query_params.get('status')
+
+        if (status === 'success') setCurrentStep(3)
+        if (status === 'failure') setCurrentStep(2)
+
+    }, []);
+
+
     const handleBillingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
         setBilling_info(prevState => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
     }
-    // const handlePhoneChange = (phone: string) => {
-    //     setBilling_info(prevState => ({
-    //         ...prevState,
-    //         phone_number: phone, // The full phone number with country code
-    //     }));
-    // };
-
     const handlePhoneChange = (phone: string, country: any) => {
         setBilling_info({
             ...billing_info,

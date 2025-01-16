@@ -75,25 +75,17 @@ class PaymobController extends Controller
             "success" => $queryParams['success'],
         ];
 
-        info('========================');
-        info('params', [$queryParams]);
-
         $concatenated_string = '';
         foreach ($data as $key => $value) {
             $concatenated_string .= $value;
         }
-        info('$concatenated_string', [$concatenated_string]);
-
         // Compute the HMAC
         $computed_hmac = hash_hmac('sha512', $concatenated_string, $hmac_secret);
-        info('$computed_hmac', [$computed_hmac]);
-        info('$received_hmac', [$received_hmac]);
 
-        // Compare the HMAC
         if (hash_equals($computed_hmac, $received_hmac)) {
-            info('HMAC is valid');
+            return redirect()->to('http://localhost:8000/checkout' . '?status=success');
         } else {
-            info('HMAC validation failed');
+            return redirect()->to('http://localhost:8000/checkout' . '?status=failure');
         }
     }
 }
