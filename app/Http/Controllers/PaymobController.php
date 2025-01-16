@@ -66,7 +66,7 @@ class PaymobController extends Controller
             "is_refunded" => $queryParams['is_refunded'],
             "is_standalone_payment" => $queryParams['is_standalone_payment'],
             "is_voided" => $queryParams['is_voided'],
-            "order.id" => $queryParams['id'],
+            "order.id" => $queryParams['order'],
             "owner" => $queryParams['owner'],
             "pending" => $queryParams['pending'],
             "source_data.pan" => $queryParams['source_data_pan'],
