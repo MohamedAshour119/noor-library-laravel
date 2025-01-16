@@ -4,16 +4,17 @@ import {RootState} from "../../../redux/store.ts";
 import {Radio} from "flowbite-react";
 import {Dispatch, FormEvent, SetStateAction} from "react";
 import apiClient from "../../../ApiClient.ts";
+import {enqueueSnackbar} from "notistack";
+import axios from "axios";
 
 interface Props {
     cart_books: Book[]
     billing_info: BillingInfo
     setBilling_info: Dispatch<SetStateAction<BillingInfo>>
-    handleSubmit: (e: FormEvent) => void
     handleNext: () => void
     setErrors: Dispatch<SetStateAction<AddOrderErrors | null>>
 }
-export default function Sidebar({cart_books, billing_info, setBilling_info, handleSubmit, handleNext, setErrors}: Props) {
+export default function Sidebar({cart_books, billing_info, setBilling_info, handleNext, setErrors}: Props) {
     const translation = useSelector((state: RootState) => state.translationReducer)
 
     const show_books = cart_books.map(book => (
@@ -32,6 +33,31 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
         });
     };
 
+    const handleSubmit = async (e?: FormEvent) => {
+        e?.preventDefault();
+        const cart_books_ids = cart_books.map(book => book.id)
+        const data = {
+            billing_info,
+            cart_books_ids,
+        }
+
+        try {
+            // Step 1: Create an order
+            const response = await axios.post("/api/paymob", data, {headers: {
+                    'Accept': 'application/json',
+                    'Authorization':'Bearer ' + localStorage.getItem('token'),
+                }})
+
+            if (response.data.data.url) {
+                window.location.href = response.data.data.url;
+            }
+
+        } catch (err) {
+            // @ts-ignore
+            setErrors(err.response.data.errors)
+        }
+    };
+
     const placeOrder = () => {
         const cart_books_ids = cart_books.map(book => book.id)
         const data = {
@@ -44,7 +70,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
                 .then(() => handleNext())
                 .catch(err => setErrors(err.response.data.errors))
         }else {
-            handleSubmit
+            handleSubmit()
         }
     }
 

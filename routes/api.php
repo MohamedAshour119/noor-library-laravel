@@ -48,15 +48,12 @@ Route::middleware('api')->group(function () {
             Route::delete('/book/comments/delete/{comment_id}', [CommentController::class, 'deleteComment']);
             Route::post('/wishlist/add/{book_id}', [WishlistController::class, 'addBookToWishlist']);
             Route::delete('/wishlist/delete/{book_id}', [WishlistController::class, 'deleteBookToWishlist']);
-            Route::post('/paymob/authenticate', [PaymobController::class, 'authenticate']);
-            Route::post('/paymob/create-order', [PaymobController::class, 'createOrder']);
-            Route::post('/paymob/initiate-payment', [PaymobController::class, 'initiatePayment']);
-            Route::get('/callback', [PaymobController::class, 'callback']);
+            Route::post('/paymob', [PaymobController::class, 'paymob']);
             Route::post('/orders/add', [OrdersController::class, 'addOrder']);
         });
     });
 });
-
+Route::get('/callback', [PaymobController::class, 'callback']);
 Route::post('/set-password', [AuthController::class, 'setPassword'])->middleware('social.only');
 
 

@@ -1,13 +1,11 @@
 import Footer from "../components/Footer.tsx";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import {AddOrderErrors, BillingInfo, Book} from "../../Interfaces.ts";
 import {useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import GlobalInput from "../components/core/GlobalInput.tsx";
 import PhoneInput from "react-phone-input-2";
 import Sidebar from "../components/checkout/Sidebar.tsx";
-import axios from "axios";
-import {enqueueSnackbar} from "notistack";
 
 export default function CheckOut() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -49,34 +47,6 @@ export default function CheckOut() {
             phone_number: phone, // The full phone number with country code
             country_code: country.dialCode, // The country code only
         });
-    };
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-
-        try {
-            // Step 1: Create an order
-            const orderResponse = await axios.post("/api/paymob/create-order", {
-                amount_cents: billing_info.amount * 100, // Convert EGP to cents
-                first_name: billing_info.first_name,
-                last_name: billing_info.last_name,
-                phone_number: billing_info.phone_number,
-            }, {headers: {
-                'Accept': 'application/json',
-                'Authorization':'Bearer ' + localStorage.getItem('token'),
-            }})
-
-            // Step 2: Get order details from response
-            const { order_url } = orderResponse.data.data;
-
-            // Step 3: Redirect the user to the payment page
-            if (order_url) {
-                window.location.href = order_url;  // Redirecting to Paymob payment page
-            }
-
-        } catch (error) {
-            // @ts-ignore
-            enqueueSnackbar(error.response.data.errors, {variant: "error"})
-        }
     };
 
     useEffect(() => {
@@ -344,7 +314,6 @@ export default function CheckOut() {
                             cart_books={cart_books}
                             billing_info={billing_info}
                             setBilling_info={setBilling_info}
-                            handleSubmit={handleSubmit}
                             handleNext={handleNext}
                             setErrors={setErrors}
                         />
