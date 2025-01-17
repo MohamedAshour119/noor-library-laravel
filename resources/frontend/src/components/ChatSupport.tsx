@@ -1,6 +1,7 @@
 import {IoChatbubbleEllipsesSharp} from "react-icons/io5";
 import {useEffect, useRef, useState} from "react";
 import {IoMdClose} from "react-icons/io";
+import {useLocation} from "react-router-dom";
 
 interface Props {
 
@@ -8,6 +9,20 @@ interface Props {
 export default function ChatSupport(props: Props) {
 
     const [is_open, setIs_open] = useState(false);
+    const [not_display_in_routes, setNot_display_in_routes] = useState(true);
+
+    const location = useLocation()
+
+    useEffect(() => {
+        const routes = ['/sign-up', '/sign-in']
+        const current_location = location.pathname
+        if (routes.includes(current_location)) {
+            setNot_display_in_routes(false)
+        }else {
+            setNot_display_in_routes(true)
+        }
+    }, [location]);
+
 
     const openChat = () => {
         setIs_open(true)
@@ -30,11 +45,10 @@ export default function ChatSupport(props: Props) {
         }
     }, []);
 
-
     return (
         <div className={`bg-main_color_darker flex justify-center z-50 relative`}>
             <div className={`container`}>
-                {!is_open &&
+                {!is_open && not_display_in_routes &&
                     <IoChatbubbleEllipsesSharp
                         onClick={openChat}
                         className={`text-second_main_color hover:text-second_main_color/90 size-12 cursor-pointer fixed bottom-4 z-50`}
@@ -42,7 +56,7 @@ export default function ChatSupport(props: Props) {
                 }
 
                 <div
-                    className={`w-fit container fixed bottom-0`}
+                    className={`w-fit container fixed bottom-0 ${is_open ? 'visible' : 'invisible'}`}
                     ref={chatRef}
                 >
                     <div className={` flex flex-col w-full max-w-md bg-gray-50 border rounded-lg shadow-md space-y-4 ltr:left-0 rtl:right-0 bottom-0 transform transition-transform duration-300 ${is_open ? "translate-x-0" : "translate-y-full"}`}>
