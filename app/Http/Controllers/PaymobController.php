@@ -3,9 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddOrderRequest;
+use App\Models\Order;
+use App\Models\Transaction;
+use App\Models\User;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Session;
 
 class PaymobController extends Controller
 {
@@ -36,9 +42,17 @@ class PaymobController extends Controller
         ];
 
         $response = Http::withHeaders($headers)->post('https://accept.paymob.com/v1/intention/', $payload);
-
         if ($response->successful()) {
             $responseData = $response->json();
+            $data = $request->billing_info;
+            $data['payment_method'] = $request->payment_method;
+            info('======================');
+            Transaction::create([
+                'billing_info' => $data,
+                'cart_books_ids' => $request->cart_books_ids,
+                'order_id' => $responseData['payment_keys'][0]['order_id'],
+            ]);
+
             $url = "https://accept.paymob.com/unifiedcheckout/?publicKey=" . env('PAYMOB_PUBLIC_KEY') . "&clientSecret=" . $responseData['client_secret'];
             return $this->response_success(['url' => $url], 'Payment Redirect Url');
         } else {
@@ -47,6 +61,8 @@ class PaymobController extends Controller
     }
     public function callback(Request $request)
     {
+        info('user', [Auth::guard('user')->user()]);
+
         $queryParams = $request->all();
         $hmac_secret = env('PAYMOB_HMAC_SECRET');
         $received_hmac = $queryParams['hmac'];
@@ -82,10 +98,47 @@ class PaymobController extends Controller
         // Compute the HMAC
         $computed_hmac = hash_hmac('sha512', $concatenated_string, $hmac_secret);
 
+        $order_id = $queryParams['order'];
+        $billing_info = Transaction::where('order_id', $order_id)->first();
+
+        $billing_info_param = [
+            'billing_info' => $billing_info['billing_info'],
+            'cart_books_ids' => $billing_info['cart_books_ids'],
+        ];
+        info('$billing_info_param', [$billing_info_param]);
+        $this->addOrder($billing_info_param);
+
         if (hash_equals($computed_hmac, $received_hmac)) {
             return redirect()->to('http://localhost:8000/checkout' . '?status=success');
         } else {
             return redirect()->to('http://localhost:8000/checkout' . '?status=failure');
         }
+    }
+
+    private function addOrder($data)
+    {
+        $user = User::find($data['billing_info']['id']);
+        info('$data', [$data]);
+        info('billing_info', [$data['billing_info']]);
+        $items_ids = $data['cart_books_ids'];
+        $order = Order::create([
+            'first_name' => $data['billing_info']['first_name'],
+            'last_name' => $data['billing_info']['last_name'],
+            'city' => $data['billing_info']['city'],
+            'street' => $data['billing_info']['street'],
+            'phone' => $data['billing_info']['phone_number'],
+            'amount' => $data['billing_info']['amount'],
+            'payment_method' => $data['billing_info']['payment_method'],
+            'user_id' => $user->id,
+        ]);
+
+        // Prepare data with timestamps for each book
+        $timestamp = now();
+        $attachData = collect($items_ids)->mapWithKeys(function ($id) use ($timestamp) {
+            return [$id => ['created_at' => $timestamp, 'updated_at' => $timestamp]];
+        })->toArray();
+
+        // Attach with timestamps
+        $order->books()->attach($attachData);
     }
 }

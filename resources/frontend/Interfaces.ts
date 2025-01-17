@@ -194,6 +194,7 @@ export interface SearchBooks {
 }
 
 export interface BillingInfo {
+    id: number | null
     first_name: string
     last_name: string
     city: string

@@ -9,6 +9,7 @@ import Sidebar from "../components/checkout/Sidebar.tsx";
 
 export default function CheckOut() {
     const translation = useSelector((state: RootState) => state.translationReducer)
+    const auth_user = useSelector((state: RootState) => state.user)
     const add_to_cart_count = useSelector((state: RootState) => state.addToCartItemsCountReducer);
     const [cart_books, setCart_books] = useState<Book[]>([]);
 
@@ -16,6 +17,7 @@ export default function CheckOut() {
     const steps = ["Step 1", "Step 2", "Step 3"];
 
     const [billing_info, setBilling_info] = useState<BillingInfo>({
+        id: auth_user.id,
         first_name: '',
         last_name: '',
         city: '',
