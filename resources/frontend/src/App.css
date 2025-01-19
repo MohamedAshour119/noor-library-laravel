@@ -5,6 +5,7 @@
 :root {
     --background: #ffffff;
     --main_color: theme(colors.main_color);
+    --second_main_color: theme(colors.second_main_color);
     --border_color: theme(colors.border_color);
 
     --font-roboto: 'Roboto', sans-serif;
@@ -284,4 +285,15 @@ div[aria-label="progressbar"] div {
         -webkit-appearance: none;
         margin: 0;
     }
+}
+
+textarea.show-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--second_main_color);
+}
+
+textarea.hide-scrollbar::-webkit-scrollbar-thumb {
+    display: none;
+}
+textarea.hide-scrollbar::-webkit-scrollbar-track {
+    display: none;
 }

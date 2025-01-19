@@ -1,16 +1,21 @@
 <?php
 
+use App\Events\MessageSent;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymobController;
+use App\Http\Controllers\PusherController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SocialController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WishlistController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 
@@ -50,10 +55,22 @@ Route::middleware('api')->group(function () {
             Route::delete('/wishlist/delete/{book_id}', [WishlistController::class, 'deleteBookToWishlist']);
             Route::post('/paymob', [PaymobController::class, 'paymob']);
             Route::post('/orders/add', [OrdersController::class, 'addOrder']);
+
         });
     });
 });
 Route::get('/callback', [PaymobController::class, 'callback']);
 Route::post('/set-password', [AuthController::class, 'setPassword'])->middleware('social.only');
+Broadcast::routes(['middleware' => ['auth:api']]);
 
 
+Route::post('/broadcasting/auth', function (Request $request) {
+    $user = auth()->user();
+    if (!$user) {
+        return response()->json(['message' => 'Unauthenticated'], 401);
+    }
+
+    return Broadcast::auth($request);
+});
+
+Route::post('/chat/send-message', [ChatController::class, 'sendMessage']);

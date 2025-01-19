@@ -26,7 +26,7 @@ import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
 import CheckOut from "./pages/CheckOut.tsx";
 import SetPassword from "./pages/SetPassword.tsx";
 import ChatSupport from "./components/ChatSupport.tsx";
-
+import '../echo.js';
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
     const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
