@@ -61,8 +61,6 @@ class PaymobController extends Controller
     }
     public function callback(Request $request)
     {
-        info('user', [Auth::guard('user')->user()]);
-
         $queryParams = $request->all();
         $hmac_secret = env('PAYMOB_HMAC_SECRET');
         $received_hmac = $queryParams['hmac'];

@@ -7,33 +7,13 @@ interface Props {
 
 }
 export default function ChatSupport(props: Props) {
+
     const [is_open, setIs_open] = useState(false);
     const [not_display_in_routes, setNot_display_in_routes] = useState(true);
     const [show_scrollbar, setShow_scrollbar] = useState(false);
     const [messages, setMessages] = useState<String[]>([]);
     const [input_message, setInput_message] = useState('');
 
-    useEffect(() => {
-
-        // @ts-ignore
-        window.Echo.connector.pusher.connection.bind('connected', () => {
-            console.log('Pusher reconnected successfully.');
-        });
-
-
-        // @ts-ignore
-        window.Echo.channel('chat').listen('.message-sent', (e: { message: string }) => {
-            console.log('Event received:', e);
-            setMessages(prev => [...prev, e.message]);
-
-            return () => {
-                // @ts-ignore
-                window.Echo.leaveChannel('chat');
-            }
-        })
-
-
-    }, []);
     const handleChangeMessage = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setInput_message(e.target.value)
     }

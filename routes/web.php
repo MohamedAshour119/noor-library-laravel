@@ -5,10 +5,10 @@ use App\Http\Controllers\SocialController;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-
 
 // routes/web.php
 
@@ -21,7 +21,6 @@ Route::get('/auth/google/redirect', [SocialController::class, 'googleRedirect'])
 Route::get('/auth/google/callback', [SocialController::class, 'googleCallback']);
 Route::get('/auth/twitter/redirect', [SocialController::class, 'twitterRedirect']);
 Route::get('/auth/twitter/callback', [SocialController::class, 'twitterCallback']);
-//Route::get('/callback', [PaymobController::class, 'callback']);
 
 Route::get('/locale/{locale}', function ($locale) {
     if (in_array($locale, ['ar', 'en', 'fr'])) {
