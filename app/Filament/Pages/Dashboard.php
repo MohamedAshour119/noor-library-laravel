@@ -9,8 +9,10 @@ class Dashboard extends Page
 {
     protected static ?string $navigationIcon = 'icon-book';
     protected static string $view = 'filament.pages.dashboard';
-    protected static ?string $title = 'Books';
-    protected ?string $subheading = 'Manage your books';
+//    protected static ?string $title = 'Books';
+    protected static bool $isDiscovered = false;
+//    protected static ?string $navigationGroup = 'Books';
+
 //    public function getMaxContentWidth(): MaxWidth
 //    {
 //        return MaxWidth::Full;

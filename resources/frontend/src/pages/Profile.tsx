@@ -477,8 +477,8 @@ export default function Profile() {
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
                             {user_info?.is_vendor && auth_user.is_vendor && auth_user.username === user &&
-                                <Link
-                                    to={`/`}
+                                <a
+                                    href={`/admin`}
                                     className={`bg-main_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
                                 >
                                     {translation.manage_books}
@@ -487,7 +487,7 @@ export default function Profile() {
                                         alt="manage books"
                                         width={30}
                                     />
-                                </Link>
+                                </a>
                             }
                             <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
                                 {translation.last_online}

@@ -5,20 +5,40 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BookResource\Pages;
 use App\Filament\Resources\BookResource\RelationManagers;
 use App\Models\Book;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use Locale;
 
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
-
     protected static ?string $navigationIcon = 'icon-book';
-
+    public static function getEloquentQuery(): Builder
+    {
+//        dd(app()->getLocale());
+        return parent::getEloquentQuery()->where('vendor_id', Auth::guard('vendor')->id());
+    }
+    public static function getPluralLabel(): ?string
+    {
+        return __('Dashboard.books');
+    }
+    public static function getNavigationGroup(): ?string
+    {
+        return __('Dashboard.books');
+    }
+    public static function getModelLabel(): string
+    {
+        return __('Dashboard.book');
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -56,38 +76,54 @@ class BookResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
+                Tables\Columns\TextColumn::make('id')
+                    ->label(__('Dashboard.id')),
+                Tables\Columns\TextColumn::make('title')
+                    ->label(__('Dashboard.title')),
+                Tables\Columns\ImageColumn::make('cover')
+                    ->label(__('Dashboard.cover'))
                     ->getStateUsing(function (Book $record) {
                         return $record->hasMedia('books_covers')
                             ? $record->getFirstMediaUrl('books_covers')
                             : null;
                     }),
                 Tables\Columns\TextColumn::make('price')
+                    ->label(__('Dashboard.price'))
                     ->money()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('language')
+                    ->label(__('Dashboard.language'))
+                    ->getStateUsing(function (Book $record) {
+                        return Locale::getDisplayLanguage($record->language,  app()->getLocale());
+                    })
                     ->searchable(),
                 Tables\Columns\IconColumn::make('downloadable')
+                    ->label(__('Dashboard.downloadable'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('vendor.username')
+                    ->label(__('Dashboard.vendor'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('category.name')
+                    ->label(__('Dashboard.category'))
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label(__('Dashboard.status')),
                 Tables\Columns\IconColumn::make('is_author')
+                    ->label(__('Dashboard.is_author'))
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_free')
+                    ->label(__('Dashboard.is_free'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label(__('Dashboard.created_at'))
+                    ->dateTime('Y-d-m')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label(__('Dashboard.updated_at'))
+                    ->dateTime('Y-d-m')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -119,4 +155,5 @@ class BookResource extends Resource
             'edit' => Pages\EditBook::route('/{record}/edit'),
         ];
     }
+
 }

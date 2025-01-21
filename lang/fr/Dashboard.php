@@ -1,0 +1,22 @@
+<?php
+
+return [
+    'book' => 'livre',
+    'all' => 'Toute',
+    'free' => 'Gratuit',
+    'paid' => 'Payé',
+    'id' => 'Id',
+    'books' => 'Livres',
+    'is_free' => 'Gratuit',
+    'is_author' => 'Êtes-vous l\'auteur',
+    'status' => 'Statut',
+    'category' => 'Catégorie',
+    'vendor' => 'Vendeur',
+    'downloadable' => 'Téléchargeable',
+    'language' => 'Langue',
+    'price' => 'Prix',
+    'cover' => 'Couverture',
+    'title' => 'Titre',
+    'created_at' => 'Créé le',
+    'updated_at' => 'Mis à jour le',
+];

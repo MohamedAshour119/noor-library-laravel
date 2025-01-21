@@ -21,6 +21,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Kenepa\TranslationManager\TranslationManagerPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -37,10 +38,11 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Lime,
             ])
+            ->plugin(TranslationManagerPlugin::make())
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
-                Dashboard::class,
+//                Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
