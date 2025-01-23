@@ -382,7 +382,7 @@ export default function Profile() {
                 className={`animate-fade-in !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2`}
             >
                 <Modal.Header className={`!bg-white rounded-t`}/>
-                <Modal.Body className={`pt-0 !bg-white rounded-b`}>
+                <Modal.Body className={`pt-4 !bg-white rounded-b`}>
                     <div className="space-y-4 pb-4">
                         <h3 className="text-xl font-roboto-semi-bold text-gray-900">{translation.confirm_who_you_are}</h3>
                         <div className={`relative`}>

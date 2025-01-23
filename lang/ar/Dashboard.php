@@ -19,4 +19,7 @@ return [
     'title' => 'العنوان',
     'created_at' => 'تاريخ الإنشاء',
     'updated_at' => 'تاريخ التحديث',
+    'usd' => 'دولار أمريكي',
+    'description' => 'الوصف',
+    'author_of_the_book' => 'مؤلف الكتاب',
 ];

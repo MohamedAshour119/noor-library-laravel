@@ -19,4 +19,7 @@ return [
     'title' => 'Title',
     'created_at' => 'Created At',
     'updated_at' => 'Updated At',
+    'usd' => 'USD',
+    'description' => 'Description',
+    'author_of_the_book' => 'Author of the book',
 ];

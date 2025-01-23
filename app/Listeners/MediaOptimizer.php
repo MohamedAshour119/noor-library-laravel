@@ -23,8 +23,10 @@ class MediaOptimizer
     public function handle(MediaHasBeenAddedEvent $event): void
     {
         $media = $event->media;
+        info('type', [$media->type]);
+        info('collection_name', [$media->collection_name]);
 
-        if ($media->type !== 'image' && $media->collection_name === 'users_avatars') {
+        if ($media->type === 'image' && $media->collection_name === 'users_avatars') {
             return;
         }
 
@@ -32,7 +34,6 @@ class MediaOptimizer
 
         // Load the image and optimize it
         $optimizedImage = Image::load($pathToImage)->resize(182, 277)->optimize()->quality(75)->format('webp');
-
         // Save the optimized image
         $optimizedImage->save();
 

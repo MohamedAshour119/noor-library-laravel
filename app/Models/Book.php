@@ -19,7 +19,10 @@ class Book extends Model implements HasMedia
     protected $with = ['media', 'vendor', 'category', 'ratings', 'comments'];
     protected $withCount = ['ratings', 'comments'];
     public $translatable = ['title', 'slug', 'description', 'author_name', 'name'];
-    protected $casts = ['slug' => 'array'];
+    protected $casts = [
+        'slug' => 'array',
+        'title' => 'array',
+    ];
 
     public function vendor(): BelongsTo
     {
@@ -76,6 +79,10 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsToMany(Order::class, 'book_order', 'book_id', 'order_id');
     }
+//    public function languages()
+//    {
+//        return $this->belongsToMany(Language::class, 'book_language', 'language_id', 'book_id');
+//    }
     protected static function booted()
     {
         static::creating(function ($book) {

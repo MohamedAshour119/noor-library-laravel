@@ -27,7 +27,7 @@ class UserProfileController extends Controller implements HasMedia
     use HttpResponses, InteractsWithMedia;
     public function getUserBooks(): JsonResponse
     {
-        $books = Book::paginate(2);
+        $books = Book::paginate(12);
         $next_page_url = $books->nextPageUrl();
         $books = BookResource::collection($books);
         $data = [

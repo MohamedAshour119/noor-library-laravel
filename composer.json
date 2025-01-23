@@ -10,6 +10,7 @@
         "ext-imagick": "*",
         "ext-intl": "*",
         "filament/filament": "^3.2",
+        "filament/spatie-laravel-media-library-plugin": "^3.2",
         "fpdf/fpdf": "^1.86",
         "kenepa/translation-manager": "^4.0",
         "laravel/framework": "^11.31",

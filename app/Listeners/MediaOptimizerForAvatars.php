@@ -24,7 +24,7 @@ class MediaOptimizerForAvatars
     {
         $media = $event->media;
 
-        if ($media->type !== 'image' && $media->collection_name !== 'users_avatars') {
+        if ($media->type === 'image' && $media->collection_name !== 'users_avatars') {
             return;
         }
 

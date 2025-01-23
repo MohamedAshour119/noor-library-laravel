@@ -160,13 +160,13 @@ export default function Home() {
                     <Modal
                         show={isFocused}
                         onClose={handleClose}
-                        className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
+                        className={`w-[40rem] h-fit !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
                         ref={modalRef}
                     >
-                        <Modal.Header className={`!border-b modal-header`}>
+                        <Modal.Header className={` dark:border-transparent bg-white`}>
                             <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
                         </Modal.Header>
-                        <Modal.Body>
+                        <Modal.Body className={`bg-white rounded-b`}>
                             <div className="space-y-6 p-5">
                                 <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                                     {translation.unauthorized_customer_message}

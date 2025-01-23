@@ -19,4 +19,7 @@ return [
     'title' => 'Titre',
     'created_at' => 'Créé le',
     'updated_at' => 'Mis à jour le',
+    'usd' => 'USD',
+    'description' => 'Description',
+    'author_of_the_book' => 'Auteur du livre',
 ];

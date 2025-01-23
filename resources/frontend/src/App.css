@@ -146,6 +146,7 @@ button[aria-label="Close"]:hover{
     border-color: var(--border_color) !important;
 }
 
+
 div[tabindex="-1"] {
     height: fit-content;
 }
