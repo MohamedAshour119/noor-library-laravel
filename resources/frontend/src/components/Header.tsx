@@ -15,12 +15,12 @@ import NavbarList from "./home/Navbar-List.tsx";
 import {enqueueSnackbar} from "notistack";
 import {clearUser} from "../../redux/user-slice.ts";
 import apiClient from "../../ApiClient.ts";
-import {Modal} from "flowbite-react";
 import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 import {TfiShoppingCart} from "react-icons/tfi";
+import {Modal} from "./Modal.tsx";
 
 export default function Header() {
 
@@ -107,21 +107,14 @@ export default function Header() {
             <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto z-10 border-t-[3px] border-main_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
             {!auth_user.is_vendor &&
                 <Modal
-                    show={isFocused}
+                    isOpen={isFocused}
                     onClose={handleClose}
-                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
-                    ref={modalRef}
+                    header={translation.unauthorized}
                 >
-                    <Modal.Header className={`!border-b modal-header`}>
-                        <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="space-y-6 p-5">
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {translation.unauthorized_customer_message}
-                            </p>
-                        </div>
-                    </Modal.Body>
+                    <main className={`p-4 text-gray-500`}>
+                        {translation.unauthorized_customer_message}
+                    </main>
+
                 </Modal>
             }
             <div className={`container w-full relative`}>

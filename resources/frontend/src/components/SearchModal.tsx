@@ -1,4 +1,3 @@
-import {Modal} from "flowbite-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {setIsSearchModalOpenSlice} from "../../redux/is_search_modal_open.ts";
@@ -13,6 +12,7 @@ import CoolLoading from "./CoolLoading.tsx";
 import {useNavigate} from "react-router-dom";
 // @ts-ignore
 import {FormEventHandler} from "react/v18";
+import {Modal} from "./Modal.tsx";
 
 export default function SearchModal() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -100,51 +100,52 @@ export default function SearchModal() {
     }
 
     return (
+
         <Modal
-            show={isSearchModalOpenSlice}
+            isOpen={isSearchModalOpenSlice}
             onClose={handleClose}
-            className={`relative w-[23rem] xxs:w-[30rem] sm:w-[40rem] !top-1/2 ltr:!left-1/2 ltr:!-translate-x-1/2 !-translate-y-1/2 rtl:!right-1/2 rtl:!translate-x-1/2 animate-fade-in`}
+            header={translation.search}
             ref={modalRef}
+            parent_styles={`px-0 ${search_value.length > 0 ? 'pb-0' : 'pb-4'}`}
         >
-            <Modal.Header className={`!border-b modal-header !py-3 flex justify-between`}>
-                <h3 className="text-xl text-main_color_darker font-medium">{translation.search}</h3>
-            </Modal.Header>
-            <Modal.Body className={`py-3 px-5`}>
-                <form
-                    className="space-y-6"
-                    onSubmit={getKeywordSearchingResults}
-                >
-                    <GlobalInput
-                        label={translation.search}
-                        id={`search_id`}
-                        placeholder={translation.search_placeholder}
-                        value={search_value}
-                        name={`search`}
-                        onChange={handleSearchValue}
-                        input_styles={`py-3 !mt-0`}
-                        is_required={false}
-                    />
-                </form>
-            </Modal.Body>
-            {/* Results */}
-            {search_value.length > 0 &&
-                <div className={`flex flex-col py-3 border-t`}>
-                    <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h1>
-                    <button
-                        onClick={getKeywordSearchingResults}
-                        className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
-                    >{translation.search_for}: <span className={`text-main_color_darker`}> "{search_value}"</span>
-                    </button>
-                    <div className={`flex flex-col gap-y-3`}>
-                        {!is_loading && show_Results}
-                        {is_loading &&
-                            <div className={`flex justify-center pb-20 pt-10`}>
-                                <CoolLoading/>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
+            <main className={`pt-4 text-gray-500`}>
+                 <form
+                     className="space-y-6 px-4"
+                     onSubmit={getKeywordSearchingResults}
+                 >
+                     <GlobalInput
+                         label={translation.search}
+                         id={`search_id`}
+                         placeholder={translation.search_placeholder}
+                         value={search_value}
+                         name={`search`}
+                         onChange={handleSearchValue}
+                         input_styles={`py-3 !mt-0`}
+                         is_required={false}
+                     />
+                 </form>
+
+                 {/* Results */}
+                 {search_value.length > 0 &&
+                     <div className={`flex flex-col py-3 border-t`}>
+                         <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h1>
+                         <button
+                             onClick={getKeywordSearchingResults}
+                             className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
+                         >{translation.search_for}: <span className={`text-main_color_darker`}> "{search_value}"</span>
+                         </button>
+                         <div className={`flex flex-col gap-y-3`}>
+                             {!is_loading && show_Results}
+                             {is_loading &&
+                                 <div className={`flex justify-center pb-20 pt-10`}>
+                                     <CoolLoading/>
+                                 </div>
+                             }
+                         </div>
+                     </div>
+                 }
+            </main>
+
         </Modal>
     )
 }

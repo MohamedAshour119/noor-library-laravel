@@ -10,15 +10,16 @@ import {BookCardInterface, CommentInterface, Errors, SignUpForm} from "../../Int
 import apiClient from "../../ApiClient.ts";
 import BookCard from "../components/BookCard.tsx";
 import {enqueueSnackbar} from "notistack";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
-import {Button, Label, Modal, Spinner, TextInput} from "flowbite-react";
+import {Button, Label, Spinner, TextInput} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
 import axios from "axios";
 import {setUser} from "../../redux/user-slice.ts";
 import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import Reviews from "../components/profile/Reviews.tsx";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
+import {Modal} from "../components/Modal.tsx";
 export default function Profile() {
     const translation = useSelector((state: RootState) => state.translationReducer)
     const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -374,15 +375,11 @@ export default function Profile() {
         <>
             {is_confirm_password_open && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
             <Modal
-                show={is_confirm_password_open}
-                size="sm"
+                isOpen={is_confirm_password_open}
                 onClose={handleCloseModal}
-                popup
                 ref={modal_ref}
-                className={`animate-fade-in !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2`}
             >
-                <Modal.Header className={`!bg-white rounded-t`}/>
-                <Modal.Body className={`pt-4 !bg-white rounded-b`}>
+                <main className={`px-4 text-gray-500`}>
                     <div className="space-y-4 pb-4">
                         <h3 className="text-xl font-roboto-semi-bold text-gray-900">{translation.confirm_who_you_are}</h3>
                         <div className={`relative`}>
@@ -420,8 +417,8 @@ export default function Profile() {
                         </div>
                     </div>
                     <span className={`text-main_color_darker font-roboto-semi-bold`}>{translation.security_refresh_password}</span>
+                </main>
 
-                </Modal.Body>
             </Modal>
             <div className={`flex flex-col items-center bg-main_bg py-5 gap-y-7`}>
                 <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>

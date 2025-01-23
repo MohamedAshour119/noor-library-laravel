@@ -1,4 +1,4 @@
-import {Ref, useEffect, useRef, useState} from "react";
+import {Ref, useEffect, useState} from "react";
 import ReactStars from "react-stars";
 import {MdAddShoppingCart} from "react-icons/md";
 import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
@@ -7,7 +7,6 @@ import {enqueueSnackbar} from "notistack";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
-import {Modal} from "flowbite-react";
 import {Book} from "../../Interfaces.ts";
 import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
 
@@ -36,8 +35,6 @@ export default function BookCard(props: Props) {
     const {average_ratings, title, slug, author, cover, ref, styles, price, ratings_count, is_free, id, is_added_to_wishlist, category } = props
 
     const auth_user = useSelector((state: RootState) => state.user)
-    const translation = useSelector((state: RootState) => state.translationReducer)
-    const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
     const add_to_cart_items_count = useSelector((state: RootState) => state.addToCartItemsCountReducer)
     const dispatch = useDispatch()
 
@@ -121,42 +118,8 @@ export default function BookCard(props: Props) {
         }
     }
 
-    const modalRef = useRef<HTMLDivElement>(null);
-    useEffect(() => {
-        const handleClickOutside = (e: MouseEvent) => {
-            if (!modalRef.current?.contains(e.target as Node)) {
-                dispatch(setIsUnauthorizedMessageOpenSlice(false))
-            }
-        }
-
-        window.addEventListener('mousedown', handleClickOutside)
-        return () => {
-            window.removeEventListener('mousedown', handleClickOutside)
-        }
-    }, []);
-
-
     return (
         <>
-            {(auth_user.is_vendor || auth_user.is_vendor === null) &&
-                <Modal
-                    show={isUnauthorizedMessageOpenSlice}
-                    onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
-                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
-                    ref={modalRef}
-                >
-                    <Modal.Header className={`!border-b modal-header`}>
-                        <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="space-y-6 p-5">
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {auth_user.is_vendor ? translation.unauthorized_vendor_message : !auth_user.is_vendor ? translation.must_sign_in : ''}
-                            </p>
-                        </div>
-                    </Modal.Body>
-                </Modal>
-            }
             <a
                 ref={ref}
                 href={`/books/${slug}`}

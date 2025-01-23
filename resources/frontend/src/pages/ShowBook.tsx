@@ -1,5 +1,3 @@
-// The `ShowBook` component displays detailed information about a book retrieved from an API.
-// It includes book details, a loading state, and interactive icons for adding the book to a cart or wishlist.
 
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
@@ -18,9 +16,9 @@ import {RootState} from "../../redux/store.ts";
 import ReactStars from "react-stars";
 import {MdAddShoppingCart} from "react-icons/md";
 import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
-import {Modal} from "flowbite-react";
 import {useBookLanguageLabel} from "../hooks/UseBookLanguageLabel.ts";
 import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
+import {Modal} from "../components/Modal.tsx";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
@@ -289,21 +287,15 @@ export default function ShowBook() {
         <div className="flex flex-col min-h-[669px] text-text_color">
             {auth_user.is_vendor &&
                 <Modal
-                    show={isUnauthorizedMessageOpenSlice}
+                    isOpen={isUnauthorizedMessageOpenSlice}
                     onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
-                    className={`w-[40rem] !absolute !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
+                    header={translation.unauthorized}
                     ref={modalRef}
                 >
-                    <Modal.Header className={`!border-b modal-header`}>
-                        <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <div className="space-y-6 p-5">
-                            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                {translation.unauthorized_vendor_message}
-                            </p>
-                        </div>
-                    </Modal.Body>
+                    <main className={`p-4 text-gray-500`}>
+                        {translation.unauthorized_vendor_message}
+                    </main>
+
                 </Modal>
             }
             {/* Main container */}

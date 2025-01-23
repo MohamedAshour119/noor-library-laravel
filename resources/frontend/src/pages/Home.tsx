@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import MainHeader from "../components/home/Main-Header.tsx";
 import BookCard from "../components/BookCard.tsx";
 import {useEffect, useRef, useState} from "react";
-import {Modal} from "flowbite-react";
+// import {Modal} from "flowbite-react";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../redux/store.ts";
 import CategorySidebar from "../components/CategorySidebar.tsx";
@@ -13,6 +13,8 @@ import apiClient from "../../ApiClient.ts";
 import {enqueueSnackbar} from "notistack";
 import BookPlaceholder from "../components/BookPlaceholder.tsx";
 import {setUser} from "../../redux/user-slice.ts";
+import {Modal} from "../components/Modal.tsx";
+import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
 
 type IsActive = {
     highest_rated: boolean
@@ -22,6 +24,8 @@ type IsActive = {
 export default function Home() {
     const user = useSelector((state: RootState) => state.user)
     const translation = useSelector((state: RootState) => state.translationReducer)
+    const auth_user = useSelector((state: RootState) => state.user)
+    const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
 
     const dispatch = useDispatch()
 
@@ -152,27 +156,48 @@ export default function Home() {
     }, [isActive]);
 
 
+    const modal_ref = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (!modal_ref.current?.contains(e.target as Node)) {
+                dispatch(setIsUnauthorizedMessageOpenSlice(false))
+            }
+        }
+
+        window.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            window.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, []);
+
     return (
         <>
             <div className="max-[527px]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
                 {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+                {(auth_user.is_vendor || auth_user.is_vendor === null) &&
+                    <Modal
+                        isOpen={isUnauthorizedMessageOpenSlice}
+                        onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
+                        header={translation.unauthorized}
+                        ref={modal_ref}
+                    >
+                        <main className={`p-4 text-gray-500`}>
+                            {auth_user.is_vendor ? translation.unauthorized_vendor_message : !auth_user.is_vendor ? translation.must_sign_in : ''}
+                        </main>
+
+                    </Modal>
+                }
                 {!user.is_vendor &&
                     <Modal
-                        show={isFocused}
+                        isOpen={isFocused}
                         onClose={handleClose}
-                        className={`w-[40rem] h-fit !top-1/2 !left-1/2 !-translate-x-1/2 !-translate-y-1/2 animate-fade-in`}
+                        header={translation.unauthorized}
                         ref={modalRef}
                     >
-                        <Modal.Header className={` dark:border-transparent bg-white`}>
-                            <h3 className="text-red-600 text-xl font-medium">{translation.unauthorized}</h3>
-                        </Modal.Header>
-                        <Modal.Body className={`bg-white rounded-b`}>
-                            <div className="space-y-6 p-5">
-                                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                                    {translation.unauthorized_customer_message}
-                                </p>
-                            </div>
-                        </Modal.Body>
+                        <main className={`p-4 text-gray-500`}>
+                            {auth_user.id && !auth_user.is_vendor ? translation.unauthorized_customer_message : translation.must_sign_in}
+                        </main>
+
                     </Modal>
                 }
                 <img
@@ -209,7 +234,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <main className={`flex justify-center bg-main_bg py-8`}>
+            <main className={`flex justify-center bg-main_bg py-8 relative`}>
                 <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8`}>
                     <div className={`flex flex-col gap-y-4`}>
                         <MainHeader
