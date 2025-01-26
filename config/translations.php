@@ -6,6 +6,7 @@ return [
         'categories' => 'categories',
         'users' => 'users',
         'showBook' => 'showBook',
+        'AddBook' =>  'AddBook',
         // Add other static namespaces here
     ],
     'dynamic' => [

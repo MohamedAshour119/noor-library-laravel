@@ -16,7 +16,7 @@ return [
     'category' => 'Category',
     'category_placeholder' => 'Select Category',
     'is_the_book_free' => 'Is the book free?',
-    'upload_the_front_cover' => 'Upload the front cover (PDF only)',
+    'upload_the_front_book_cover' => 'Upload the front cover',
     'submit' => 'Submit',
     'the_book_is_for_review_only' => 'The book is for review only and not for downloading, because copyright is reserved. Users will not be able to download the book.',
     'select' => 'Select...',

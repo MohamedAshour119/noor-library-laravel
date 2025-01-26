@@ -23,8 +23,7 @@ class MediaOptimizerForAvatars
     public function handle(MediaHasBeenAddedEvent $event): void
     {
         $media = $event->media;
-
-        if ($media->type === 'image' && $media->collection_name !== 'users_avatars') {
+        if ($media->collection_name !== 'users_avatars') {
             return;
         }
 

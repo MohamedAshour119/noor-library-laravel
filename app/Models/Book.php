@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\GoogleTranslation;
 use App\Traits\GoogleTranslationSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,7 +14,7 @@ use Spatie\Translatable\HasTranslations;
 
 class Book extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasTranslations, GoogleTranslationSlug;
+    use InteractsWithMedia, HasTranslations, GoogleTranslationSlug, GoogleTranslation;
 
     protected $guarded = [];
     protected $with = ['media', 'vendor', 'category', 'ratings', 'comments'];
@@ -23,6 +24,10 @@ class Book extends Model implements HasMedia
         'slug' => 'array',
         'title' => 'array',
     ];
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('books_files');
+    }
 
     public function vendor(): BelongsTo
     {
@@ -83,30 +88,63 @@ class Book extends Model implements HasMedia
 //    {
 //        return $this->belongsToMany(Language::class, 'book_language', 'language_id', 'book_id');
 //    }
+    protected function getTranslatedText($text)
+    {
+        // Map the detected language to other languages
+        $languages = ['en', 'ar', 'fr'];
+        $translations = [];
+
+        foreach ($languages as $language) {
+            $translations[$language] = $this->translateTextDynamically($text, $language);
+        }
+
+        return $translations;
+    }
     protected static function booted()
     {
         static::creating(function ($book) {
-            // Generate the slug with 'temp-id' placeholder in the 'creating' event
-            $book->slug = $book->getTranslatedText($book->title, 'en', 'temp-id');
+            // Generate slugs for all languages with 'temp-id' placeholder
+            $book->slug = [
+                'en' => $book->getTranslatedTextSlug($book->title, 'en', 'temp-id'),
+                'ar' => $book->getTranslatedTextSlug($book->title, 'ar', 'temp-id'),
+                'fr' => $book->getTranslatedTextSlug($book->title, 'fr', 'temp-id'),
+            ];
         });
 
         static::created(function ($book) {
-            // Replace the 'temp-id' placeholder with the actual book ID
-            $book->slug = str_replace('temp-id', $book->id, $book->slug);
+            // Replace 'temp-id' with the actual book ID
+            $slugWithId = [];
+            foreach ($book->slug as $lang => $slug) {
+                $slugWithId[$lang] = str_replace('temp-id', $book->id, $slug);
+            }
 
-            // Save the updated slug with the actual ID
+            // Update the slug with the correct ID
+            $book->slug = $slugWithId;
             $book->save();
         });
-    }
+        static::updating(function ($book) {
+            if ($book->isDirty('title')) {
+                $book->title = $book->getTranslatedText($book->title);
+                $book->slug = $book->getTranslatedTextSlug($book->title, 'en', $book->id);
+            }
 
-    private function getTranslatedText($text, $sentLanguage, $id)
+            if ($book->isDirty('description')) {
+                $book->description = $book->getTranslatedText($book->description);
+            }
+
+            if ($book->isDirty('author_name')) {
+                $book->author_name = $book->getTranslatedText($book->author_name);
+            }
+        });
+    }
+    private function getTranslatedTextSlug($text, $sentLanguage, $id)
     {
         $languages = ['en', 'ar', 'fr'];
         $translations = [];
 
         foreach ($languages as $language) {
             // Pass 'temp-id' instead of the actual ID
-            $translations[$language] = $this->translateTextDynamically($text, $sentLanguage, $language, $id);
+            $translations[$language] = $this->translateTextDynamicallySlug($text, $sentLanguage, $language, $id);
         }
 
         return $translations;

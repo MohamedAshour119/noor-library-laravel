@@ -15,11 +15,12 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
-class BookController extends Controller
+class BookController extends Controller implements HasMedia
 {
-    use HttpResponses, InteractsWithMedia, GoogleTranslation;
+    use HttpResponses, InteractsWithMedia, GoogleTranslation, InteractsWithMedia;
     public function addBook(AddBookRequest $request): JsonResponse
     {
         $price = $request->filled('price') ? $request->price : null;
@@ -28,16 +29,17 @@ class BookController extends Controller
         $title = $request->title;
         $description = $request->description;
         $authorName = $request->author;
-        // Detect the language of the input fields (title, description, author)
-        $sentLanguage = 'en';
 
         // Translate the title, description, and author_name into three languages
-        $translatedTitle = $this->getTranslatedText($title, $sentLanguage);
-        $translatedDescription = $this->getTranslatedText($description, $sentLanguage);
-        $translatedAuthorName = $this->getTranslatedText($authorName, $sentLanguage);
+        $translatedTitle = $this->getTranslatedText($title);
+        $translatedDescription = $this->getTranslatedText($description);
+        $translatedAuthorName = $this->getTranslatedText($authorName);
 
         // Retrieve the category based on the translated name
-        $category = Category::whereJsonContains('slug->' . app()->getLocale(), $request->category)->first();
+        $category = Category::whereJsonContains('slug->en', $request->category)->first();
+        info('slug', ['slug->' . app()->getLocale()]);
+        info('$request->category', [$request->category]);
+        info('category', [$category]);
 
         $book_exist = Book::whereJsonContains('title->' . app()->getLocale(), $request->title)->first('title');
         $book_exist_title = '';
@@ -49,6 +51,7 @@ class BookController extends Controller
             $message = __('AddBookValidationMessages.book_exist');
             return $this->response_error($message, [], 422);
         }
+
         // Create the book with translations
         $book = Book::create([
             'title' => $translatedTitle,
@@ -68,29 +71,14 @@ class BookController extends Controller
         if ($request->hasFile('cover')) {
             $book->addMediaFromRequest('cover')->toMediaCollection('books_covers');
         }
-
         if ($request->hasFile('book_file')) {
             $book->addMediaFromRequest('book_file')->toMediaCollection('books_files');
         }
 
         return $this->response_success([], 'We are reviewing the book within 3 days');
-    }
-    private function detectLanguage($title, $description, $authorName)
-    {
-        // Checking if Arabic characters are present in the text
-        if (preg_match('/[\x{0600}-\x{06FF}]/u', $title) || preg_match('/[\x{0600}-\x{06FF}]/u', $description) || preg_match('/[\x{0600}-\x{06FF}]/u', $authorName)) {
-            return 'ar';
-        }
 
-        // Checking if French characters are present in the text (simple check for French accents or words)
-        if (preg_match('/[éèêôàùîï]/', $title) || preg_match('/[éèêôàùîï]/', $description) || preg_match('/[éèêôàùîï]/', $authorName)) {
-            return 'fr';
-        }
-
-        // Default to English if no other language is detected
-        return 'en';
     }
-    private function getTranslatedText($text, $sentLanguage)
+    private function getTranslatedText($text)
     {
         // Map the detected language to other languages
         $languages = ['en', 'ar', 'fr'];

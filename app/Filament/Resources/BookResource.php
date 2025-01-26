@@ -21,20 +21,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Locale;
-
+use Closure;
 function getAllLanguagesLabels()
 {
     $languages = Option::where('type', 'language')->get();
-    $labels = $languages->pluck('label');
+    $labels = $languages->pluck('label', 'value');
     return $labels;
 }
-function getAllCategories()
-{
-    $categories = Category::all()->pluck('name');
-    info('ddd', [$categories]);
-    return $categories;
-}
-
 class BookResource extends Resource
 {
     protected static ?string $model = Book::class;
@@ -64,7 +57,6 @@ class BookResource extends Resource
             ->schema([
                 Forms\Components\SpatieMediaLibraryFileUpload::make('cover')
                     ->collection('books_covers')
-//                    ->responsiveImages()
                     ->required()
                     ->imageEditor()
                     ->image()
@@ -85,7 +77,8 @@ class BookResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->label(__('Dashboard.price'))
                     ->numeric()
-                    ->required(false)
+                    ->required(fn (Forms\Get $get) => !$get('is_free'))
+                    ->disabled(fn (Forms\Get $get) => $get('is_free'))
                     ->prefix('$'),
                 Forms\Components\select::make('language')
                     ->options(fn () => getAllLanguagesLabels())
@@ -100,8 +93,7 @@ class BookResource extends Resource
                     ->label(__('Dashboard.vendor'))
                     ->relationship('vendor', 'username'),
                 Forms\Components\Select::make('category_id')
-                    ->relationship('category', 'name', ignoreRecord: true)
-                    ->options(fn () => getAllCategories())
+                    ->relationship('category', 'name')
                     ->selectablePlaceholder(false)
                     ->prefixIcon('icon-categories')
                     ->label(__('Dashboard.category'))
@@ -111,14 +103,20 @@ class BookResource extends Resource
 
                 // Wrap the toggle components in a Grid to ensure they're in one row
                 Forms\Components\Grid::make(3)
-                ->schema([
-                    Forms\Components\Toggle::make('downloadable')
-                        ->label(__('Dashboard.downloadable')),
-                    Forms\Components\Toggle::make('is_author')
-                        ->label(__('Dashboard.is_author')),
-                    Forms\Components\Toggle::make('is_free')
-                        ->label(__('Dashboard.is_free')),
-                ])
+                    ->schema([
+                        Forms\Components\Toggle::make('downloadable')
+                            ->label(__('Dashboard.downloadable')),
+                        Forms\Components\Toggle::make('is_author')
+                            ->label(__('Dashboard.is_author')),
+                        Forms\Components\Toggle::make('is_free')
+                            ->reactive() // Enable reactivity to trigger changes
+                            ->afterStateUpdated(function (Forms\Set $set, $state) {
+                                if ($state) {
+                                    $set('price', null);
+                                }
+                            })
+                            ->label(__('Dashboard.is_free')),
+                    ])
             ]);
     }
 

@@ -31,6 +31,8 @@ class HomeController extends Controller
         $decodedNamespace = urldecode($namespace);
         $translationsConfig = config('translations');
 
+//        $static_namespaces = [];
+
         if (array_key_exists($decodedNamespace, $translationsConfig['static'])) {
             // Static translation namespace
             $namespace = $translationsConfig['static'][$decodedNamespace];
@@ -45,6 +47,7 @@ class HomeController extends Controller
                     if (isset($matches[1])) {
                         // Replace the dynamic part (e.g., {slug} with the actual value)
                         $namespace = 'Show' . ucfirst($prefix);
+//                        array_push($static_namespaces, $namespace);
                     }
                     break;
                 }
@@ -54,18 +57,13 @@ class HomeController extends Controller
         if (!$namespace) {
             return $this->response_error('Invalid namespace', [], 404);
         }
-
         // Get the current page translations, ensure it's an array
         $translations_current_page = (array) Lang::get($namespace);
-
-        // Get the common translations, ensure it's an array (for common translations across all pages)
-        $translations_common = (array) Lang::get('Common'); // Optional common translations
-
         // Get the header translations, ensure it's an array (for common header translations)
         $translations_header = (array) Lang::get('Header'); // Assuming you have a file named 'Header.php'
 
         // Merge all translations together (current page, common, and header)
-        $translations = array_merge($translations_current_page, $translations_common, $translations_header);
+        $translations = array_merge($translations_current_page, $translations_header);
 
         return $this->response_success($translations, 'Translation text.');
     }

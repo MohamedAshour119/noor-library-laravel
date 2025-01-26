@@ -23,10 +23,8 @@ class MediaOptimizer
     public function handle(MediaHasBeenAddedEvent $event): void
     {
         $media = $event->media;
-        info('type', [$media->type]);
-        info('collection_name', [$media->collection_name]);
 
-        if ($media->type === 'image' && $media->collection_name === 'users_avatars') {
+        if ($media->collection_name === 'users_avatars' || $media->collection_name === 'books_files') {
             return;
         }
 

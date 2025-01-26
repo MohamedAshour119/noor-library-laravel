@@ -398,7 +398,7 @@ export default function AddBook() {
                             {!formData.cover
                                 ? (
                                     <>
-                                        {translation.upload_the_front_cover} <span className={`text-red-600`}>(jpeg, jpg, png, webp)</span>
+                                        {translation.upload_the_front_book_cover} <span className={`text-red-600`}>(jpeg, jpg, png, webp)</span>
                                     </>
                                 )
                                 : (

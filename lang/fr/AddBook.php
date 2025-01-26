@@ -16,7 +16,7 @@ return [
     'category' => 'Catégorie',
     'category_placeholder' => 'Sélectionnez la catégorie',
     'is_the_book_free' => 'Le livre est-il gratuit ?',
-    'upload_the_front_cover' => 'Télécharger la couverture (PDF seulement)',
+    'upload_the_front_book_cover' => 'Télécharger la couverture',
     'submit' => 'Soumettre',
     'the_book_is_for_review_only' => "Le livre est uniquement destiné à la revue et non au téléchargement, car les droits d'auteur sont réservés. Les utilisateurs ne pourront pas télécharger le livre.",
     'select' => 'Sélectionner...',

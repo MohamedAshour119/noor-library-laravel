@@ -110,6 +110,7 @@ export default function Header() {
                     isOpen={isFocused}
                     onClose={handleClose}
                     header={translation.unauthorized}
+                    ref={modalRef}
                 >
                     <main className={`p-4 text-gray-500`}>
                         {translation.unauthorized_customer_message}

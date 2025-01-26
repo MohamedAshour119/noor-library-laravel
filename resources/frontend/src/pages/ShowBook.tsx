@@ -367,7 +367,7 @@ export default function ShowBook() {
                                         <div className="flex flex-col gap-y-3">
                                             {/* Book title and ratings */}
                                             <div>
-                                                <h2 className="text-xl font-semibold">{book_data?.title}{book_data?.title}{book_data?.title}</h2>
+                                                <h2 className="text-xl font-semibold">{book_data?.title}</h2>
                                                 <div className="flex items-center text-yellow-500 mb-1">
                                                     <span className={`font-roboto-medium`}>
                                                         <ReactStars
