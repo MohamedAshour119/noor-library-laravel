@@ -25,4 +25,5 @@ return [
     'enter_amount' => 'أدخل المبلغ',
     'pdf_only' => 'PDF فقط',
     'loading' => 'جار التحميل...',
+    'reviewing_book' => 'نقوم بمراجعة الكتاب خلال 3 أيام.',
 ];

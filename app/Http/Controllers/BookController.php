@@ -65,6 +65,7 @@ class BookController extends Controller implements HasMedia
             'vendor_id' => Auth::id(),
             'category_id' => $category->id,
             'status' => 'pending',
+            'is_draft' => true,
         ]);
 
         // Add media files if provided
@@ -75,7 +76,7 @@ class BookController extends Controller implements HasMedia
             $book->addMediaFromRequest('book_file')->toMediaCollection('books_files');
         }
 
-        return $this->response_success([], 'We are reviewing the book within 3 days');
+        return $this->response_success([], __('AddBook.reviewing_book'));
 
     }
     private function getTranslatedText($text)

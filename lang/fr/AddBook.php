@@ -25,4 +25,6 @@ return [
     'enter_amount' => 'Saisissez le montant',
     'pdf_only' => 'PDF seulement',
     'loading' => 'Chargement...',
+    'reviewing_book' => 'Nous sommes en train d\'examiner le livre dans les 3 jours.',
+
 ];

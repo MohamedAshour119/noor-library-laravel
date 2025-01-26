@@ -26,47 +26,6 @@ class ValidateBookPrice implements ValidationRule
         $this->is_free = $is_free;
     }
 
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
-    {
-        $this->value = $value;  // Store value here
-
-        // If is_free is true, ensure price is null
-        if ($this->is_free === true && !is_null($value)) {
-            return false;
-        }
-
-        // If is_free is false, ensure price is not null
-        if ($this->is_free === false && is_null($value)) {
-            return false;
-        }
-
-        // If price is not null, validate numeric value and apply other rules
-        if (!is_null($value)) {
-            // Ensure price is numeric
-            if (!is_numeric($value)) {
-                return false;
-            }
-
-            // Ensure price is greater than or equal to 0
-            if ($value < 0) {
-                return false;
-            }
-
-            // Ensure price is at least 10
-            if ($value < 10) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * Get the error message for the validation rule.
@@ -92,6 +51,40 @@ class ValidateBookPrice implements ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        // TODO: Implement validate() method.
+        // Store value for later access
+        $this->value = $value;
+
+        // If is_free is true, ensure price is null
+        if ($this->is_free === true && !is_null($value)) {
+            $fail(__('AddBookValidationMessages.price_attribute_null'));
+            return;
+        }
+
+        // If is_free is false, ensure price is not null
+        if ($this->is_free === false && is_null($value)) {
+            $fail(__('AddBookValidationMessages.price_attribute_required'));
+            return;
+        }
+
+        // If price is not null, validate numeric value and apply other rules
+        if (!is_null($value)) {
+            // Ensure price is numeric
+            if (!is_numeric($value)) {
+                $fail(__('AddBookValidationMessages.price_attribute_numeric'));
+                return;
+            }
+
+            // Ensure price is at least 10
+            if ($value < 10) {
+                $fail(__('AddBookValidationMessages.price_min'));
+                return;
+            }
+
+            // Ensure price is less than 10000
+            if ($value > 10000) {
+                $fail(__('AddBookValidationMessages.price_max'));
+                return;
+            }
+        }
     }
 }

@@ -25,4 +25,6 @@ return [
     'enter_amount' => 'Enter amount',
     'pdf_only' => 'PDF only',
     'loading' => 'Loading...',
+    'reviewing_book' => 'We are reviewing the book within 3 days.',
+
 ];

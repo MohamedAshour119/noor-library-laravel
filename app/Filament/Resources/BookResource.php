@@ -2,26 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\BookStatus;
 use App\Filament\Resources\BookResource\Pages;
 use App\Filament\Resources\BookResource\RelationManagers;
 use App\Models\Book;
-use App\Models\Category;
-use App\Models\Language;
 use App\Models\Option;
-use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
-use Filament\Pages\SubNavigationPosition;
-use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Locale;
-use Closure;
 function getAllLanguagesLabels()
 {
     $languages = Option::where('type', 'language')->get();
@@ -63,8 +56,17 @@ class BookResource extends Resource
                     ->disk('public')
                     ->maxSize(5120)
                     ->imageResizeTargetWidth(182)
-                    ->imageResizeTargetHeight(277)
-                    ->columnSpanFull(),
+                    ->imageResizeTargetHeight(277),
+                Forms\Components\SpatieMediaLibraryFileUpload::make('PDF File')
+                    ->label('PDF File')
+                    ->collection('books_files')
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function (Forms\Set $set) {
+                        $set('status', BookStatus::PENDING);
+                    })
+                    ->disk('public')
+                    ->maxSize(81920),
                 Forms\Components\TextInput::make('title')
                     ->formatStateUsing(fn ($record) => $record ? $record->title : '')
                     ->label(__('Dashboard.title')),
@@ -97,8 +99,12 @@ class BookResource extends Resource
                     ->selectablePlaceholder(false)
                     ->prefixIcon('icon-categories')
                     ->label(__('Dashboard.category'))
-                    ->native(false)
-                    ->columnSpanFull(),
+                    ->native(false),
+                Forms\Components\Select::make('status')
+                    ->options(BookStatus::labels())
+                    ->searchable(false)
+                    ->disabled()
+                    ->native(false),
 
 
                 // Wrap the toggle components in a Grid to ensure they're in one row

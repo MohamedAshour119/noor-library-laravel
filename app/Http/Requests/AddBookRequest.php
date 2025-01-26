@@ -70,61 +70,47 @@ class AddBookRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.title_attribute')]),
-            'title.min' => __('AddBookValidationMessages.min.string', ['attribute' => __('AddBookValidationMessages.title_attribute'), 'min' => 3]),
-            'title.max' => __('AddBookValidationMessages.max.string', ['attribute' => __('AddBookValidationMessages.title_attribute'), 'max' => 64]),
-            'title.unique' => __('AddBookValidationMessages.unique', ['attribute' => __('AddBookValidationMessages.title_attribute')]),
+            'title.required' => __('AddBookValidationMessages.title_required'),
+            'title.min' => __('AddBookValidationMessages.title_min_length'),
+            'title.max' => __('AddBookValidationMessages.title_max_length'),
+            'title.unique' => __('AddBookValidationMessages.title_unique'),
 
-            'description.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.description_attribute')]),
-            'description.min' => __('AddBookValidationMessages.min.string', ['attribute' => __('AddBookValidationMessages.description_attribute'), 'min' => 50]),
-            'description.max' => __('AddBookValidationMessages.max.string', ['attribute' => __('AddBookValidationMessages.description_attribute'), 'max' => 2000]),
+            'description.required' => __('AddBookValidationMessages.description_required'),
+            'description.min' => __('AddBookValidationMessages.description_min_length'),
+            'description.max' => __('AddBookValidationMessages.description_max_length'),
 
-            'is_author.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.is_author_attribute')]),
-            'is_author.boolean' => __('AddBookValidationMessages.boolean', ['attribute' => __('AddBookValidationMessages.is_author_attribute')]),
-            'is_author.present' => __('AddBookValidationMessages.present', ['attribute' => __('AddBookValidationMessages.is_author_attribute')]),
+            'is_author.required' => __('AddBookValidationMessages.is_author_required'),
+            'is_author.boolean' => __('AddBookValidationMessages.is_author_boolean'),
+            'is_author.present' => __('AddBookValidationMessages.is_author_present'),
 
-            'is_free.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.is_free_attribute')]),
-            'is_free.boolean' => __('AddBookValidationMessages.boolean', ['attribute' => __('AddBookValidationMessages.is_free_attribute')]),
-            'is_free.present' => __('AddBookValidationMessages.present', ['attribute' => __('AddBookValidationMessages.is_free_attribute')]),
+            'is_free.required' => __('AddBookValidationMessages.is_free_required'),
+            'is_free.boolean' => __('AddBookValidationMessages.is_free_boolean'),
+            'is_free.present' => __('AddBookValidationMessages.is_free_present'),
 
-            'price.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.price_attribute')]),
+            'price.required' => __('AddBookValidationMessages.price_required'),
 
-            'language.min' => __('AddBookValidationMessages.min.string', ['attribute' => __('AddBookValidationMessages.language_attribute'), 'min' => 2]),
-            'language.max' => __('AddBookValidationMessages.max.string', ['attribute' => __('AddBookValidationMessages.language_attribute'), 'max' => 2]),
+            'language.min' => __('AddBookValidationMessages.language_min'),
+            'language.max' => __('AddBookValidationMessages.language_max'),
 
-            'author.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.author_attribute')]),
-            'author.max' => __('AddBookValidationMessages.max.string', ['attribute' => __('AddBookValidationMessages.author_attribute'), 'max' => 80]),
+            'author.required' => __('AddBookValidationMessages.author_required'),
+            'author.max' => __('AddBookValidationMessages.author_max_length'),
 
-            'category.required' => __('AddBookValidationMessages.required', ['attribute' => __('AddBookValidationMessages.category_attribute')]),
+            'category.required' => __('AddBookValidationMessages.category_required'),
 
-            'downloadable.boolean' => __('AddBookValidationMessages.boolean', ['attribute' => __('AddBookValidationMessages.downloadable_attribute')]),
+            'downloadable.boolean' => __('AddBookValidationMessages.downloadable'),
 
-            'cover.image' => __('AddBookValidationMessages.image', ['attribute' => __('AddBookValidationMessages.cover_attribute')]),
-            'cover.mimes' => __('AddBookValidationMessages.mimes', ['attribute' => __('AddBookValidationMessages.cover_attribute'), 'values' => 'jpeg, jpg, png, webp']),
-            'cover.max' => __('AddBookValidationMessages.max.file', ['attribute' => __('AddBookValidationMessages.cover_attribute'), 'max' => 5120]),
+            'cover.required' => __('AddBookValidationMessages.cover_image_required'),
+            'cover.image' => __('AddBookValidationMessages.cover_image_image'),
+            'cover.mimes' => __('AddBookValidationMessages.cover_image_mimes'),
+            'cover.max' => __('AddBookValidationMessages.cover_image_max_size'),
 
-            'book_file.file' => __('AddBookValidationMessages.file', ['attribute' => __('AddBookValidationMessages.book_file_attribute')]),
-            'book_file.mimes' => __('AddBookValidationMessages.mimes', ['attribute' => __('AddBookValidationMessages.book_file_attribute'), 'values' => 'pdf']),
-            'book_file.max' => __('AddBookValidationMessages.max.file', ['attribute' => __('AddBookValidationMessages.book_file_attribute'), 'max' => 81920]),
+            'book_file.required' => __('AddBookValidationMessages.file_required'),
+            'book_file.file' => __('AddBookValidationMessages.file_file'),
+            'book_file.mimes' => __('AddBookValidationMessages.file_mimes'),
+            'book_file.max' => __('AddBookValidationMessages.file_max_size'),
         ];
     }
 
-    public function attributes(): array
-    {
-        return [
-            'title' => __('AddBookValidationMessages.title_attribute'),
-            'description' => __('AddBookValidationMessages.description_attribute'),
-            'is_author' => __('AddBookValidationMessages.is_author_attribute'),
-            'is_free' => __('AddBookValidationMessages.is_free_attribute'),
-            'price' => __('AddBookValidationMessages.price_attribute'),
-            'language' => __('AddBookValidationMessages.language_attribute'),
-            'author' => __('AddBookValidationMessages.author_attribute'),
-            'category' => __('AddBookValidationMessages.category_attribute'),
-            'downloadable' => __('AddBookValidationMessages.downloadable_attribute'),
-            'cover' => __('AddBookValidationMessages.cover_attribute'),
-            'book_file' => __('AddBookValidationMessages.book_file_attribute'),
-        ];
-    }
     protected function failedValidation(Validator $validator)
     {
         // Get the failed rules and their error messages

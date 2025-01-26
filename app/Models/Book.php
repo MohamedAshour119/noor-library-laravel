@@ -109,6 +109,7 @@ class Book extends Model implements HasMedia
                 'ar' => $book->getTranslatedTextSlug($book->title, 'ar', 'temp-id'),
                 'fr' => $book->getTranslatedTextSlug($book->title, 'fr', 'temp-id'),
             ];
+            $book->is_draft = true;
         });
 
         static::created(function ($book) {
