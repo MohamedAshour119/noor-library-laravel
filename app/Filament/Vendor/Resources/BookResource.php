@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Vendor\Resources;
 
 use App\Enums\BookStatus;
-use App\Filament\Resources\BookResource\Pages;
-use App\Filament\Resources\BookResource\RelationManagers;
+use App\Filament\Resources\Vendor\BookResource\Pages;
+use App\Filament\Resources\Vendor\BookResource\RelationManagers;
 use App\Models\Book;
 use App\Models\Option;
 use Filament\Forms;
@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Locale;
+
 function getAllLanguagesLabels()
 {
     $languages = Option::where('type', 'language')->get();
@@ -28,7 +29,8 @@ class BookResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('vendor_id', Auth::guard('vendor')->id());
+            ->where('vendor_id', Auth::guard('vendor')->id())
+            ->where('is_draft', false);
 
     }
     public static function getPluralLabel(): ?string
@@ -49,6 +51,7 @@ class BookResource extends Resource
         return $form
             ->schema([
                 Forms\Components\SpatieMediaLibraryFileUpload::make('cover')
+                    ->label(__('Dashboard.cover'))
                     ->collection('books_covers')
                     ->required()
                     ->imageEditor()
@@ -58,7 +61,7 @@ class BookResource extends Resource
                     ->imageResizeTargetWidth(182)
                     ->imageResizeTargetHeight(277),
                 Forms\Components\SpatieMediaLibraryFileUpload::make('PDF File')
-                    ->label('PDF File')
+                    ->label(__('Dashboard.file'))
                     ->collection('books_files')
                     ->required()
                     ->reactive()
@@ -101,6 +104,7 @@ class BookResource extends Resource
                     ->label(__('Dashboard.category'))
                     ->native(false),
                 Forms\Components\Select::make('status')
+                    ->label(__('Dashboard.status'))
                     ->options(BookStatus::labels())
                     ->searchable(false)
                     ->disabled()
@@ -202,9 +206,9 @@ class BookResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBooks::route('/'),
-            'create' => Pages\CreateBook::route('/create'),
-            'edit' => Pages\EditBook::route('/{record}/edit'),
+            'index' => \App\Filament\Vendor\Resources\BookResource\Pages\ListBooks::route('/'),
+            'create' => \App\Filament\Vendor\Resources\BookResource\Pages\CreateBook::route('/create'),
+            'edit' => \App\Filament\Vendor\Resources\BookResource\Pages\EditBook::route('/{record}/edit'),
         ];
     }
 

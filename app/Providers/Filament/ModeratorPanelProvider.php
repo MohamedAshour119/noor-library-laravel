@@ -2,11 +2,13 @@
 
 namespace App\Providers\Filament;
 
-use App\Http\Middleware\RedirectAuth;
+use App\Filament\Moderator\Pages\Dashboard;
+use App\Http\Middleware\RedirectAdminAuth;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -17,28 +19,26 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Kenepa\TranslationManager\TranslationManagerPlugin;
 
-class AdminPanelProvider extends PanelProvider
+class ModeratorPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('vendor')
-            ->path('vendor')
+            ->id('moderator')
+            ->path('moderator')
             ->login()
-            ->authGuard('vendor')
             ->brandLogo(fn () => view('filament.vendor.logo'))
             ->favicon('/nav-logo.svg')
             ->colors([
-                'primary' => Color::Lime,
+                'primary' => Color::Pink,
             ])
-            ->plugin(TranslationManagerPlugin::make())
-            ->discoverResources(in: app_path('Filament/Vendor/Resources'), for: 'App\\Filament\\Vendor\\Resources')
-            ->discoverPages(in: app_path('Filament/Vendor/Pages'), for: 'App\\Filament\\Vendor\\Pages')
-            ->pages([])
-            ->discoverWidgets(in: app_path('Filament/Vendor/Widgets'), for: 'App\\Filament\\Vendor\\Widgets')
+            ->discoverResources(in: app_path('Filament/Moderator/Resources'), for: 'App\\Filament\\Moderator\\Resources')
+            ->discoverPages(in: app_path('Filament/Moderator/Pages'), for: 'App\\Filament\\Moderator\\Pages')
+            ->pages([
+//                Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Moderator/Widgets'), for: 'App\\Filament\\Moderator\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
@@ -47,7 +47,7 @@ class AdminPanelProvider extends PanelProvider
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
-                RedirectAuth::class,
+                RedirectAdminAuth::class,
                 AuthenticateSession::class,
                 ShareErrorsFromSession::class,
                 VerifyCsrfToken::class,

@@ -22,4 +22,6 @@ return [
     'usd' => 'دولار أمريكي',
     'description' => 'الوصف',
     'author_of_the_book' => 'مؤلف الكتاب',
+    'file' => 'الملف',
+
 ];

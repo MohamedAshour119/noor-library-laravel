@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\BookResource\Pages;
+namespace App\Filament\Vendor\Resources\BookResource\Pages;
 
-use App\Filament\Resources\BookResource;
+use App\Filament\Vendor\Resources\BookResource;
 use App\Models\Book;
 use Filament\Actions;
-use Filament\Actions\CreateAction;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Tables;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;

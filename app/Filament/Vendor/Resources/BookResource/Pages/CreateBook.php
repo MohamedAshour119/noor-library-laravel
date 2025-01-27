@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\BookResource\Pages;
+namespace App\Filament\Vendor\Resources\BookResource\Pages;
 
-use App\Filament\Resources\BookResource;
-use Filament\Actions\Action;
+use App\Filament\Vendor\Resources\BookResource;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
 

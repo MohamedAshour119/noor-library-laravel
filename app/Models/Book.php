@@ -84,10 +84,11 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsToMany(Order::class, 'book_order', 'book_id', 'order_id');
     }
-//    public function languages()
-//    {
-//        return $this->belongsToMany(Language::class, 'book_language', 'language_id', 'book_id');
-//    }
+
+    public function parent_book()
+    {
+        return $this->belongsTo(Book::class, 'parent_id');
+    }
     protected function getTranslatedText($text)
     {
         // Map the detected language to other languages

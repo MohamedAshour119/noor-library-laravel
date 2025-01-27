@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class RedirectAuth
+class RedirectAdminAuth
 {
     /**
      * Handle an incoming request.
@@ -15,8 +15,8 @@ class RedirectAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->guard('vendor')->check() && $request->path() === 'vendor') {
-            return redirect()->route('filament.vendor.auth.login');
+        if (!auth()->guard('vendor')->check() && $request->path() === 'moderator') {
+            return redirect()->route('filament.moderator.auth.login');
         }
         return $next($request);
     }

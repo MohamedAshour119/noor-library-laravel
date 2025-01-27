@@ -22,4 +22,5 @@ return [
     'usd' => 'USD',
     'description' => 'Description',
     'author_of_the_book' => 'Author of the book',
+    'file' => 'File',
 ];

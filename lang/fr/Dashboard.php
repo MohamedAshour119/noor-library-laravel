@@ -22,4 +22,6 @@ return [
     'usd' => 'USD',
     'description' => 'Description',
     'author_of_the_book' => 'Auteur du livre',
+    'file' => 'Fichier',
+
 ];
