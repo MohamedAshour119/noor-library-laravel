@@ -23,5 +23,5 @@ return [
     'description' => 'Description',
     'author_of_the_book' => 'Auteur du livre',
     'file' => 'Fichier',
-
+    'books_changes' => 'Modifications des livres',
 ];

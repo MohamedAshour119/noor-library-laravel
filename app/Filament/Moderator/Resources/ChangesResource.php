@@ -18,13 +18,20 @@ use Locale;
 class ChangesResource extends Resource
 {
     protected static ?string $model = Book::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'icon-book';
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->where('is_draft', true)
             ->where('status', 'pending');
+    }
+    public static function getLabel(): ?string
+    {
+        return __('Dashboard.books_changes');
+    }
+    public static function getPluralLabel(): ?string
+    {
+        return __('Dashboard.books_changes');
     }
 
     public static function form(Form $form): Form
@@ -97,7 +104,7 @@ class ChangesResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -117,7 +124,7 @@ class ChangesResource extends Resource
     {
         return [
             'index' => Pages\ListChanges::route('/'),
-            'create' => Pages\CreateChanges::route('/create'),
+//            'create' => Pages\CreateChanges::route('/create'),
             'edit' => Pages\EditChanges::route('/{record}/edit'),
         ];
     }

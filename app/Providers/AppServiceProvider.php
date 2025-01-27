@@ -31,12 +31,12 @@ class AppServiceProvider extends ServiceProvider
 //            'panels::pages.dashboard.navigation-item' => 'icon-book',
         ]);
 
-        Gate::define('use-translation-manager', function (?Vendor $vendor) {
+        Gate::define('use-translation-manager', function () {
             if (!Auth::guard('vendor')->check()) {
                 config(['translation-manager.quick_translate_navigation_registration' => true]);
             }
 
-            return !Auth::guard('vendor')->check();
+            return !Auth::guard('vendor')->check() && !Auth::guard('user')->check();
         });
 
         TextInput::configureUsing(function (TextInput $textInput) {

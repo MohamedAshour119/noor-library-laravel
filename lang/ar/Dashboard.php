@@ -23,5 +23,5 @@ return [
     'description' => 'الوصف',
     'author_of_the_book' => 'مؤلف الكتاب',
     'file' => 'الملف',
-
+    'books_changes' => 'تعديلات الكتب',
 ];

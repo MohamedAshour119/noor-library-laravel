@@ -19,6 +19,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Kenepa\TranslationManager\TranslationManagerPlugin;
 
 class ModeratorPanelProvider extends PanelProvider
 {
@@ -33,6 +34,7 @@ class ModeratorPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Pink,
             ])
+            ->plugin(TranslationManagerPlugin::make())
             ->discoverResources(in: app_path('Filament/Moderator/Resources'), for: 'App\\Filament\\Moderator\\Resources')
             ->discoverPages(in: app_path('Filament/Moderator/Pages'), for: 'App\\Filament\\Moderator\\Pages')
             ->pages([
