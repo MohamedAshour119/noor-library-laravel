@@ -15,7 +15,7 @@ class RedirectAdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->guard('vendor')->check() && $request->path() === 'moderator') {
+        if (!auth()->guard('vendor_session')->check() && $request->path() === 'moderator') {
             return redirect()->route('filament.moderator.auth.login');
         }
         return $next($request);

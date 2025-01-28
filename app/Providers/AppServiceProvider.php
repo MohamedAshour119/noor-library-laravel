@@ -32,11 +32,11 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Gate::define('use-translation-manager', function () {
-            if (!Auth::guard('vendor')->check()) {
+            if (!Auth::guard('vendor_session')->check()) {
                 config(['translation-manager.quick_translate_navigation_registration' => true]);
             }
 
-            return !Auth::guard('vendor')->check() && !Auth::guard('user')->check();
+            return !Auth::guard('vendor_session')->check() && !Auth::guard('user')->check();
         });
 
         TextInput::configureUsing(function (TextInput $textInput) {

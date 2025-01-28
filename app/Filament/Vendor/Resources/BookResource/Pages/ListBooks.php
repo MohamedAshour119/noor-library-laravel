@@ -27,19 +27,19 @@ class ListBooks extends ListRecords
 
     public function getTabs(): array
     {
-        $vendor_id = Auth::guard('vendor')->id();
+        $vendor_id = Auth::guard('vendor_session')->id();
         return [
             'all' => Tab::make(__('Dashboard.all'))
                 ->icon('icon-all')
-                ->badge(Book::query()->where('vendor_id', $vendor_id)->count()),
+                ->badge(Book::query()->where('vendor_id', $vendor_id)->where('is_draft', false)->count()),
             'free' => Tab::make(__('Dashboard.free'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('is_free', true))
                 ->icon('icon-free')
-                ->badge(Book::query()->where('vendor_id', $vendor_id)->where('is_free', true)->count()),
+                ->badge(Book::query()->where('vendor_id', $vendor_id)->where('is_draft', false)->where('is_free', true)->count()),
             'paid' => Tab::make(__('Dashboard.paid'))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('is_free', false))
                 ->icon('icon-paid')
-                ->badge(Book::query()->where('vendor_id', $vendor_id)->where('is_free', false)->count()),
+                ->badge(Book::query()->where('vendor_id', $vendor_id)->where('is_draft', false)->where('is_free', false)->count()),
         ];
     }
 }

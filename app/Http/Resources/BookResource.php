@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Laravel\Sanctum\PersonalAccessToken;
 use setasign\Fpdi\Fpdi;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 class BookResource extends JsonResource
 {
     /**

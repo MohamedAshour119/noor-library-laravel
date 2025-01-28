@@ -31,7 +31,7 @@ class Vendor extends Authenticatable implements HasMedia, HasName, FilamentUser,
     }
     public function canAccessPanel(Panel $panel): bool
     {
-        return Auth::guard('vendor')->check();
+        return Auth::guard('vendor_session')->check();
 
     }
     public function getFilamentName(): string

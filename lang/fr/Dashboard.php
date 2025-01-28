@@ -24,4 +24,6 @@ return [
     'author_of_the_book' => 'Auteur du livre',
     'file' => 'Fichier',
     'books_changes' => 'Modifications des livres',
+    'review_books_changes' => 'Réviser les modifications des livres',
+
 ];

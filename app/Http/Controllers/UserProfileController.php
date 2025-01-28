@@ -138,7 +138,7 @@ class UserProfileController extends Controller implements HasMedia
             ->first();
 
         if ($vendor) {
-            $is_current_vendor = $vendor->id === Auth::guard('vendor')->id();
+            $is_current_vendor = $vendor->id === Auth::guard('vendor_sanctum')->id();
             $vendor = new VendorResource($vendor);
 
             $data = [

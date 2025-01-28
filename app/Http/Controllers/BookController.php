@@ -15,8 +15,10 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class BookController extends Controller implements HasMedia
 {
@@ -91,7 +93,7 @@ class BookController extends Controller implements HasMedia
 
         return $translations;
     }
-    public function getBookData($slug): JsonResponse
+    public function showBook($slug): JsonResponse
     {
         $book = Book::whereJsonContains('slug->' . app()->getLocale(), $slug)->first();
 
@@ -111,7 +113,7 @@ class BookController extends Controller implements HasMedia
         ]);
 
         $rate = $validate_data['rating'];
-        $is_auth_vendor = Auth::guard('vendor')->check();
+        $is_auth_vendor = Auth::guard('vendor_sanctum')->check();
 
         if (!$is_auth_vendor) {
             Rating::updateOrCreate(

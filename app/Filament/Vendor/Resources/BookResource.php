@@ -29,7 +29,7 @@ class BookResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('vendor_id', Auth::guard('vendor')->id())
+            ->where('vendor_id', Auth::guard('vendor_session')->id())
             ->where('is_draft', false);
 
     }
@@ -45,7 +45,6 @@ class BookResource extends Resource
     {
         return __('Dashboard.book');
     }
-
     public static function form(Form $form): Form
     {
         return $form

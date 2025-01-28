@@ -24,4 +24,5 @@ return [
     'author_of_the_book' => 'مؤلف الكتاب',
     'file' => 'الملف',
     'books_changes' => 'تعديلات الكتب',
+    'review_books_changes' => 'مراجعة تغييرات الكتب',
 ];

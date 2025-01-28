@@ -15,7 +15,7 @@ class RedirectAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->guard('vendor')->check() && $request->path() === 'vendor') {
+        if (!auth()->guard('vendor_session')->check() && $request->path() === 'vendor') {
             return redirect()->route('filament.vendor.auth.login');
         }
         return $next($request);

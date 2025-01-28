@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('vendor')
             ->path('vendor')
             ->login()
-            ->authGuard('vendor')
+            ->authGuard('vendor_session')
             ->brandLogo(fn () => view('filament.vendor.logo'))
             ->favicon('/nav-logo.svg')
             ->colors([

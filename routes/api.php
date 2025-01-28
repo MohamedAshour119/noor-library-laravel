@@ -18,7 +18,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
-
 // routes/api.php
 Route::middleware('api')->group(function () {
     Route::post('/sign-up-as-customer', [AuthController::class, 'signUpAsCustomer']);
@@ -30,7 +29,7 @@ Route::middleware('api')->group(function () {
     Route::get('/search-category/{keyword}', [CategoryController::class, 'searchForCategory']);
     Route::get('/book/{id}/comments', [CommentController::class, 'getComments']);
     Route::get('/users/{username}', [UserProfileController::class, 'getUserInfo']);
-    Route::get('/books/{slug}', [BookController::class, 'getBookData']);
+    Route::get('/books/{slug}', [BookController::class, 'showBook']);
     Route::get('/home/get-books', [HomeController::class, 'getBooks']);
     Route::get('/get-reviews', [CommentController::class, 'getReviews']);
     Route::get('/books/search/{keyword}', [SearchController::class, 'searchBooks']);
