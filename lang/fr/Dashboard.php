@@ -26,4 +26,15 @@ return [
     'books_changes' => 'Modifications des livres',
     'review_books_changes' => 'Réviser les modifications des livres',
     'book_content' => 'Contenu du livre',
+    'new_books' => 'Nouveaux Livres',
+    'review_new_books' => 'Réviser les nouveaux livres ajoutés',
+    'approve_changes' => 'Approuver les modifications',
+    'reject_changes' => 'Rejeter les modifications',
+    'approve' => 'Approuver',
+    'reject' => 'Rejeter',
+    'book_approved' => 'Livre approuvé.',
+    'book_rejected_deleted' => 'Livre rejeté et enregistrement supprimé.',
+    'changes_approved' => 'Modifications approuvées.',
+    'changes_rejected_deleted' => 'Modifications rejetées et enregistrement supprimé.',
+
 ];

@@ -4,6 +4,7 @@ namespace App\Filament\Vendor\Resources\BookResource\Pages;
 
 use App\Filament\Vendor\Resources\BookResource;
 use App\Models\Book;
+use App\Traits\GoogleTranslation;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EditBook extends EditRecord
 {
+    use GoogleTranslation;
     protected static string $resource = BookResource::class;
 
     protected function getHeaderActions(): array
@@ -34,6 +36,17 @@ class EditBook extends EditRecord
             ->title('Book Updated')
             ->body(__('AddBook.reviewing_book'));
     }
+    protected function getTranslatedText($text)
+    {
+        $languages = ['en', 'ar', 'fr'];
+        $translations = [];
+
+        foreach ($languages as $language) {
+            $translations[$language] = $this->translateTextDynamically($text, $language);
+        }
+
+        return $translations;
+    }
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $exist_revision_book = Book::where('parent_id', $record->id)->first();
@@ -41,10 +54,14 @@ class EditBook extends EditRecord
             $exist_revision_book->delete();
         }
 
+        $translated_title = $record->title = $this->getTranslatedText($record->title);
+        $translated_description = $record->description = $this->getTranslatedText($record->description);
+        $translated_author_name = $record->author_name = $this->getTranslatedText($record->author_name);
+
         $revision_book = Book::create([
-            'title' => $data['title'],
-            'description' => $data['description'],
-            'author_name' => $data['author_name'],
+            'title' => $translated_title,
+            'description' => $translated_description,
+            'author_name' => $translated_author_name,
             'is_free' => $data['is_free'],
             'language' => $data['language'] === 'English' ? 'en' : $data['language'],
             'price' => $data['price'] ?? null,

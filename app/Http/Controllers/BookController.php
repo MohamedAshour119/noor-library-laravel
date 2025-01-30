@@ -39,9 +39,6 @@ class BookController extends Controller implements HasMedia
 
         // Retrieve the category based on the translated name
         $category = Category::whereJsonContains('slug->en', $request->category)->first();
-        info('slug', ['slug->' . app()->getLocale()]);
-        info('$request->category', [$request->category]);
-        info('category', [$category]);
 
         $book_exist = Book::whereJsonContains('title->' . app()->getLocale(), $request->title)->first('title');
         $book_exist_title = '';

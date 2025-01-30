@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Filament\Moderator\Resources\ChangesResource\Pages;
+namespace App\Filament\Moderator\Resources\NewBooksResource\Pages;
 
 use App\Filament\Moderator\Resources\ChangesResource;
-use App\Traits\GoogleTranslation;
-use App\Traits\GoogleTranslationSlug;
+use App\Filament\Moderator\Resources\NewBooksResource;
+use Filament\Actions;
 use Filament\Infolists\Components\Grid;
 use Filament\Infolists\Components\ImageEntry;
 use Filament\Infolists\Components\Section;
@@ -16,85 +16,29 @@ use Filament\Resources\Pages\ViewRecord;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use Locale;
 
-class ViewChanges extends ViewRecord
+class ViewNewBooks extends ViewRecord
 {
-    use GoogleTranslationSlug, GoogleTranslation;
-    protected static string $resource = ChangesResource::class;
+    protected static string $resource = NewBooksResource::class;
 
-    protected function getTranslatedText($text)
+    public function approveAddNewBook()
     {
-        $languages = ['en', 'ar', 'fr'];
-        $translations = [];
-
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamically($text, $language);
-        }
-
-        return $translations;
-    }
-    private function getTranslatedTextSlug($text, $sentLanguage, $id)
-    {
-        $languages = ['en', 'ar', 'fr'];
-        $translations = [];
-
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamicallySlug($text, $sentLanguage, $language, $id);
-        }
-
-        return $translations;
-    }
-    public function approveChanges()
-    {
-        $book = $this->record->parent_book;
-
-        if ($book->isDirty($this->record->title)) {
-            $book->title = $this->getTranslatedText($this->record->title);
-            $book->slug = $this->getTranslatedTextSlug($this->record->title, 'en', $book->id);
-
-            $book->save();
-            dd('ss');
-        }
-
-        // Update translatable fields from changes
-        $book->fill([
-            'title' => $this->record->title,
-            'description' => $this->record->description,
-            'author_name' => $this->record->author_name,
+        $this->record->update([
+            'status' => 'approved',
+            'is_draft' => false,
         ]);
-
-        // Update non-translatable fields
-        $book->fill([
-            'is_author' => $this->record->is_author,
-            'is_free' => $this->record->is_free,
-            'language' => $this->record->language,
-        ]);
-
-        // Generate fresh slugs for all languages
-        $book->slug = collect(['en', 'ar', 'fr'])
-            ->mapWithKeys(fn ($lang) => [
-                $lang => $this->getTranslatedTextSlug($book->title, $lang, $book->id)
-            ])
-            ->toArray();
-
-        $book->save();
-
-        // Update changes record status
-        $this->record->update(['status' => 'approved']);
-
-        // Redirect with notification
         $this->redirect($this->getResource()::getUrl('index'));
         Notification::make()
-            ->title(__('Dashboard.changes_approved'))
+            ->title(__('Dashboard.book_approved'))
             ->success()
             ->send();
     }
-    public function rejectChanges()
+    public function rejectAddNewBook()
     {
         $this->record->delete();
         $this->redirect($this->getResource()::getUrl('index'));
 
         Notification::make()
-            ->title(__('Dashboard.changes_rejected_deleted'))
+            ->title(__('Dashboard.book_rejected_deleted'))
             ->danger()
             ->send();
     }
@@ -107,10 +51,7 @@ class ViewChanges extends ViewRecord
                     Grid::make(3)
                         ->schema([
                             ImageEntry::make('cover')
-                                ->state(function ($record) {
-                                    $media = $record->parent_book->getFirstMedia('books_covers');
-                                    return $media ? $media->getUrl() : null;
-                                })
+                                ->state(fn ($record) => $record->getFirstMedia('books_covers')->getUrl())
                                 ->placeholder(__('Dashboard.cover'))
                                 ->width(152)
                                 ->height(247)
@@ -154,7 +95,7 @@ class ViewChanges extends ViewRecord
                                         ->label(__('Dashboard.downloadable'))
                                         ->columnSpanFull(),
                                     PdfViewerEntry::make('pdf_viewer')
-                                        ->fileUrl(fn ($record) => $record->parent_book->getFirstMedia('books_files')?->getUrl())
+                                        ->fileUrl(fn ($record) => $record->getFirstMedia('books_files')?->getUrl())
                                         ->label(__('Dashboard.book_content'))
                                         ->columnSpanFull(),
                                 ])
@@ -165,10 +106,10 @@ class ViewChanges extends ViewRecord
                                     Grid::make(2)
                                         ->schema([
                                             ViewEntry::make('approve_button')
-                                                ->view('filament.moderator.components.approve-changes-button')
+                                                ->view('filament.moderator.components.approve-button')
                                                 ->columnSpan(1),
                                             ViewEntry::make('reject_button')
-                                                ->view('filament.moderator.components.reject-changes-button')
+                                                ->view('filament.moderator.components.reject-button')
                                                 ->columnSpan(1),
                                         ])
                                         ->extraAttributes(['class' => 'justify-center gap-4'])

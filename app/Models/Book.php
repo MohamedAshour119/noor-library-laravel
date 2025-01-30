@@ -91,7 +91,6 @@ class Book extends Model implements HasMedia
     }
     protected function getTranslatedText($text)
     {
-        // Map the detected language to other languages
         $languages = ['en', 'ar', 'fr'];
         $translations = [];
 
@@ -113,15 +112,31 @@ class Book extends Model implements HasMedia
         });
 
         static::created(function ($book) {
-            // Replace 'temp-id' with the actual book ID
-            $slugWithId = [];
-            foreach ($book->slug as $lang => $slug) {
-                $slugWithId[$lang] = str_replace('temp-id', $book->id, $slug);
-            }
+            // Only proceed if there's a parent ID
+            if (!is_null($book->parent_id)) {
+                // Replace 'temp-id' with the parent ID
+                $slugWithId = [];
+                foreach ($book->slug as $lang => $slug) {
+                    $slugWithId[$lang] = str_replace('temp-id', $book->parent_id, $slug);
+                }
 
-            // Update the slug with the correct ID
-            $book->slug = $slugWithId;
-            $book->save();
+                // Update the slug with the parent ID
+                $book->slug = $slugWithId;
+
+                // Save silently to avoid recursion/events
+                $book->saveQuietly();
+            } else {
+                $slugWithId = [];
+                foreach ($book->slug as $lang => $slug) {
+                    $slugWithId[$lang] = str_replace('temp-id', $book->id, $slug);
+                }
+
+                // Update the slug with the parent ID
+                $book->slug = $slugWithId;
+
+                // Save silently to avoid recursion/events
+                $book->save();
+            }
         });
         static::updating(function ($book) {
             if ($book->isDirty('title')) {

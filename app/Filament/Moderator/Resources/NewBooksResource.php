@@ -2,10 +2,10 @@
 
 namespace App\Filament\Moderator\Resources;
 
-use App\Filament\Moderator\Resources\ChangesResource\Pages;
-use App\Filament\Moderator\Resources\ChangesResource\RelationManagers;
+use App\Filament\Moderator\Resources\NewBooksResource\Pages;
+use App\Filament\Moderator\Resources\NewBooksResource\RelationManagers;
 use App\Models\Book;
-use App\Models\Changes;
+use App\Models\NewBooks;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,26 +15,24 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Locale;
 
-class ChangesResource extends Resource
+class NewBooksResource extends Resource
 {
     protected static ?string $model = Book::class;
-    protected static ?string $navigationIcon = 'icon-book';
+
+    protected static ?string $navigationIcon = 'icon-add-book';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('Dashboard.new_books');
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->whereNotNull('parent_id')
+            ->whereNull('parent_id')
             ->where('is_draft', true)
             ->where('status', 'pending');
     }
-    public static function getLabel(): ?string
-    {
-        return __('Dashboard.books_changes');
-    }
-    public static function getPluralLabel(): ?string
-    {
-        return __('Dashboard.books_changes');
-    }
-
     public static function form(Form $form): Form
     {
         return $form
@@ -53,11 +51,7 @@ class ChangesResource extends Resource
                     ->label(__('Dashboard.title')),
                 Tables\Columns\ImageColumn::make('cover')
                     ->label('Cover')
-                    ->getStateUsing(function ($record) {
-                        // Check if the book has a parent book, otherwise load the current book's media
-                        $parent = $record->parent_book;
-                        return $parent ? $parent->getFirstMediaUrl('books_covers') : $record->getFirstMediaUrl('books_covers');
-                    })
+                    ->getStateUsing(fn ($record) => $record->getFirstMediaUrl('books_covers'))
                     ->width(50)
                     ->height(75)
                     ->disk('public'),  // You can specify the disk where the images are stored
@@ -125,10 +119,10 @@ class ChangesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListChanges::route('/'),
-//            'create' => Pages\CreateChanges::route('/create'),
-//            'edit' => Pages\EditChanges::route('/{record}/edit'),
-            'view' => Pages\ViewChanges::route('/{record}'),
+            'index' => Pages\ListNewBooks::route('/'),
+//            'create' => Pages\CreateNewBooks::route('/create'),
+//            'edit' => Pages\EditNewBooks::route('/{record}/edit'),
+            'view' => Pages\ViewNewBooks::route('/{record}'),
         ];
     }
 }

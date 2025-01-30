@@ -13,18 +13,21 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     use HttpResponses;
-//    public function getBooks()
-//    {
-////        sleep(100000);
-//        $books = Book::with('category')->paginate(10);
-//        $next_page_url = $books->nextPageUrl();
-//        $books = BookCardResource::collection($books);
-//        $data = [
-//            'books' => $books,
-//            'next_page_url' => $next_page_url,
-//        ];
-//        return $this->response_success($data, 'Fetch Home Books.');
-//    }
+    public function getBooks()
+    {
+//        sleep(100000);
+        $books = Book::where('is_draft', false)
+            ->where('status', 'approved')
+            ->with('category')
+            ->paginate(10);
+        $next_page_url = $books->nextPageUrl();
+        $books = BookCardResource::collection($books);
+        $data = [
+            'books' => $books,
+            'next_page_url' => $next_page_url,
+        ];
+        return $this->response_success($data, 'Fetch Home Books.');
+    }
     public function getTranslation($namespace)
     {
         // Decode URL-encoded namespace
@@ -72,6 +75,8 @@ class HomeController extends Controller
     {
         if ($section === 'highest_rated') {
             $books = Book::query()
+                ->where('is_draft', false)
+                ->where('status', 'approved')
                 ->with('category') // Eager load relationships
                 ->leftJoin('ratings', 'books.id', '=', 'ratings.book_id') // Join ratings table
                 ->select('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Specify columns explicitly
@@ -82,6 +87,8 @@ class HomeController extends Controller
                 ->paginate(10);
         } else if ($section === 'popular_books') {
             $books = Book::query()
+                ->where('is_draft', false)
+                ->where('status', 'approved')
                 ->with('category') // Eager load relationships
                 ->leftJoin('ratings', 'books.id', '=', 'ratings.book_id') // Join ratings table
                 ->select('books.id', 'books.title', 'books.price', 'books.is_free', 'books.slug', 'books.author_name', 'books.vendor_id', 'books.category_id') // Specify columns explicitly
@@ -91,7 +98,9 @@ class HomeController extends Controller
                 ->orderBy('ratings_count', 'desc') // Order by ratings count
                 ->paginate(10);
         } else {
-            $books = Book::with('category')
+            $books = Book::where('is_draft', false)
+                ->where('status', 'approved')
+                ->with('category')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
         }

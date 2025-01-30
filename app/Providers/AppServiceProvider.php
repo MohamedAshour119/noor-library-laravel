@@ -51,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
             $select->selectablePlaceholder(false);
         });
         TextEntry::configureUsing(function (TextEntry $entry): void {
-            $entry->extraAttributes(['style' => 'border: 2px solid #F472B6; border-radius: 0.50rem; padding: 0.25rem;']);
+            $entry->extraAttributes(['style' => 'border: 2px solid #F472B6; border-radius: 0.50rem; padding: 0.25rem; background-color: #111114;']);
         });
     }
 }

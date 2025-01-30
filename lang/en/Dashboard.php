@@ -26,4 +26,15 @@ return [
     'books_changes' => 'Books Changes',
     'review_books_changes' => 'Review Books Changes',
     'book_content' => 'Book Content',
+    'new_books' => 'New Books',
+    'review_new_books' => 'Review the new added books',
+    'approve_changes' => 'Approve Changes',
+    'reject_changes' => 'Reject Changes',
+    'approve' => 'Approve',
+    'reject' => 'Reject',
+    'book_approved' => 'Book approved.',
+    'book_rejected_deleted' => 'Book rejected and record deleted.',
+    'changes_approved' => 'Changes approved.',
+    'changes_rejected_deleted' => 'Changes rejected and record deleted.',
+
 ];
