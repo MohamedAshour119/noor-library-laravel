@@ -18,7 +18,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
 
     const show_books = cart_books.map(book => (
         <div className={`flex gap-x-1`}>
-            <h1>{book.title}:</h1>
+            <h2>{book.title}:</h2>
             <span>{book.quantity}</span>
         </div>
     ))

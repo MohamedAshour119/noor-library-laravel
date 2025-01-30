@@ -467,9 +467,9 @@ export default function Profile() {
                                     </button>
                                 }
                             </div>
-                            <span className={`text-2xl font-roboto-semi-bold tracking-wide text-center`}>
+                            <h1 className={`text-2xl font-roboto-semi-bold tracking-wide text-center`}>
                                 {display_name}
-                            </span>
+                            </h1>
                         </div>
 
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>

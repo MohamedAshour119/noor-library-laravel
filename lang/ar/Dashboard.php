@@ -8,7 +8,7 @@ return [
     'id' => 'معرف',
     'books' => 'الكتب',
     'is_free' => 'مجاني',
-    'is_author' => 'هل أنت المؤلف',
+    'is_author' => 'هل أنت المؤلف؟',
     'status' => 'الحالة',
     'category' => 'الفئة',
     'vendor' => 'البائع',
@@ -25,4 +25,5 @@ return [
     'file' => 'الملف',
     'books_changes' => 'تعديلات الكتب',
     'review_books_changes' => 'مراجعة تغييرات الكتب',
+    'book_content' => 'محتوى الكتاب',
 ];

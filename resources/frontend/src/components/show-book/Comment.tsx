@@ -64,7 +64,7 @@ export default function Comment(props: Props) {
                     <span className={`text-sm text-main_color_darker -me-2`}>{created_at}</span>
                 </header>
                 <div>
-                    <h1 className={`font-roboto-semi-bold flex items-center -mt-2 gap-x-2`}>{translation.my_rating}
+                    <h2 className={`font-roboto-semi-bold flex items-center -mt-2 gap-x-2`}>{translation.my_rating}
                         {rating > 0 &&
                             <span className={`font-roboto-medium`}>
                                 <ReactStars
@@ -79,7 +79,7 @@ export default function Comment(props: Props) {
                             </span>
                         }
                         {rating === 0 && <span className={`font-roboto-medium text-main_color_darker`}>You haven't rated this yet.</span>}
-                    </h1>
+                    </h2>
                 </div>
                 <p className={`me-4`}>{body}</p>
                 {auth_user.id && auth_user.username === user.username && location.pathname !== '/reviews' &&

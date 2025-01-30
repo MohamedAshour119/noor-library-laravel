@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Vendor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
@@ -48,6 +49,9 @@ class AppServiceProvider extends ServiceProvider
             $select->searchable();
             $select->preload();
             $select->selectablePlaceholder(false);
+        });
+        TextEntry::configureUsing(function (TextEntry $entry): void {
+            $entry->extraAttributes(['style' => 'border: 2px solid #F472B6; border-radius: 0.50rem; padding: 0.25rem;']);
         });
     }
 }

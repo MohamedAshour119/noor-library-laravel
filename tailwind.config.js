@@ -22,7 +22,6 @@ export default {
                 input_bg: "#FAFAFA",
                 disable_color: "#D2CFCF",
                 table_border: "#cfcfcf",
-
             },
         },
         screens: {

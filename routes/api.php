@@ -1,6 +1,5 @@
 <?php
 
-use App\Events\MessageSent;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
@@ -9,9 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymobController;
-use App\Http\Controllers\PusherController;
 use App\Http\Controllers\SearchController;
-use App\Http\Controllers\SocialController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\WishlistController;
 use Illuminate\Http\Request;

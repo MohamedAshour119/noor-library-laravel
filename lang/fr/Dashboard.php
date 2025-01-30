@@ -25,5 +25,5 @@ return [
     'file' => 'Fichier',
     'books_changes' => 'Modifications des livres',
     'review_books_changes' => 'Réviser les modifications des livres',
-
+    'book_content' => 'Contenu du livre',
 ];

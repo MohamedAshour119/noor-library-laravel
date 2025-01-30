@@ -77,7 +77,7 @@ export default function Reviews() {
         <main className={`flex flex-col justify-between min-h-[643px] h-max items-center bg-main_bg pt-8`}>
             <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 pb-10`}>
                 <div className={`flex flex-col gap-y-4`}>
-                    <h1 className={`text-2xl font-roboto-semi-bold`}>{translation.books_reviews}</h1>
+                    <span className={`text-2xl font-roboto-semi-bold`}>{translation.books_reviews}</span>
                     <div className={`pb-4 container w-full flex flex-col gap-y-8`}>
                         {!is_loading && show_reviews}
                     </div>

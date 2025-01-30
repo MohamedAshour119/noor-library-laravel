@@ -142,7 +142,7 @@ export default function ClientSearchInput() {
                 {/* Results */}
                 {search_value.length > 0 && is_results_open &&
                     <div className={`flex flex-col pb-3 pt-2 rounded-lg border-t bg-white z-30 absolute w-full text-text_color`}>
-                        <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h1>
+                        <h2 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h2>
                         <button
                             onClick={getKeywordSearchingResults}
                             className={`overflow-x-hidden border-y px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}

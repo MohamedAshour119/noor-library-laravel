@@ -19,8 +19,8 @@ export default function AddToCartSidebar() {
 
     useEffect(() => {
         const handleStorageChange = () => {
-                const total_price = JSON.parse(localStorage.getItem('total_price') || '0')
-                setTotal_price(total_price)
+            const total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+            setTotal_price(total_price)
         };
 
         // Listen for custom events

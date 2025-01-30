@@ -367,7 +367,7 @@ export default function ShowBook() {
                                         <div className="flex flex-col gap-y-3">
                                             {/* Book title and ratings */}
                                             <div>
-                                                <h2 className="text-xl font-semibold">{book_data?.title}</h2>
+                                                <h1 className="text-xl font-semibold">{book_data?.title}</h1>
                                                 <div className="flex items-center text-yellow-500 mb-1">
                                                     <span className={`font-roboto-medium`}>
                                                         <ReactStars
@@ -432,7 +432,7 @@ export default function ShowBook() {
                                     {/* Book Preview */}
                                     {is_book_free &&
                                         <div className={`mt-10 flex flex-col gap-y-4 2xl:w-[700px] lg:w-full`}>
-                                            <h1 className={`font-semibold text-lg text-main_color text-center`}>{translation.preview}</h1>
+                                            <span className={`font-semibold text-lg text-main_color text-center`}>{translation.preview}</span>
                                             <div className={`border flex justify-center max-w-full overflow-x-scroll`}>
                                                 {book_data?.book_file && <PdfPreview pdf_file={book_data?.book_file}/>}
                                             </div>
@@ -441,8 +441,8 @@ export default function ShowBook() {
                                     {!is_book_free &&
                                         <div className={`hidden xl:flex items-center xl:w-[60%]`}>
                                             <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
-                                                <h1 className={`font-semibold text-lg text-main_color`}>{translation.preview}</h1>
-                                                <h1>{translation.preview_not_allowed}</h1>
+                                                <span className={`font-semibold text-lg text-main_color`}>{translation.preview}</span>
+                                                <span>{translation.preview_not_allowed}</span>
                                             </div>
                                         </div>
                                     }
@@ -460,7 +460,7 @@ export default function ShowBook() {
 
                         {/* Book Reviews */}
                         <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
-                            <h1 className={`font-roboto-semi-bold text-xl`}>{translation.comments} ({book_data?.comments_count})</h1>
+                            <span className={`font-roboto-semi-bold text-xl`}>{translation.comments} ({book_data?.comments_count})</span>
                             {auth_user.id &&
                                 <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                                     <img
@@ -472,7 +472,7 @@ export default function ShowBook() {
                                         onSubmit={handleSubmitComment}
                                         className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
                                     >
-                                        <h1 className={`font-roboto-semi-bold`}>{display_auth_user_name}</h1>
+                                        <span className={`font-roboto-semi-bold`}>{display_auth_user_name}</span>
                                         <div className={`relative`}>
                                             <textarea
                                                 onClick={handleOpenUnauthorizedMessage}

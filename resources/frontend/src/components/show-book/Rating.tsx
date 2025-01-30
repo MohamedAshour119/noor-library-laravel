@@ -57,7 +57,7 @@ export default function Rating(props: Props) {
 
     return (
         <>
-            <h1 className={`font-roboto-semi-bold text-lg`}>{translation.rate_this_book}:</h1>
+            <h2 className={`font-roboto-semi-bold text-lg`}>{translation.rate_this_book}:</h2>
             <div className={`flex items-center gap-x-3`}>
                 <div className={`flex items-center relative`}>
                     <ReactStars

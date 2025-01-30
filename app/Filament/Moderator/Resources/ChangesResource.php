@@ -105,6 +105,7 @@ class ChangesResource extends Resource
             ])
             ->actions([
 //                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -125,7 +126,8 @@ class ChangesResource extends Resource
         return [
             'index' => Pages\ListChanges::route('/'),
 //            'create' => Pages\CreateChanges::route('/create'),
-            'edit' => Pages\EditChanges::route('/{record}/edit'),
+//            'edit' => Pages\EditChanges::route('/{record}/edit'),
+            'view' => Pages\ViewChanges::route('/{record}'),
         ];
     }
 }

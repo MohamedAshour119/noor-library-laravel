@@ -18,7 +18,7 @@ export default function BookRatings(props: Props) {
 
     return (
         <div className={`flex flex-col gap-y-6 bg-white px-10 py-5 border rounded-lg`}>
-            <h1 className={`font-roboto-semi-bold text-xl`}>{translation.book_ratings}</h1>
+            <h2 className={`font-roboto-semi-bold text-xl`}>{translation.book_ratings}</h2>
 
             <div className={`flex xs:flex-row flex-col justify-center gap-x-10 gap-y-10`}>
                 <div className={`xs:w-1/2 w-full md:w-[60%] lg:w-1/2 flex flex-col items-center md:pe-5 lg:pe-0 pb-4 xs:pb-0 xs:border-e-2 border-b-2 xs:border-b-0 border-text_color/20`}>

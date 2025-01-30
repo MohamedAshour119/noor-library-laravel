@@ -71,14 +71,14 @@ export default function SetPassword() {
                                     src={`/logo.svg`}
                                     alt={`logo`}/>
                             </Link>
-                            <h1 className={`font-roboto-bold text-xl text-main_color_darker`}></h1>
+                            <span className={`font-roboto-bold text-xl text-main_color_darker`}></span>
                         </div>
                         <form
                             className={`flex flex-col gap-y-5`}
                             onSubmit={handleSubmit}
                         >
                             <div>
-                                <h1 className={`font-roboto-semi-bold mb-3`}>Set password for your account</h1>
+                                <span className={`font-roboto-semi-bold mb-3`}>Set password for your account</span>
                                 <TextInputAuth
                                     onChange={handleFormChange}
                                     placeholder={translation.password}

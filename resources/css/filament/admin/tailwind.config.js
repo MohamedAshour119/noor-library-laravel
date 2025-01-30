@@ -7,5 +7,7 @@ export default {
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
         './vendor/kenepa/translation-manager/resources/**/*.blade.php',
+        './resources/**/*.blade.php',
+        './resources/views/**/*.blade.php',
     ],
 }

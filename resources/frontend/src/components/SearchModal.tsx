@@ -128,7 +128,7 @@ export default function SearchModal() {
                  {/* Results */}
                  {search_value.length > 0 &&
                      <div className={`flex flex-col py-3 border-t`}>
-                         <h1 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h1>
+                         <span className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</span>
                          <button
                              onClick={getKeywordSearchingResults}
                              className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}

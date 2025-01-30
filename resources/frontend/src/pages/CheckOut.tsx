@@ -183,9 +183,9 @@ export default function CheckOut() {
                                     >
                                         {index + 1}
                                     </div>
-                                    <span className={`absolute w-max mt-1 font-semibold text-sm xs:text-[16px] ${index + 1 !== 1 ? '-left-1/2' : ''} ${index + 1 === 2 && lang === 'fr' ? '-left-0' : ''} ${index + 1 === 3 && lang === 'fr' ? '-left-full' : ''}`}>
+                                    <h1 className={`absolute w-max mt-1 font-semibold text-sm xs:text-[16px] ${index + 1 !== 1 ? '-left-1/2' : ''} ${index + 1 === 2 && lang === 'fr' ? '-left-0' : ''} ${index + 1 === 3 && lang === 'fr' ? '-left-full' : ''}`}>
                                             {index + 1 === 1 ? translation.your_cart : index + 1 === 2 ? translation.checkout_details : translation.order_complete}
-                                    </span>
+                                    </h1>
                                 </div>
                             ))}
                         </div>

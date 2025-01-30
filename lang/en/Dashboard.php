@@ -25,4 +25,5 @@ return [
     'file' => 'File',
     'books_changes' => 'Books Changes',
     'review_books_changes' => 'Review Books Changes',
+    'book_content' => 'Book Content',
 ];

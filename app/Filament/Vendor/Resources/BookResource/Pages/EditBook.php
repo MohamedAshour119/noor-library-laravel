@@ -36,8 +36,12 @@ class EditBook extends EditRecord
     }
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        $exist_revision_book = Book::where('parent_id', $record->id)->first();
+        if ($exist_revision_book && $exist_revision_book->exists()) {
+            $exist_revision_book->delete();
+        }
 
-        $revisionBook = Book::create([
+        $revision_book = Book::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'author_name' => $data['author_name'],
@@ -45,13 +49,13 @@ class EditBook extends EditRecord
             'language' => $data['language'] === 'English' ? 'en' : $data['language'],
             'price' => $data['price'] ?? null,
             'category_id' => $data['category_id'] ?? null,
-            'status' => 'pending', // Set the status to pending for review
-            'is_draft' => true, // Mark it as a draft
-            'vendor_id' => $record->vendor_id, // Link to the same vendor
-            'parent_id' => $record->id, // Link to the live book
+            'status' => 'pending',
+            'is_draft' => true,
+            'vendor_id' => $record->vendor_id,
+            'parent_id' => $record->id,
         ]);
 
-        return $revisionBook; // Return the draft book
+        return $revision_book; // Return the draft book
 
     }
 

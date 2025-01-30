@@ -79,7 +79,7 @@ export default function ChatSupport(props: Props) {
                 <div className={`w-fit container fixed bottom-0 ${is_open ? 'z-50' : 'z-10'}`}>
                     <div className={` flex flex-col w-full max-w-md bg-gray-50 border rounded-lg shadow-md space-y-4 ltr:left-0 rtl:right-0 bottom-0 transform transition-transform duration-300 ${is_open ? "" : "translate-y-full"}`}>
                         <header className={`flex items-center justify-between px-4 py-3 rounded-t-lg border-b`}>
-                            <h1 className={`font-roboto-semi-bold`}>Support</h1>
+                            <span className={`font-roboto-semi-bold`}>Support</span>
                             <button
                                 onClick={toggleChat}
                                 className={`hover:bg-main_bg p-2 rounded-full`}
