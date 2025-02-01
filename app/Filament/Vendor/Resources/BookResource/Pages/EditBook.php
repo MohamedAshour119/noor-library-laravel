@@ -4,15 +4,17 @@ namespace App\Filament\Vendor\Resources\BookResource\Pages;
 
 use App\Filament\Vendor\Resources\BookResource;
 use App\Models\Book;
+use App\Traits\GetLanguageCodeFromName;
 use App\Traits\GoogleTranslation;
 use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Intl\Languages;
 
 class EditBook extends EditRecord
 {
-    use GoogleTranslation;
+    use GoogleTranslation, GetLanguageCodeFromName;
     protected static string $resource = BookResource::class;
 
     protected function getHeaderActions(): array
@@ -36,34 +38,41 @@ class EditBook extends EditRecord
             ->title('Book Updated')
             ->body(__('AddBook.reviewing_book'));
     }
-    protected function getTranslatedText($text)
+    protected function getTranslatedText($content)
     {
         $languages = ['en', 'ar', 'fr'];
-        $translations = [];
+        $translated = [];
 
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamically($text, $language);
+        foreach ($content as $field => $text) {
+            // Ensure that if $text is not empty, we translate it; otherwise, set an empty string.
+            $translated[$field] = [];
+            foreach ($languages as $language) {
+                $translated[$field][$language] = $this->translateTextDynamically($text, $language);
+            }
         }
 
-        return $translations;
+        return $translated;
     }
+
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $exist_revision_book = Book::where('parent_id', $record->id)->first();
-        if ($exist_revision_book && $exist_revision_book->exists()) {
-            $exist_revision_book->delete();
-        }
+        Book::where('parent_id', $record->id)->delete();
 
-        $translated_title = $record->title = $this->getTranslatedText($record->title);
-        $translated_description = $record->description = $this->getTranslatedText($record->description);
-        $translated_author_name = $record->author_name = $this->getTranslatedText($record->author_name);
+        $content = [
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'author_name' => $data['author_name'],
+        ];
+
+        $language_code = $this->getLanguageCodeFromName($data['language']);
+        $translated_content = $this->getTranslatedText($content);
 
         $revision_book = Book::create([
-            'title' => $translated_title,
-            'description' => $translated_description,
-            'author_name' => $translated_author_name,
+            'title' => $translated_content['title'],
+            'description' => $translated_content['description'],
+            'author_name' => $translated_content['author_name'],
             'is_free' => $data['is_free'],
-            'language' => $data['language'] === 'English' ? 'en' : $data['language'],
+            'language' => $language_code,
             'price' => $data['price'] ?? null,
             'category_id' => $data['category_id'] ?? null,
             'status' => 'pending',

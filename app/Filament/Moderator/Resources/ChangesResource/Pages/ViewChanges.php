@@ -3,6 +3,7 @@
 namespace App\Filament\Moderator\Resources\ChangesResource\Pages;
 
 use App\Filament\Moderator\Resources\ChangesResource;
+use App\Traits\GetLanguageCodeFromName;
 use App\Traits\GoogleTranslation;
 use App\Traits\GoogleTranslationSlug;
 use Filament\Infolists\Components\Grid;
@@ -18,19 +19,23 @@ use Locale;
 
 class ViewChanges extends ViewRecord
 {
-    use GoogleTranslationSlug, GoogleTranslation;
+    use GoogleTranslationSlug, GoogleTranslation, GetLanguageCodeFromName;
     protected static string $resource = ChangesResource::class;
 
-    protected function getTranslatedText($text)
+    protected function getTranslatedText($content)
     {
         $languages = ['en', 'ar', 'fr'];
-        $translations = [];
+        $translated = [];
 
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamically($text, $language);
+        foreach ($content as $field => $text) {
+            // Ensure that if $text is not empty, we translate it; otherwise, set an empty string.
+            $translated[$field] = [];
+            foreach ($languages as $language) {
+                $translated[$field][$language] = $this->translateTextDynamically($text, $language);
+            }
         }
 
-        return $translations;
+        return $translated;
     }
     private function getTranslatedTextSlug($text, $sentLanguage, $id)
     {
@@ -47,35 +52,34 @@ class ViewChanges extends ViewRecord
     {
         $book = $this->record->parent_book;
 
-        if ($book->isDirty($this->record->title)) {
-            $book->title = $this->getTranslatedText($this->record->title);
-            $book->slug = $this->getTranslatedTextSlug($this->record->title, 'en', $book->id);
-
-            $book->save();
-            dd('ss');
-        }
-
-        // Update translatable fields from changes
-        $book->fill([
+        $content = [
             'title' => $this->record->title,
             'description' => $this->record->description,
             'author_name' => $this->record->author_name,
+        ];
+
+        $translated_content = $this->getTranslatedText($content);
+        $translated_slug = $this->getTranslatedTextSlug($this->record->title, 'en', $book->id);
+
+        // Update translatable fields from changes
+        $book->fill([
+            'title' => $translated_content['title'],
+            'description' => $translated_content['description'],
+            'author_name' => $translated_content['author_name'],
         ]);
 
         // Update non-translatable fields
         $book->fill([
             'is_author' => $this->record->is_author,
             'is_free' => $this->record->is_free,
+            'price' => $this->record->price,
+            'downloadable' => $this->record->downloadable,
             'language' => $this->record->language,
+            'category_id' => $this->record->category_id,
+            'updated_at' => now(),
         ]);
 
-        // Generate fresh slugs for all languages
-        $book->slug = collect(['en', 'ar', 'fr'])
-            ->mapWithKeys(fn ($lang) => [
-                $lang => $this->getTranslatedTextSlug($book->title, $lang, $book->id)
-            ])
-            ->toArray();
-
+        $book->slug = $translated_slug;
         $book->save();
 
         // Update changes record status

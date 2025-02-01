@@ -28,14 +28,13 @@ class BookController extends Controller implements HasMedia
         $price = $request->filled('price') ? $request->price : null;
 
         // Check if the sent title is in the user's specified language or not
-        $title = $request->title;
-        $description = $request->description;
-        $authorName = $request->author;
+        $content = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'author_name' => $request->author,
+        ];
 
-        // Translate the title, description, and author_name into three languages
-        $translatedTitle = $this->getTranslatedText($title);
-        $translatedDescription = $this->getTranslatedText($description);
-        $translatedAuthorName = $this->getTranslatedText($authorName);
+        $translated_content = $this->getTranslatedText($content);
 
         // Retrieve the category based on the translated name
         $category = Category::whereJsonContains('slug->en', $request->category)->first();
@@ -46,16 +45,16 @@ class BookController extends Controller implements HasMedia
             $book_exist_title = $book_exist->getTranslation('title', 'en');
         }
 
-        if ($book_exist_title === $translatedTitle['en']) {
+        if ($book_exist_title === $translated_content['title']['en']) {
             $message = __('AddBookValidationMessages.book_exist');
             return $this->response_error($message, [], 422);
         }
 
         // Create the book with translations
         $book = Book::create([
-            'title' => $translatedTitle,
-            'description' => $translatedDescription,
-            'author_name' => $translatedAuthorName,
+            'title' => $translated_content['title'],
+            'description' => $translated_content['description'],
+            'author_name' => $translated_content['author_name'],
             'is_author' => $request->is_author,
             'is_free' => $request->is_free,
             'price' => $price,
@@ -78,17 +77,20 @@ class BookController extends Controller implements HasMedia
         return $this->response_success([], __('AddBook.reviewing_book'));
 
     }
-    private function getTranslatedText($text)
+    private function getTranslatedText($content)
     {
-        // Map the detected language to other languages
         $languages = ['en', 'ar', 'fr'];
-        $translations = [];
+        $translated = [];
 
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamically($text, $language);
+        foreach ($content as $field => $text) {
+            // Ensure that if $text is not empty, we translate it; otherwise, set an empty string.
+            $translated[$field] = [];
+            foreach ($languages as $language) {
+                $translated[$field][$language] = $this->translateTextDynamically($text, $language);
+            }
         }
 
-        return $translations;
+        return $translated;
     }
     public function showBook($slug): JsonResponse
     {

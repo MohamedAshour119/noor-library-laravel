@@ -89,17 +89,6 @@ class Book extends Model implements HasMedia
     {
         return $this->belongsTo(Book::class, 'parent_id');
     }
-    protected function getTranslatedText($text)
-    {
-        $languages = ['en', 'ar', 'fr'];
-        $translations = [];
-
-        foreach ($languages as $language) {
-            $translations[$language] = $this->translateTextDynamically($text, $language);
-        }
-
-        return $translations;
-    }
     protected static function booted()
     {
         static::creating(function ($book) {
@@ -136,20 +125,6 @@ class Book extends Model implements HasMedia
 
                 // Save silently to avoid recursion/events
                 $book->save();
-            }
-        });
-        static::updating(function ($book) {
-            if ($book->isDirty('title')) {
-                $book->title = $book->getTranslatedText($book->title);
-                $book->slug = $book->getTranslatedTextSlug($book->title, 'en', $book->id);
-            }
-
-            if ($book->isDirty('description')) {
-                $book->description = $book->getTranslatedText($book->description);
-            }
-
-            if ($book->isDirty('author_name')) {
-                $book->author_name = $book->getTranslatedText($book->author_name);
             }
         });
     }
