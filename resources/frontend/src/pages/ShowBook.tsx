@@ -322,8 +322,9 @@ export default function ShowBook() {
                                                 onClick={() => {
                                                     if (auth_user.is_vendor) {
                                                         handleOpenUnauthorizedMessage()
+                                                    }else {
+                                                        handleAddBookToCart()
                                                     }
-                                                    handleAddBookToCart()
                                                 }}
                                             >
                                                 <MdAddShoppingCart className="size-6 text-main_color_darker"/>

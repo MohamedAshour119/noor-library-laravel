@@ -70,7 +70,9 @@ class CategoryController extends Controller
 
     public function getCategoryBooks($category): JsonResponse
     {
-        $books = Book::paginate(3);
+        $books = Book::where('is_draft', false)
+            ->where('status', 'approved')
+            ->paginate(12);
         $next_page_url = $books->nextPageUrl();
         $books = BookCardResource::collection($books);
         $category = Category::whereJsonContains('slug->' . app()->getLocale(), $category)->first();
