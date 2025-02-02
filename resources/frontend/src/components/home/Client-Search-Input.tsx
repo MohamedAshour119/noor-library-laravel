@@ -12,6 +12,7 @@ import {setIsSearchModalOpenSlice} from "../../../redux/is_search_modal_open.ts"
 import {FormEventHandler} from "react/v18";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../../../redux/store.ts";
+import {setIsSearchTriggered} from "../../../redux/is_search_triggered.ts";
 
 export default function ClientSearchInput() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -88,6 +89,7 @@ export default function ClientSearchInput() {
     const navigate = useNavigate()
     const getKeywordSearchingResults = (e: FormEventHandler<HTMLFormElement>) => {
         e.preventDefault()
+        dispatch(setIsSearchTriggered(true))
         const stored_results = localStorage.getItem('books_results')
         const stored_results_next_page_url = localStorage.getItem('books_results_next_page_url')
 

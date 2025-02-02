@@ -39,4 +39,5 @@ return [
     'proceed_to_checkout' => 'Proceed to Checkout',
     'quantity' => 'Quantity',
     'must_sign_in' => 'You must sign in to do this action.',
+    'no_results_found' => 'No results found!',
 ];

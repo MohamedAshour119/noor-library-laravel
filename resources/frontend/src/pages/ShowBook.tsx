@@ -3,7 +3,7 @@ import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
 import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
 import apiClient from "../../ApiClient.ts";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { enqueueSnackbar } from "notistack";
 import CategorySidebar from "../components/CategorySidebar.tsx";
 import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
@@ -53,6 +53,7 @@ export default function ShowBook() {
             author: book_data?.author,
             category: book_data?.category,
             price: book_data?.price,
+            quantity: 1,
         };
 
         const is_book_exist = previous_books.some((storedBook: Book) => storedBook.id === book.id);
@@ -61,6 +62,8 @@ export default function ShowBook() {
             return
         }
 
+        const previous_total_price = JSON.parse(localStorage.getItem('total_price') || '0')
+        localStorage.setItem('total_price', JSON.stringify(previous_total_price + book.price))
         localStorage.setItem('book', JSON.stringify([...previous_books, book]));
         dispatch(setAddToCartItemsCount(add_to_cart_items_count + 1));
     };
@@ -283,6 +286,9 @@ export default function ShowBook() {
             window.removeEventListener('mousedown', handleClickOutside)
         }
     }, []);
+
+    const navigate = useNavigate()
+
     return (
         <div className="flex flex-col min-h-[669px] text-text_color">
             {auth_user.is_vendor &&
@@ -408,8 +414,12 @@ export default function ShowBook() {
                                                 <div className={`mt-2`}>
                                                     <button
                                                         onClick={() => {
-                                                            if (auth_user.is_vendor)
+                                                            if (auth_user.is_vendor) {
                                                                 handleOpenUnauthorizedMessage()
+                                                            } else if (auth_user.id && !auth_user.is_vendor) {
+                                                                handleAddBookToCart()
+                                                                navigate('/checkout')
+                                                            }
                                                         }}
                                                         className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         {translation.purchase} <strong>{book_data?.price + '$'}</strong>

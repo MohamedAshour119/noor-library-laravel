@@ -13,6 +13,7 @@ import {useNavigate} from "react-router-dom";
 // @ts-ignore
 import {FormEventHandler} from "react/v18";
 import {Modal} from "./Modal.tsx";
+import {setIsSearchTriggered} from "../../redux/is_search_triggered.ts";
 
 export default function SearchModal() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -71,6 +72,7 @@ export default function SearchModal() {
     const navigate = useNavigate()
     const getKeywordSearchingResults = (e: FormEventHandler<HTMLFormElement>) => {
         e.preventDefault()
+        dispatch(setIsSearchTriggered(true))
         const stored_results = localStorage.getItem('books_results')
         const stored_results_next_page_url = localStorage.getItem('books_results_next_page_url')
 

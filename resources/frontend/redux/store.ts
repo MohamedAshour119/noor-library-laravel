@@ -13,6 +13,7 @@ import isTranslationTriggeredReducer from './is_translation_triggerd.ts'
 import isAddToCartSidebarReducer from './is_add_to_card_sidebar_open.ts'
 import isUnauthorizedMessageOpenReducer from './is_unauthorized_message_open.ts'
 import addToCartItemsCountReducer from './add-to-cart-items-count.ts'
+import isSearchTriggeredReducer from './is_search_triggered.ts'
 import storage from 'redux-persist/lib/storage'
 import { persistReducer } from "redux-persist"
 import { combineReducers } from '@reduxjs/toolkit'
@@ -31,7 +32,7 @@ const persistConfig = {
         'userProfileInfoReducer',
         'isVisitedUserSectionsActive',
         'isVisitedVendorSectionsActive',
-        'addToCartItemsCountReducer'
+        'addToCartItemsCountReducer',
     ],
 }
 
@@ -50,6 +51,7 @@ const reducer = combineReducers({
     isAddToCartSidebarReducer: isAddToCartSidebarReducer,
     isUnauthorizedMessageOpenReducer: isUnauthorizedMessageOpenReducer,
     addToCartItemsCountReducer: addToCartItemsCountReducer,
+    isSearchTriggeredReducer: isSearchTriggeredReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, reducer)

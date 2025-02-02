@@ -39,4 +39,5 @@ return [
     'proceed_to_checkout' => 'متابعة الدفع',
     'quantity' => 'الكمية',
     'must_sign_in' => 'يجب عليك تسجيل الدخول للقيام بهذا الإجراء.',
+    'no_results_found' => 'لا توجد نتائج!',
 ];

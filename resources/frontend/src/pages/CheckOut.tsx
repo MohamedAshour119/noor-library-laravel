@@ -34,8 +34,11 @@ export default function CheckOut() {
         const query_params = new URLSearchParams(window.location.search)
         const status = query_params.get('status')
 
-        if (status === 'success') setCurrentStep(3)
-        if (status === 'failure') setCurrentStep(2)
+        if (status === 'success') {
+            setCurrentStep(3)
+        } else if (status === 'failure') {
+            setCurrentStep(2)
+        }
 
     }, []);
 
@@ -361,19 +364,21 @@ export default function CheckOut() {
                     }
                 </div>
                 {/* Navigation Buttons */}
-                {currentStep < 2 && <div className="container flex justify-end w-full mt-6 pb-6">
-                    <button
-                        onClick={handleNext}
-                        disabled={currentStep === steps.length}
-                        className={`px-4 py-2 rounded ${
-                            currentStep === steps.length
-                                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                : "bg-main_color hover:bg-main_color_darker text-white"
-                        } transition-all duration-300`}
-                    >
-                        {translation.proceed_to_checkout_details}
-                    </button>
-                </div>}
+                {currentStep < 2 &&
+                    <div className={`container flex justify-end w-full mt-6 pb-6`}>
+                        <button
+                            onClick={handleNext}
+                            disabled={currentStep === steps.length}
+                            className={`px-4 py-2 rounded ${
+                                currentStep === steps.length || cart_books.length === 0
+                                    ? "bg-gray-300 text-gray-500 cursor-not-allowed pointer-events-none"
+                                    : "bg-main_color hover:bg-main_color_darker text-white"
+                            } transition-all duration-300`}
+                        >
+                            {translation.proceed_to_checkout_details}
+                        </button>
+                    </div>
+                }
             </div>
             <Footer/>
         </div>

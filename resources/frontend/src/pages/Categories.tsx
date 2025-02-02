@@ -137,7 +137,7 @@ export default function Categories() {
                                 <button
                                     onMouseDown={(e) => e.preventDefault()}
                                     onClick={clearSearchInput}
-                                    className="absolute ltr:right-2 rtl: left-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
+                                    className="absolute ltr:right-2 rtl:left-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
                                     <IoMdClose size={24} className="text-gray-500"/>
                                 </button>
                             }

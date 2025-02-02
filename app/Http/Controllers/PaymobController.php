@@ -18,6 +18,10 @@ class PaymobController extends Controller
     use HttpResponses;
     public function paymob(AddOrderRequest $request)
     {
+        $request->validate([
+            'cart_books_ids' => ['array', 'required', 'min:1']
+        ]);
+
         $headers = [
             'Accept' => 'application/json',
             'Authorization' => 'Token ' . env('PAYMOB_SECRET_KEY'),
@@ -45,6 +49,7 @@ class PaymobController extends Controller
         if ($response->successful()) {
             $responseData = $response->json();
             $data = $request->billing_info;
+
             $data['payment_method'] = $request->payment_method;
             info('======================');
             Transaction::create([
