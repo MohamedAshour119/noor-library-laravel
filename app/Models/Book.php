@@ -92,7 +92,7 @@ class Book extends Model implements HasMedia
     protected static function booted()
     {
         static::creating(function ($book) {
-            // Generate slugs for all languages with 'temp-id' placeholder
+            // Generate slugs for all languages with a 'temp-id' placeholder.
             $book->slug = [
                 'en' => $book->getTranslatedTextSlug($book->title, 'en', 'temp-id'),
                 'ar' => $book->getTranslatedTextSlug($book->title, 'ar', 'temp-id'),
@@ -101,33 +101,11 @@ class Book extends Model implements HasMedia
         });
 
         static::created(function ($book) {
-            // Only proceed if there's a parent ID
-            if (!is_null($book->parent_id)) {
-                // Replace 'temp-id' with the parent ID
-                $slugWithId = [];
-                foreach ($book->slug as $lang => $slug) {
-                    $slugWithId[$lang] = str_replace('temp-id', $book->parent_id, $slug);
-                }
-
-                // Update the slug with the parent ID
-                $book->slug = $slugWithId;
-
-                // Save silently to avoid recursion/events
-                $book->saveQuietly();
-            } else {
-                $slugWithId = [];
-                foreach ($book->slug as $lang => $slug) {
-                    $slugWithId[$lang] = str_replace('temp-id', $book->id, $slug);
-                }
-
-                // Update the slug with the parent ID
-                $book->slug = $slugWithId;
-
-                // Save silently to avoid recursion/events
-                $book->save();
-            }
+            // Dispatch a job to update the slugs asynchronously.
+            \App\Jobs\GenerateBookSlug::dispatch($book);
         });
     }
+
     private function getTranslatedTextSlug($text, $sentLanguage, $id)
     {
         $languages = ['en', 'ar', 'fr'];
