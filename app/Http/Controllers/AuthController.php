@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\Vendor;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -116,5 +117,28 @@ class AuthController extends Controller
         $user->update([
             'password' => $request->password,
         ]);
+    }
+    public function refreshToken(Request $request): JsonResponse
+    {
+        $token_type = Auth::guard('user')->check() ? 'User token' : 'Vendor token';
+
+        $user = $request->user();
+        $user->tokens()->delete();
+
+
+        $newToken = $user->createToken($token_type, ['*'], expiresAt: now()->addHours(24));
+
+        $accessToken = $newToken->accessToken;
+        $expiresAt = $accessToken->expires_at;
+
+        $plainToken = $newToken->plainTextToken;
+
+        $data = [
+            'user' => new UserResource($user),
+            'token' => $plainToken,
+            'expires_at' => $expiresAt,
+        ];
+
+        return $this->response_success($data, 'Token refresh successfully');
     }
 }

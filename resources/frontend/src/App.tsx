@@ -25,10 +25,12 @@ import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
 import {setAddToCartItemsCount} from "../redux/add-to-cart-items-count.ts";
 import CheckOut from "./pages/CheckOut.tsx";
 import SetPassword from "./pages/SetPassword.tsx";
+import {clearUser, setUser} from "../redux/user-slice.ts";
 function App() {
     const isSearchModalOpenSlice = useSelector((state: RootState) => state.isSearchModalOpenReducer.is_open)
     const isUnauthorizedMessageOpenSlice = useSelector((state: RootState) => state.isUnauthorizedMessageOpenReducer.is_open)
     const isAddToCartSidebarSlice = useSelector((state: RootState) => state.isAddToCartSidebarReducer.is_open);
+    const auth_user = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch()
 
     const [showHeader, setShowHeader] = useState(true);
@@ -122,6 +124,48 @@ function App() {
         const previous_books = JSON.parse(localStorage.getItem('book') || '[]');
         dispatch(setAddToCartItemsCount(previous_books.length))
     }, []);
+
+    const expires_date = localStorage.getItem('expires_at');
+    const [count, setCount] = useState(0);
+    const refreshToken = () => {
+        setCount(prevCount => {
+            const newCount = prevCount === 5 ? 0 : prevCount + 1;
+            console.log('Updating count to ', newCount);
+            return newCount;
+        });
+
+        apiClient().post('/refresh-token')
+            .then(res => {
+                localStorage.removeItem('token');
+                localStorage.removeItem('expires_at');
+                localStorage.setItem('token', res.data.data.token);
+                localStorage.setItem('expires_at', res.data.data.expires_at);
+                dispatch(setUser(res.data.data.user));
+            });
+    };
+
+    useEffect(() => {
+        // @ts-ignore
+        const expiration_date = new Date(expires_date).getTime();
+        console.log(expiration_date)
+        const current_date = new Date().getTime();
+        const callAfter = (expiration_date - current_date) - 10000;
+
+        if (callAfter <= 0) {
+            dispatch(clearUser());
+            localStorage.removeItem('token');
+            localStorage.removeItem('expires_at');
+        } else {
+            const timeOut = setTimeout(() => {
+                refreshToken();
+            }, callAfter);
+
+            return () => {
+                clearTimeout(timeOut);
+            }
+        }
+    }, [count, auth_user]);
+
 
     return (
         <>

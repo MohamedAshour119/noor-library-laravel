@@ -42,6 +42,7 @@ Route::middleware('api')->group(function () {
         Route::put('/users/update-profile', [UserProfileController::class, 'updateProfile'])->middleware('validate.temp.token');
         Route::post('/users/update-profile-avatar', [UserProfileController::class, 'updateProfileAvatar']);
         Route::get('/wishlist/{user_id}', [WishlistController::class, 'getWishlistBooks']);
+        Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
         Route::middleware('user.access')->group(function () {
             Route::post('/books/rating/{id}', [BookController::class, 'ratingBook']);
