@@ -169,7 +169,7 @@ function App() {
 
     return (
         <>
-            {(isSearchModalOpenSlice || isUnauthorizedMessageOpenSlice) && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
+            {(isSearchModalOpenSlice || isUnauthorizedMessageOpenSlice) && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70`}></div>}
             {isSearchModalOpenSlice && <SearchModal/>}
             <SnackbarProvider
                 autoHideDuration={3000}
@@ -178,7 +178,7 @@ function App() {
                     horizontal: 'left',
                 }}
             />
-            <div className={`relative ${isAddToCartSidebarSlice ? 'max-h-svh overflow-hidden' : ''}`}>
+            <div className={`relative dark:bg-dark_main_color ${isAddToCartSidebarSlice ? 'max-h-svh overflow-hidden' : ''}`}>
                 <AddToCartSidebar/>
                 {/*<ChatSupport/>*/}
                 {showHeader && <Header/>}

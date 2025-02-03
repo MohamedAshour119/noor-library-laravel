@@ -20,7 +20,7 @@ export default function GlobalInput(props: Props) {
     return (
         <div className={parent_styles ? `${parent_styles}` : ''}>
             <label
-                className={`${label_styles} block text-gray-700 text-lg font-bold mb-2`}
+                className={`${label_styles} block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}
                 htmlFor={id}
             >
                 {label}
@@ -32,7 +32,7 @@ export default function GlobalInput(props: Props) {
                 }
             </label>
             <input
-                className={`${input_styles} ${error ? 'border-red-600 placeholder:text-red-600 mb-1' : 'shadow'} appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                className={`${input_styles} ${error ? 'border-red-600 placeholder:text-red-600 mb-1' : 'shadow'} dark:bg-dark_second_color dark:border-dark_border_color dark:text-dark_text_color appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                 id={id}
                 type={type}
                 placeholder={placeholder}

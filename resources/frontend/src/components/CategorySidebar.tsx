@@ -46,9 +46,9 @@ export default function CategorySidebar({styles}: Props) {
     ))
 
     return (
-        <div className={`flex flex-col gap-y-4 h-fit bg-white rounded p-4 border ${styles ? styles : ''}`}>
+        <div className={`flex flex-col gap-y-4 h-fit bg-white dark:bg-dark_second_color dark:text-dark_text_color rounded p-4 border dark:border-dark_border_color ${styles ? styles : ''}`}>
 
-            <div className={`border-b pb-2 border-main_color`}>
+            <div className={`border-b pb-2 border-main_color dark:border-dark_border_color`}>
                 <span className={`font-roboto-semi-bold text-xl`}>{translation.categories}</span>
             </div>
             <div className={`flex flex-col gap-y-4`}>

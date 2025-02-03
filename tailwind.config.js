@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -22,6 +23,12 @@ export default {
                 input_bg: "#FAFAFA",
                 disable_color: "#D2CFCF",
                 table_border: "#cfcfcf",
+
+                // Dark mode
+                dark_main_color: "#222831",
+                dark_second_color: "#31363F",
+                dark_border_color: "#464d5b",
+                dark_text_color: "#e0e0e0",
             },
         },
         screens: {

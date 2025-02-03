@@ -12,7 +12,7 @@ export default function MainHeaderBtn(props: Props) {
     return (
         <div
             onClick={onClick}
-            className={`${styles} pb-4 max-[525px]:w-full w-1/3 flex flex-col items-center gap-y-2 cursor-pointer group border-b-2 border-transparent hover:border-main_color transition`}
+            className={`${styles} pb-4 max-[525px]:w-full w-1/3 flex flex-col items-center gap-y-2 cursor-pointer group border-b-2 border-transparent hover:border-main_color dark:hover:border-dark_border_color transition`}
         >
             <img
                 src={src}
@@ -21,7 +21,7 @@ export default function MainHeaderBtn(props: Props) {
                 className={img_Style}
             />
 
-            <span className={`text-lg group-hover:text-main_color transition`}>{content}</span>
+            <span className={`text-lg group-hover:text-main_color dark:group-hover:text-dark_text_color transition`}>{content}</span>
         </div>
     )
 }

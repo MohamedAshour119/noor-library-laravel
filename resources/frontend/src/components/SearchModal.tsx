@@ -110,7 +110,7 @@ export default function SearchModal() {
             ref={modalRef}
             parent_styles={`px-0 ${search_value.length > 0 ? 'pb-0' : 'pb-4'}`}
         >
-            <main className={`pt-4 text-gray-500`}>
+            <main className={`pt-4 text-gray-500 dark:text-dark_text_color/70`}>
                  <form
                      className="space-y-6 px-4"
                      onSubmit={getKeywordSearchingResults}
@@ -129,14 +129,14 @@ export default function SearchModal() {
 
                  {/* Results */}
                  {search_value.length > 0 &&
-                     <div className={`flex flex-col py-3 border-t`}>
-                         <span className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</span>
+                     <div className={`flex flex-col py-3 border-t dark:border-dark_border_color mt-3`}>
+                         <span className={`font-roboto-semi-bold text-main_color_darker dark:text-dark_text_color/70 text-lg px-5 pb-3`}>{translation.results}</span>
                          <button
                              onClick={getKeywordSearchingResults}
-                             className={`border-t px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
-                         >{translation.search_for}: <span className={`text-main_color_darker`}> "{search_value}"</span>
+                             className={`border-t dark:border-dark_border_color px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
+                         >{translation.search_for}: <span className={`text-main_color_darker dark:text-dark_text_color`}> "{search_value}"</span>
                          </button>
-                         <div className={`flex flex-col gap-y-3`}>
+                         <div className={`flex flex-col gap-y-3 dark:text-dark_text_color`}>
                              {!is_loading && show_Results}
                              {is_loading &&
                                  <div className={`flex justify-center pb-20 pt-10`}>

@@ -31,7 +31,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
 
     return (
         <>
-            <li className={`relative ${styles}`}>
+            <li className={`relative ${styles} dark:text-dark_text_color`}>
                 <div className={`${isActive.home && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
@@ -48,7 +48,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     <IoHome />{translation.home}
                 </Link>
             </li>
-            <li className={`relative ${styles}`}>
+            <li className={`relative ${styles} dark:text-dark_text_color`}>
                 <div className={`${isActive.categories && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
@@ -65,7 +65,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                     <BiCategoryAlt />{translation.categories}
                 </Link>
             </li>
-            <li className={`relative ${styles}`}>
+            <li className={`relative ${styles} dark:text-dark_text_color`}>
                 <div className={`${isActive.reviews && !checkIsLocationIsNotInNavlinkSlice ? 'active' : ''}`}></div>
                 <Link
                     className={`flex items-center gap-x-2 cursor-pointer`}
@@ -83,7 +83,7 @@ export default function NavbarList({isActive, handleActiveLink, styles, is_small
                 </Link>
             </li>
             <li
-                className={`flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
+                className={`dark:text-dark_text_color flex items-center gap-x-2 cursor-pointer pb-4 ${styles}`}
                 onClick={handleSearchOpen}
             >
                 <BsSearch />{translation.search}

@@ -26,24 +26,24 @@ export default function MainHeader(props: Props) {
     }
 
     return (
-        <header className={`flex bg-white pt-6 border border-border_color w-full flex-col gap-y-5 xs:gap-y-0 xs:flex-row items-center `}>
+        <header className={`flex bg-white dark:bg-dark_second_color pt-6 border border-border_color dark:border-dark_border_color w-full flex-col gap-y-5 xs:gap-y-0 xs:flex-row items-center `}>
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('highest_rated')}
-                styles={`${isActive.highest_rated ? '!border-main_color text-main_color' : ''} w-full`}
+                styles={`${isActive.highest_rated ? '!border-main_color dark:!border-dark_border_color text-main_color dark:text-dark_text_color' : 'dark:!text-white'} w-full`}
                 src={isActive.highest_rated ? '/home/highest-rated-active.svg' : '/home/highest-rated-not-active.svg'}
                 content={translation.highest_rated}
             />
 
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('popular_books')}
-                styles={`${isActive.popular_books ? '!border-main_color text-main_color' : ''} w-full`}
+                styles={`${isActive.popular_books ? '!border-main_color dark:!border-dark_border_color text-main_color dark:text-dark_text_color' : 'dark:!text-white'} w-full`}
                 src={isActive.popular_books ? '/home/popular-active.svg' : '/home/popular-not-active.svg'}
                 content={translation.popular_books}
             />
 
             <MainHeaderBtn
                 onClick={() => handleActiveChoice('latest_books')}
-                styles={`${isActive.latest_books ? '!border-main_color text-main_color' : ''} w-full`}
+                styles={`${isActive.latest_books ? '!border-main_color dark:!border-dark_border_color text-main_color dark:text-dark_text_color' : 'dark:!text-white'} w-full`}
                 src={isActive.latest_books ? '/home/latest-active.svg' : '/home/latest-not-active.svg'}
                 content={translation.latest_books}
             />

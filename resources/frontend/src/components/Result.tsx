@@ -17,7 +17,7 @@ export default function Result(props: Props) {
     return (
         <Link
             to={`/books/${slug}`}
-            className={`border-t px-5 py-2 ${styles ? styles : ''}`}
+            className={`border-t dark:border-dark_border_color px-5 py-2 ${styles ? styles : ''}`}
             onClick={closeModal}
         >
             {title}

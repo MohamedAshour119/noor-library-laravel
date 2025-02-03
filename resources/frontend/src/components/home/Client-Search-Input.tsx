@@ -124,18 +124,18 @@ export default function ClientSearchInput() {
             <div ref={resultRef} className={``}>
                 {/* Background when search input is active */}
                 <div className={`relative`}>
-                    <FaSearch className={`size-6 text-main_color absolute -translate-y-1/2 top-1/2 ltr:left-4 rtl:right-4 z-40`}/>
+                    <FaSearch className={`size-6 text-main_color dark:text-dark_border_color absolute -translate-y-1/2 top-1/2 ltr:left-4 rtl:right-4 z-40`}/>
                     <input
                         type="text"
                         placeholder={translation.search_placeholder}
-                        className={`sm:w-[40rem] w-full max-[468px]:placeholder:text-sm py-4 ps-12 rtl:pe-28 ltr:pe-32 rounded-full focus:outline-0 text-text_color text-lg font-roboto-medium relative z-30`}
+                        className={`sm:w-[40rem] w-full max-[468px]:placeholder:text-sm py-4 ps-12 rtl:pe-28 ltr:pe-32 rounded-full focus:outline-0 text-text_color dark:text-dark_text_color dark:bg-dark_main_color text-lg font-roboto-medium relative z-30`}
                         onFocus={handleFocus}
                         onBlur={handleBlur}
                         value={search_value}
                         onChange={handleSearchValue}
                     />
                     <button
-                        className={`bg-main_color absolute ltr:right-[2px] rtl:left-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}
+                        className={`bg-main_color dark:bg-dark_second_color absolute ltr:right-[2px] rtl:left-[2px] top-[2px] py-4 px-8 rounded-full font-semibold z-30`}
                         type={`button`}
                         disabled={search_value.length === 0}
                         onClick={getKeywordSearchingResults}
@@ -143,12 +143,13 @@ export default function ClientSearchInput() {
                 </div>
                 {/* Results */}
                 {search_value.length > 0 && is_results_open &&
-                    <div className={`flex flex-col pb-3 pt-2 rounded-lg border-t bg-white z-30 absolute w-full text-text_color`}>
-                        <h2 className={`font-roboto-semi-bold text-main_color_darker text-lg px-5 pb-3`}>{translation.results}</h2>
+                    <div className={`flex flex-col pb-3 pt-2 rounded-lg border-t dark:border-dark_border_color bg-white dark:bg-dark_main_color dark:text-dark_text_color z-30 absolute w-full text-text_color`}>
+                        <h2 className={`font-roboto-semi-bold text-main_color_darker dark:text-dark_text_color/70 text-lg px-5 pb-3`}>{translation.results}</h2>
                         <button
                             onClick={getKeywordSearchingResults}
-                            className={`overflow-x-hidden border-y px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
-                        >{translation.search_for}: <span className={`text-main_color_darker`}> "{search_value}"</span>
+                            className={`overflow-x-hidden border-y dark:border-dark_border_color px-5 py-2 font-roboto-semi-bold ${results.length > 0 ? 'text-center' : 'ltr:text-left rtl:text-right'}`}
+                        >
+                            {translation.search_for}: <span className={`text-main_color_darker dark:text-dark_text_color/70`}> "{search_value}"</span>
                         </button>
                         <div className={`flex flex-col gap-y-3`}>
                             {!is_loading && show_Results}

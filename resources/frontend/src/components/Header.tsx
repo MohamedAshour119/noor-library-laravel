@@ -21,6 +21,7 @@ import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
 import {TfiShoppingCart} from "react-icons/tfi";
 import {Modal} from "./Modal.tsx";
+import DarkMode from "./DarkMode.tsx";
 
 export default function Header() {
 
@@ -104,7 +105,7 @@ export default function Header() {
     return (
         <>
             {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
-            <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto z-10 border-t-[3px] border-main_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
+            <header className={`${location.pathname === '/add-book-to-store' ? 'shadow-sm' : ''} max-h-auto z-10 border-t-[3px] border-main_color dark:border-dark_second_color text-text_color flex flex-col justify-between items-center gap-y-6`}>
             {!auth_user.is_vendor &&
                 <Modal
                     isOpen={isFocused}
@@ -121,21 +122,26 @@ export default function Header() {
             <div className={`container w-full relative`}>
                 <div>
                     <Menu>
-                        <MenuButton className={`flex justify-self-end gap-x-2 items-center rounded-b border border-main_color text-white px-3 py-[5px] bg-main_color hover:opacity-95 transition`}>
-                            {translation.languages}<MdGTranslate />
-                        </MenuButton>
+                        <div className={`flex flex-row-reverse gap-x-3`}>
+                            <MenuButton className={`flex justify-self-end gap-x-2 items-center rounded-b border border-main_color dark:border-dark_second_color text-white dark:text-dark_text_color px-3 py-[5px] bg-main_color dark:bg-dark_second_color hover:opacity-95 transition`}>
+                                {translation.languages}<MdGTranslate />
+                            </MenuButton>
+                            <DarkMode/>
+                        </div>
+
+
 
                         <MenuItems
                             transition
                             anchor={`bottom`}
-                            className="flex flex-col gap-y-1 mt-1 z-50 w-52 !bg-main_color shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                            className="flex flex-col gap-y-1 mt-1 z-50 w-52 !bg-main_color dark:!bg-dark_main_color shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                         >
 
                             <MenuItem>
                                 <a
                                     // onClick={() => handleSelectLanguage('ar')}
                                     href={`/locale/ar`}
-                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color dark:bg-dark_second_color text-white dark:text-dark_text_color border dark:border-transparent"
                                 >
                                     {translation.languages_list?.arabic}
                                 </a>
@@ -144,7 +150,7 @@ export default function Header() {
                                 <a
                                     // onClick={() => handleSelectLanguage('en')}
                                     href={`/locale/en`}
-                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color dark:bg-dark_second_color text-white dark:text-dark_text_color border dark:border-transparent"
                                 >
                                     {translation.languages_list?.english}
                                 </a>
@@ -153,7 +159,7 @@ export default function Header() {
                                 <a
                                     // onClick={() => handleSelectLanguage('fr')}
                                     href={`/locale/fr`}
-                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color text-white border"
+                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 bg-main_color dark:bg-dark_second_color text-white dark:text-dark_text_color border dark:border-transparent"
                                 >
                                     {translation.languages_list?.french}
                                 </a>
@@ -175,13 +181,13 @@ export default function Header() {
                     </Link>
                 </div>
             </div>
-            <div className={`border-t w-full flex flex-col items-center gap-y-0 sm:gap-y-3 lg:gap-y-0`}>
-                <nav className={`w-full flex flex-col items-center border-b border-border_color`}>
+            <div className={`border-t dark:border-dark_border_color w-full flex flex-col items-center gap-y-0 sm:gap-y-3 lg:gap-y-0`}>
+                <nav className={`w-full flex flex-col items-center border-b border-border_color dark:border-b-dark_border_color`}>
                     <div className={`w-full container flex justify-between items-center font-roboto-bold max-sm:px-2`}>
                         <div className={`flex items-center gap-x-4 h-[53px]`}>
                             <Link
                                 to={`/`}
-                                className={`px-4 border-x w-fit hidden sm:block`}
+                                className={`px-4 border-x dark:border-dark_border_color w-fit hidden sm:block`}
                             >
                                 <img
                                     src={`/nav-logo.svg`}
@@ -226,21 +232,21 @@ export default function Header() {
                             {auth_user?.id &&
                                 <div className={`flex items-center gap-x-2`}>
                                     <span
-                                        className={`relative border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}
+                                        className={`relative border border-main_color dark:border-dark_border_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color dark:hover:bg-dark_second_color group transition cursor-pointer`}
                                         onClick={openAddToCartSidebar}
                                     >
                                     {addToCartItemsCount > 0 &&
-                                        <span className={`absolute -top-2 ltr:-left-3 rtl:-right-3 bg-second_main_color text-white size-5 flex justify-center items-center rounded`}>
+                                        <span className={`absolute -top-2 ltr:-left-3 rtl:-right-3 bg-second_main_color dark:bg-dark_border_color text-white dark:text-dark_text_color size-5 flex justify-center items-center rounded`}>
                                             {addToCartItemsCount}
                                         </span>
                                     }
-                                        <TfiShoppingCart className={`size-6 text-main_color group-hover:text-white transition`}/>
+                                        <TfiShoppingCart className={`size-6 text-main_color dark:text-dark_border_color group-hover:text-white transition`}/>
                                     </span>
-                                    <span className={`border border-main_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color group transition cursor-pointer`}>
-                                        <GoBell className={`size-6 text-main_color group-hover:text-white transition`}/>
+                                    <span className={`border border-main_color dark:border-dark_border_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color dark:hover:bg-dark_second_color group transition cursor-pointer`}>
+                                        <GoBell className={`size-6 text-main_color dark:text-dark_border_color group-hover:text-white transition`}/>
                                     </span>
                                     <Menu>
-                                        <MenuButton className={`flex gap-x-2 items-center rounded border border-main_color text-white px-3 py-[5px] bg-main_color hover:opacity-95 transition`}>
+                                        <MenuButton className={`flex gap-x-2 items-center rounded border border-main_color dark:border-dark_border_color text-white dark:text-dark_text_color px-3 py-[5px] bg-main_color dark:bg-dark_second_color hover:opacity-95 transition`}>
                                             {translation.my_account}
                                             <IoIosArrowDown />
                                         </MenuButton>
@@ -248,13 +254,13 @@ export default function Header() {
                                         <MenuItems
                                             transition
                                             anchor={`bottom`}
-                                            className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                                            className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white dark:!bg-dark_main_color shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                                         >
 
                                             <MenuItem>
                                                 <Link
                                                     to={`/users/${auth_user.username}`}
-                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white dark:bg-dark_second_color dark:text-dark_text_color text-text_color"
                                                 >
                                                     <img
                                                         src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
@@ -268,7 +274,7 @@ export default function Header() {
                                                 <MenuItem>
                                                     <Link
                                                         to={`/add-book`}
-                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white dark:bg-dark_second_color dark:text-dark_text_color text-text_color"
                                                     >
                                                         <FaBook className={`size-5`}/>
                                                         {translation.upload_book}
@@ -279,7 +285,7 @@ export default function Header() {
                                                 <MenuItem>
                                                     <button
                                                         onClick={handleOpen}
-                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white dark:bg-dark_second_color dark:text-dark_text_color text-text_color"
                                                     >
                                                         <FaBook className={`size-5`}/>
                                                         {translation.upload_book}
@@ -288,7 +294,7 @@ export default function Header() {
                                             }
                                             <MenuItem>
                                                 <button
-                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white dark:bg-dark_second_color dark:text-dark_text_color text-text_color"
                                                     onClick={signOut}
                                                 >
                                                     <TbLogout2 className={`size-6`}/>

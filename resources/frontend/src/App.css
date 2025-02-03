@@ -8,6 +8,10 @@
     --second_main_color: theme(colors.second_main_color);
     --border_color: theme(colors.border_color);
 
+    --dark_main_color: theme(colors.dark_main_color);
+    --dark_second_main_color: theme(colors.dark_second_color);
+    --dark_border_color: theme(colors.dark_border_color);
+
     --font-roboto: 'Roboto', sans-serif;
     /*--font-tajawal: "Tajawal", sans-serif;*/
     --font-noto_naskh: "Noto Naskh Arabic", serif;
@@ -85,6 +89,9 @@ body {
     background-color: var(--main_color);
     height: 2px;
     bottom: -2px;
+}
+.dark .active {
+    background-color: var(--dark_main_color); /* new color for dark mode */
 }
 
 .no-scroll {

@@ -12,7 +12,7 @@ export default function CategorySample(props: Props) {
             className={`flex items-center justify-between text-xl font-normal hover:underline underline-offset-4`}
         >
             <span>{name}</span>
-            <FaBook className={`text-main_color`}/>
+            <FaBook className={`text-main_color dark:text-dark_text_color`}/>
         </Link>
     )
 }

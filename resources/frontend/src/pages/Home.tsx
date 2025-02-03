@@ -172,7 +172,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="max-[527px]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
+            <div className="dark:bg-dark_second_color max-[527px]:h-[500px] min:[528px]:h-[400px] relative flex flex-col items-center justify-center lg:mt-0 py-20">
                 {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
                 {(auth_user.is_vendor || auth_user.is_vendor === null) &&
                     <Modal
@@ -181,7 +181,7 @@ export default function Home() {
                         header={translation.unauthorized}
                         ref={modal_ref}
                     >
-                        <main className={`p-4 text-gray-500`}>
+                        <main className={`p-4 text-gray-500 dark:text-dark_text_color`}>
                             {auth_user.is_vendor ? translation.unauthorized_vendor_message : !auth_user.is_vendor ? translation.must_sign_in : ''}
                         </main>
 
@@ -194,7 +194,7 @@ export default function Home() {
                         header={translation.unauthorized}
                         ref={modalRef}
                     >
-                        <main className={`p-4 text-gray-500`}>
+                        <main className={`p-4 text-gray-500 dark:text-dark_text_color`}>
                             {auth_user.id && !auth_user.is_vendor ? translation.unauthorized_customer_message : translation.must_sign_in}
                         </main>
 
@@ -203,9 +203,9 @@ export default function Home() {
                 <img
                     src={`./home/hero-section-bg.svg`}
                     alt={`hero-section-bg`}
-                    className="object-cover h-full w-full absolute"
+                    className="object-cover h-full w-full absolute dark:hidden"
                 />
-                <div className={`z-10 flex flex-col items-center gap-y-4 text-white px-2 sm:px-0`}>
+                <div className={`z-10 flex flex-col items-center gap-y-4 text-white dark:text-dark_text_color px-2 sm:px-0`}>
                     <h1 className="text-4xl font-roboto-bold">{translation.title}</h1>
                     <form className={`relative w-full`}>
                         <ClientSearchInput/>
@@ -216,7 +216,7 @@ export default function Home() {
                             <button onClick={handleOpen}>
                                 <HeroSectionBtn
                                     content={translation.upload_book}
-                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white text-main_color font-roboto-semi-bold`}
+                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white dark:bg-dark_main_color dark:border-dark_main_color text-main_color dark:text-dark_text_color font-roboto-semi-bold`}
                                 />
                             </button>
                         }
@@ -234,7 +234,7 @@ export default function Home() {
                 </div>
             </div>
 
-            <main className={`flex justify-center bg-main_bg py-8 relative`}>
+            <main className={`flex justify-center bg-main_bg dark:bg-dark_main_color py-8 relative`}>
                 <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8`}>
                     <div className={`flex flex-col gap-y-4`}>
                         <MainHeader
