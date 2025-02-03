@@ -2,7 +2,7 @@
 export default function ReviewPlaceholder() {
     return (
         <div className={`flex gap-x-3`}>
-            <div className={`flex items-center justify-center animate-pulse size-12 min-h-12 min-w-12 bg-gray-300 rounded-full`}>
+            <div className={`flex items-center justify-center animate-pulse size-12 min-h-12 min-w-12 bg-gray-300 dark:bg-dark_border_color rounded-full`}>
                 <svg
                     className={`size-5 text-gray-400`}
                     aria-hidden="true"
@@ -16,26 +16,26 @@ export default function ReviewPlaceholder() {
 
             <div
                 role="status"
-                className={`rounded-lg bg-white w-full p-5 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center`}
+                className={`rounded-lg bg-white dark:bg-dark_second_color w-full p-5 space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center`}
             >
                 <div className={`w-full`}>
                     <div
-                        className={`h-2.5 bg-gray-300 rounded-full w-48 mb-5`}
+                        className={`h-2.5 bg-gray-300 dark:bg-dark_icon_color rounded-full w-48 mb-5`}
                     ></div>
                     <div
-                        className={`h-2 bg-gray-300 rounded-full max-w-[480px] mb-4`}
+                        className={`h-2 bg-gray-300 dark:bg-dark_icon_color rounded-full max-w-[480px] mb-4`}
                     ></div>
                     <div
-                        className={`h-2 bg-gray-300 rounded-full mb-2.5`}
+                        className={`h-2 bg-gray-300 dark:bg-dark_icon_color rounded-full mb-2.5`}
                     ></div>
                     <div
-                        className={`h-2 bg-gray-300 rounded-full max-w-[440px] mb-2`}
+                        className={`h-2 bg-gray-300 dark:bg-dark_icon_color rounded-full max-w-[440px] mb-2`}
                     ></div>
                     <div
-                        className={`h-2 bg-gray-300 rounded-full max-w-[460px] mb-2`}
+                        className={`h-2 bg-gray-300 dark:bg-dark_icon_color rounded-full max-w-[460px] mb-2`}
                     ></div>
                     <div
-                        className={`h-2 bg-gray-300 rounded-full max-w-[360px]`}
+                        className={`h-2 bg-gray-300 dark:bg-dark_icon_color rounded-full max-w-[360px]`}
                     ></div>
                 </div>
                 <span className={`sr-only`}>Loading...</span>

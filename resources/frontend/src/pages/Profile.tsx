@@ -20,6 +20,7 @@ import {setUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
 import Reviews from "../components/profile/Reviews.tsx";
 import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
 import {Modal} from "../components/Modal.tsx";
+import {useDarkMode} from "../hooks/UseDarkMode.ts";
 export default function Profile() {
     const translation = useSelector((state: RootState) => state.translationReducer)
     const user_isActive = useSelector((state: RootState) => state.usersProfileIsActiveReducer);
@@ -370,6 +371,7 @@ export default function Profile() {
     }, [user]);
 
     const display_name = user_info ? (user_info?.first_name[0]?.toUpperCase() + user_info.first_name.slice(1)) + ' ' + (user_info?.last_name[0]?.toUpperCase() + user_info.last_name.slice(1)) : ''
+    const is_dark_mode = useDarkMode()
 
     return (
         <>
@@ -420,8 +422,8 @@ export default function Profile() {
                 </main>
 
             </Modal>
-            <div className={`flex flex-col items-center bg-main_bg py-5 gap-y-7`}>
-                <div className={`container w-full flex flex-col items-center bg-white border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
+            <div className={`flex flex-col items-center bg-main_bg dark:bg-dark_main_color py-5 gap-y-7`}>
+                <div className={`container w-full flex flex-col items-center bg-white dark:bg-dark_second_color dark:border-dark_border_color dark:text-dark_text_color border-t-[3px] border-main_color rounded-t-2xl gap-y-4`}>
                     <div className={`p-5 flex flex-col items-center`}>
                         <div className={`flex flex-col items-center gap-y-3`}>
                             <div className={`relative`}>
@@ -432,7 +434,7 @@ export default function Profile() {
                                             className={`cursor-pointer`}
                                         >
                                             <img
-                                                className={`object-cover size-[150px] rounded-full appearance-none leading-tight border bg-white cursor-pointer flex items-center gap-x-2`}
+                                                className={`object-cover size-[150px] rounded-full appearance-none leading-tight border dark:border-dark_border_color bg-white cursor-pointer flex items-center gap-x-2`}
                                                 src={user_info?.avatar && !avatar ? user_info?.avatar : avatar ? URL.createObjectURL(avatar as File) : `/profile-default-img.svg`}
                                                 alt={`avatar`}
                                             />
@@ -460,7 +462,7 @@ export default function Profile() {
                                 }
                                 {show_save_avatar_btn &&
                                     <button
-                                        className={`bg-main_color mt-2 py-1 text-white rounded font-roboto-semi-bold w-full text-lg`}
+                                        className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color mt-2 py-1 text-white rounded font-roboto-semi-bold w-full text-lg`}
                                         onClick={handleSaveAvatar}
                                     >
                                         {translation.save}
@@ -475,8 +477,9 @@ export default function Profile() {
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
                             {user_info?.is_vendor && auth_user.is_vendor && auth_user.username === user &&
                                 <a
-                                    href={`/admin`}
-                                    className={`bg-main_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
+                                    href={`/vendor`}
+                                    target={`_blanc`}
+                                    className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
                                 >
                                     {translation.manage_books}
                                     <img
@@ -486,9 +489,9 @@ export default function Profile() {
                                     />
                                 </a>
                             }
-                            <div className={`bg-main_bg flex flex-col items-center px-10 py-2 rounded-full`}>
+                            <div className={`bg-main_bg dark:bg-dark_main_color/70 dark:border dark:border-dark_border_color flex flex-col items-center px-10 py-2 rounded-full`}>
                                 {translation.last_online}
-                                <span className={`flex items-center gap-x-2 text-main_color`}>
+                                <span className={`flex items-center gap-x-2 text-main_color dark:text-dark_text_color/70`}>
                                     2 Days ago
                                 </span>
                             </div>
@@ -619,7 +622,7 @@ export default function Profile() {
                         }
                         {user_info?.is_vendor && user !== auth_user.username && reviews_count === 0 && is_visited_vendor_sections_active.reviews &&
                             <NotFoundContainer
-                                src={`/profile/reviews-not-found.svg`}
+                                src={is_dark_mode ? '/profile/dark-reviews-active.svg' : `/profile/reviews-not-found.svg`}
                                 visited_user={display_name}
                                 content={translation.has_no_reviews}
                                 content_style={`font-roboto-semi-bold`}
@@ -627,7 +630,7 @@ export default function Profile() {
                         }
                         {!user_info?.is_vendor && user !== auth_user.username && user_info.wishlists_count === 0 && is_visited_user_sections_active.wishlist &&
                             <NotFoundContainer
-                                src={`/profile/wishlist-not-active.svg`}
+                                src={is_dark_mode ? '/profile/dark-wishlist-active.svg' : `/profile/wishlist-not-active.svg`}
                                 visited_user={display_name}
                                 content={translation.has_nothing_in_wishlist}
                                 content_style={`font-roboto-semi-bold`}
@@ -643,7 +646,7 @@ export default function Profile() {
                         }
                         {!user_info?.is_vendor && user === auth_user.username && user_info.wishlists_count === 0 && user_isActive.wishlist &&
                             <NotFoundContainer
-                                src={`/profile/wishlist-not-active.svg`}
+                                src={is_dark_mode ? '/profile/dark-wishlist-active.svg' : `/profile/wishlist-not-active.svg`}
                                 content={translation.you_have_nothing_in_wishlist}
                                 content_style={`font-roboto-semi-bold`}
                             />
@@ -655,7 +658,7 @@ export default function Profile() {
                         }
                         {!user_info?.is_vendor && user === auth_user.username && orders_history.length === 0 && user_isActive.order_history &&
                             <NotFoundContainer
-                                src={`/profile/order-history-not-active.svg`}
+                                src={is_dark_mode ? '/profile/dark-order-history-active.svg' : `/profile/order-history-not-active.svg`}
                                 content={translation.you_have_no_orders_yet}
                                 content_style={`font-roboto-semi-bold`}
                             />

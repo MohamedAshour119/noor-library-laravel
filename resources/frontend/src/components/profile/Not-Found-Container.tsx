@@ -6,8 +6,8 @@ import {useParams} from "react-router-dom";
 interface Props {
     src: string
     content: string
-    is_book_section_active?: boolean
-    is_review_section_active?: boolean
+    // is_book_section_active?: boolean
+    // is_review_section_active?: boolean
     is_purchased_books_active?: boolean
     content_style?: string
     visited_user?: string
@@ -23,7 +23,7 @@ export default function NotFoundContainer(props: Props) {
     const { user } = useParams()
 
     return (
-        <div className={`flex flex-col items-center gap-y-4 bg-white w-full p-10 border border-border_color rounded text-xl`}>
+        <div className={`flex flex-col items-center gap-y-4 bg-white w-full p-10 border border-border_color rounded text-xl dark:bg-dark_second_color dark:border-dark_border_color dark:text-dark_text_color`}>
             <img
                 src={src}
                 alt={`not-found`}
@@ -35,7 +35,7 @@ export default function NotFoundContainer(props: Props) {
                     {user_state.username === user && user_isActive.wishlist &&
                         <Link
                             to={`/`}
-                            className={`text-main_color_darker`}
+                            className={`text-main_color_darker dark:text-dark_text_color/40`}
                         >
                             {translation.browse_books}
                         </Link>
@@ -43,7 +43,7 @@ export default function NotFoundContainer(props: Props) {
                     {is_purchased_books_active &&
                         <Link
                             to={`/`}
-                            className={`text-main_color_darker`}
+                            className={`text-main_color_darker dark:text-dark_text_color/40`}
                         >
                             {translation.explore_books}
                         </Link>
