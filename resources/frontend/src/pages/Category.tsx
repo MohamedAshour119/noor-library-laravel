@@ -76,7 +76,7 @@ export default function Category() {
     return (
         <div className="flex flex-col min-h-[643px] text-text_color">
             {!is_loading &&
-                <div className={`flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[586px]`}>
+                <div className={`flex flex-col items-center bg-main_bg dark:bg-dark_main_color dark:text-dark_text_color max-sm:px-2 h-full min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3 pt-5`}>
                         <h1 className={`text-2xl font-roboto-semi-bold max-lg:text-center`}>{category_name} {`(${books_count})`}</h1>
                         <div className={`pb-4 container w-full justify-center items-center flex flex-wrap md:grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4`}>
