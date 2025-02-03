@@ -216,10 +216,10 @@ export default function AddBook() {
 
 
     return (
-        <div className={`flex justify-center bg-main_bg py-5`}>
+        <div className={`flex justify-center bg-main_bg dark:bg-dark_main_color py-5`}>
             <div className={`container w-full flex justify-center`}>
-                <div className={`2xl:w-1/2 flex flex-col gap-y-10 bg-white p-8 rounded-lg border`}>
-                    <h1 className={`font-roboto-bold text-2xl border-b-2 border-main_color w-fit pb-2`}>{translation.upload_book_page}</h1>
+                <div className={`2xl:w-1/2 flex flex-col gap-y-10 bg-white dark:bg-dark_second_color dark:border-dark_border_color dark:text-dark_text_color p-8 rounded-lg border`}>
+                    <h1 className={`font-roboto-bold text-2xl border-b-2 border-main_color dark:border-dark_border_color w-fit pb-2`}>{translation.upload_book_page}</h1>
 
                     <form
                         onSubmit={handleSubmit}
@@ -234,12 +234,13 @@ export default function AddBook() {
                                 name={`book_title`}
                                 onChange={handleFormChange}
                                 error={errors?.title}
+                                input_styles={`dark:!bg-dark_main_color`}
                             />
                         </div>
 
                         <div>
                             <label
-                                className="block text-gray-700 text-lg font-bold mb-2"
+                                className="block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2"
                                 htmlFor="bookDescription"
                             >
                                 {translation.book_description}<span className={`text-red-700`}>
@@ -249,7 +250,7 @@ export default function AddBook() {
                             </label>
                             <div className={`relative`}>
                                 <textarea
-                                    className={`${errors?.description ? 'border-red-600 placeholder:text-red-600' : 'shadow'} appearance-none border rounded w-full min-h-[167px] pb-2 px-3 ${isScrollbarVisible ? 'pt-7' : 'pt-3'} text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                                    className={`${errors?.description ? 'border-red-600 placeholder:text-red-600' : 'shadow'} dark:bg-dark_main_color dark:border-dark_border_color dark:text-dark_text_color appearance-none border rounded w-full min-h-[167px] pb-2 px-3 ${isScrollbarVisible ? 'pt-7' : 'pt-3'} text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                                     id="bookDescription"
                                     placeholder={translation.book_description_placeholder}
                                     value={formData.book_description}
@@ -259,7 +260,7 @@ export default function AddBook() {
                                     ref={textareaRef}
                                 />
                                 {/*  Count  */}
-                                <span className={`${descriptionCount >= 2000 ? 'text-red-700' : 'text-main_color'} z-10 absolute ltr:right-1 rtl:left-1 text-sm`}>
+                                <span className={`${descriptionCount >= 2000 ? 'text-red-700' : 'text-main_color dark:text-dark_text_color'} z-10 absolute ltr:right-1 rtl:left-1 text-sm`}>
                                     {descriptionCount} / 2000
                                 </span>
                                 {isScrollbarVisible &&
@@ -270,7 +271,7 @@ export default function AddBook() {
                         </div>
 
                         <div>
-                            <span className={`block text-gray-700 text-lg font-bold mb-2`}>
+                            <span className={`block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}>
                                 {translation.are_you_the_author}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
@@ -293,7 +294,7 @@ export default function AddBook() {
                         </div>
 
                         <div>
-                            <span className={`block text-gray-700 text-lg font-bold mb-2`}>
+                            <span className={`block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}>
                                 {translation.language_of_the_book}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
@@ -325,11 +326,12 @@ export default function AddBook() {
                                 onChange={handleFormChange}
                                 additional_text={translation.full_name}
                                 error={errors?.author}
+                                input_styles={`dark:!bg-dark_main_color`}
                             />
                         </div>
 
                         <div>
-                            <span className={`block text-gray-700 text-lg font-bold mb-2`}>
+                            <span className={`block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}>
                                 {translation.category}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
@@ -352,7 +354,7 @@ export default function AddBook() {
                         </div>
 
                         <div>
-                            <span className={`block text-gray-700 text-lg font-bold mb-2`}>
+                            <span className={`block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}>
                                 {translation.is_the_book_free}
                                 <span className={`text-red-700 font-roboto-light`}>*</span>
                             </span>
@@ -391,10 +393,10 @@ export default function AddBook() {
                         }
 
                         <label
-                            className={`${errors?.cover ? 'border-red-600 text-red-600' : 'shadow'} appearance-none leading-tight border bg-white px-2 py-[10px] rounded-md cursor-pointer flex items-center gap-x-2`}
+                            className={`${errors?.cover ? 'border-red-600 text-red-600' : 'shadow'} dark:bg-dark_main_color dark:border-dark_border_color appearance-none leading-tight border bg-white px-2 py-[10px] rounded-md cursor-pointer flex items-center gap-x-2`}
                             htmlFor={`cover-image`}
                         >
-                            <FaUpload className={`size-5 text-text_color`}/>
+                            <FaUpload className={`size-5 text-text_color dark:text-dark_text_color`}/>
                             {!formData.cover
                                 ? (
                                     <>
@@ -432,10 +434,10 @@ export default function AddBook() {
                         </div>
 
                         <label
-                            className={`${errors?.book_file ? 'border-red-600 text-red-600' : 'shadow'} appearance-none leading-tight border bg-white px-2 py-[10px] rounded-md cursor-pointer flex items-center gap-x-2`}
+                            className={`${errors?.book_file ? 'border-red-600 text-red-600' : 'shadow'} dark:bg-dark_main_color dark:border-dark_border_color appearance-none leading-tight border bg-white px-2 py-[10px] rounded-md cursor-pointer flex items-center gap-x-2`}
                             htmlFor={`book-file`}
                         >
-                            <FaUpload className={`size-5 text-text_color`}/>
+                            <FaUpload className={`size-5 text-text_color dark:text-dark_text_color`}/>
                             {!formData.book_file ? translation.upload_book : (formData.book_file instanceof File ? formData.book_file?.name : '')}
                             <input
                                 type="file"
@@ -447,7 +449,7 @@ export default function AddBook() {
                         </label>
                         {errors?.book_file && <span className={`text-red-700 -mt-4`}>{errors?.book_file}</span>}
 
-                        <button className={`flex justify-center text-xl gap-x-2 items-center rounded border border-main_color text-white px-3 py-2 bg-main_color hover:opacity-95 transition`}>
+                        <button className={`flex justify-center text-xl gap-x-2 items-center rounded border border-main_color dark:bg-dark_main_color dark:border-dark_border_color text-white px-3 py-2 bg-main_color hover:opacity-95 transition`}>
                             {!isLoading && translation.submit}
                             {isLoading &&
                                 <div

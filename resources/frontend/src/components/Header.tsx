@@ -219,13 +219,13 @@ export default function Header() {
                                 <>
                                     <Link
                                         to={`/sign-in`}
-                                        className={`flex gap-x-2 items-center rounded border border-main_color text-main_color px-3 py-[5px] hover:bg-main_color hover:text-white transition`}
+                                        className={`flex gap-x-2 items-center rounded border border-main_color dark:border-dark_border_color text-main_color dark:text-dark_text_color px-3 py-[5px] hover:bg-main_color hover:text-white dark:hover:bg-dark_second_color transition`}
                                     >
                                         <IoLogInOutline className={`text-lg`}/>{translation.sign_in}
                                     </Link>
                                     <Link
                                         to={`/sign-up`}
-                                        className={`flex gap-x-2 items-center rounded border border-main_color text-white px-3 py-[5px] bg-main_color hover:opacity-95 transition`}
+                                        className={`flex gap-x-2 items-center rounded border border-main_color dark:border-dark_border_color text-white px-3 py-[5px] bg-main_color dark:bg-dark_second_color hover:opacity-95 dark:hover:bg-dark_second_color transition`}
                                     >
                                         <FaUser className={`text-md`}/>{translation.sign_up}
                                     </Link>

@@ -225,7 +225,7 @@ export default function Home() {
                             <Link to={`/add-book`}>
                                 <HeroSectionBtn
                                     content={translation.upload_book}
-                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white text-main_color font-roboto-semi-bold`}
+                                    styles={`w-fit min-[490px]:ml-2 mt-4 bg-white dark:bg-dark_main_color dark:border-dark_main_color text-main_color dark:text-dark_text_color font-roboto-semi-bold`}
                                 />
                             </Link>
                         }

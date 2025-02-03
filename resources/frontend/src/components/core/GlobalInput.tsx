@@ -20,7 +20,7 @@ export default function GlobalInput(props: Props) {
     return (
         <div className={parent_styles ? `${parent_styles}` : ''}>
             <label
-                className={`${label_styles} block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}
+                className={`${label_styles} block text-gray-700 dark:text-dark_text_color  text-lg font-bold mb-2`}
                 htmlFor={id}
             >
                 {label}
