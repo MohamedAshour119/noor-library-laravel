@@ -53,15 +53,15 @@ export default function Comment(props: Props) {
                 />
             </Link>
 
-            <div className={`bg-main_bg relative px-5 py-2 !grid flex-col gap-y-2 rounded-lg`}>
+            <div className={`bg-main_bg dark:bg-dark_main_color relative px-5 py-2 !grid flex-col gap-y-2 rounded-lg`}>
                 <header className={`flex justify-between`}>
                     <Link
                         to={`/users/${user?.username}`}
-                        className={`font-roboto-semi-bold text-main_color_darker`}
+                        className={`font-roboto-semi-bold text-main_color_darker dark:text-dark_icon_color`}
                     >
                         {display_name}
                     </Link>
-                    <span className={`text-sm text-main_color_darker -me-2`}>{created_at}</span>
+                    <span className={`text-sm text-main_color_darker dark:text-dark_icon_color -me-2`}>{created_at}</span>
                 </header>
                 <div>
                     <h2 className={`font-roboto-semi-bold flex items-center -mt-2 gap-x-2`}>{translation.my_rating}
@@ -89,18 +89,18 @@ export default function Comment(props: Props) {
                                 disabled={is_loading}
                                 className={`flex gap-x-2 items-center rounded text-white px-3 py-[5px] w-fit hover:opacity-95 transition`}
                             >
-                                <FaAngleUp className={`text-main_color_darker absolute ltr:right-2 rtl:left-2 bottom-2`}/>
+                                <FaAngleUp className={`text-main_color_darker dark:text-dark_icon_color absolute ltr:right-2 rtl:left-2 bottom-2`}/>
                             </MenuButton>
 
                             <MenuItems
                                 transition
                                 anchor={`top`}
-                                className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+                                className="flex flex-col gap-y-1 mt-2 z-50 w-52 !bg-white dark:!bg-dark_main_color shadow-md origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-md text-white transition duration-100 ease-out [--anchor-gap:var(--spacing-1)] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                             >
                                 <MenuItem>
                                     <button
                                         onClick={deleteComment}
-                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color data-[focus]:text-white bg-white text-text_color"
+                                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-main_color dark:bg-dark_second_color dark:text-dark_text_color data-[focus]:dark:bg-dark_second_color/80 data-[focus]:text-white bg-white text-text_color"
                                     >
                                         {translation.delete}
                                     </button>
@@ -117,7 +117,7 @@ export default function Comment(props: Props) {
     return (
         <div
             ref={ref}
-            className={`${is_review ? 'p-4 rounded-lg bg-white' : 'grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]'}`}
+            className={`${is_review ? 'p-4 rounded-lg bg-white dark:bg-dark_second_color dark:border dark:border-dark_border_color' : 'grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]'}`}
         >
             {is_review &&
                 <div className={`flex flex-col gap-y-3`}>
@@ -127,8 +127,8 @@ export default function Comment(props: Props) {
                             to={`/books/${book?.slug}`}
                             className={`flex items-center gap-x-3 text-lg w-fit`}
                         >
-                            <FaBook className={`text-main_color`}/>
-                            <span className={`text-main_color_darker`}>{book?.title}</span>
+                            <FaBook className={`text-main_color dark:text-dark_text_color`}/>
+                            <span className={`text-main_color_darker dark:text-dark_text_color`}>{book?.title}</span>
                         </Link>
                     </div>
                     <div className={`grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>

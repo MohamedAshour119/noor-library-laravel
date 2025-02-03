@@ -148,7 +148,7 @@ export default function BookCard(props: Props) {
                         }}
                         disabled={is_add_to_wishlist_loading}
                     >
-                        {!is_add_to_wishlist && <IoIosHeartEmpty className="size-5 text-red-600"/>}
+                        {!is_add_to_wishlist && <IoIosHeartEmpty className="size-5 text-red-600 dark:text-dark_text_color"/>}
                         {is_add_to_wishlist && <IoIosHeart  className="size-5 text-red-400"/>}
                     </button>
                 </div>

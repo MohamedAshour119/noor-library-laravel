@@ -17,7 +17,7 @@ export default function BookRatings(props: Props) {
     if (book_data?.average) percentage = (book_data?.average / 5) * 100;
 
     return (
-        <div className={`flex flex-col gap-y-6 bg-white px-10 py-5 border rounded-lg`}>
+        <div className={`flex flex-col gap-y-6 bg-white dark:bg-dark_second_color dark:text-dark_text_color dark:border-dark_border_color px-10 py-5 border rounded-lg`}>
             <h2 className={`font-roboto-semi-bold text-xl`}>{translation.book_ratings}</h2>
 
             <div className={`flex xs:flex-row flex-col justify-center gap-x-10 gap-y-10`}>

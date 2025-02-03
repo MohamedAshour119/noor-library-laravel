@@ -74,7 +74,7 @@ export default function Reviews() {
 
     return (
         // flex flex-col justify-between min-h-[643px] h-max
-        <main className={`flex flex-col justify-between min-h-[643px] h-max items-center bg-main_bg pt-8`}>
+        <main className={`flex flex-col justify-between min-h-[643px] h-max items-center bg-main_bg dark:bg-dark_main_color dark:text-dark_text_color pt-8`}>
             <div className={`container grid md:grid-cols-[5fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 pb-10`}>
                 <div className={`flex flex-col gap-y-4`}>
                     <span className={`text-2xl font-roboto-semi-bold`}>{translation.books_reviews}</span>
@@ -93,7 +93,7 @@ export default function Reviews() {
                     <CategorySidebar/>
                 </aside>
             </div>
-            <Footer styles={`bg-white`}/>
+            <Footer styles={`bg-white dark:bg-dark_main_color`}/>
         </main>
 
     )

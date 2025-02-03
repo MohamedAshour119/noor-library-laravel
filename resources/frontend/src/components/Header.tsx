@@ -242,10 +242,10 @@ export default function Header() {
                                             {addToCartItemsCount}
                                         </span>
                                     }
-                                        <TfiShoppingCart className={`size-6 text-main_color dark:text-dark_border_color group-hover:text-white transition`}/>
+                                        <TfiShoppingCart className={`size-6 text-main_color dark:text-dark_text_color group-hover:text-white transition`}/>
                                     </span>
                                     <span className={`border border-main_color dark:border-dark_border_color h-full w-12 flex items-center justify-center rounded hover:bg-main_color dark:hover:bg-dark_second_color group transition cursor-pointer`}>
-                                        <GoBell className={`size-6 text-main_color dark:text-dark_border_color group-hover:text-white transition`}/>
+                                        <GoBell className={`size-6 text-main_color dark:text-dark_text_color group-hover:text-white transition`}/>
                                     </span>
                                     <Menu>
                                         <MenuButton className={`flex gap-x-2 items-center rounded border border-main_color dark:border-dark_border_color text-white dark:text-dark_text_color px-3 py-[5px] bg-main_color dark:bg-dark_second_color hover:opacity-95 transition`}>

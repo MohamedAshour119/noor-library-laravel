@@ -305,10 +305,10 @@ export default function ShowBook() {
                 </Modal>
             }
             {/* Main container */}
-            <div className="flex flex-col items-center bg-main_bg max-sm:px-2 h-full min-h-[612px]">
+            <div className="flex flex-col items-center bg-main_bg dark:bg-dark_main_color max-sm:px-2 h-full min-h-[612px]">
                 <div className="container grid md:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_1.6fr] gap-x-8 py-8">
                     <div className={`relative overflow-x-hidden flex flex-col gap-y-5`}>
-                        <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
+                        <div className={`relative overflow-x-hidden flex flex-col justify-between h-fit bg-white dark:bg-dark_second_color dark:border-dark_border_color border rounded-lg p-10 w-full ${is_loading ? 'min-h-[40rem]' : ''}`}>
                             {/* Loading spinner */}
                             {is_loading && (
                                 <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
@@ -322,7 +322,7 @@ export default function ShowBook() {
                                     <div className="absolute ltr:right-4 rtl:left-4 top-2 flex gap-x-2">
                                         {(book_data?.price ?? 0) > 0 &&
                                             <button
-                                                className="relative flex justify-center items-center bg-main_bg w-fit p-2 rounded-full !size-[44px]"
+                                                className="relative flex justify-center items-center bg-main_bg dark:bg-dark_main_color w-fit p-2 rounded-full !size-[44px]"
                                                 onMouseEnter={handleAddToCartIconMouseEnter}
                                                 onMouseLeave={handleAddToCartIconMouseLeave}
                                                 onClick={() => {
@@ -333,11 +333,10 @@ export default function ShowBook() {
                                                     }
                                                 }}
                                             >
-                                                <MdAddShoppingCart className="size-6 text-main_color_darker"/>
+                                                <MdAddShoppingCart className="size-6 text-main_color_darker dark:text-dark_text_color"/>
                                                 {is_add_to_cart_icon_hovered && (
-                                                    <div className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
-                                                        <div
-                                                            className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
+                                                    <div className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-transparent opacity-75 flex justify-center items-center">
+                                                        <div className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
                                                             <p>{translation.add_to_cart}</p>
                                                         </div>
                                                     </div>
@@ -345,16 +344,16 @@ export default function ShowBook() {
                                             </button>
                                         }
                                         <button
-                                            className="relative bg-main_bg w-fit p-2 rounded-full"
+                                            className="relative bg-main_bg dark:bg-dark_main_color w-fit p-2 rounded-full"
                                             onMouseEnter={handleAddToWishlistMouseEnter}
                                             onMouseLeave={handleAddToWishlistMouseLeave}
                                             onClick={handleAddToWishlistMessage}
                                             disabled={is_add_to_wishlist_loading}
                                         >
-                                            {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600"/>}
+                                            {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600 dark:text-dark_text_color"/>}
                                             {is_add_to_wishlist && <IoIosHeart  className="size-7 text-red-400"/>}
                                             {is_add_to_wishlist_icon_hovered && (
-                                                <div className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-gray-100 opacity-75 flex justify-center items-center">
+                                                <div className="ltr:icon-popup-clip-path-ltr rtl:icon-popup-clip-path-rtl absolute top-1/2 ltr:right-12 rtl:left-12 -translate-y-1/2 w-max bg-transparent opacity-75 flex justify-center items-center">
                                                     <div className="bg-black px-4 py-1 rounded shadow-md text-white text-sm">
                                                         <p>{is_add_to_wishlist ? translation.remove_from_wishlist : translation.add_to_wishlist}</p>
                                                     </div>
@@ -363,12 +362,12 @@ export default function ShowBook() {
                                         </button>
                                     </div>
                                     {/* Book image and text details */}
-                                    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 mt-6 xl:mt-0">
+                                    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 mt-6 xl:mt-0 dark:text-dark_text_color">
                                         <div className="mb-4 md:mb-0 ltr:md:mr-6 rtl:ml-6">
                                             <img
                                                 src={book_data?.cover}
                                                 alt="Book Cover"
-                                                className="rounded p-1 border"
+                                                className="rounded p-1 border dark:border-dark_border_color"
                                             />
                                         </div>
                                         <div className="flex flex-col gap-y-3">
@@ -387,7 +386,7 @@ export default function ShowBook() {
                                                             edit={false}
                                                         />
                                                     </span>
-                                                    <span className="text-gray-600 ltr:ml-1 rtl:mr-1">({book_data?.ratings_count} {translation.ratings})</span>
+                                                    <span className="text-gray-600 dark:text-dark_text_color/70 ltr:ml-1 rtl:mr-1">({book_data?.ratings_count} {translation.ratings})</span>
                                                 </div>
                                             </div>
                                             {/* Book details */}
@@ -396,10 +395,10 @@ export default function ShowBook() {
                                                 <div><strong>{translation.category}:</strong> {book_data?.category}</div>
                                                 <div><strong>{translation.language}:</strong> {book_data?.language}</div>
                                                 <div>
-                                                    <strong className={`text-text_color`}>{translation.publisher}: </strong>
+                                                    <strong>{translation.publisher}: </strong>
                                                     <Link
                                                         to={`/users/${book_data?.vendor.username}`}
-                                                        className={`text-main_color_darker`}
+                                                        className={`text-main_color_darker dark:text-dark_icon_color`}
                                                     >
                                                         {display_vendor_name}
                                                     </Link>
@@ -421,7 +420,7 @@ export default function ShowBook() {
                                                                 navigate('/checkout')
                                                             }
                                                         }}
-                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color hover:bg-main_color_darker rounded-full text-lg transition">
+                                                        className="w-full xs:w-auto py-3 px-6 text-white bg-main_color dark:bg-dark_main_color hover:bg-main_color_darker rounded-full text-lg transition">
                                                         {translation.purchase} <strong>{book_data?.price + '$'}</strong>
                                                     </button>
                                                 </div>
@@ -451,9 +450,9 @@ export default function ShowBook() {
                                     }
                                     {!is_book_free &&
                                         <div className={`hidden xl:flex items-center xl:w-[60%]`}>
-                                            <div className={`bg-[#45b09e26] flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
-                                                <span className={`font-semibold text-lg text-main_color`}>{translation.preview}</span>
-                                                <span>{translation.preview_not_allowed}</span>
+                                            <div className={`bg-[#45b09e26] dark:bg-dark_main_color flex flex-col justify-center h-fit py-4 px-10 rounded-lg text-center`}>
+                                                <span className={`font-semibold text-lg text-main_color dark:text-dark_icon_color`}>{translation.preview}</span>
+                                                <span className={`dark:text-dark_text_color`}>{translation.preview_not_allowed}</span>
                                             </div>
                                         </div>
                                     }
@@ -470,10 +469,10 @@ export default function ShowBook() {
                         />
 
                         {/* Book Reviews */}
-                        <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white`}>
+                        <div className={`flex flex-col gap-y-10 px-5 lg:px-10 py-5 border rounded-lg bg-white dark:bg-dark_second_color dark:text-dark_text_color dark:border-dark_border_color`}>
                             <span className={`font-roboto-semi-bold text-xl`}>{translation.comments} ({book_data?.comments_count})</span>
                             {auth_user.id &&
-                                <div className={`bg-white grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
+                                <div className={`bg-white dark:bg-dark_second_color grid grid-cols-[0.5fr_2.5fr] xxs:grid-cols-[0.5fr_2.7fr] xs:grid-cols-[0.5fr_3.2fr] sm:grid-cols-[0.5fr_4fr] md:grid-cols-[0.5fr_3fr] lg:grid-cols-[0.5fr_5.5fr] xl:grid-cols-[0.5fr_7fr] 2xl:grid-cols-[0.5fr_9fr]`}>
                                     <img
                                         src={auth_user.avatar ? auth_user.avatar : '/profile-default-img.svg'}
                                         alt="trending-active"
@@ -481,28 +480,28 @@ export default function ShowBook() {
                                     />
                                     <form
                                         onSubmit={handleSubmitComment}
-                                        className={`bg-main_bg px-5 py-2 gap-y-2 rounded-lg grid`}
+                                        className={`bg-main_bg dark:bg-dark_main_color dark:border dark:border-dark_border_color px-5 py-2 gap-y-2 rounded-lg grid`}
                                     >
                                         <span className={`font-roboto-semi-bold`}>{display_auth_user_name}</span>
                                         <div className={`relative`}>
                                             <textarea
                                                 onClick={handleOpenUnauthorizedMessage}
                                                 placeholder={translation.comment_description}
-                                                className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full`}
+                                                className={`p-3 pt-4 rounded min-h-28 focus:outline-0 w-full dark:bg-dark_second_color`}
                                                 maxLength={1000}
                                                 value={comment}
                                                 onChange={handleCommentChange}
                                             />
                                             {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
                                             <span
-                                                className={`absolute text-main_color_darker z-10 ltr:right-2 rtl:left-2 top-0 text-xs w-[97%] bg-white text-end`}>
+                                                className={`absolute text-main_color_darker dark:text-dark_text_color z-10 ltr:right-2 rtl:left-2 top-0 text-xs w-[97%] bg-white dark:bg-dark_second_color text-end`}>
                                                 {counter}/1000
                                             </span>
                                         </div>
 
                                         <button
                                             disabled={is_comment_loading}
-                                            className={`bg-main_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
+                                            className={`bg-main_color dark:bg-dark_second_color dark:border dark:border-dark_border_color w-fit text-white px-4 py-1 rounded justify-self-end mt-1 hover:bg-main_color_darker transition`}
                                         >
                                             {translation.comment}
                                         </button>
