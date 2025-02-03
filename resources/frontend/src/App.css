@@ -11,6 +11,7 @@
     --dark_main_color: theme(colors.dark_main_color);
     --dark_second_main_color: theme(colors.dark_second_color);
     --dark_border_color: theme(colors.dark_border_color);
+    --dark_icon_color: theme(colors.dark_icon_color);
 
     --font-roboto: 'Roboto', sans-serif;
     /*--font-tajawal: "Tajawal", sans-serif;*/
@@ -91,7 +92,8 @@ body {
     bottom: -2px;
 }
 .dark .active {
-    background-color: var(--dark_main_color); /* new color for dark mode */
+    background-color: var(--dark_icon_color); /* new color for dark mode */
+    z-index: 50;
 }
 
 .no-scroll {

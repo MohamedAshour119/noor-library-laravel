@@ -9,7 +9,7 @@ export default function Footer(props: Props) {
     const { styles } = props
     const translation = useSelector((state: RootState) => state.translationReducer)
     return (
-        <footer className={`text-main_color p-4 border-t w-full flex justify-center ${styles}`}>
+        <footer className={`text-main_color dark:text-dark_text_color p-4 border-t dark:border-dark_border_color w-full flex justify-center ${styles}`}>
             <div className="container flex justify-center items-center">
                 <div className="flex gap-4 flex-wrap justify-center">
                     <Link to={`#`} className="hover:underline underline-offset-2">{translation.terms_of_use}</Link>

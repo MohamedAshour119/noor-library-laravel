@@ -118,7 +118,7 @@ export default function Categories() {
     return (
         <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
             {!is_loading &&
-                <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
+                <div className={`flex flex-col items-center bg-main_bg dark:bg-dark_main_color dark:text-dark_text_color pt-5 max-sm:px-2 min-h-[586px]`}>
                     <div className={`container w-full flex flex-col gap-y-3`}>
                         <h1 className={`text-2xl font-roboto-semi-bold`}>{translation.categories_title}</h1>
 
@@ -126,7 +126,7 @@ export default function Categories() {
                             <input
                                 ref={search_input_ref}
                                 type="text"
-                                className="w-full px-4 pe-14 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-main_color"
+                                className="w-full px-4 pe-14 py-3 border border-gray-300 rounded-md focus:outline-none focus:border-main_color dark:bg-dark_second_color dark:border-dark_border_color"
                                 placeholder={translation.search_for_category}
                                 value={search_value}
                                 onChange={handleSearchChange}
@@ -137,8 +137,8 @@ export default function Categories() {
                                 <button
                                     onMouseDown={(e) => e.preventDefault()}
                                     onClick={clearSearchInput}
-                                    className="absolute ltr:right-2 rtl:left-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border hover:bg-main_bg hover:border-black/20">
-                                    <IoMdClose size={24} className="text-gray-500"/>
+                                    className="absolute ltr:right-2 rtl:left-2 top-1/2 transform -translate-y-1/2 bg-transparent py-1 px-2 rounded border dark:border-dark_border_color hover:bg-main_bg hover:border-black/20 dark:hover:bg-dark_border_color dark:hover:border-dark_icon_color">
+                                    <IoMdClose size={24} className="text-gray-500 dark:text-dark_text_color"/>
                                 </button>
                             }
                         </div>
@@ -162,10 +162,6 @@ export default function Categories() {
                                                 viewBox="0 0 116 121"
                                                 fill="none"
                                             >
-                                                <path
-                                                    d="M0.206909 63.57C0.206909 31.7659 25.987 6.12817 57.6487 6.12817C89.2631 6.12817 115.079 31.7541 115.079 63.57C115.079 77.0648 110.43 89.4805 102.627 99.2755C91.8719 112.853 75.4363 121 57.6487 121C39.7426 121 23.4018 112.794 12.6582 99.2755C4.85538 89.4805 0.206909 77.0648 0.206909 63.57Z"
-                                                    fill="#EEF2FF"
-                                                />
                                                 <path
                                                     d="M72.7942 0.600875L72.7942 0.600762L72.7836 0.599331C72.3256 0.537722 71.8622 0.5 71.3948 0.5H22.1643C17.1256 0.5 13.0403 4.56385 13.0403 9.58544V107.286C13.0403 112.308 17.1256 116.372 22.1643 116.372H93.1214C98.1725 116.372 102.245 112.308 102.245 107.286V29.4482C102.245 28.7591 102.17 28.0815 102.019 27.4162L102.019 27.416C101.615 25.6459 100.67 24.0014 99.2941 22.7574C99.2939 22.7572 99.2937 22.757 99.2934 22.7568L77.5462 2.89705C77.5461 2.89692 77.5459 2.89679 77.5458 2.89665C76.2103 1.66765 74.5591 0.876968 72.7942 0.600875Z"
                                                     fill="white"
@@ -225,7 +221,7 @@ export default function Categories() {
                                             </svg>
                                         </div>
                                     </div>
-                                    <h2 className="text-center text-text_color/70 text-xl font-semibold leading-relaxed pb-1">{translation.category_not_found}</h2>
+                                    <h2 className="text-center text-text_color/70 dark:text-dark_text_color text-xl font-semibold leading-relaxed pb-1">{translation.category_not_found}</h2>
                                 </>
                             }
                         </div>

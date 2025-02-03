@@ -16,7 +16,7 @@ export default function Category(props: Props) {
         <Link
             ref={ref}
             to={`./${slug}`}
-            className={`flex gap-x-4 bg-white px-4 py-3 items-center text-lg hover:text-main_color_darker`}
+            className={`flex gap-x-4 bg-white dark:bg-dark_second_color rounded px-4 py-3 items-center text-lg hover:text-main_color_darker dark:hover:text-dark_icon_color`}
         >
             <FaBook/>
             {name} {`(${books_count})`}
