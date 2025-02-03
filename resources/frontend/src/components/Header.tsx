@@ -115,7 +115,7 @@ export default function Header() {
                     header={translation.unauthorized}
                     ref={modalRef}
                 >
-                    <main className={`p-4 text-gray-500`}>
+                    <main className={`p-4 text-gray-500 dark:text-dark_text_color`}>
                         {translation.unauthorized_customer_message}
                     </main>
 
