@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useState, useLayoutEffect} from 'react';
 
 export function useDarkMode() {
     // Initialize state based on whether the <html> element has the "dark" class.
@@ -6,8 +6,8 @@ export function useDarkMode() {
         document.documentElement.classList.contains('dark')
     );
 
-    useEffect(() => {
-        // Create a MutationObserver to watch for class attribute changes on the <html> element
+    useLayoutEffect(() => {
+        // Create a MutationObserver to watch for changes to the class attribute on <html>
         const observer = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
                 if (mutation.attributeName === 'class') {

@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "../../../redux/user-slice.ts";
 import apiClient from "../../../ApiClient.ts";
 import {RootState} from "../../../redux/store.ts";
+import {useDarkMode} from "../../hooks/UseDarkMode.ts";
 
 export default function SignIn() {
     const is_sign_in_page = location.pathname === '/sign-in';
@@ -60,23 +61,31 @@ export default function SignIn() {
     const twitterSignIn = () => {
         window.location.href = '/auth/twitter/redirect';
     }
+
+    const is_dark_mode = useDarkMode()
+
     return (
         <>
-            <img
-                src="/home/hero-section-bg.svg"
-                alt="Auth background"
-                className={`w-screen h-svh min-h-svh absolute !z-10`}
-            />
+            {!is_dark_mode &&
+                <img
+                    src="/home/hero-section-bg.svg"
+                    alt="Auth background"
+                    className={`w-screen h-svh min-h-svh absolute !z-10`}
+                />
+            }
+            {is_dark_mode &&
+                <div className={`w-screen h-svh min-h-svh absolute !z-10 bg-dark_main_color`}></div>
+            }
 
-            <div className={`min-h-svh h-svh z-20 px-2 relative flex flex-col items-center pt-20 ${is_sign_in_page ? 'custom-scrollbar' : ''} overflow-y-scroll`}>
-                <div className={`bg-white rounded-2xl flex flex-col gap-y-5 sm:px-32 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
+            <div className={`dark:text-dark_text_color min-h-svh h-svh z-20 px-2 relative flex flex-col items-center pt-20 ${is_sign_in_page ? 'custom-scrollbar' : ''} overflow-y-scroll`}>
+                <div className={`bg-white dark:bg-dark_second_color dark:border-dark_border_color rounded-2xl flex flex-col gap-y-5 sm:px-32 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
                     <div className={`flex flex-col items-center gap-y-4`}>
                         <Link to={`/`}>
                             <img
-                                src={`/logo.svg`}
+                                src={is_dark_mode ? '/dark-logo.svg' : `/logo.svg`}
                                 alt={`logo`}/>
                         </Link>
-                        <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>{translation.sign_in}</h1>
+                        <h1 className={`font-roboto-bold text-xl text-main_color_darker dark:text-dark_text_color`}>{translation.sign_in}</h1>
                     </div>
                     <form onSubmit={handleSubmit}>
                         <div className={`flex flex-col gap-y-5`}>
@@ -99,7 +108,7 @@ export default function SignIn() {
                             {signInError && <span className={`text-red-600 -mt-4`}>{signInError}</span>}
 
                             <button
-                                className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
+                                className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
                                 type={`submit`}
                             >
                                 {isLoading ? translation.signing_in : translation.sign_in}
@@ -114,8 +123,8 @@ export default function SignIn() {
                     </div>
 
                     <div className={`text-center text-lg`}>
-                        {translation.dont_have_an_account} <Link to={`/sign-up`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.sign_up}</Link> <br/>
-                        {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
+                        {translation.dont_have_an_account} <Link to={`/sign-up`} className={`text-main_color_darker dark:text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.sign_up}</Link> <br/>
+                        {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker dark:text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
                     </div>
 
                     <div className="flex items-center justify-center">

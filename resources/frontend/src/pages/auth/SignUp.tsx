@@ -13,6 +13,7 @@ import PhoneInput from 'react-phone-input-2';
 import '../../index.css'
 import {Errors, SignUpForm} from "../../../Interfaces.ts";
 import {RootState} from "../../../redux/store.ts";
+import {useDarkMode} from "../../hooks/UseDarkMode.ts";
 
 export default function SignUp() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -101,6 +102,9 @@ export default function SignUp() {
     const twitterSignIn = () => {
         window.location.href = '/auth/twitter/redirect';
     }
+
+    const is_dark_mode = useDarkMode()
+
     const form =
         <form onSubmit={handleSubmit}>
             <div className={`flex flex-col gap-y-5`}>
@@ -155,6 +159,7 @@ export default function SignUp() {
                     onChange={handleInputChange}
                     error={errors?.password_confirmation}
                 />
+
                 <PhoneInput
                     country={'eg'}
                     value={formData.phone_number}
@@ -162,11 +167,13 @@ export default function SignUp() {
                     enableSearch={true}
                     placeholder={translation.enter_phone_number}
                     inputStyle={{
+                        backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                         width: '100%',
                         height: '40px',
                         borderRadius: '8px',
-                        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                        border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
                         padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
+                        color: is_dark_mode ? 'var(--dark_text_color)' : ''
                     }}
                     containerStyle={{
                         width: '100%',
@@ -175,7 +182,8 @@ export default function SignUp() {
                         position: 'relative',
                     }}
                     buttonStyle={{
-                        border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                        border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
+                        backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                     }}
                 />
                 {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
@@ -192,7 +200,7 @@ export default function SignUp() {
                 </div>
 
                 <button
-                    className={`bg-main_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
+                    className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white rounded h-[46px] font-roboto-semi-bold text-lg`}
                     type={`submit`}
                 >
                     {translation.sign_up}
@@ -202,34 +210,38 @@ export default function SignUp() {
 
     return (
         <>
-            <img
-                src="/home/hero-section-bg.svg"
-                alt="Auth background"
-                className={`w-screen h-svh min-h-svh absolute !z-10`}
-            />
-
-            <div className={`min-h-svh h-svh z-20 relative flex justify-center pt-20 ${is_sign_in_page ? 'custom-scrollbar' : ''} overflow-y-scroll`}>
+            {!is_dark_mode &&
+                <img
+                    src="/home/hero-section-bg.svg"
+                    alt="Auth background"
+                    className={`w-screen h-svh min-h-svh absolute !z-10`}
+                />
+            }
+            {is_dark_mode &&
+                <div className={`w-screen h-svh min-h-svh absolute !z-10 bg-dark_main_color`}></div>
+            }
+            <div className={`min-h-svh h-svh z-20 relative flex justify-center pt-20 ${is_sign_in_page ? 'custom-scrollbar' : ''} overflow-y-scroll dark:text-dark_text_color`}>
 
                 <div className={`flex flex-col px-2 items-center`}>
-                    <div className={`bg-white rounded-2xl flex flex-col gap-y-5 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
+                    <div className={`bg-white dark:bg-dark_second_color dark:border-dark_border_color rounded-2xl flex flex-col gap-y-5 md:px-40 min-[450px]:px-10 w-full min-[450px]:w-fit max-w-[680px] px-3 py-10 border`}>
                         <div className={`flex flex-col items-center gap-y-4`}>
                             <Link to={`/`}>
                                 <img
-                                    src={`/logo.svg`}
+                                    src={is_dark_mode ? '/dark-logo.svg' : `/logo.svg`}
                                     alt={`logo`}/>
                             </Link>
-                            <h1 className={`font-roboto-bold text-xl text-main_color_darker`}>{translation.sign_up}</h1>
+                            <h1 className={`font-roboto-bold text-xl text-main_color_darker dark:text-dark_text_color`}>{translation.sign_up}</h1>
                         </div>
                         <div className={`grid grid-cols-2 gap-x-3`}>
                             <button
                                 onClick={handleClickSignUpAsCustomer}
-                                className={`bg-main_color text-white rounded py-1`}
+                                className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white rounded py-1`}
                             >
                                 {translation.sign_up_as_customer}
                             </button>
                             <button
                                 onClick={handleClickSignUpAsVendor}
-                                className={`bg-main_color text-white rounded py-1`}
+                                className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white rounded py-1`}
                             >
                                 {translation.sign_up_as_vendor}
                             </button>
@@ -245,11 +257,11 @@ export default function SignUp() {
                             </>
                         }
 
-                        <div className={`text-text_color/70 text-center`}>
+                        <div className={`text-text_color/70 dark:text-dark_text_color text-center`}>
                             {translation.by_signing_up_you_agree_to_our}
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.terms_and_conditions}</Link>,
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.data_policy}</Link> {translation.and}
-                            <Link to={`#`} className={`text-main_color_darker font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.cookies_policy}</Link>.
+                            <Link to={`#`} className={`text-main_color_darker dark:text-dark_icon_color font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.terms_and_conditions}</Link>,
+                            <Link to={`#`} className={`text-main_color_darker dark:text-dark_icon_color font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.data_policy}</Link> {translation.and}
+                            <Link to={`#`} className={`text-main_color_darker dark:text-dark_icon_color font-roboto-semi-bold hover:underline underline-offset-2 ltr:ml-1 rtl:mr-1`}>{translation.cookies_policy}</Link>.
                         </div>
 
                         <div className="flex items-center justify-center">
@@ -259,8 +271,8 @@ export default function SignUp() {
                         </div>
 
                         <div className={`text-center text-lg`}>
-                            {translation.have_an_account} <Link to={`/sign-in`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.sign_in}</Link> <br/>
-                            {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
+                            {translation.have_an_account} <Link to={`/sign-in`} className={`text-main_color_darker text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.sign_in}</Link> <br/>
+                            {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
                         </div>
 
                         <div className="flex items-center justify-center">

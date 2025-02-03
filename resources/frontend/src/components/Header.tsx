@@ -102,6 +102,8 @@ export default function Header() {
     const openAddToCartSidebar = () => {
         dispatch(setIsAddToCartSidebarOpenSlice(true))
     }
+    
+
 
     const is_dark_mode = useDarkMode()
     return (

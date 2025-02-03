@@ -12,6 +12,7 @@
     --dark_second_main_color: theme(colors.dark_second_color);
     --dark_border_color: theme(colors.dark_border_color);
     --dark_icon_color: theme(colors.dark_icon_color);
+    --dark_text_color: theme(colors.dark_text_color);
 
     --font-roboto: 'Roboto', sans-serif;
     /*--font-tajawal: "Tajawal", sans-serif;*/
@@ -312,4 +313,8 @@ textarea.hide-scrollbar::-webkit-scrollbar-thumb {
 }
 textarea.hide-scrollbar::-webkit-scrollbar-track {
     display: none;
+}
+.flag-dropdown.dark:hover {
+    background-color: var(--dark_main_color) !important;
+    border-color: var(--dark_border_color) !important;
 }
