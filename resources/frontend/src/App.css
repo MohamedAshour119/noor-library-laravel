@@ -114,6 +114,17 @@ body {
 ::-webkit-scrollbar:horizontal {
     height: 0;
 }
+.hide ::-webkit-scrollbar{
+    width: 0 !important;
+}
+/* Dark Mode Scrollbar Styles */
+.dark ::-webkit-scrollbar-track {
+    background-color: var(--dark_border_color); /* Darker background for track */
+}
+
+.dark ::-webkit-scrollbar-thumb {
+    background-color: var(--dark_main_color); /* A darker or contrasting accent color */
+}
 
 .search-input-active{
     overflow: hidden !important;

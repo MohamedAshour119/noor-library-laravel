@@ -41,7 +41,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, header=
     return createPortal(
         <div
             ref={ref}
-            className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out animate-fade-in ${
+            className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ease-in-out animate-fade-in  ${
                 isOpen ? "opacity-100" : "opacity-0"
             }`}
             onClick={onClose}

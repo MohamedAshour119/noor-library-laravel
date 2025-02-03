@@ -22,6 +22,7 @@ import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar
 import {TfiShoppingCart} from "react-icons/tfi";
 import {Modal} from "./Modal.tsx";
 import DarkMode from "./DarkMode.tsx";
+import {useDarkMode} from "../hooks/UseDarkMode.ts";
 
 export default function Header() {
 
@@ -102,6 +103,7 @@ export default function Header() {
         dispatch(setIsAddToCartSidebarOpenSlice(true))
     }
 
+    const is_dark_mode = useDarkMode()
     return (
         <>
             {isFocused && <div className={`left-0 top-0 w-screen h-screen fixed z-20 bg-black/70 `}></div>}
@@ -174,7 +176,7 @@ export default function Header() {
                         className={`block w-fit`}
                     >
                         <img
-                            src={`/logo.svg`}
+                            src={is_dark_mode ? '/dark-logo.svg' : '/logo.svg'}
                             alt={`logo`}
                             className={`mt-10 ml-2 sm:ml-0`}
                         />
@@ -190,7 +192,7 @@ export default function Header() {
                                 className={`px-4 border-x dark:border-dark_border_color w-fit hidden sm:block`}
                             >
                                 <img
-                                    src={`/nav-logo.svg`}
+                                    src={is_dark_mode ? '/dark-nav-logo.svg' : '/nav-logo.svg'}
                                     alt={`nav-logo`}
                                     className={`py-1`}
                                     width={45}

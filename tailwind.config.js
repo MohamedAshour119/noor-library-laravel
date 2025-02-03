@@ -28,6 +28,7 @@ export default {
                 dark_main_color: "#222831",
                 dark_second_color: "#31363F",
                 dark_border_color: "#464d5b",
+                dark_icon_color: "#6b758a",
                 dark_text_color: "#e0e0e0",
             },
         },
