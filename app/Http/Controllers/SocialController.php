@@ -90,7 +90,6 @@ class SocialController extends Controller implements HasMedia
                 'last_name' => $last_name ?: null,
                 'username' => $socialiteUser->nickname,
                 'email' => $socialiteUser->email ?: null,
-                'password' => bcrypt(Str::random(12)),
             ]
         );
 

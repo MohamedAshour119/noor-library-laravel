@@ -40,4 +40,5 @@ return [
     'quantity' => 'Quantité',
     'must_sign_in' => 'Vous devez vous connecter pour effectuer cette action.',
     'no_results_found' => 'Aucun résultat trouvé!',
+
 ];

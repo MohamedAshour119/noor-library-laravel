@@ -40,4 +40,5 @@ return [
     'quantity' => 'Quantity',
     'must_sign_in' => 'You must sign in to do this action.',
     'no_results_found' => 'No results found!',
+
 ];

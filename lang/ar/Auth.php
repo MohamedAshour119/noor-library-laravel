@@ -27,4 +27,6 @@ return [
     'signing_in' => 'جار تسجيل الدخول...',
     'dont_have_an_account' => 'ليس لديك حساب؟',
     'must_sign_in' => 'يجب عليك تسجيل الدخول للقيام بهذا الإجراء.',
+    'set_password_for_your_account' => 'قم بتعيين كلمة مرور لحسابك',
+
 ];

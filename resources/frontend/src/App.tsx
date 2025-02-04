@@ -125,7 +125,6 @@ function App() {
         dispatch(setAddToCartItemsCount(previous_books.length))
     }, []);
 
-    const expires_date = localStorage.getItem('expires_at');
     const [count, setCount] = useState(0);
     const refreshToken = () => {
         setCount(prevCount => {
@@ -145,9 +144,9 @@ function App() {
     };
 
     useEffect(() => {
+        const expires_date = localStorage.getItem('expires_at');
         // @ts-ignore
         const expiration_date = new Date(expires_date).getTime();
-        console.log(expiration_date)
         const current_date = new Date().getTime();
         const callAfter = (expiration_date - current_date) - 10000;
 

@@ -25,10 +25,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
+            'social.only' => EnsureUserIsSocial::class,
             'vendor.upload' => EnsureOnlyVendorsUploadBooks::class,
             'validate.temp.token' => ValidateTempToken::class,
             'user.access' => EnsureOnlyUsers::class,
-            'social.only' => EnsureUserIsSocial::class,
         ]);
 
         $middleware->api([

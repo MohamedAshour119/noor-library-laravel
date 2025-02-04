@@ -25,4 +25,5 @@ return [
     'signing_in' => 'Connexion en cours...',
     'dont_have_an_account' => 'Vous n\'avez pas de compte?',
     'must_sign_in' => 'Vous devez vous connecter pour effectuer cette action.',
+    'set_password_for_your_account' => 'Définir le mot de passe de votre compte',
 ];

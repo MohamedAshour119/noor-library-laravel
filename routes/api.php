@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
+Route::post('/set-password', [AuthController::class, 'setPassword'])->middleware('social.only');
+
 // routes/api.php
 Route::middleware('api')->group(function () {
     Route::post('/sign-up-as-customer', [AuthController::class, 'signUpAsCustomer']);
@@ -57,17 +59,16 @@ Route::middleware('api')->group(function () {
     });
 });
 Route::get('/callback', [PaymobController::class, 'callback']);
-Route::post('/set-password', [AuthController::class, 'setPassword'])->middleware('social.only');
-Broadcast::routes(['middleware' => ['auth:api']]);
+//Broadcast::routes(['middleware' => ['auth:api']]);
 
 
-Route::post('/broadcasting/auth', function (Request $request) {
-    $user = auth()->user();
-    if (!$user) {
-        return response()->json(['message' => 'Unauthenticated'], 401);
-    }
+//Route::post('/broadcasting/auth', function (Request $request) {
+//    $user = auth()->user();
+//    if (!$user) {
+//        return response()->json(['message' => 'Unauthenticated'], 401);
+//    }
+//
+//    return Broadcast::auth($request);
+//});
 
-    return Broadcast::auth($request);
-});
-
-Route::post('/chat/send-message', [ChatController::class, 'sendMessage']);
+//Route::post('/chat/send-message', [ChatController::class, 'sendMessage']);

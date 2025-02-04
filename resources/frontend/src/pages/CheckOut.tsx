@@ -6,6 +6,7 @@ import {RootState} from "../../redux/store.ts";
 import GlobalInput from "../components/core/GlobalInput.tsx";
 import PhoneInput from "react-phone-input-2";
 import Sidebar from "../components/checkout/Sidebar.tsx";
+import {useDarkMode} from "../hooks/UseDarkMode.ts";
 
 export default function CheckOut() {
     const translation = useSelector((state: RootState) => state.translationReducer)
@@ -116,7 +117,7 @@ export default function CheckOut() {
 
     const show_cart_products = cart_books.length > 0 ? (
         cart_books.map((book, index) => (
-            <tr key={index} className="border-b dark:border-neutral-500 text-lg">
+            <tr key={index} className="border-b dark:border-dark_border_color dark:text-dark_text_color text-lg">
                 <td className="whitespace-nowrap px-6 py-4 font-medium">{index + 1}</td>
                 <td className="whitespace-nowrap px-6 py-4">
                     <img
@@ -130,14 +131,14 @@ export default function CheckOut() {
                     <div className="flex items-center space-x-2">
                         <button
                             onClick={() => decrementQuantity(book.id, book.price)}
-                            className="px-2 py-1 border rounded bg-gray-100 hover:bg-gray-200"
+                            className="px-2 py-1 border rounded bg-gray-100 hover:bg-gray-200 dark:bg-dark_main_color dark:border-dark_border_color dark:hover:bg-dark_second_color"
                         >
                             -
                         </button>
                         <span className="px-3">{book.quantity}</span>
                         <button
                             onClick={() => incrementQuantity(book.id, book.price)}
-                            className="px-2 py-1 border rounded bg-gray-100 hover:bg-gray-200"
+                            className="px-2 py-1 border rounded bg-gray-100 hover:bg-gray-200 dark:bg-dark_main_color dark:border-dark_border_color dark:hover:bg-dark_second_color"
                         >
                             +
                         </button>
@@ -161,15 +162,17 @@ export default function CheckOut() {
     const progressWidth = `${((currentStep - 1) / (steps.length - 1)) * 100}%`;
     const lang = document.documentElement.lang
 
+    const is_dark_mode = useDarkMode()
+
     return (
         <div className="flex flex-col justify-between min-h-[643px] h-max text-text_color">
-            <div className={`flex flex-col items-center bg-main_bg pt-5 max-sm:px-2 min-h-[586px]`}>
+            <div className={`flex flex-col items-center bg-main_bg dark:bg-dark_main_color pt-5 max-sm:px-2 min-h-[586px]`}>
                 {/* Progress Bar */}
                 <div className="xs:w-[80%] w-[85%] mx-auto mt-10">
                     <div className="relative">
-                        <div className="w-full h-2 bg-gray-200 rounded-full">
+                        <div className="w-full h-2 bg-gray-200 dark:bg-dark_second_color rounded-full">
                             <div
-                                className="h-2 bg-main_color rounded-full transition-all duration-300"
+                                className="h-2 bg-main_color dark:bg-dark_icon_color rounded-full transition-all duration-300"
                                 style={{ width: progressWidth }}
                             ></div>
                         </div>
@@ -180,13 +183,13 @@ export default function CheckOut() {
                                         key={index}
                                         className={`size-14 flex items-center justify-center rounded-full border-2 ${
                                             currentStep > index
-                                                ? "border-main_color_darker bg-main_color_darker text-white"
-                                                : "border-gray-300 bg-white text-gray-500"
+                                                ? "border-main_color_darker bg-main_color_darker dark:bg-dark_icon_color dark:border-dark_border_color text-white"
+                                                : "border-gray-300 bg-white dark:bg-dark_second_color dark:border-dark_border_color dark:text-dark_text_color text-gray-500"
                                         } transition-all duration-300`}
                                     >
                                         {index + 1}
                                     </div>
-                                    <h1 className={`absolute w-max mt-1 font-semibold text-sm xs:text-[16px] ${index + 1 !== 1 ? '-left-1/2' : ''} ${index + 1 === 2 && lang === 'fr' ? '-left-0' : ''} ${index + 1 === 3 && lang === 'fr' ? '-left-full' : ''}`}>
+                                    <h1 className={`absolute w-max mt-1 font-semibold text-sm xs:text-[16px] dark:text-dark_text_color ${index + 1 !== 1 ? '-left-1/2' : ''} ${index + 1 === 2 && lang === 'fr' ? '-left-0' : ''} ${index + 1 === 3 && lang === 'fr' ? '-left-full' : ''}`}>
                                             {index + 1 === 1 ? translation.your_cart : index + 1 === 2 ? translation.checkout_details : translation.order_complete}
                                     </h1>
                                 </div>
@@ -204,8 +207,8 @@ export default function CheckOut() {
                                 {/*<div className="inline-block min-w-full py-2">*/}
                                     <div className="overflow-x-scroll">
                                         <table className="min-w-full ltr:text-left rtl:text-right font-light font-roboto-semi-bold">
-                                            <thead className="border-b dark:border-neutral-500">
-                                            <tr className={`text-main_color_darker`}>
+                                            <thead className="border-b dark:border-dark_border_color">
+                                            <tr className={`text-main_color_darker dark:text-dark_text_color/80`}>
                                                 <th className="px-6 py-4">#</th>
                                                 <th className="px-6 py-4">{translation.image}</th>
                                                 <th className="px-6 py-4">{translation.title}</th>
@@ -217,7 +220,7 @@ export default function CheckOut() {
                                                 {show_cart_products}
                                             </tbody>
                                             <tfoot>
-                                                <tr className={`text-lg text-main_color_darker`}>
+                                                <tr className={`text-lg text-main_color_darker dark:text-dark_text_color/80`}>
                                                     <td
                                                         colSpan={4}
                                                         className="px-6 py-4 font-roboto-semi-bold "
@@ -282,7 +285,7 @@ export default function CheckOut() {
                                 />
                                 <div>
                                     <label
-                                        className={`block text-gray-700 text-lg font-bold mb-2`}
+                                        className={`block text-gray-700 dark:text-dark_text_color text-lg font-bold mb-2`}
                                     >
                                         {translation.phone_number}
                                         <span className={`text-red-700 font-roboto-light`}>* </span>
@@ -294,21 +297,23 @@ export default function CheckOut() {
                                         enableSearch={true}
                                         placeholder={`Phone Number`}
                                         inputStyle={{
+                                            backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                                             width: '100%',
                                             height: '40px',
                                             borderRadius: '8px',
-                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
                                             padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
+                                            color: is_dark_mode ? 'var(--dark_text_color)' : ''
                                         }}
                                         containerStyle={{
                                             width: '100%',
-                                            height: 'fit-content',
                                             display: 'flex',
                                             alignItems: 'center',
                                             position: 'relative',
                                         }}
                                         buttonStyle={{
-                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
+                                            backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                                         }}
                                     />
                                     {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
@@ -329,9 +334,9 @@ export default function CheckOut() {
                     }
                     {currentStep === 3 &&
                         <div className={`mt-20 flex justify-center items-center`}>
-                            <div className={`max-w-lg w-full bg-white rounded-lg shadow-lg p-6 border-t-4 border-second_main_color`}>
+                            <div className={`max-w-lg w-full bg-white rounded-lg shadow-lg p-6 border-t-4 border-second_main_color dark:border-dark_border_color dark:bg-dark_second_color `}>
                                 <div className={`flex items-center space-x-4`}>
-                                    <div className={`bg-second_main_color text-white rounded-full min-h-10 min-w-10 flex justify-center items-center`}>
+                                    <div className={`bg-second_main_color dark:bg-dark_main_color text-white rounded-full min-h-10 min-w-10 flex justify-center items-center`}>
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
@@ -347,15 +352,15 @@ export default function CheckOut() {
                                             />
                                         </svg>
                                     </div>
-                                    <h2 className={`text-2xl font-bold text-gray-800`}>
+                                    <h2 className={`text-2xl font-bold text-gray-800 dark:text-dark_text_color/80`}>
                                         {translation.order_placed_successfully}
                                     </h2>
                                 </div>
-                                <p className={`mt-4 text-gray-600`}>
+                                <p className={`mt-4 text-gray-600 dark:text-dark_text_color`}>
                                     {translation.order_confirmation_message}
                                 </p>
                                 <button
-                                    className={`mt-6 w-full bg-second_main_color text-white font-semibold py-2 px-4 rounded-lg hover:bg-second_main_color/90 transition`}
+                                    className={`mt-6 w-full bg-second_main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white font-semibold py-2 px-4 rounded-lg hover:bg-second_main_color/90 transition`}
                                 >
                                     {translation.view_order_details}
                                 </button>
@@ -372,7 +377,7 @@ export default function CheckOut() {
                             className={`px-4 py-2 rounded ${
                                 currentStep === steps.length || cart_books.length === 0
                                     ? "bg-gray-300 text-gray-500 cursor-not-allowed pointer-events-none"
-                                    : "bg-main_color hover:bg-main_color_darker text-white"
+                                    : "bg-main_color hover:bg-main_color_darker text-white dark:bg-dark_second_color dark:border dark:border-dark_border_color dark:hover:bg-dark_border_color"
                             } transition-all duration-300`}
                         >
                             {translation.proceed_to_checkout_details}

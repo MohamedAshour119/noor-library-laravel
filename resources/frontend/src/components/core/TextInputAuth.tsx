@@ -10,7 +10,7 @@ interface Props {
     styles?: string;
     value?: string;
     onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-    error?: string | undefined
+    error?: string | undefined | null
     is_sign_in_failed?: boolean
     readonly?:boolean
     disable_label_animation?: boolean

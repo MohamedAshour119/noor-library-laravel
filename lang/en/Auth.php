@@ -25,4 +25,6 @@ return [
     'signing_in' => 'Signing in...',
     'dont_have_an_account' => 'Don\'t have an account?',
     'must_sign_in' => 'You must sign in to do this action.',
+    'set_password_for_your_account' => 'Set password for your account',
+
 ];

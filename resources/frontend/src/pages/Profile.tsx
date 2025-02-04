@@ -12,7 +12,7 @@ import BookCard from "../components/BookCard.tsx";
 import {enqueueSnackbar} from "notistack";
 import {useNavigate, useParams} from "react-router-dom";
 import TextInputAuth from "../components/core/TextInputAuth.tsx";
-import {Button, Label, Spinner, TextInput} from "flowbite-react";
+import {Button, Spinner} from "flowbite-react";
 import PhoneInput from "react-phone-input-2";
 import axios from "axios";
 import {setUser} from "../../redux/user-slice.ts";
@@ -59,20 +59,11 @@ export default function Profile() {
     const [errors, setErrors] = useState<Errors | null>(null)
     const [confirm_user_password, setConfirm_user_password] = useState('');
     const [is_confirm_password_open, setIs_confirm_password_open] = useState(false);
-    const [is_confirm_user_password_input_focused, setIs_confirm_user_password_input_focused] = useState(false);
     const [is_loading_password_confirmation, setIs_loading_password_confirmation] = useState(false);
     const [error_password_confirmation, setError_password_confirmation] = useState(null);
     // const [temp_token, setTemp_token] = useState('');
     const [avatar, setAvatar] = useState<string | File | null>(null);
     const [show_save_avatar_btn, setShow_save_avatar_btn] = useState(false);
-
-
-    const onFocus = () => {
-        setIs_confirm_user_password_input_focused(true)
-    }
-    const onBlur = () => {
-        setIs_confirm_user_password_input_focused(false)
-    }
 
     const navigate = useNavigate()
 
@@ -381,36 +372,23 @@ export default function Profile() {
                 onClose={handleCloseModal}
                 ref={modal_ref}
             >
-                <main className={`px-4 text-gray-500`}>
+                <main className={`px-4 text-gray-500 dark:text-dark_text_color`}>
                     <div className="space-y-4 pb-4">
-                        <h3 className="text-xl font-roboto-semi-bold text-gray-900">{translation.confirm_who_you_are}</h3>
+                        <h3 className="text-xl font-roboto-semi-bold text-gray-900 dark:text-dark_text_color">{translation.confirm_who_you_are}</h3>
                         <div className={`relative`}>
-                            <Label
-                                htmlFor="confirm_user_password"
-                                value={translation.current_password}
-                                className={`absolute !text-black/40 text-md cursor-text ltr:left-4 rtl:right-4 top-1/2 -translate-y-1/2 px-1 z-10 transition-all duration-200 ${confirm_user_password.length > 0 || is_confirm_user_password_input_focused ? '!text-sm !top-0 !text-text_color bg-white' : 'bg-transparent'}`}
-                            />
-                            <TextInput
+                            <TextInputAuth
                                 id="confirm_user_password"
+                                placeholder={translation.password_confirmation}
                                 value={confirm_user_password}
                                 onChange={handleConfirmUserPassword}
-                                required
-                                onFocus={onFocus}
-                                onBlur={onBlur}
-                                style={{
-                                    borderColor: !error_password_confirmation ? "var(--border_color)" : "red",
-                                    padding: "10px 15px",
-                                    outlineColor: is_confirm_user_password_input_focused && !error_password_confirmation ? "var(--main_color)" : "red",
-                                    color: "var(--text_color)",
-                                    backgroundColor: "white"
-                                }}
                                 type={'password'}
+                                name={`confirm_user_password`}
+                                error={error_password_confirmation}
                             />
                         </div>
-                            {error_password_confirmation && <span className={`text-red-600`}>{error_password_confirmation}</span>}
                         <div className="w-full">
                             <Button
-                                className={`bg-main_color px-2 text-white rounded font-roboto-semi-bold text-lg`}
+                                className={`bg-main_color dark:bg-dark_second_color dark:border dark:border-dark_border_color px-2 text-white rounded font-roboto-semi-bold text-lg`}
                                 onClick={submitConfirmPassword}
                             >
                                 {is_loading_password_confirmation && <Spinner className="!text-white fill-zinc-400" />}
@@ -418,7 +396,7 @@ export default function Profile() {
                             </Button>
                         </div>
                     </div>
-                    <span className={`text-main_color_darker font-roboto-semi-bold`}>{translation.security_refresh_password}</span>
+                    <span className={`text-main_color_darker dark:text-dark_text_color font-roboto-semi-bold`}>{translation.security_refresh_password}</span>
                 </main>
 
             </Modal>
@@ -508,7 +486,7 @@ export default function Profile() {
                     <div className={`container w-full`}>
                         {/*{user_isActive.books && books_total_page.current === 0 &&*/}
                         {((user_isActive.personal_info && vendor_isActive.personal_info) && auth_user.username === user) &&
-                            <form className={`bg-white p-5 rounded-lg`}>
+                            <form className={`bg-white dark:bg-dark_second_color dark:border dark:border-dark_border_color p-5 rounded-lg`}>
                                 <div className={`flex flex-col gap-y-5`}>
                                     <TextInputAuth
                                         placeholder={!temp_token && formData.first_name?.length !== 0 ? '' : translation.first_name}
@@ -577,26 +555,30 @@ export default function Profile() {
                                         disabled={!temp_token}
                                         placeholder={!temp_token ? auth_user.phone : 'Enter Phone Number'}
                                         inputStyle={{
+                                            backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                                             width: '100%',
                                             height: '40px',
                                             borderRadius: '8px',
-                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
                                             padding: document.dir === 'ltr' ? '10px 10px 10px 45px' : '10px 45px 10px 10px',
+                                            color: is_dark_mode ? 'var(--dark_text_color)' : ''
                                         }}
                                         containerStyle={{
                                             width: '100%',
                                             display: 'flex',
                                             alignItems: 'center',
+                                            position: 'relative',
                                         }}
                                         buttonStyle={{
-                                            border: `1px solid ${errors?.phone_number ? 'red' : 'var(--border_color)'}`,
+                                            border: `1px solid ${errors?.phone_number ? 'red' : is_dark_mode ? 'var(--dark_border_color)' : 'var(--border_color)'}`,
+                                            backgroundColor: is_dark_mode ? 'var(--dark_main_color)' : '',
                                         }}
                                     />
                                     {errors?.phone_number && <span className={`text-red-600 -mt-4`}>{errors.phone_number}</span>}
 
                                     <button
                                         onClick={temp_token.length !== 0 ? handleSubmit : handleIsEditActive}
-                                        className={`bg-main_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
+                                        className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color w-28 py-1 text-white rounded font-roboto-semi-bold text-lg`}
                                     >
                                         {temp_token.length === 0 ? translation.edit : translation.save}
                                     </button>

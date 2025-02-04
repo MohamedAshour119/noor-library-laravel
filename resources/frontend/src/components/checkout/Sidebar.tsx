@@ -74,7 +74,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
     }
 
     return (
-        <div className="flex flex-col gap-y-4 bg-white p-4 rounded-lg mt-20 shadow-[0px_0px_12px_-5px]">
+        <div className="flex flex-col gap-y-4 bg-white dark:bg-dark_second_color dark:border dark:border-dark_border_color dark:text-dark_text_color p-4 rounded-lg mt-20 shadow-[0px_0px_12px_-5px] dark:shadow-none">
             <h2 className="text-lg font-semibold">{translation.your_order}</h2>
 
             <div>
@@ -110,7 +110,7 @@ export default function Sidebar({cart_books, billing_info, setBilling_info, hand
 
             <button
                 onClick={placeOrder}
-                className="bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 mt-3 rounded"
+                className="bg-main_color hover:bg-main_color_darker text-white font-bold py-2 px-4 mt-3 rounded dark:bg-dark_main_color dark:border dark:border-dark_border_color dark:hover:bg-dark_border_color"
             >
                 {translation.place_order}
             </button>

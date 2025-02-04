@@ -23,15 +23,18 @@ export default function SetPassword() {
         const encodedData = searchParams.get("data");
         if (encodedData) {
             const decodedData = JSON.parse(atob(encodedData));
-
             // Save token and is_social_account flag in localStorage
+            console.log('token before save: ', decodedData.token)
             localStorage.setItem("token", decodedData.token);
             localStorage.setItem("is_social_account", decodedData.is_social_account ? "true" : "false");
+
+            console.log('token after save: ', decodedData.token)
+
             dispatch(setUser(decodedData.data))
 
             // Optionally, redirect after storing the data
         }
-    }, [searchParams]);
+    }, []);
 
     const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPassword(e.target.value)
@@ -39,6 +42,8 @@ export default function SetPassword() {
 
     const navigate = useNavigate()
     const handleSubmit = (e: FormEvent) => {
+        console.log('token in handleSubmit: ', localStorage.getItem('token'))
+
         e.preventDefault()
         setIsLoading(true)
 
@@ -78,7 +83,7 @@ export default function SetPassword() {
                             onSubmit={handleSubmit}
                         >
                             <div>
-                                <span className={`font-roboto-semi-bold mb-3`}>Set password for your account</span>
+                                <span className={`font-roboto-semi-bold mb-3`}>{translation.set_password_for_your_account}</span>
                                 <TextInputAuth
                                     onChange={handleFormChange}
                                     placeholder={translation.password}
