@@ -27,4 +27,6 @@ return [
     'delete' => 'Supprimer',
     'comment_body_empty' => 'Le corps du commentaire ne peut pas être vide.',
     'comment_max_length' => 'Le commentaire ne peut pas dépasser 1000 caractères.',
+    'no_comments' => 'Aucun commentaire',
+
 ];

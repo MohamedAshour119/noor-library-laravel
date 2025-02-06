@@ -509,7 +509,8 @@ export default function ShowBook() {
                                 </div>
                             }
                             <div className={`flex flex-col gap-y-10`}>
-                                {show_comments}
+                                {comments.length > 0 && show_comments}
+                                {comments.length === 0 && <span className={`text-center dark:text-dark_text_color`}>{translation.no_comments}</span>}
                             </div>
                         </div>
 

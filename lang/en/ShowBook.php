@@ -27,4 +27,6 @@ return [
     'delete' => 'Delete',
     'comment_body_empty' => 'The comment body cannot be empty.',
     'comment_max_length' => 'The comment cannot exceed 1000 characters.',
+    'no_comments' => 'No Comments',
+
 ];
