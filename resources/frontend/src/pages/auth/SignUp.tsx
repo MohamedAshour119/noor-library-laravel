@@ -271,8 +271,8 @@ export default function SignUp() {
                         </div>
 
                         <div className={`text-center text-lg`}>
-                            {translation.have_an_account} <Link to={`/sign-in`} className={`text-main_color_darker text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.sign_in}</Link> <br/>
-                            {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
+                            {translation.have_an_account} <Link to={`/sign-in`} className={`text-main_color_darker dark:text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.sign_in}</Link> <br/>
+                            {translation.forgot_password} <Link to={`#`} className={`text-main_color_darker dark:text-dark_icon_color font-bold hover:underline underline-offset-2`}>{translation.reset_password}</Link>
                         </div>
 
                         <div className="flex items-center justify-center">

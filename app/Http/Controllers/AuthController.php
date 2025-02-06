@@ -103,13 +103,14 @@ class AuthController extends Controller
 
     public function signOut(): JsonResponse
     {
-        if (Auth::check()) {
-            Auth::user()->currentAccessToken()->delete();
+        if (Auth::user()){
+            Auth::user()->tokens()->delete();
             return $this->response_success([], 'You logged out successfully');
         }
 
         return $this->response_error('No active session found', [], 403);
     }
+
 
     public function setPassword(SetSocialAccountPasswordRequest $request)
     {

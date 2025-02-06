@@ -112,9 +112,9 @@ class PaymobController extends Controller
         $this->addOrder($billing_info_param);
 
         if (hash_equals($computed_hmac, $received_hmac)) {
-            return redirect()->to('http://localhost:8000/checkout' . '?status=success');
+            return redirect()->to(env('PAYMOB_REDIRECT') . '?status=success');
         } else {
-            return redirect()->to('http://localhost:8000/checkout' . '?status=failure');
+            return redirect()->to(env('PAYMOB_REDIRECT') . '?status=failure');
         }
     }
 
