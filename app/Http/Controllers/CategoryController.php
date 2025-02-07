@@ -81,7 +81,7 @@ class CategoryController extends Controller
             'category_name' => $category_name,
             'books' =>  $books,
             'next_page_url' => $next_page_url,
-            'books_count' => 20,
+            'books_count' => $books->count(),
         ];
         return $this->response_success($data, 'Categories retrieved');
     }

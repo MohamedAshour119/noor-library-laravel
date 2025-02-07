@@ -18,12 +18,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
     @viteReactRefresh
-    @vite('resources/frontend/src/main.tsx')
+//     @vite('resources/frontend/src/main.tsx')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 
 <body>
-{{--    <div id="root" class="flex flex-col h-full min-h-svh"></div>--}}
+{{--    <div id="root" class="flex flex-col h-full min-h-svh"></div> --}}
     <div id="root" class="h-full text-text_color"></div>
 </body>
 </html>
