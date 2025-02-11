@@ -455,7 +455,7 @@ export default function Profile() {
                         <div className={`flex max-[393px]:flex-col gap-4 mt-4`}>
                             {user_info?.is_vendor && auth_user.is_vendor && auth_user.username === user &&
                                 <a
-                                    href={`/vendor`}
+                                    href={`/vendor/login`}
                                     target={`_blanc`}
                                     className={`bg-main_color dark:bg-dark_main_color dark:border dark:border-dark_border_color text-white font-roboto-bold flex justify-center gap-x-2 items-center px-8 py-2 rounded-full`}
                                 >

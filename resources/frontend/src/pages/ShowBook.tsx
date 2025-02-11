@@ -502,7 +502,7 @@ export default function ShowBook() {
                                                 value={comment}
                                                 onChange={handleCommentChange}
                                             />
-                                            {error.length > 0 && <span className={`text-red-500`}>{error}</span>}
+                                            {error?.length > 0 && <span className={`text-red-500`}>{error}</span>}
                                             <span
                                                 className={`absolute text-main_color_darker dark:text-dark_text_color z-10 ltr:right-2 rtl:left-2 top-0 text-xs w-[97%] bg-white dark:bg-dark_second_color text-end`}>
                                                 {counter}/1000

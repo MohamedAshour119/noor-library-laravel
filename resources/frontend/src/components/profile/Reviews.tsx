@@ -15,7 +15,7 @@ interface Props {
     setIs_fetching: Dispatch<SetStateAction<boolean>>
 }
 export default function Reviews(props: Props) {
-    const {reviews, setReviews, is_loading, setIs_loading, is_fetching, setIs_fetching, next_page_url, setNext_page_url} = props
+    const {reviews, setReviews, setIs_loading, is_fetching, setIs_fetching, next_page_url, setNext_page_url} = props
 
     const getReviews = (page_url: string, fetch_at_start = true) => {
         if (fetch_at_start) {

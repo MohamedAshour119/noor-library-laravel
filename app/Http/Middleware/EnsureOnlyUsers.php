@@ -22,7 +22,7 @@ class EnsureOnlyUsers
 
         if (!Auth::guard('user')->check() && !Auth::guard('vendor_session')->check()) {
             return $this->response_error('Unauthorized', ['error' => 'Access denied. You must sign in to do this action.'], 401);
-        } else {
+        } else if (!Auth::guard('user')) {
             return $this->response_error('Unauthorized', ['error' => 'Access denied. Only customers have access to do that.'], 401);
         }
 

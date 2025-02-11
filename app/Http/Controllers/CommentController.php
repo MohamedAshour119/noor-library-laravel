@@ -18,7 +18,7 @@ class CommentController extends Controller
 
     public function addComment(AddCommentRequest $request ,$book_id)
     {
-        $is_auth_user = Auth::guard('user')->check();
+        $is_auth_user = Auth::guard('user_sanctum')->check();
         if (!$is_auth_user) {
             return $this->response_error('You must be customer to comment.', [], 403);
         }
