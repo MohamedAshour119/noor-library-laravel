@@ -6,9 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Traits\HttpResponses;
 
 class EnsureOnlyUsers
 {
+    use HttpResponses;
     /**
      * Handle an incoming request.
      *
@@ -16,8 +18,12 @@ class EnsureOnlyUsers
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::guard('user')->check()) {
-            return redirect('/')->withErrors(['error' => 'Access denied. Only customers have access to do that.']);
+//         dd(Auth::guard('user')->user());
+
+        if (!Auth::guard('user')->check() && !Auth::guard('vendor_session')->check()) {
+            return $this->response_error('Unauthorized', ['error' => 'Access denied. You must sign in to do this action.'], 401);
+        } else {
+            return $this->response_error('Unauthorized', ['error' => 'Access denied. Only customers have access to do that.'], 401);
         }
 
         return $next($request);

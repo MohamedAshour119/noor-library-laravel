@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
 
 Route::get('/auth/google/redirect', [SocialController::class, 'googleRedirect']);
 Route::get('/auth/google/callback', [SocialController::class, 'googleCallback']);

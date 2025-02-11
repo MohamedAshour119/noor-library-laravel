@@ -82,7 +82,11 @@ export default function ShowBook() {
                 setIs_add_to_wishlist(true)
             })
             .catch(err => {
-                enqueueSnackbar(err.response.data.errors)
+                if (err.response.data.errors) {
+                    setError(err.response.data.errors.error)
+                } else {
+                    setError(err.response.data.message)
+                }
             })
             .finally(() => setIs_add_to_wishlist_loading(false))
     }
@@ -99,7 +103,7 @@ export default function ShowBook() {
             .finally(() => setIs_add_to_wishlist_loading(false))
     }
     const handleAddToWishlistMessage = () => {
-        if (!auth_user.is_vendor) {
+        if (!auth_user.is_vendor && auth_user.id) {
             if (is_add_to_wishlist) {
                 handleDeleteFromWishlist()
             } else {
@@ -269,7 +273,7 @@ export default function ShowBook() {
     const is_book_free = book_data?.price === 0
 
     const handleOpenUnauthorizedMessage = () => {
-        if (auth_user.is_vendor) {
+        if (auth_user.is_vendor || !auth_user.id) {
             dispatch(setIsUnauthorizedMessageOpenSlice(true))
         }
     }
@@ -291,7 +295,7 @@ export default function ShowBook() {
 
     return (
         <div className="flex flex-col min-h-[669px] text-text_color">
-            {auth_user.is_vendor &&
+            {(auth_user.is_vendor || !auth_user.id) &&
                 <Modal
                     isOpen={isUnauthorizedMessageOpenSlice}
                     onClose={() => dispatch(setIsUnauthorizedMessageOpenSlice(false))}
@@ -299,7 +303,7 @@ export default function ShowBook() {
                     ref={modalRef}
                 >
                     <main className={`p-4 text-gray-500`}>
-                        {translation.unauthorized_vendor_message}
+                        {auth_user.is_vendor && auth_user.id ? translation.unauthorized_vendor_message : translation.must_sign_in}
                     </main>
 
                 </Modal>
@@ -326,7 +330,7 @@ export default function ShowBook() {
                                                 onMouseEnter={handleAddToCartIconMouseEnter}
                                                 onMouseLeave={handleAddToCartIconMouseLeave}
                                                 onClick={() => {
-                                                    if (auth_user.is_vendor) {
+                                                    if (auth_user.is_vendor || !auth_user.id) {
                                                         handleOpenUnauthorizedMessage()
                                                     }else {
                                                         handleAddBookToCart()
@@ -347,7 +351,13 @@ export default function ShowBook() {
                                             className="relative bg-main_bg dark:bg-dark_main_color w-fit p-2 rounded-full"
                                             onMouseEnter={handleAddToWishlistMouseEnter}
                                             onMouseLeave={handleAddToWishlistMouseLeave}
-                                            onClick={handleAddToWishlistMessage}
+                                            onClick={() => {
+                                                if (auth_user.is_vendor || !auth_user.id) {
+                                                    handleOpenUnauthorizedMessage()
+                                                }else {
+                                                    handleAddToWishlistMessage()
+                                                }
+                                            }}
                                             disabled={is_add_to_wishlist_loading}
                                         >
                                             {!is_add_to_wishlist && <IoIosHeartEmpty className="size-7 text-red-600 dark:text-dark_text_color"/>}
