@@ -59,16 +59,3 @@ Route::middleware('api')->group(function () {
     });
 });
 Route::get('/callback', [PaymobController::class, 'callback']);
-//Broadcast::routes(['middleware' => ['auth:api']]);
-
-
-//Route::post('/broadcasting/auth', function (Request $request) {
-//    $user = auth()->user();
-//    if (!$user) {
-//        return response()->json(['message' => 'Unauthenticated'], 401);
-//    }
-//
-//    return Broadcast::auth($request);
-//});
-
-//Route::post('/chat/send-message', [ChatController::class, 'sendMessage']);
