@@ -18,7 +18,7 @@ export default function MainHeaderBtn(props: Props) {
                 src={src}
                 alt={`main-header-img`}
                 width={width}
-                className={img_Style}
+                className={`${img_Style ? img_Style : ''} size-[50px]`}
             />
 
             <span className={`text-lg group-hover:text-main_color dark:group-hover:text-dark_text_color transition`}>{content}</span>

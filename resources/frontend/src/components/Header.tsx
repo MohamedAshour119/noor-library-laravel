@@ -180,7 +180,7 @@ export default function Header() {
                         <img
                             src={is_dark_mode ? '/dark-logo.svg' : '/logo.svg'}
                             alt={`logo`}
-                            className={`mt-10 ml-2 sm:ml-0`}
+                            className={`mt-10 ml-2 sm:ml-0 min-h-[120px] min-w-[114px]`}
                         />
                     </Link>
                 </div>

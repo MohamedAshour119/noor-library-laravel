@@ -166,7 +166,11 @@ export default function BookCard(props: Props) {
                     </div>
                     <span className={`text-lg`}>({ratings_count})</span>
                 </div>
-                <img src={cover} alt="ShowBook-img" className="rounded border dark:border-dark_border_color p-1" />
+                <img 
+                    src={cover} 
+                    alt="ShowBook-img" 
+                    className="rounded border dark:border-dark_border_color p-1 min-h-[287px] min-w-[192px]" 
+                />
                 <span className="font-roboto-semi-bold text-lg">
                     {title}
                 </span>
