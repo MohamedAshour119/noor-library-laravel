@@ -26,7 +26,8 @@ return [
     |
     */
 
-    'env' => env('APP_ENV', 'production'),
+    'env' => env('APP_ENV', default: 'production'),
+    'huggingface_api_key' => env('HUGGINGFACE_AI_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
