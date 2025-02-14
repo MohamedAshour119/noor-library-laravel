@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\AIChatController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrdersController;
@@ -36,6 +36,7 @@ Route::middleware('api')->group(function () {
     Route::get('/translation/{namespace}', [HomeController::class, 'getTranslation']);
     Route::get('/add-book-options/{languages?}', [BookController::class, 'addBookOptions']);
     Route::get('/home/books/{section}', [HomeController::class, 'getSectionBooks']);
+    Route::post('/send-message', [AIChatController::class, 'sendMessage']);
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/sign-out', [AuthController::class, 'signOut']);

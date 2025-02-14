@@ -10,6 +10,7 @@ import { setTranslation } from "../redux/translation-slice.ts";
 import { clearUser, setUser } from "../redux/user-slice.ts";
 import './App.css';
 import AddToCartSidebar from "./components/AddToCartSidebar.tsx";
+import ChatSupport from "./components/ChatSupport.tsx";
 import SearchModal from "./components/SearchModal.tsx";
 
 // Lazy load components
@@ -170,6 +171,7 @@ function App() {
             />
             <div className={`relative dark:bg-dark_main_color ${isAddToCartSidebarSlice ? 'max-h-svh overflow-hidden' : ''}`}>
                 <AddToCartSidebar />
+                <ChatSupport/>
                 <Suspense fallback={<div>Loading...</div>}>
                     {showHeader && <Header />}
                     <Routes>
