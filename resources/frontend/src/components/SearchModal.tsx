@@ -1,19 +1,19 @@
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../redux/store.ts";
-import {setIsSearchModalOpenSlice} from "../../redux/is_search_modal_open.ts";
-import {ChangeEvent, useEffect, useRef, useState} from "react";
-import GlobalInput from "./core/GlobalInput.tsx";
-import useDebounce from "../hooks/UseDebounce.tsx";
+import { enqueueSnackbar } from "notistack";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import apiClient from "../../ApiClient.ts";
-import {enqueueSnackbar} from "notistack";
-import {SearchBooks} from "../../Interfaces.ts";
-import Result from "./Result.tsx";
+import { SearchBooks } from "../../Interfaces.ts";
+import { setIsSearchModalOpenSlice } from "../../redux/is_search_modal_open.ts";
+import { RootState } from "../../redux/store.ts";
+import useDebounce from "../hooks/UseDebounce.tsx";
 import CoolLoading from "./CoolLoading.tsx";
-import {useNavigate} from "react-router-dom";
+import GlobalInput from "./core/GlobalInput.tsx";
+import Result from "./Result.tsx";
 // @ts-ignore
-import {FormEventHandler} from "react/v18";
-import {Modal} from "./Modal.tsx";
-import {setIsSearchTriggered} from "../../redux/is_search_triggered.ts";
+import { FormEventHandler } from "react/v18";
+import { setIsSearchTriggered } from "../../redux/is_search_triggered.ts";
+import Modal from "./Modal.tsx";
 
 export default function SearchModal() {
     const translation = useSelector((state: RootState) => state.translationReducer)

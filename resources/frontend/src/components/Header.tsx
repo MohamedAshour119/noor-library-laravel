@@ -1,28 +1,28 @@
 
-import {useEffect, useRef, useState} from 'react'
-import {MdGTranslate} from "react-icons/md";
-import {IoLogInOutline} from "react-icons/io5";
-import {FaBook, FaUser} from "react-icons/fa";
-import {RiMenuLine} from "react-icons/ri";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../redux/store.ts";
-import {Link, useNavigate} from "react-router-dom";
-import {Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
-import {IoIosArrowDown} from "react-icons/io";
-import {GoBell} from "react-icons/go";
-import {TbLogout2} from "react-icons/tb";
-import NavbarList from "./home/Navbar-List.tsx";
-import {enqueueSnackbar} from "notistack";
-import {clearUser} from "../../redux/user-slice.ts";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { enqueueSnackbar } from "notistack";
+import { useEffect, useRef, useState } from 'react';
+import { FaBook, FaUser } from "react-icons/fa";
+import { GoBell } from "react-icons/go";
+import { IoIosArrowDown } from "react-icons/io";
+import { IoLogInOutline } from "react-icons/io5";
+import { MdGTranslate } from "react-icons/md";
+import { RiMenuLine } from "react-icons/ri";
+import { TbLogout2 } from "react-icons/tb";
+import { TfiShoppingCart } from "react-icons/tfi";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import apiClient from "../../ApiClient.ts";
-import {setResetUsersActive} from "../../redux/users-profile-is-active-slice.ts";
-import {setResetVendorsActive} from "../../redux/vendors-profile-is-active-slice.ts";
-import {clearUserProfileInfo} from "../../redux/user-profile-info-slice.ts";
-import {setIsAddToCartSidebarOpenSlice} from "../../redux/is_add_to_card_sidebar_open.ts";
-import {TfiShoppingCart} from "react-icons/tfi";
-import {Modal} from "./Modal.tsx";
+import { setIsAddToCartSidebarOpenSlice } from "../../redux/is_add_to_card_sidebar_open.ts";
+import { RootState } from "../../redux/store.ts";
+import { clearUserProfileInfo } from "../../redux/user-profile-info-slice.ts";
+import { clearUser } from "../../redux/user-slice.ts";
+import { setResetUsersActive } from "../../redux/users-profile-is-active-slice.ts";
+import { setResetVendorsActive } from "../../redux/vendors-profile-is-active-slice.ts";
+import { useDarkMode } from "../hooks/UseDarkMode.ts";
 import DarkMode from "./DarkMode.tsx";
-import {useDarkMode} from "../hooks/UseDarkMode.ts";
+import NavbarList from "./home/Navbar-List.tsx";
+import Modal from "./Modal.tsx";
 
 export default function Header() {
 

@@ -1,19 +1,19 @@
-import {enqueueSnackbar} from "notistack";
-import GlobalInput from "../components/core/GlobalInput.tsx";
-import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
+import { enqueueSnackbar } from "notistack";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { FaUpload } from "react-icons/fa";
+import { MdDone } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { SingleValue } from "react-select";
+import apiClient from "../../ApiClient.ts";
 import {
-    AddBookInterface,
     AddBookDefaultValues,
     AddBookErrors,
     AddBookErrorsDefaultValues,
+    AddBookInterface,
 } from "../../Interfaces.ts";
+import { RootState } from "../../redux/store.ts";
+import GlobalInput from "../components/core/GlobalInput.tsx";
 import ReactSelect from "../components/ReactSelect.tsx";
-import {SingleValue} from "react-select";
-import {MdDone} from "react-icons/md";
-import apiClient from "../../ApiClient.ts";
-import {FaUpload} from "react-icons/fa";
-import {useSelector} from "react-redux";
-import {RootState} from "../../redux/store.ts";
 
 type BinaryOptions = {
     value: boolean

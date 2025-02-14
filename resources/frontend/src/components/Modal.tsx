@@ -1,6 +1,6 @@
-import {ReactNode, Ref, useEffect, useState} from "react"
-import { createPortal } from "react-dom"
-import {MdClose} from "react-icons/md";
+import { ReactNode, Ref, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { MdClose } from "react-icons/md";
 
 interface ModalProps {
     isOpen: boolean
@@ -11,7 +11,7 @@ interface ModalProps {
     parent_styles?: string
 }
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, header='', ref, parent_styles }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, header='', ref, parent_styles }) => {
     const [isAnimating, setIsAnimating] = useState(false)
 
     useEffect(() => {
@@ -72,3 +72,4 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, header=
     )
 }
 
+export default Modal;

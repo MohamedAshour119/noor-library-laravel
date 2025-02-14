@@ -1,24 +1,24 @@
 
+import { enqueueSnackbar } from "notistack";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { IoIosHeart, IoIosHeartEmpty } from "react-icons/io";
+import { MdAddShoppingCart } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import ReactStars from "react-stars";
+import apiClient from "../../ApiClient.ts";
+import { Book, CommentInterface, ShowBookInterface } from "../../Interfaces.ts";
+import { setAddToCartItemsCount } from "../../redux/add-to-cart-items-count.ts";
+import { setIsUnauthorizedMessageOpenSlice } from "../../redux/is_unauthorized_message_open.ts";
+import { RootState } from "../../redux/store.ts";
+import CategorySidebar from "../components/CategorySidebar.tsx";
 import CoolLoading from "../components/CoolLoading.tsx";
 import Footer from "../components/Footer.tsx";
-import {ChangeEvent, FormEvent, useEffect, useRef, useState} from "react";
-import apiClient from "../../ApiClient.ts";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import { enqueueSnackbar } from "notistack";
-import CategorySidebar from "../components/CategorySidebar.tsx";
-import {IoIosHeart, IoIosHeartEmpty} from "react-icons/io";
-import {Book, CommentInterface, ShowBookInterface} from "../../Interfaces.ts";
+import Modal from "../components/Modal.tsx";
 import PdfPreview from "../components/PdfPreview.tsx";
 import BookRatings from "../components/show-book/BookRatings.tsx";
 import Comment from "../components/show-book/Comment.tsx";
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../redux/store.ts";
-import ReactStars from "react-stars";
-import {MdAddShoppingCart} from "react-icons/md";
-import {setIsUnauthorizedMessageOpenSlice} from "../../redux/is_unauthorized_message_open.ts";
-import {useBookLanguageLabel} from "../hooks/UseBookLanguageLabel.ts";
-import {setAddToCartItemsCount} from "../../redux/add-to-cart-items-count.ts";
-import {Modal} from "../components/Modal.tsx";
+import { useBookLanguageLabel } from "../hooks/UseBookLanguageLabel.ts";
 
 export default function ShowBook() {
     // Extract the book slug from the URL parameters
