@@ -9,6 +9,7 @@
 <head>
     <meta charset="UTF-8"/>
     <link rel="canonical" href="{{ url()->current() }}">
+    <meta name="description" content="Noor library is a platform you can buy or sell books with ease."/>
     <meta name="csrf_token" content="{{ session()->get('token') !== null? base64_decode(session()->get('token')) : csrf_token() }}"/>
     <link rel="icon" type="image/svg+xml" href="/nav-logo.svg"/>
     <link rel="preload" as="image" fetchpriority="high" href="{{asset('home/hero-section-bg.svg')}}">
